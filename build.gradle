@@ -22,10 +22,7 @@ dependencies {
     }
     testImplementation 'io.projectreactor:reactor-test'
 
-    compile 'com.github.jitpack:gradle-simple:master-SNAPSHOT'
-    compile 'com.github.biezhi:excel-plus:master-SNAPSHOT'
-
-
+    compile group: 'io.github.biezhi', name: 'excel-plus', version: '1.0.7'
 }
 
 test {
