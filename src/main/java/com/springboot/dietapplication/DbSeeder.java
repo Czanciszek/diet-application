@@ -26,7 +26,7 @@ public class DbSeeder implements CommandLineRunner {
         List<ProductExcel> importedProducts = new ArrayList<>();
 
         try {
-            URL url = getClass().getClassLoader().getResource("ProductData/Warzywa i przetwory warzywne.xlsx");
+            URL url = getClass().getClassLoader().getResource("ProductData/Stage5.xlsx");
             assert url != null;
             File file = Paths.get(url.toURI()).toFile();
 
