@@ -21,16 +21,16 @@ public class Product {
     private float carbohydrates;
     private float sucrose;
     private float dietaryFibres;
-    private int sodium;
-    private int potassium;
-    private int calcium;
-    private int phosphorus;
-    private int magnesium;
+    private float sodium;
+    private float potassium;
+    private float calcium;
+    private float phosphorus;
+    private float magnesium;
     private float iron;
     private float selenium;
-    private int betaCarotene;
-    private int vitaminD;
-    private int vitaminC;
+    private float betaCarotene;
+    private float vitaminD;
+    private float vitaminC;
     private boolean lactose;
     private boolean starch;
     private boolean gluten;
@@ -43,8 +43,8 @@ public class Product {
                    int energyValue, float proteins, float fats,
                    float saturatedFattyAcids, float monoUnsaturatedFattyAcids, float polyUnsaturatedFattyAcids,
                    float cholesterol, float carbohydrates, float sucrose, float dietaryFibres,
-                   int sodium, int potassium, int calcium, int phosphorus, int magnesium, float iron, float selenium,
-                   int betaCarotene, int vitaminD, int vitaminC, boolean lactose, boolean starch, boolean gluten) {
+                   float sodium, float potassium, float calcium, float phosphorus, float magnesium, float iron, float selenium,
+                   float betaCarotene, float vitaminD, float vitaminC, boolean lactose, boolean starch, boolean gluten) {
         this.category = category;
         this.subcategory = subcategory;
         this.name = name;
@@ -97,9 +97,9 @@ public class Product {
         this.betaCarotene = productExcel.getBetaCarotene();
         this.vitaminD = productExcel.getVitaminD();
         this.vitaminC = productExcel.getVitaminC();
-        this.lactose = (productExcel.getLactose() != null) && !productExcel.getLactose().isEmpty();
-        this.starch = (productExcel.getStarch() != null) && !productExcel.getStarch().isEmpty();
-        this.gluten = (productExcel.getGluten() != null) && !productExcel.getGluten().isEmpty();
+        this.lactose = productExcel.getLactose() != null && !productExcel.getLactose().isEmpty();
+        this.starch = productExcel.getStarch() != null && !productExcel.getStarch().isEmpty();
+        this.gluten = productExcel.getGluten() != null && !productExcel.getGluten().isEmpty();
     }
 
     public String getId() {
@@ -158,23 +158,23 @@ public class Product {
         return dietaryFibres;
     }
 
-    public int getSodium() {
+    public float getSodium() {
         return sodium;
     }
 
-    public int getPotassium() {
+    public float getPotassium() {
         return potassium;
     }
 
-    public int getCalcium() {
+    public float getCalcium() {
         return calcium;
     }
 
-    public int getPhosphorus() {
+    public float getPhosphorus() {
         return phosphorus;
     }
 
-    public int getMagnesium() {
+    public float getMagnesium() {
         return magnesium;
     }
 
@@ -186,15 +186,15 @@ public class Product {
         return selenium;
     }
 
-    public int getBetaCarotene() {
+    public float getBetaCarotene() {
         return betaCarotene;
     }
 
-    public int getVitaminD() {
+    public float getVitaminD() {
         return vitaminD;
     }
 
-    public int getVitaminC() {
+    public float getVitaminC() {
         return vitaminC;
     }
 

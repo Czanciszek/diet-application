@@ -44,19 +44,19 @@ public class ProductExcel {
     private float dietaryFibres;
 
     @ExcelColumn(title = "sodium", index = 13)
-    private int sodium;
+    private float sodium;
 
     @ExcelColumn(title = "potassium", index = 14)
-    private int potassium;
+    private float potassium;
 
     @ExcelColumn(title = "calcium", index = 15)
-    private int calcium;
+    private float calcium;
 
     @ExcelColumn(title = "phosphorus", index = 16)
-    private int phosphorus;
+    private float phosphorus;
 
     @ExcelColumn(title = "magnesium", index = 17)
-    private int magnesium;
+    private float magnesium;
 
     @ExcelColumn(title = "iron", index = 18)
     private float iron;
@@ -65,13 +65,13 @@ public class ProductExcel {
     private float selenium;
 
     @ExcelColumn(title = "betaCarotene", index = 20)
-    private int betaCarotene;
+    private float betaCarotene;
 
     @ExcelColumn(title = "vitaminD", index = 21)
-    private int vitaminD;
+    private float vitaminD;
 
     @ExcelColumn(title = "vitaminC", index = 22)
-    private int vitaminC;
+    private float vitaminC;
 
     @ExcelColumn(title = "lactose", index = 23)
     private String lactose;
@@ -134,23 +134,23 @@ public class ProductExcel {
         return dietaryFibres;
     }
 
-    public int getSodium() {
+    public float getSodium() {
         return sodium;
     }
 
-    public int getPotassium() {
+    public float getPotassium() {
         return potassium;
     }
 
-    public int getCalcium() {
+    public float getCalcium() {
         return calcium;
     }
 
-    public int getPhosphorus() {
+    public float getPhosphorus() {
         return phosphorus;
     }
 
-    public int getMagnesium() {
+    public float getMagnesium() {
         return magnesium;
     }
 
@@ -162,15 +162,15 @@ public class ProductExcel {
         return selenium;
     }
 
-    public int getBetaCarotene() {
+    public float getBetaCarotene() {
         return betaCarotene;
     }
 
-    public int getVitaminD() {
+    public float getVitaminD() {
         return vitaminD;
     }
 
-    public int getVitaminC() {
+    public float getVitaminC() {
         return vitaminC;
     }
 

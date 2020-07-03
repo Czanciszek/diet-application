@@ -2,6 +2,7 @@ package com.springboot.dietapplication;
 
 import com.springboot.dietapplication.Model.Product;
 import com.springboot.dietapplication.Model.Excel.ProductExcel;
+import com.springboot.dietapplication.MongoRepository.ProductRepository;
 import io.github.biezhi.excel.plus.Reader;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
