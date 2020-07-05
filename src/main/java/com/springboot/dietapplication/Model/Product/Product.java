@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.Model;
+package com.springboot.dietapplication.Model.Product;
 
 import com.springboot.dietapplication.Model.Base.BaseDoc;
 import com.springboot.dietapplication.Model.Excel.ProductExcel;
