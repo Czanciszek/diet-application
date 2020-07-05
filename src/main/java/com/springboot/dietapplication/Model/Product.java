@@ -1,16 +1,14 @@
 package com.springboot.dietapplication.Model;
 
+import com.springboot.dietapplication.Model.Base.BaseDoc;
 import com.springboot.dietapplication.Model.Excel.ProductExcel;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Products")
-public class Product {
-    @Id
-    private String id;
+public class Product extends BaseDoc {
+
     private String category;
     private String subcategory;
-    private String name;
     private int energyValue;
     private float proteins;
     private float fats;
@@ -39,7 +37,7 @@ public class Product {
 
     }
 
-    public Product(String category, String subcategory, String name,
+    public Product(String category, String subcategory,
                    int energyValue, float proteins, float fats,
                    float saturatedFattyAcids, float monoUnsaturatedFattyAcids, float polyUnsaturatedFattyAcids,
                    float cholesterol, float carbohydrates, float sucrose, float dietaryFibres,
@@ -47,7 +45,6 @@ public class Product {
                    float betaCarotene, float vitaminD, float vitaminC, boolean lactose, boolean starch, boolean gluten) {
         this.category = category;
         this.subcategory = subcategory;
-        this.name = name;
         this.energyValue = energyValue;
         this.proteins = proteins;
         this.fats = fats;
@@ -74,9 +71,9 @@ public class Product {
     }
 
     public Product(ProductExcel productExcel) {
+        setName(productExcel.getName());
         this.category = productExcel.getCategory();
         this.subcategory = productExcel.getSubcategory();
-        this.name = productExcel.getName();
         this.energyValue = productExcel.getEnergyValue();
         this.proteins = productExcel.getProteins();
         this.fats = productExcel.getFats();
@@ -102,20 +99,12 @@ public class Product {
         this.gluten = productExcel.getGluten() != null && !productExcel.getGluten().isEmpty();
     }
 
-    public String getId() {
-        return id;
-    }
-
     public String getCategory() {
         return category;
     }
 
     public String getSubcategory() {
         return subcategory;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public int getEnergyValue() {

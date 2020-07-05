@@ -1,9 +1,14 @@
 package com.springboot.dietapplication;
 
+import com.springboot.dietapplication.Model.Base.DocRef;
+import com.springboot.dietapplication.Model.Base.Header;
 import com.springboot.dietapplication.Model.Product;
 import com.springboot.dietapplication.Model.Excel.ProductExcel;
+import com.springboot.dietapplication.Model.User.User;
+import com.springboot.dietapplication.Model.User.UserType;
 import com.springboot.dietapplication.MongoRepository.ProductRepository;
 import io.github.biezhi.excel.plus.Reader;
+import org.joda.time.DateTime;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -45,6 +50,12 @@ public class DbSeeder implements CommandLineRunner {
         List<Product> products = new ArrayList<>();
         for (ProductExcel productExcel : importedProducts) {
             Product product = new Product(productExcel);
+            long currentTime = new DateTime().getMillis();
+            product.setHeader(new Header());
+            Header header = product.getHeader();
+            User user = new User("id", "name", "password", "imageId");
+            header.setCreatedBy(DocRef.fromDoc(user));
+            product.getHeader().setCreatedEpochMillis(currentTime);
             products.add(product);
         }
 
