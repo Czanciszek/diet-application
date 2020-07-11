@@ -3,6 +3,7 @@ package com.springboot.dietapplication;
 import com.springboot.dietapplication.Model.Base.DocRef;
 import com.springboot.dietapplication.Model.Base.Header;
 import com.springboot.dietapplication.Model.Dish.Dish;
+import com.springboot.dietapplication.Model.Product.AmountType;
 import com.springboot.dietapplication.Model.Product.ProductForDish;
 import com.springboot.dietapplication.Model.Product.Product;
 import com.springboot.dietapplication.Model.Excel.ProductExcel;
@@ -74,8 +75,8 @@ public class DbSeeder implements CommandLineRunner {
 
         List<ProductForDish> productsToAdd = new ArrayList<>();
 
-        ProductForDish productForDish = new ProductForDish(DocRef.fromDoc(cukier), 12.0f);
-        ProductForDish productForDish2 = new ProductForDish(DocRef.fromDoc(karmelki), 0.3f);
+        ProductForDish productForDish = new ProductForDish(DocRef.fromDoc(cukier), 12.0f, AmountType.PIECE);
+        ProductForDish productForDish2 = new ProductForDish(DocRef.fromDoc(karmelki), 0.3f, AmountType.G);
 
         productsToAdd.add(productForDish);
         productsToAdd.add(productForDish2);
@@ -86,6 +87,8 @@ public class DbSeeder implements CommandLineRunner {
         long currentTime = new DateTime().getMillis();
         dish.setHeader(header);
         dish.getHeader().setCreatedEpochMillis(currentTime);
+        dish.setPortions(2);
+        dish.setRecipe("Połącz karmelki z cukrem");
         this.dishRepository.save(dish);
 
 

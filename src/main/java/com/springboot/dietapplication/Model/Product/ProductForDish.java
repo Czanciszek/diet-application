@@ -1,16 +1,17 @@
 package com.springboot.dietapplication.Model.Product;
 
 import com.springboot.dietapplication.Model.Base.DocRef;
-import com.springboot.dietapplication.Model.Product.Product;
 
 public class ProductForDish {
 
     private DocRef<Product> product;
     private float amount;
+    private AmountType amountType;
 
-    public ProductForDish(DocRef<Product> product, float amount) {
+    public ProductForDish(DocRef<Product> product, float amount, AmountType amountType) {
         this.product = product;
         this.amount = amount;
+        this.amountType = amountType;
     }
 
     public DocRef<Product> getProduct() {
@@ -27,5 +28,13 @@ public class ProductForDish {
 
     public void setAmount(float amount) {
         this.amount = amount;
+    }
+
+    public AmountType getAmountType() {
+        return amountType;
+    }
+
+    public void setAmountType(AmountType amountType) {
+        this.amountType = amountType;
     }
 }

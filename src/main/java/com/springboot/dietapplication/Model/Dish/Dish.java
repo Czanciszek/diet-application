@@ -10,6 +10,8 @@ import java.util.List;
 public class Dish extends BaseDoc {
 
     private List<ProductForDish> products;
+    private float portions;
+    private String recipe;
 
     protected Dish() {
 
@@ -25,5 +27,21 @@ public class Dish extends BaseDoc {
 
     public void setProducts(List<ProductForDish> products) {
         this.products = products;
+    }
+
+    public float getPortions() {
+        return portions;
+    }
+
+    public void setPortions(float portions) {
+        this.portions = portions;
+    }
+
+    public String getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(String recipe) {
+        this.recipe = recipe;
     }
 }
