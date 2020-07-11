@@ -87,10 +87,10 @@ public class DbSeeder implements CommandLineRunner {
         long currentTime = new DateTime().getMillis();
         dish.setHeader(header);
         dish.getHeader().setCreatedEpochMillis(currentTime);
-        dish.setPortions(2);
+        dish.setPortions(2.5f);
         dish.setRecipe("Połącz karmelki z cukrem");
         this.dishRepository.save(dish);
 
-
+        System.out.println(dish.getId());
     }
 }
