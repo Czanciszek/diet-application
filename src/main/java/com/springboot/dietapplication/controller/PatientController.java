@@ -1,7 +1,7 @@
-package com.springboot.dietapplication.Controller;
+package com.springboot.dietapplication.controller;
 
-import com.springboot.dietapplication.Model.Patient.Patient;
-import com.springboot.dietapplication.MongoRepository.PatientRepository;
+import com.springboot.dietapplication.model.patient.Patient;
+import com.springboot.dietapplication.repository.PatientRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

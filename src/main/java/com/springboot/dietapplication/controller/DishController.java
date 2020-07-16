@@ -1,7 +1,7 @@
-package com.springboot.dietapplication.Controller;
+package com.springboot.dietapplication.controller;
 
-import com.springboot.dietapplication.Model.Dish.Dish;
-import com.springboot.dietapplication.MongoRepository.DishRepository;
+import com.springboot.dietapplication.model.dish.Dish;
+import com.springboot.dietapplication.repository.DishRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

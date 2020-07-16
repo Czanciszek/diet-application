@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.service;
 
-import com.springboot.dietapplication.Model.User.User;
-import com.springboot.dietapplication.MongoRepository.UserRepository;
+import com.springboot.dietapplication.model.user.User;
+import com.springboot.dietapplication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,6 @@
-package com.springboot.dietapplication.Model.Product;
+package com.springboot.dietapplication.model.product;
 
-import com.springboot.dietapplication.Model.Base.DocRef;
+import com.springboot.dietapplication.model.base.DocRef;
 
 public class ProductForDish {
 

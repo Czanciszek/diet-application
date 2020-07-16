@@ -1,7 +1,7 @@
-package com.springboot.dietapplication.Model.Product;
+package com.springboot.dietapplication.model.product;
 
-import com.springboot.dietapplication.Model.Base.BaseDoc;
-import com.springboot.dietapplication.Model.Excel.ProductExcel;
+import com.springboot.dietapplication.model.base.BaseDoc;
+import com.springboot.dietapplication.model.excel.ProductExcel;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Products")

@@ -1,16 +1,16 @@
 package com.springboot.dietapplication;
 
-import com.springboot.dietapplication.Model.Base.DocRef;
-import com.springboot.dietapplication.Model.Base.Header;
-import com.springboot.dietapplication.Model.Dish.Dish;
-import com.springboot.dietapplication.Model.Product.AmountType;
-import com.springboot.dietapplication.Model.Product.ProductForDish;
-import com.springboot.dietapplication.Model.Product.Product;
-import com.springboot.dietapplication.Model.Excel.ProductExcel;
-import com.springboot.dietapplication.Model.User.User;
-import com.springboot.dietapplication.MongoRepository.DishRepository;
-import com.springboot.dietapplication.MongoRepository.ProductRepository;
-import com.springboot.dietapplication.MongoRepository.UserRepository;
+import com.springboot.dietapplication.model.base.DocRef;
+import com.springboot.dietapplication.model.base.Header;
+import com.springboot.dietapplication.model.dish.Dish;
+import com.springboot.dietapplication.model.product.AmountType;
+import com.springboot.dietapplication.model.product.ProductForDish;
+import com.springboot.dietapplication.model.product.Product;
+import com.springboot.dietapplication.model.excel.ProductExcel;
+import com.springboot.dietapplication.model.user.User;
+import com.springboot.dietapplication.repository.DishRepository;
+import com.springboot.dietapplication.repository.ProductRepository;
+import com.springboot.dietapplication.repository.UserRepository;
 import io.github.biezhi.excel.plus.Reader;
 import org.joda.time.DateTime;
 import org.springframework.boot.CommandLineRunner;

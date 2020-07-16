@@ -1,7 +1,7 @@
-package com.springboot.dietapplication.Model.Base;
+package com.springboot.dietapplication.model.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.springboot.dietapplication.Model.User.User;
+import com.springboot.dietapplication.model.user.User;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Header {

@@ -1,10 +1,8 @@
-package com.springboot.dietapplication.MongoRepository;
+package com.springboot.dietapplication.repository;
 
-import com.springboot.dietapplication.Model.Product.Product;
+import com.springboot.dietapplication.model.product.Product;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface ProductRepository extends MongoRepository<Product, String> {

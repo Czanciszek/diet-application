@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.Model.Base;
+package com.springboot.dietapplication.model.base;
 
 public interface BaseDocInterface {
 

@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.Model.Excel;
+package com.springboot.dietapplication.model.excel;
 
 import io.github.biezhi.excel.plus.annotation.ExcelColumn;
 

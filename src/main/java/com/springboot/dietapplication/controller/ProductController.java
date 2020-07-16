@@ -1,9 +1,8 @@
-package com.springboot.dietapplication.Controller;
+package com.springboot.dietapplication.controller;
 
-import com.springboot.dietapplication.Model.Product.Product;
-import com.springboot.dietapplication.MongoRepository.ProductRepository;
+import com.springboot.dietapplication.model.product.Product;
+import com.springboot.dietapplication.repository.ProductRepository;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

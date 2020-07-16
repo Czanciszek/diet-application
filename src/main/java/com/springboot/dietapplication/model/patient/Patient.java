@@ -1,6 +1,6 @@
-package com.springboot.dietapplication.Model.Patient;
+package com.springboot.dietapplication.model.patient;
 
-import com.springboot.dietapplication.Model.Base.BaseDoc;
+import com.springboot.dietapplication.model.base.BaseDoc;
 
 import java.util.List;
 

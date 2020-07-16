@@ -1,6 +1,6 @@
-package com.springboot.dietapplication.Model.User;
+package com.springboot.dietapplication.model.user;
 
-import com.springboot.dietapplication.Model.Base.BaseDoc;
+import com.springboot.dietapplication.model.base.BaseDoc;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Users")

@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.Model.Product;
+package com.springboot.dietapplication.model.product;
 
 public enum AmountType {
 

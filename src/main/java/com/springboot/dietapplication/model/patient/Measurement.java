@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.Model.Patient;
+package com.springboot.dietapplication.model.patient;
 
 public class Measurement {
 
