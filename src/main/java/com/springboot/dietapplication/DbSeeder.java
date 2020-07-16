@@ -10,6 +10,7 @@ import com.springboot.dietapplication.Model.Excel.ProductExcel;
 import com.springboot.dietapplication.Model.User.User;
 import com.springboot.dietapplication.MongoRepository.DishRepository;
 import com.springboot.dietapplication.MongoRepository.ProductRepository;
+import com.springboot.dietapplication.MongoRepository.UserRepository;
 import io.github.biezhi.excel.plus.Reader;
 import org.joda.time.DateTime;
 import org.springframework.boot.CommandLineRunner;
@@ -26,14 +27,23 @@ public class DbSeeder implements CommandLineRunner {
 
     private ProductRepository productRepository;
     private DishRepository dishRepository;
+    private UserRepository userRepository;
 
-    public DbSeeder(ProductRepository productRepository, DishRepository dishRepository) {
+    public DbSeeder(ProductRepository productRepository, DishRepository dishRepository,
+                    UserRepository userRepository) {
         this.productRepository = productRepository;
         this.dishRepository = dishRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public void run(String... args) {
+
+        User user1 = new User("aaa",
+                "$2y$12$xQyJdsoamI/19a4p3bgRcOj2KeLpxPWj3.whkTrjz2jzIbO9fnr6m", "aaa");
+        userRepository.deleteAll();
+        userRepository.save(user1);
+
         List<ProductExcel> importedProducts = new ArrayList<>();
 
         try {
@@ -52,7 +62,7 @@ public class DbSeeder implements CommandLineRunner {
             e.printStackTrace();
         }
 
-        User user = new User("id", "name", "password", "imageId");
+        User user = new User("name", "password", "imageId");
         Header header = new Header();
         header.setCreatedBy(DocRef.fromDoc(user));
 

@@ -1,21 +1,20 @@
 package com.springboot.dietapplication.Model.User;
 
 import com.springboot.dietapplication.Model.Base.BaseDoc;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "Users")
 public class User extends BaseDoc {
 
     private String password;
-    private String primaryImageId;
     private UserType userType;
 
-    public User(String id, String name, String password, String primaryImageId) {
-        this.primaryImageId = primaryImageId;
-        this.password = password;
-
-        setId(id);
+    public User(String name, String password, String primaryImageId) {
         setName(name);
         setPrimaryImageId(primaryImageId);
-        setType(UserType.ADMIN.toString());
+
+        this.password = password;
+        this.userType = UserType.ADMIN;
     }
 
     public String getPassword() {
@@ -28,14 +27,6 @@ public class User extends BaseDoc {
 
     public UserType getUserType() {
         return userType;
-    }
-
-    public String getPrimaryImageId() {
-        return primaryImageId;
-    }
-
-    public void setPrimaryImageId(String primaryImageId) {
-        this.primaryImageId = primaryImageId;
     }
 
     public void setUserType(UserType userType) {
