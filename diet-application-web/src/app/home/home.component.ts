@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {RestapiService} from "../restapi.service";
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  users: any;
+  constructor(
+    private service:RestapiService
+  ) { }
 
   ngOnInit(): void {
   }
 
+  getUsers() {
+    let response = this.service.getUsers();
+    response.subscribe(data => {
+      this.users = data;
+    });
+  }
 }

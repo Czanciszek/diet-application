@@ -1,2 +1,22 @@
-<h1>Homepage</h1>
-<p>Login successfull!</p>
+<div class="container">
+  <button type="button" class="btn btn-primary" (click)="getUsers()">Find users</button>
+</div>
+
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Typ</th>
+        <th>Hasło</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let user of users">
+        <td>{{user.name}}</td>
+        <td>{{user.userType}}</td>
+        <td>{{user.password}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
