@@ -3,12 +3,14 @@ body,
 html {
   margin: 0;
   padding: 0;
+  min-height: 100%;
+  background-color: #60a3bc !important;
   height: 100%;
-  background: #60a3bc !important;
 }
 .user_card {
   height: 400px;
   width: 350px;
+  top: 75px;
   margin-top: auto;
   margin-bottom: auto;
   background: #f39c12;
@@ -37,7 +39,6 @@ html {
   height: 150px;
   width: 150px;
   border-radius: 50%;
-  border: 2px solid white;
 }
 .form_container {
   margin-top: 100px;
@@ -67,4 +68,8 @@ html {
 }
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
   background-color: #c0392b !important;
+}
+
+.footer {
+  height: 300px;
 }
