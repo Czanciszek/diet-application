@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {GlobalVariable} from "../global";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class RestapiService {
   }
 
   public getUsers() {
-    const headers = new HttpHeaders({Authorization: 'Basic '+ btoa('aaa' + ":" + 'aaa')});
+    const headers = new HttpHeaders({Authorization: 'Basic '+
+        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)});
     return this.http.get("http://localhost:8080/users", {headers});
   }
 }

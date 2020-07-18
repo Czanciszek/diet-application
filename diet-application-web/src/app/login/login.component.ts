@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {RestapiService} from "../restapi.service";
+import {RestapiService} from "../service/restapi.service";
 import {Router} from "@angular/router";
+import {GlobalVariable} from "../global";
 
 @Component({
   selector: 'app-login',
@@ -9,6 +10,7 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
+  public currentUser:any;
   username:string;
   password:string;
   message:any;
@@ -23,9 +25,9 @@ export class LoginComponent implements OnInit {
 
   doLogin() {
     let response = this.service.login(this.username, this.password);
-    response.subscribe( data => {
-      this.message = data;
-      console.log("aaaa", data);
+    response.subscribe( () => {
+      GlobalVariable.CURRENT_USER_LOGIN = this.username;
+      GlobalVariable.CURRENT_USER_PASSWORD = this.password;
       this.router.navigate(["/home"]);
     });
   }
