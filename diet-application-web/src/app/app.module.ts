@@ -10,18 +10,21 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import { AppRoutingModule } from './app-routing.module';
 import {RouterModule, Routes} from "@angular/router";
+import { ProductsComponent } from './products/products.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
   {path: "login", component:LoginComponent},
-  {path: "home", component:HomeComponent}
+  {path: "home", component:HomeComponent},
+  {path: "products", component:ProductsComponent},
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,

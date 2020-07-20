@@ -20,6 +20,7 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -39,52 +40,57 @@ public class DbSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+        this.productRepository.deleteAll();
+        this.dishRepository.deleteAll();
+        this.userRepository.deleteAll();
+
         User user1 = new User("aaa",
                 "$2y$12$xQyJdsoamI/19a4p3bgRcOj2KeLpxPWj3.whkTrjz2jzIbO9fnr6m", "aaa");
-        userRepository.deleteAll();
         userRepository.save(user1);
-
-        List<ProductExcel> importedProducts = new ArrayList<>();
-
-        try {
-            URL url = getClass().getClassLoader().getResource("ProductData/Stage8.xlsx");
-            assert url != null;
-            File file = Paths.get(url.toURI()).toFile();
-
-            importedProducts = Reader.create(ProductExcel.class)
-                    .from(file)
-                    .start(1)
-                    .asList();
-        } catch (IllegalArgumentException e) {
-            System.out.println("File not found");
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         User user = new User("name", "password", "imageId");
         Header header = new Header();
         header.setCreatedBy(DocRef.fromDoc(user));
 
-        List<Product> products = new ArrayList<>();
-        for (ProductExcel productExcel : importedProducts) {
-            Product product = new Product(productExcel);
-            long currentTime = new DateTime().getMillis();
-            product.setHeader(header);
-            product.getHeader().setCreatedEpochMillis(currentTime);
-            products.add(product);
+        List<ProductExcel> importedProducts = new ArrayList<>();
+
+        List<String> fileImportList = Arrays.asList(
+                "ProductData/Stage5.xlsx",
+                "ProductData/Stage8.xlsx");
+
+        for (String filePath : fileImportList) {
+            try {
+                URL url = getClass().getClassLoader().getResource(filePath);
+                assert url != null;
+                File file = Paths.get(url.toURI()).toFile();
+
+                importedProducts = Reader.create(ProductExcel.class)
+                        .from(file)
+                        .start(1)
+                        .asList();
+            } catch (IllegalArgumentException e) {
+                System.out.println("File not found");
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            List<Product> products = new ArrayList<>();
+            for (ProductExcel productExcel : importedProducts) {
+                Product product = new Product(productExcel);
+                long currentTime = new DateTime().getMillis();
+                product.setHeader(header);
+                product.getHeader().setCreatedEpochMillis(currentTime);
+                products.add(product);
+            }
+
+            this.productRepository.saveAll(products);
         }
-
-        this.productRepository.deleteAll();
-        this.dishRepository.deleteAll();
-
-        this.productRepository.saveAll(products);
 
         Product cukier = this.productRepository.findByNameLike("Cukier");
         Product karmelki = this.productRepository.findByNameLike("Karmelki nadziewane");
 
         List<ProductForDish> productsToAdd = new ArrayList<>();
-
         ProductForDish productForDish = new ProductForDish(DocRef.fromDoc(cukier), 12.0f, AmountType.PIECE);
         ProductForDish productForDish2 = new ProductForDish(DocRef.fromDoc(karmelki), 0.3f, AmountType.G);
 

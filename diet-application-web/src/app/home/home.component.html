@@ -1,22 +1,41 @@
-<div class="container">
-  <button type="button" class="btn btn-primary" (click)="getUsers()">Find users</button>
+<!-- Sidebar (hidden by default) -->
+<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
+  <a href="javascript:void(0)" (click)="w3_close()"
+     class="w3-bar-item w3-button">Close Menu</a>
+  <a href="#food" (click)="w3_close()" class="w3-bar-item w3-button">Food</a>
+  <a href="#about" (click)="w3_close()" class="w3-bar-item w3-button">About</a>
+</nav>
+
+<!-- Top menu -->
+<div class="w3-top">
+  <div class="w3-white w3-xlarge" style="max-width:100%;margin:0px">
+    <div class="w3-button w3-padding-16 w3-left" (click)="w3_open()">☰</div>
+    <div class="w3-right w3-padding-16">{{currentUserName}}</div>
+    <div class="w3-center w3-padding-16">My Food</div>
+  </div>
 </div>
 
-<div class="container">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Username</th>
-        <th>Typ</th>
-        <th>Hasło</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor = "let user of users">
-        <td>{{user.name}}</td>
-        <td>{{user.userType}}</td>
-        <td>{{user.password}}</td>
-      </tr>
-    </tbody>
-  </table>
+<!-- !PAGE CONTENT! -->
+<div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
+
+  <!-- First Photo Grid-->
+  <div class="w3-row-padding w3-padding-16 w3-center" id="food">
+    <div class="w3-quarter">
+      <img (click)="navigateToProducts()" src="../../assets/mainImages/product.jpg"
+           width="300" height="200" alt="Products" style="width:100%">
+      <h3>Produkty</h3>
+    </div>
+    <div class="w3-quarter">
+      <img src="../../assets/mainImages/dish.jpg" width="300" height="200" alt="Dish" style="width:100%">
+      <h3>Potrawy</h3>
+    </div>
+    <div class="w3-quarter">
+      <img src="../../assets/mainImages/client.jpg" width="300" height="200" alt="Client" style="width:100%">
+      <h3>Klienci</h3>
+    </div>
+    <div class="w3-quarter">
+      <img src="../../assets/mainImages/settings.jpg" width="300" height="200" alt="Settings" style="width:100%">
+      <h3>Ustawienia</h3>
+    </div>
+  </div>
 </div>

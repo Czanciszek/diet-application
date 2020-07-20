@@ -21,4 +21,10 @@ export class RestapiService {
         btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)});
     return this.http.get("http://localhost:8080/users", {headers});
   }
+
+  public getProducts() {
+    const headers = new HttpHeaders({Authorization: 'Basic '+
+        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)});
+    return this.http.get("http://localhost:8080/products", {headers});
+  }
 }
