@@ -4,24 +4,25 @@ import com.springboot.dietapplication.model.base.DocRef;
 import com.springboot.dietapplication.model.base.Header;
 import com.springboot.dietapplication.model.dish.Dish;
 import com.springboot.dietapplication.model.product.AmountType;
+import com.springboot.dietapplication.model.product.Category;
 import com.springboot.dietapplication.model.product.ProductForDish;
 import com.springboot.dietapplication.model.product.Product;
 import com.springboot.dietapplication.model.excel.ProductExcel;
 import com.springboot.dietapplication.model.user.User;
+import com.springboot.dietapplication.repository.CategoryRepository;
 import com.springboot.dietapplication.repository.DishRepository;
 import com.springboot.dietapplication.repository.ProductRepository;
 import com.springboot.dietapplication.repository.UserRepository;
 import io.github.biezhi.excel.plus.Reader;
 import org.joda.time.DateTime;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class DbSeeder implements CommandLineRunner {
@@ -29,12 +30,14 @@ public class DbSeeder implements CommandLineRunner {
     private ProductRepository productRepository;
     private DishRepository dishRepository;
     private UserRepository userRepository;
+    private CategoryRepository categoryRepository;
 
     public DbSeeder(ProductRepository productRepository, DishRepository dishRepository,
-                    UserRepository userRepository) {
+                    UserRepository userRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.dishRepository = dishRepository;
         this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -43,6 +46,7 @@ public class DbSeeder implements CommandLineRunner {
         this.productRepository.deleteAll();
         this.dishRepository.deleteAll();
         this.userRepository.deleteAll();
+        this.categoryRepository.deleteAll();
 
         User user1 = new User("aaa",
                 "$2y$12$xQyJdsoamI/19a4p3bgRcOj2KeLpxPWj3.whkTrjz2jzIbO9fnr6m", "aaa");
@@ -75,13 +79,34 @@ public class DbSeeder implements CommandLineRunner {
                 e.printStackTrace();
             }
 
+            Set<String> subcategories = new TreeSet<>();
+
+            String category = "";
             List<Product> products = new ArrayList<>();
             for (ProductExcel productExcel : importedProducts) {
+                if (!productExcel.getCategory().equals(category)) {
+                    if (!category.equals("")) {
+                        Category sendCategory = new Category();
+                        sendCategory.setCategory(category);
+                        sendCategory.setSubcategories(subcategories);
+                        this.categoryRepository.save(sendCategory);
+                    }
+                    subcategories.clear();
+                    category = productExcel.getCategory();
+                }
+                subcategories.add(productExcel.getSubcategory());
+
                 Product product = new Product(productExcel);
                 long currentTime = new DateTime().getMillis();
                 product.setHeader(header);
                 product.getHeader().setCreatedEpochMillis(currentTime);
                 products.add(product);
+            }
+            if (!category.equals("")) {
+                Category sendCategory = new Category();
+                sendCategory.setCategory(category);
+                sendCategory.setSubcategories(subcategories);
+                this.categoryRepository.save(sendCategory);
             }
 
             this.productRepository.saveAll(products);
