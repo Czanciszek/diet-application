@@ -112,12 +112,12 @@ public class DbSeeder implements CommandLineRunner {
             this.productRepository.saveAll(products);
         }
 
-        Product cukier = this.productRepository.findByNameLike("Cukier");
-        Product karmelki = this.productRepository.findByNameLike("Karmelki nadziewane");
+        List<Product> cukier = this.productRepository.findByNameLike("Cukier");
+        List<Product> karmelki = this.productRepository.findByNameLike("Karmelki nadziewane");
 
         List<ProductForDish> productsToAdd = new ArrayList<>();
-        ProductForDish productForDish = new ProductForDish(DocRef.fromDoc(cukier), 12.0f, AmountType.PIECE);
-        ProductForDish productForDish2 = new ProductForDish(DocRef.fromDoc(karmelki), 0.3f, AmountType.G);
+        ProductForDish productForDish = new ProductForDish(DocRef.fromDoc(cukier.get(0)), 12.0f, AmountType.PIECE);
+        ProductForDish productForDish2 = new ProductForDish(DocRef.fromDoc(karmelki.get(0)), 0.3f, AmountType.G);
 
         productsToAdd.add(productForDish);
         productsToAdd.add(productForDish2);

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {forwardRef, NgModule} from '@angular/core';
 
 
 import { AppComponent } from './app.component';
@@ -7,7 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import {RestapiService} from "./service/restapi.service";
 import {HttpClientModule} from "@angular/common/http";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/forms";
 import { AppRoutingModule } from './app-routing.module';
 import {RouterModule, Routes} from "@angular/router";
 import { ProductsComponent } from './products/products.component';
@@ -31,9 +31,12 @@ const routes: Routes = [
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    ReactiveFormsModule
   ],
-  providers: [RestapiService],
+  providers: [
+    RestapiService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

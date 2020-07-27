@@ -7,6 +7,12 @@ import {GlobalVariable} from "../global";
 })
 export class RestapiService {
 
+  httpOptions = {
+    headers: new HttpHeaders({
+      Authorization: 'Basic '+
+        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)})
+  };
+
   constructor(
     private http: HttpClient
   ) { }
@@ -17,14 +23,28 @@ export class RestapiService {
   }
 
   public getUsers() {
-    const headers = new HttpHeaders({Authorization: 'Basic '+
-        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)});
-    return this.http.get("http://localhost:8080/users", {headers});
+    return this.http.get("http://localhost:8080/users", this.httpOptions);
   }
 
   public getProducts() {
-    const headers = new HttpHeaders({Authorization: 'Basic '+
-        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)});
-    return this.http.get("http://localhost:8080/products", {headers});
+    return this.http.get("http://localhost:8080/products", this.httpOptions);
+  }
+
+  public getCategories() {
+    return this.http.get("http://localhost:8080/categories", this.httpOptions);
+  }
+
+  public getFilteredProducts(category:string, subcategory:string) {
+    if (category == null) {
+      category = "*ANY*";
+    }
+    if (subcategory == null) {
+      subcategory = "*ANY*";
+    }
+    return this.http.get("http://localhost:8080/products/" + category + "/" + subcategory, this.httpOptions);
+  }
+
+  public getFilteredProductsByName(name:string) {
+    return this.http.get("http://localhost:8080/products/name/" + name , this.httpOptions);
   }
 }

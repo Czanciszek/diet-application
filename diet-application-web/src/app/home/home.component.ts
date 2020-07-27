@@ -10,9 +10,6 @@ import {Router} from "@angular/router";
 })
 export class HomeComponent implements OnInit {
 
-  currentUserName = GlobalVariable.CURRENT_USER_LOGIN;
-  users: any;
-
   constructor(
     private service:RestapiService,
     private router:Router
@@ -23,13 +20,5 @@ export class HomeComponent implements OnInit {
 
   navigateToProducts() {
     this.router.navigate(["/products"]);
-  }
-
-  w3_open() {
-    document.getElementById("mySidebar").style.display = "block";
-  }
-
-  w3_close() {
-    document.getElementById("mySidebar").style.display = "none";
   }
 }
