@@ -26,25 +26,5 @@ export class RestapiService {
     return this.http.get("http://localhost:8080/users", this.httpOptions);
   }
 
-  public getProducts() {
-    return this.http.get("http://localhost:8080/products", this.httpOptions);
-  }
 
-  public getCategories() {
-    return this.http.get("http://localhost:8080/categories", this.httpOptions);
-  }
-
-  public getFilteredProducts(category:string, subcategory:string) {
-    if (category == null) {
-      category = "*ANY*";
-    }
-    if (subcategory == null) {
-      subcategory = "*ANY*";
-    }
-    return this.http.get("http://localhost:8080/products/" + category + "/" + subcategory, this.httpOptions);
-  }
-
-  public getFilteredProductsByName(name:string) {
-    return this.http.get("http://localhost:8080/products/name/" + name , this.httpOptions);
-  }
 }

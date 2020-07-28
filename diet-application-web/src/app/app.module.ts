@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {forwardRef, NgModule} from '@angular/core';
-
+import {MaterialModule} from "./material/material.module";
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -11,6 +11,10 @@ import {FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/form
 import { AppRoutingModule } from './app-routing.module';
 import {RouterModule, Routes} from "@angular/router";
 import { ProductsComponent } from './products/products.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ProductComponent } from './products/product/product.component';
+import {ProductService} from "./service/product.service";
+import {MatInputModule} from "@angular/material/input";
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -24,7 +28,8 @@ const routes: Routes = [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    ProductsComponent
+    ProductsComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,
@@ -32,11 +37,16 @@ const routes: Routes = [
     HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot(routes),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    MatInputModule,
   ],
   providers: [
     RestapiService,
+    ProductService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ProductsComponent],
 })
 export class AppModule { }

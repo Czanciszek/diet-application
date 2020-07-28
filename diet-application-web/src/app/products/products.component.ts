@@ -1,0 +1,117 @@
+import {Component, Inject, OnInit} from '@angular/core';
+import {RestapiService} from "../service/restapi.service";
+
+import {DOCUMENT} from "@angular/common";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ProductService} from "../service/product.service";
+import {ProductComponent} from "./product/product.component";
+
+@Component({
+  selector: 'app-products',
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.css'],
+})
+export class ProductsComponent implements OnInit {
+
+  products: any;
+  categories: any;
+  subcategories: any;
+
+  selectedCategory: any;
+  selectedSubcategory: any;
+
+  constructor(
+    @Inject(DOCUMENT) document,
+    private service:RestapiService,
+    private productService: ProductService,
+    private dialog: MatDialog,
+  ) { }
+
+  ngOnInit(): void {
+    this.getCategories();
+  }
+
+  getProducts() {
+    let response = this.productService.getFilteredProducts(this.selectedCategory, this.selectedSubcategory);
+    response.subscribe(data => {
+      (<HTMLInputElement>document.getElementById("productName")).value = '';
+      this.products = data;
+    });
+  }
+
+  getProductsByName() {
+    let name = (<HTMLInputElement>document.getElementById("productName")).value;
+    if (name == "") return;
+    let response = this.productService.getFilteredProductsByName(name);
+    response.subscribe(data => {
+      (<HTMLInputElement>document.getElementById("selectedCategory")).value = '';
+      (<HTMLInputElement>document.getElementById("selectedSubcategory")).value = '';
+      this.selectedCategory = null;
+      this.selectedSubcategory = null;
+      this.products = data;
+    });
+  }
+
+  getCategories() {
+    let response = this.productService.getCategories();
+    response.subscribe(data => {
+      this.categories = data;
+    });
+  }
+
+  getSubcategories() {
+    let subcategories = this.categories.find( cat => {
+      return cat.category == this.selectedCategory;
+    });
+    if (subcategories == undefined) {
+      this.subcategories = null;
+    } else {
+      this.subcategories = subcategories.subcategories;
+    }
+  }
+
+  checkCategoryValue() {
+    let value = (<HTMLInputElement>document.getElementById("selectedCategory")).value;
+    if (value == null || value == "" || value.length < 1) {
+      this.selectedCategory = null;
+    }
+  }
+
+  checkSubcategoryValue() {
+    let value = (<HTMLInputElement>document.getElementById("selectedSubcategory")).value;
+    if (value == null || value == "" || value.length < 1) {
+      this.selectedSubcategory = null;
+    }
+  }
+
+  setCategory() {
+    let newCategory = (<HTMLInputElement>document.getElementById("selectedCategory")).value;
+    if (newCategory !== this.selectedCategory) {
+      (<HTMLInputElement>document.getElementById("selectedSubcategory")).value = '';
+      this.selectedSubcategory = null;
+      this.selectedCategory = newCategory;
+    }
+    this.getSubcategories();
+  }
+
+  setSubcategory() {
+    this.selectedSubcategory = (<HTMLInputElement>document.getElementById("selectedSubcategory")).value;
+  }
+
+  onCreate() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "80%";
+
+    this.dialog.open(ProductComponent, dialogConfig);
+  }
+
+  onEdit(product) {
+    console.log(product.name);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "80%";
+
+    this.dialog.open(ProductComponent, dialogConfig);
+  }
+}

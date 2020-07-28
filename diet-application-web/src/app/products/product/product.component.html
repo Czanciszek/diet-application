@@ -1,0 +1,50 @@
+<div class="container">
+  <mat-toolbar>
+    <span class="fill-remaining-space"></span>
+    <span>Nowy produkt</span>
+    <span class="fill-remaining-space"></span>
+  </mat-toolbar>
+</div>
+
+<form [formGroup]="service.form" class="normal-form">
+  <mat-grid-list cols="2" rowHeight="300px">
+    <mat-grid-tile>
+      <div class="control-container">
+        <input type="hidden" formControlName="$key">
+        <mat-form-field>
+          <input formControlName="name" matInput placeholder="Nazwa produktu*">
+          <mat-error *ngIf="service.form.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
+          <mat-error *ngIf="service.form.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="control-container">
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <mat-select formControlName="category" placeholder="Kategoria*">
+              <ng-container *ngFor="let category of categories">
+                <mat-option value="{{category.id}}">{{category.value}}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select formControlName="subcategory" placeholder="Podkategoria*">
+              <mat-option value="1">Sub1</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="control-container">
+        <div class="add-bottom-padding">
+          <mat-checkbox formControlName="hasLactose">Laktoza</mat-checkbox>
+        </div>
+        <div class="button-row">
+          <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Zapisz</button>
+          <button mat-raised-button color="warn" (click)="onClear()">Wyczyść</button>
+        </div>
+      </div>
+
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>
