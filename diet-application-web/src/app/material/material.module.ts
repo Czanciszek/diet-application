@@ -9,6 +9,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatSelectModule} from "@angular/material/select";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [],
@@ -23,6 +24,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     MatRadioModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatInputModule,
   ],
   exports: [
     MatToolbarModule,
@@ -34,6 +36,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     MatRadioModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatInputModule,
   ],
 })
 export class MaterialModule { }

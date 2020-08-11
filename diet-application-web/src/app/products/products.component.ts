@@ -15,15 +15,14 @@ export class ProductsComponent implements OnInit {
 
   products: any;
   categories: any;
-  subcategories: any;
+  subcategories: any = [];
 
   selectedCategory: any;
   selectedSubcategory: any;
 
   constructor(
     @Inject(DOCUMENT) document,
-    private service:RestapiService,
-    private productService: ProductService,
+    private service: ProductService,
     private dialog: MatDialog,
   ) { }
 
@@ -32,7 +31,7 @@ export class ProductsComponent implements OnInit {
   }
 
   getProducts() {
-    let response = this.productService.getFilteredProducts(this.selectedCategory, this.selectedSubcategory);
+    let response = this.service.getFilteredProducts(this.selectedCategory, this.selectedSubcategory);
     response.subscribe(data => {
       (<HTMLInputElement>document.getElementById("productName")).value = '';
       this.products = data;
@@ -42,7 +41,7 @@ export class ProductsComponent implements OnInit {
   getProductsByName() {
     let name = (<HTMLInputElement>document.getElementById("productName")).value;
     if (name == "") return;
-    let response = this.productService.getFilteredProductsByName(name);
+    let response = this.service.getFilteredProductsByName(name);
     response.subscribe(data => {
       (<HTMLInputElement>document.getElementById("selectedCategory")).value = '';
       (<HTMLInputElement>document.getElementById("selectedSubcategory")).value = '';
@@ -53,9 +52,11 @@ export class ProductsComponent implements OnInit {
   }
 
   getCategories() {
-    let response = this.productService.getCategories();
+    let response = this.service.getCategories();
     response.subscribe(data => {
       this.categories = data;
+      for (const key of Object.values(data))
+        this.subcategories = this.subcategories.concat(key.subcategories);
     });
   }
 
@@ -99,19 +100,29 @@ export class ProductsComponent implements OnInit {
   }
 
   onCreate() {
+    this.service.initializeFormGroup();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "80%";
+    dialogConfig.disableClose = true;
+    dialogConfig.width = "90%";
 
     this.dialog.open(ProductComponent, dialogConfig);
   }
 
   onEdit(product) {
-    console.log(product.name);
+    console.log(product);
+    this.service.populateForm(product);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "80%";
+    dialogConfig.disableClose = true;
+    dialogConfig.width = "90%";
 
     this.dialog.open(ProductComponent, dialogConfig);
   }
+
+  onDelete(productId) {
+    if (confirm("Are you sure to delete this product?"))
+      this.service.deleteProduct(productId);
+  }
+
 }

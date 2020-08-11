@@ -1,35 +1,24 @@
 <div class="container">
   <mat-toolbar>
     <span class="fill-remaining-space"></span>
-    <span>Nowy produkt</span>
+    <span>{{service.form.controls['id'].value?"Edytuj produkt":"Nowy Produkt"}}</span>
     <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
   </mat-toolbar>
 </div>
 
-<form [formGroup]="service.form" class="normal-form">
-  <mat-grid-list cols="2" rowHeight="300px">
+<form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
+  <mat-grid-list cols="3" rowHeight="70px">
     <mat-grid-tile>
-      <div class="control-container">
-        <input type="hidden" formControlName="$key">
-        <mat-form-field>
-          <input formControlName="name" matInput placeholder="Nazwa produktu*">
-          <mat-error *ngIf="service.form.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
-          <mat-error *ngIf="service.form.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
-        </mat-form-field>
-      </div>
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field>
             <mat-select formControlName="category" placeholder="Kategoria*">
               <ng-container *ngFor="let category of categories">
-                <mat-option value="{{category.id}}">{{category.value}}</mat-option>
+                <mat-option value="{{category.category}}">{{category.category}}</mat-option>
               </ng-container>
             </mat-select>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-select formControlName="subcategory" placeholder="Podkategoria*">
-              <mat-option value="1">Sub1</mat-option>
-            </mat-select>
+            <mat-error *ngIf="service.form.controls['category'].errors?.required">Pole wymagane</mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -37,14 +26,160 @@
     <mat-grid-tile>
       <div class="control-container">
         <div class="add-bottom-padding">
-          <mat-checkbox formControlName="hasLactose">Laktoza</mat-checkbox>
+          <mat-form-field>
+            <mat-select formControlName="subcategory" placeholder="Podkategoria*">
+              <ng-container *ngFor="let subcategory of subcategories">
+                <mat-option value="{{subcategory}}">{{subcategory}}</mat-option>
+              </ng-container>
+            </mat-select>
+            <mat-error *ngIf="service.form.controls['subcategory'].errors?.required">Pole wymagane</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="control-container">
+        <div class="add-bottom-padding">
+          <input type="hidden" formControlName="id">
+          <mat-form-field>
+            <input formControlName="name" matInput placeholder="Nazwa produktu*">
+            <mat-error *ngIf="service.form.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
+            <mat-error *ngIf="service.form.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="370px">
+    <mat-grid-tile>
+      <div class="control-container">
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input type="number" formControlName="energyValue" matInput placeholder="Wartość energetyczna (kcal)">
+          </mat-form-field>
+        </div>
+
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="proteins" matInput placeholder="Białko (g)">
+          </mat-form-field>
+        </div>
+
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="carbohydrates" matInput placeholder="Węglowodany (g)">
+          </mat-form-field>
+        </div>
+
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="sucrose" matInput placeholder="Sacharoza (g)">
+          </mat-form-field>
+        </div>
+
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="dietaryFibres" matInput placeholder="Błonnik pokarmowy (g)">
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="control-container">
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="fats" matInput placeholder="Tłuszcz (g)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="saturatedFattyAcids" matInput placeholder="Kw. tł. nasycone (g)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="monoUnsaturatedFattyAcids" matInput placeholder="Kw. tł. jednonienasycone (g)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="polyUnsaturatedFattyAcids" matInput placeholder="Kw. tł. wielonienasycone (g)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="cholesterol" matInput placeholder="Cholesterol (g)">
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="control-container">
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="sodium" matInput placeholder="Sód (mg)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="potassium" matInput placeholder="Potas (mg)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="calcium" matInput placeholder="Wapń (mg)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="phosphorus" matInput placeholder="Fosfor (mg)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="magnesium" matInput placeholder="Magnes (mg)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="selenium" matInput placeholder="Selen (mg)">
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="control-container">
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="iron" matInput placeholder="Żelazo (mg)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="betaCarotene" matInput placeholder="Beta-karoten (µg)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="vitaminD" matInput placeholder="Witamina D (µg)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input formControlName="vitaminC" matInput placeholder="Witamina C (mg)">
+          </mat-form-field>
+        </div>
+        <div class="add-bottom-padding">
+          <mat-checkbox formControlName="lactose">Laktoza</mat-checkbox>
+          <mat-checkbox formControlName="starch">Skrobia</mat-checkbox>
+          <mat-checkbox formControlName="gluten">Gluten</mat-checkbox>
         </div>
         <div class="button-row">
           <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Zapisz</button>
           <button mat-raised-button color="warn" (click)="onClear()">Wyczyść</button>
         </div>
       </div>
-
     </mat-grid-tile>
   </mat-grid-list>
 </form>

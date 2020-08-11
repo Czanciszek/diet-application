@@ -14,7 +14,6 @@ import { ProductsComponent } from './products/products.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProductComponent } from './products/product/product.component';
 import {ProductService} from "./service/product.service";
-import {MatInputModule} from "@angular/material/input";
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -29,7 +28,7 @@ const routes: Routes = [
     LoginComponent,
     HomeComponent,
     ProductsComponent,
-    ProductComponent
+    ProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +39,6 @@ const routes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    MatInputModule,
   ],
   providers: [
     RestapiService,

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductService} from "../../service/product.service";
+import {MatDialogRef} from "@angular/material/dialog";
+
 
 @Component({
   selector: 'app-product',
@@ -8,21 +10,44 @@ import {ProductService} from "../../service/product.service";
 })
 export class ProductComponent implements OnInit {
 
+  categories: any;
+  subcategories: any = [];
+
   constructor(
     private service: ProductService,
+    public dialogRef: MatDialogRef<ProductComponent>
   ) { }
 
-  categories = [
-    { id: 1, value: "Cat1"},
-    { id: 2, value: "Cat2"},
-    { id: 3, value: "Cat3"},
-  ];
-
   ngOnInit(): void {
+    this.getCategories();
+  }
+
+  getCategories() {
+    let response = this.service.getCategories();
+    response.subscribe(data => {
+      this.categories = data;
+      for (const key of Object.values(data))
+        this.subcategories = this.subcategories.concat(key.subcategories);
+    });
   }
 
   onClear() {
     this.service.form.reset();
     this.service.initializeFormGroup();
+  }
+
+  onSubmit() {
+    if (this.service.form.valid) {
+      if (!this.service.form.get('id').value)
+        this.service.insertProduct(this.service.form.value).subscribe();
+      else
+        this.service.updateProduct(this.service.form.value).subscribe();
+      this.onClose();
+    }
+  }
+
+  onClose() {
+    this.onClear();
+    this.dialogRef.close();
   }
 }

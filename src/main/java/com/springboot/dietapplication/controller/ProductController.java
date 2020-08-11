@@ -2,12 +2,9 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.product.Product;
 import com.springboot.dietapplication.repository.ProductRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,5 +43,23 @@ public class ProductController {
     @GetMapping(path = "/name/{name}")
     public List<Product> getFilteredProducts(@PathVariable("name") String name) {
         return this.productRepository.findByNameLike(name);
+    }
+
+    @PostMapping(produces = "application/json")
+    ResponseEntity<Product> insertProduct(@RequestBody Product product) throws NoSuchFieldException {
+        productRepository.save(product);
+        return ResponseEntity.ok().body(product);
+    }
+
+    @PutMapping(produces = "application/json")
+    ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+        productRepository.save(product);
+        return ResponseEntity.ok().body(product);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    ResponseEntity<Product> deleteProduct(@PathVariable String id) {
+        productRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }
