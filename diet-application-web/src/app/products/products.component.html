@@ -36,37 +36,7 @@
   </label>
 </div>
 
-
 <div class="container">
-  <table class="table table-striped table-dark table-hover">
-    <thead>
-      <tr>
-        <th>Kategoria</th>
-        <th>Podkategoria</th>
-        <th>Nazwa produktu</th>
-        <th>Wartość energetyczna (kcal)</th>
-        <th>Białko (g)</th>
-        <th>Tłuszcz (g)</th>
-        <th>Węglowodany (g)</th>
-        <th>Alergeny</th>
-        <th>Akcje</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor = "let product of products" >
-        <td>{{product.category}}</td>
-        <td>{{product.subcategory}}</td>
-        <td>{{product.name}}</td>
-        <td>{{product.energyValue}}</td>
-        <td>{{product.proteins}}</td>
-        <td>{{product.fats}}</td>
-        <td>{{product.carbohydrates}}</td>
-        <td>tmp</td>
-        <td>
-          <button mat-icon-button (click)="onEdit(product)"><mat-icon>launch</mat-icon></button>
-          <button mat-icon-button (click)="onDelete(product.id)"><mat-icon>delete</mat-icon></button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <app-product-list></app-product-list>
 </div>
+

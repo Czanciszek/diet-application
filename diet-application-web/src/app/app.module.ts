@@ -14,12 +14,15 @@ import { ProductsComponent } from './products/products.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProductComponent } from './products/product/product.component';
 import {ProductService} from "./service/product.service";
+import { DishesComponent } from './dishes/dishes.component';
+import { ProductListComponent } from './products/product-list/product-list.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
   {path: "login", component:LoginComponent},
   {path: "home", component:HomeComponent},
   {path: "products", component:ProductsComponent},
+  {path: "dishes", component:DishesComponent},
 ];
 
 @NgModule({
@@ -29,6 +32,8 @@ const routes: Routes = [
     HomeComponent,
     ProductsComponent,
     ProductComponent,
+    DishesComponent,
+    ProductListComponent,
   ],
   imports: [
     BrowserModule,

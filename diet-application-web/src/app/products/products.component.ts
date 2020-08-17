@@ -110,7 +110,6 @@ export class ProductsComponent implements OnInit {
   }
 
   onEdit(product) {
-    console.log(product);
     this.service.populateForm(product);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
