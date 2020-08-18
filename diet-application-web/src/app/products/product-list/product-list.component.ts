@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductService} from "../../service/product.service";
 import {MatTableDataSource} from "@angular/material/table";
-import {FormControl} from "@angular/forms";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ProductComponent} from "../product/product.component";
+import {NotificationService} from "../../service/notification.service";
 
 @Component({
   selector: 'app-product-list',
@@ -15,6 +15,7 @@ export class ProductListComponent implements OnInit {
   constructor(
     private service: ProductService,
     private dialog: MatDialog,
+    private notificationService: NotificationService
   ) { }
 
   listData: MatTableDataSource<any>;
@@ -74,7 +75,9 @@ export class ProductListComponent implements OnInit {
   }
 
   onDelete(productId) {
-    if (confirm("Are you sure to delete this product?"))
+    if (confirm("Are you sure to delete this product?")) {
       this.service.deleteProduct(productId);
+      this.notificationService.warn(":: Deleted succesfully! ::");
+    }
   }
 }

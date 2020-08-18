@@ -16,6 +16,7 @@ import { ProductComponent } from './products/product/product.component';
 import {ProductService} from "./service/product.service";
 import { DishesComponent } from './dishes/dishes.component';
 import { ProductListComponent } from './products/product-list/product-list.component';
+import {NotificationService} from "./service/notification.service";
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -48,6 +49,7 @@ const routes: Routes = [
   providers: [
     RestapiService,
     ProductService,
+    NotificationService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [ProductsComponent],

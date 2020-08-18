@@ -12,3 +12,14 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* notifications */
+snack-bar-container.success {
+  background-color: #5cb86c;
+  color: #fff;
+}
+
+snack-bar-container.warn {
+  background-color: #f99157;
+  color: #fff;
+}

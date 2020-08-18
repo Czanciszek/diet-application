@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductService} from "../../service/product.service";
 import {MatDialogRef} from "@angular/material/dialog";
+import {NotificationService} from "../../service/notification.service";
 
 
 @Component({
@@ -15,6 +16,7 @@ export class ProductComponent implements OnInit {
 
   constructor(
     private service: ProductService,
+    private notificationService: NotificationService,
     public dialogRef: MatDialogRef<ProductComponent>
   ) { }
 
@@ -38,10 +40,13 @@ export class ProductComponent implements OnInit {
 
   onSubmit() {
     if (this.service.form.valid) {
-      if (!this.service.form.get('id').value)
+      if (!this.service.form.get('id').value) {
         this.service.insertProduct(this.service.form.value).subscribe();
-      else
+        this.notificationService.success(":: Product created successfully! ::");
+      } else {
         this.service.updateProduct(this.service.form.value).subscribe();
+        this.notificationService.success(":: Product updated successfully! ::");
+      }
       this.onClose();
     }
   }
