@@ -98,30 +98,4 @@ export class ProductsComponent implements OnInit {
   setSubcategory() {
     this.selectedSubcategory = (<HTMLInputElement>document.getElementById("selectedSubcategory")).value;
   }
-
-  onCreate() {
-    this.service.initializeFormGroup();
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    dialogConfig.disableClose = true;
-    dialogConfig.width = "90%";
-
-    this.dialog.open(ProductComponent, dialogConfig);
-  }
-
-  onEdit(product) {
-    this.service.populateForm(product);
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    dialogConfig.disableClose = true;
-    dialogConfig.width = "90%";
-
-    this.dialog.open(ProductComponent, dialogConfig);
-  }
-
-  onDelete(productId) {
-    if (confirm("Are you sure to delete this product?"))
-      this.service.deleteProduct(productId);
-  }
-
 }
