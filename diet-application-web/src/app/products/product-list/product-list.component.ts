@@ -5,6 +5,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ProductComponent} from "../product/product.component";
 import {NotificationService} from "../../service/notification.service";
 import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-product-list',
@@ -23,8 +24,8 @@ export class ProductListComponent implements OnInit {
   displayedColumns: string[] = ['category', 'subcategory', 'name',
                                 'energyValue', 'proteins', 'fats', 'carbohydrates',
                                 'alergens', 'actions'];
-
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
     this.service.getProducts().subscribe(
@@ -65,6 +66,7 @@ export class ProductListComponent implements OnInit {
         });
         this.listData = new MatTableDataSource(array);
         this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
       });
   }
 
