@@ -1,38 +1,3 @@
-<div class="button-container">
-  <button type="button" class="btn btn-secondary btn-lg" (click)="getProducts()">Find products</button>
-</div>
-
-<div>
-  <button mat-raised-button (click)="onCreate()">
-    <mat-icon>add</mat-icon>Create
-  </button>
-</div>
-
-<datalist id="category" name="category" >
-  <option *ngFor= "let category of categories" [value]="category.category"></option>
-</datalist>
-
-<datalist id="subcategory" name="subcategory" >
-  <option *ngFor= "let subcategory of subcategories" [value]="subcategory"></option>
-</datalist>
-
-<div class="form-group">
-    <label>Kategoria
-      <input id="selectedCategory" type="text" list="category" size="30"
-             (change)="this.setCategory()" onfocus="this.value=''" (focusout)="checkCategoryValue()">
-    </label>
-
-  <label>Podkategoria
-    <input id="selectedSubcategory" type="text" list="subcategory" size="30"
-           (change)="this.setSubcategory()" onfocus="this.value=''" (focusout)="checkSubcategoryValue()">
-  </label>
-
-  <label>Nazwa produktu
-    <input id="productName" type="text" size="30"
-           (change)="this.getProductsByName()" (focusout)="checkSubcategoryValue()">
-  </label>
-</div>
-
 <div class="container">
   <app-product-list></app-product-list>
 </div>
