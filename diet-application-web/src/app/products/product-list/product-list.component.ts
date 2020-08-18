@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ProductService} from "../../service/product.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ProductComponent} from "../product/product.component";
 import {NotificationService} from "../../service/notification.service";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-product-list',
@@ -22,6 +23,8 @@ export class ProductListComponent implements OnInit {
   displayedColumns: string[] = ['category', 'subcategory', 'name',
                                 'energyValue', 'proteins', 'fats', 'carbohydrates',
                                 'alergens', 'actions'];
+
+  @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit(): void {
     this.service.getProducts().subscribe(
@@ -61,6 +64,7 @@ export class ProductListComponent implements OnInit {
           };
         });
         this.listData = new MatTableDataSource(array);
+        this.listData.sort = this.sort;
       });
   }
 

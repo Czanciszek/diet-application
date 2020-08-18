@@ -1,31 +1,31 @@
 <div class ="mat-elevation-z8">
-  <mat-table [dataSource]="listData">
+  <mat-table [dataSource]="listData" matSort>
     <ng-container matColumnDef="category">
-      <mat-header-cell *matHeaderCellDef>Kategoria</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Kategoria</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.category}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="subcategory">
-      <mat-header-cell *matHeaderCellDef>Podkategoria</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Podkategoria</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.subcategory}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef>Nazwa produktu</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa produktu</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="energyValue">
-      <mat-header-cell *matHeaderCellDef>Wartość energetyczna (kcal)</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef  mat-sort-header>Wartość energetyczna (kcal)</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.energyValue}}</mat-cell>
     </ng-container>
-    <ng-container matColumnDef="proteins">
-      <mat-header-cell *matHeaderCellDef>Białko (g)</mat-header-cell>
+    <ng-container matColumnDef="proteins" >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Białko (g)</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.proteins}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="fats">
-      <mat-header-cell *matHeaderCellDef>Tłuszcz (g)</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef  mat-sort-header>Tłuszcz (g)</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.fats}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="carbohydrates">
-      <mat-header-cell *matHeaderCellDef>Węglowodany (g)</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Węglowodany (g)</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.carbohydrates}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="alergens">
