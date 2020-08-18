@@ -12,8 +12,9 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatInputModule} from "@angular/material/input";
 import {MatTableModule} from "@angular/material/table";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
+import {MatPaginatorIntl, MatPaginatorModule} from "@angular/material/paginator";
 import {MatSortModule} from "@angular/material/sort";
+import {getPolishPaginatorIntl} from "./helper/polish-paginator-ingtl";
 
 @NgModule({
   declarations: [],
@@ -50,6 +51,7 @@ import {MatSortModule} from "@angular/material/sort";
   ],
   providers: [
     MatSnackBar,
+    { provide: MatPaginatorIntl, useValue: getPolishPaginatorIntl() }
   ]
 })
 export class MaterialModule { }
