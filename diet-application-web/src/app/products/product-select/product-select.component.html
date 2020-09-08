@@ -1,0 +1,105 @@
+<div class="container">
+  <mat-toolbar>
+    <span class="fill-remaining-space"></span>
+    <span>Wybierz produkt</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+  </mat-toolbar>
+</div>
+
+<mat-grid-list cols="7" rowHeight="70px">
+  <mat-grid-tile colspan="3">
+    <div class="control-container">
+      <div class="add-bottom-padding">
+        <mat-form-field>
+          <mat-select [(ngModel)]="selectedCategory" placeholder="Kategoria">
+            <ng-container *ngFor="let category of categories">
+              <mat-option value="{{category.category}}">{{category.category}}</mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="3">
+    <div class="control-container">
+      <div class="add-bottom-padding">
+        <mat-form-field>
+          <mat-select [(ngModel)]="selectedSubcategory" placeholder="Podkategoria">
+            <ng-container *ngFor="let subcategory of subcategories">
+              <mat-option value="{{subcategory}}">{{subcategory}}</mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="control-container">
+      <div class="add-bottom-padding">
+        <button mat-raised-button (click)="onSearchButtonClick()">
+          <mat-icon>search</mat-icon>Szukaj
+        </button>
+      </div>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<mat-dialog-content>
+  <div class ="mat-elevation-z8">
+    <mat-table [dataSource]="listData" matSort>
+      <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Kategoria</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.category}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="subcategory">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Podkategoria</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.subcategory}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa produktu</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="energyValue">
+        <mat-header-cell *matHeaderCellDef  mat-sort-header>Wartość energetyczna (kcal)</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.energyValue}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="proteins" >
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Białko (g)</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.proteins}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="fats">
+        <mat-header-cell *matHeaderCellDef  mat-sort-header>Tłuszcz (g)</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.fats}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="carbohydrates">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Węglowodany (g)</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.carbohydrates}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="alergens">
+        <mat-header-cell *matHeaderCellDef>Alergeny</mat-header-cell>
+        <mat-cell *matCellDef="let element">"tmp"</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="onSelect(element)"><mat-icon>done</mat-icon></button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="loading">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          Ładowanie danych...
+        </mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          Brak danych.
+        </mat-footer-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+  </div>
+</mat-dialog-content>

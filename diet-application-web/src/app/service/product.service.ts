@@ -89,20 +89,20 @@ export class ProductService {
   }
 
   getProducts() {
-    this.productList = this.http.get("http://localhost:8080/products", this.httpOptions);
+    this.productList = this.http.get("http://localhost:8080/api/v1/products", this.httpOptions);
     return this.productList;
   }
 
   insertProduct(product) {
-    return this.http.post("http://localhost:8080/products", product, this.httpOptions);
+    return this.http.post("http://localhost:8080/api/v1/products", product, this.httpOptions);
   }
 
   updateProduct(product) {
-    return this.http.put("http://localhost:8080/products", product, this.httpOptions);
+    return this.http.put("http://localhost:8080/api/v1/products/" + product.id, product, this.httpOptions);
   }
 
   getCategories() {
-    return this.http.get("http://localhost:8080/categories", this.httpOptions);
+    return this.http.get("http://localhost:8080/api/v1/categories", this.httpOptions);
   }
 
   getFilteredProducts(category:string, subcategory:string) {
@@ -112,15 +112,16 @@ export class ProductService {
     if (subcategory == null) {
       subcategory = "*ANY*";
     }
-    return this.http.get("http://localhost:8080/products/" + category + "/" + subcategory, this.httpOptions);
+    this.productList = this.http.get("http://localhost:8080/api/v1/products/" + category + "/" + subcategory, this.httpOptions);
+    return this.productList;
   }
 
   getFilteredProductsByName(name:string) {
-    return this.http.get("http://localhost:8080/products/name/" + name , this.httpOptions);
+    return this.http.get("http://localhost:8080/api/v1/products/name/" + name , this.httpOptions);
   }
 
   deleteProduct(id: string) {
-    return this.http.delete("http://localhost:8080/products/" + id, this.httpOptions).subscribe();
+    return this.http.delete("http://localhost:8080/api/v1/products/" + id, this.httpOptions).subscribe();
   }
 
   populateForm(product) {

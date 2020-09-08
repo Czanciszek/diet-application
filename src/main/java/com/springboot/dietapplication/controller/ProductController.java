@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/v1/products")
 public class ProductController {
     private ProductRepository productRepository;
 
@@ -51,7 +51,7 @@ public class ProductController {
         return ResponseEntity.ok().body(product);
     }
 
-    @PutMapping(produces = "application/json")
+    @PutMapping(path = "/{productId}", produces = "application/json")
     ResponseEntity<Product> updateProduct(@RequestBody Product product) {
         productRepository.save(product);
         return ResponseEntity.ok().body(product);

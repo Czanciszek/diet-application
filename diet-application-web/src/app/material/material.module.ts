@@ -15,6 +15,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatPaginatorIntl, MatPaginatorModule} from "@angular/material/paginator";
 import {MatSortModule} from "@angular/material/sort";
 import {getPolishPaginatorIntl} from "./helper/polish-paginator-ingtl";
+import {MatSliderModule} from "@angular/material/slider";
 
 @NgModule({
   declarations: [],
@@ -33,6 +34,7 @@ import {getPolishPaginatorIntl} from "./helper/polish-paginator-ingtl";
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatSliderModule,
   ],
   exports: [
     MatToolbarModule,
@@ -48,6 +50,7 @@ import {getPolishPaginatorIntl} from "./helper/polish-paginator-ingtl";
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatSliderModule,
   ],
   providers: [
     MatSnackBar,

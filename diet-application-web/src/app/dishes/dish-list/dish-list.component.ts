@@ -1,0 +1,95 @@
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {DishService} from "../../service/dish.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {NotificationService} from "../../service/notification.service";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
+import {DishComponent} from "../dish/dish.component";
+import {FormArray} from "@angular/forms";
+import {ProductSelectComponent} from "../../products/product-select/product-select.component";
+
+@Component({
+  selector: 'app-dish-list',
+  templateUrl: './dish-list.component.html',
+  styleUrls: ['./dish-list.component.css']
+})
+export class DishListComponent implements OnInit {
+
+  constructor(
+    private service: DishService,
+    private dialog: MatDialog,
+    private notificationService: NotificationService
+  ) { }
+
+  listData: MatTableDataSource<any>;
+  displayedColumns: string[] = ['name', 'portions', 'recipe', 'actions'];
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  searchKey: string;
+
+  ngOnInit(): void {
+    this.service.getDishes().subscribe(
+      list => {
+        let array = list.map(item => {
+          return {
+            id: item.id,
+            header: item.header,
+            primaryImageId: item.primaryImageId,
+            type: item.type,
+            name: item.name,
+            products: item.products,
+            portions: item.portions,
+            recipe: item.recipe
+          };
+        });
+        this.listData = new MatTableDataSource(array);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+      });
+  }
+
+  onSearchClear() {
+    this.searchKey = "";
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    this.listData.filter = this.searchKey.trim().toLowerCase();
+  }
+
+  onCreate() {
+    (<FormArray>this.service.form.get('products')).push(this.service.addProductFormGroup());
+    this.service.initializeFormGroup();
+    this.openDialog();
+  }
+
+  onEdit(dish) {
+    for (const product of dish.products) {
+      (<FormArray>this.service.form.get('products')).push(this.service.addProductFormGroup());
+    }
+    this.service.populateForm(dish);
+    this.openDialog();
+  }
+
+  openDialog() {
+    let dialogRef = this.dialog.open(DishComponent, {
+      disableClose: true,
+      autoFocus: true,
+      width: "90%"
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      this.ngOnInit();
+    });
+  }
+
+  onDelete(dishId) {
+    if (confirm("Are you sure to delete this dish?")) {
+      this.service.deleteDish(dishId);
+      this.notificationService.warn(":: Deleted succesfully! ::");
+      this.ngOnInit();
+    }
+  }
+}

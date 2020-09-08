@@ -16,10 +16,9 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("init");
-      if (window.location.href == "http://localhost:4200/login") {
-        this.loginPage = true;
-      }
+    if (window.location.href == "http://localhost:4200/login") {
+      this.loginPage = true;
+    }
   }
 
   w3_open() {

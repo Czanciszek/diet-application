@@ -16,7 +16,6 @@ import com.springboot.dietapplication.repository.UserRepository;
 import io.github.biezhi.excel.plus.Reader;
 import org.joda.time.DateTime;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -114,10 +113,12 @@ public class DbSeeder implements CommandLineRunner {
 
         List<Product> cukier = this.productRepository.findByNameLike("Cukier");
         List<Product> karmelki = this.productRepository.findByNameLike("Karmelki nadziewane");
+        List<Product> kawa = this.productRepository.findByNameLike("Kawa");
 
         List<ProductForDish> productsToAdd = new ArrayList<>();
         ProductForDish productForDish = new ProductForDish(DocRef.fromDoc(cukier.get(0)), 12.0f, AmountType.PIECE);
         ProductForDish productForDish2 = new ProductForDish(DocRef.fromDoc(karmelki.get(0)), 0.3f, AmountType.G);
+        ProductForDish productForDish3 = new ProductForDish(DocRef.fromDoc(kawa.get(0)), 200.0f, AmountType.ML);
 
         productsToAdd.add(productForDish);
         productsToAdd.add(productForDish2);
@@ -125,12 +126,17 @@ public class DbSeeder implements CommandLineRunner {
         Dish dish = new Dish(productsToAdd);
         dish.setName("Karmelki cukrowane");
         dish.setPrimaryImageId("Zdjecie karmelkow");
-        long currentTime = new DateTime().getMillis();
-        dish.setHeader(header);
-        dish.getHeader().setCreatedEpochMillis(currentTime);
-        dish.setPortions(2.5f);
+        dish.setPortions(3.0f);
         dish.setRecipe("Połącz karmelki z cukrem");
         this.dishRepository.save(dish);
+
+        productsToAdd.add(productForDish3);
+        Dish dish2 = new Dish(productsToAdd);
+        dish2.setName("Karmelki cukrowane z kawą");
+        dish2.setPrimaryImageId("Zdjecie karmelkow");
+        dish2.setPortions(4.0f);
+        dish2.setRecipe("Połącz karmelki z cukrem i kawusią");
+        this.dishRepository.save(dish2);
 
         System.out.println(dish.getId());
     }

@@ -17,6 +17,10 @@ import {ProductService} from "./service/product.service";
 import { DishesComponent } from './dishes/dishes.component';
 import { ProductListComponent } from './products/product-list/product-list.component';
 import {NotificationService} from "./service/notification.service";
+import { DishListComponent } from './dishes/dish-list/dish-list.component';
+import { DishComponent } from './dishes/dish/dish.component';
+import {DishService} from "./service/dish.service";
+import { ProductSelectComponent } from './products/product-select/product-select.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -33,8 +37,11 @@ const routes: Routes = [
     HomeComponent,
     ProductsComponent,
     ProductComponent,
-    DishesComponent,
     ProductListComponent,
+    ProductSelectComponent,
+    DishesComponent,
+    DishListComponent,
+    DishComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,9 +56,14 @@ const routes: Routes = [
   providers: [
     RestapiService,
     ProductService,
+    DishService,
     NotificationService,
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ProductsComponent],
+  entryComponents: [
+    ProductsComponent,
+    DishesComponent,
+    ProductSelectComponent,
+  ],
 })
 export class AppModule { }
