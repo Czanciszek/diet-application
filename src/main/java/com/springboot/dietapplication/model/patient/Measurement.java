@@ -4,6 +4,8 @@ public class Measurement {
 
     private String measurementDate; //Data pomiaru
 
+    private boolean sex; //Płeć //1 - Kobieta; 0 - Mężczyzna
+
     /**
      * Measurements for everyone
      */
@@ -31,8 +33,9 @@ public class Measurement {
     /**
      * Constructor for women measurements
      */
-    public Measurement(String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float breast, float underBreast, float hipBones, float thighNarrowest) {
+    public Measurement(String measurementDate, boolean sex, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float breast, float underBreast, float hipBones, float thighNarrowest) {
         this.measurementDate = measurementDate;
+        this.sex = sex;
         this.bodyWeight = bodyWeight;
         this.waist = waist;
         this.abdominal = abdominal;
@@ -48,8 +51,9 @@ public class Measurement {
     /**
      * Constructor for men measurements
      */
-    public Measurement(String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float chest, float arm) {
+    public Measurement(String measurementDate, boolean sex, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float chest, float arm) {
         this.measurementDate = measurementDate;
+        this.sex = sex;
         this.bodyWeight = bodyWeight;
         this.waist = waist;
         this.abdominal = abdominal;
@@ -66,6 +70,14 @@ public class Measurement {
 
     public void setMeasurementDate(String measurementDate) {
         this.measurementDate = measurementDate;
+    }
+
+    public boolean getSex() {
+        return sex;
+    }
+
+    public void setSex(boolean sex) {
+        this.sex = sex;
     }
 
     public float getBodyWeight() {
