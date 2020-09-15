@@ -3,16 +3,14 @@ package com.springboot.dietapplication;
 import com.springboot.dietapplication.model.base.DocRef;
 import com.springboot.dietapplication.model.base.Header;
 import com.springboot.dietapplication.model.dish.Dish;
+import com.springboot.dietapplication.model.patient.Patient;
 import com.springboot.dietapplication.model.product.AmountType;
 import com.springboot.dietapplication.model.product.Category;
 import com.springboot.dietapplication.model.product.ProductForDish;
 import com.springboot.dietapplication.model.product.Product;
 import com.springboot.dietapplication.model.excel.ProductExcel;
 import com.springboot.dietapplication.model.user.User;
-import com.springboot.dietapplication.repository.CategoryRepository;
-import com.springboot.dietapplication.repository.DishRepository;
-import com.springboot.dietapplication.repository.ProductRepository;
-import com.springboot.dietapplication.repository.UserRepository;
+import com.springboot.dietapplication.repository.*;
 import io.github.biezhi.excel.plus.Reader;
 import org.joda.time.DateTime;
 import org.springframework.boot.CommandLineRunner;
@@ -30,13 +28,16 @@ public class DbSeeder implements CommandLineRunner {
     private DishRepository dishRepository;
     private UserRepository userRepository;
     private CategoryRepository categoryRepository;
+    private PatientRepository patientRepository;
 
     public DbSeeder(ProductRepository productRepository, DishRepository dishRepository,
-                    UserRepository userRepository, CategoryRepository categoryRepository) {
+                    UserRepository userRepository, CategoryRepository categoryRepository,
+                    PatientRepository patientRepository) {
         this.productRepository = productRepository;
         this.dishRepository = dishRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
+        this.patientRepository = patientRepository;
     }
 
     @Override
@@ -46,9 +47,10 @@ public class DbSeeder implements CommandLineRunner {
         this.dishRepository.deleteAll();
         this.userRepository.deleteAll();
         this.categoryRepository.deleteAll();
+        this.patientRepository.deleteAll();
 
         User user1 = new User("aaa",
-                "$2y$12$xQyJdsoamI/19a4p3bgRcOj2KeLpxPWj3.whkTrjz2jzIbO9fnr6m", "aaa");
+                "$2y$12$xQyJdsoamI/19a4p3bgRcOj2KeLpxPWj3.whkTrjz2jzIbO9fnr6m", "imageId");
         userRepository.save(user1);
 
         User user = new User("name", "password", "imageId");
@@ -137,6 +139,15 @@ public class DbSeeder implements CommandLineRunner {
         dish2.setPortions(4.0f);
         dish2.setRecipe("Połącz karmelki z cukrem i kawusią");
         this.dishRepository.save(dish2);
+
+        Patient patient = new Patient();
+        patient.setBirthDate("11111111");
+        patient.setBodyWeight(120);
+        patient.setName("Pacjent");
+        patient.setEmail("email@email.com");
+        patient.setNumberPhone("123456789");
+        patient.setDietaryPurpose("Schudnąć xD");
+        this.patientRepository.save(patient);
 
         System.out.println(dish.getId());
     }

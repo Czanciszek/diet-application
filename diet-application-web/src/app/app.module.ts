@@ -21,6 +21,9 @@ import { DishListComponent } from './dishes/dish-list/dish-list.component';
 import { DishComponent } from './dishes/dish/dish.component';
 import {DishService} from "./service/dish.service";
 import { ProductSelectComponent } from './products/product-select/product-select.component';
+import { PatientsComponent } from './patients/patients.component';
+import { PatientListComponent } from './patients/patient-list/patient-list.component';
+import {PatientService} from "./service/patient.service";
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -28,6 +31,7 @@ const routes: Routes = [
   {path: "home", component:HomeComponent},
   {path: "products", component:ProductsComponent},
   {path: "dishes", component:DishesComponent},
+  {path: "patients", component:PatientsComponent},
 ];
 
 @NgModule({
@@ -42,6 +46,8 @@ const routes: Routes = [
     DishesComponent,
     DishListComponent,
     DishComponent,
+    PatientsComponent,
+    PatientListComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,12 +63,14 @@ const routes: Routes = [
     RestapiService,
     ProductService,
     DishService,
+    PatientService,
     NotificationService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [
     ProductsComponent,
     DishesComponent,
+    PatientsComponent,
     ProductSelectComponent,
   ],
 })

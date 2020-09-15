@@ -25,4 +25,8 @@ export class HomeComponent implements OnInit {
   navigateToDishes() {
     this.router.navigate(["/dishes"]);
   }
+
+  navigateToPatients() {
+    this.router.navigate(["/patients"]);
+  }
 }

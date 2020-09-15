@@ -1,9 +1,11 @@
 package com.springboot.dietapplication.model.patient;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@Document(collection = "Patients")
 public class Patient extends BaseDoc {
 
     private String birthDate;
