@@ -5,6 +5,7 @@ import {NotificationService} from "../../service/notification.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-patient-list',
@@ -14,14 +15,14 @@ import {MatPaginator} from "@angular/material/paginator";
 export class PatientListComponent implements OnInit {
 
   constructor(
+    private router: Router,
     private service: PatientService,
     private dialog: MatDialog,
     private notificationService: NotificationService
   ) { }
 
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['name', 'email', 'bodyWeight',
-    'numberPhone', 'actions'];
+  displayedColumns: string[] = ['name', 'email', 'numberPhone', 'actions'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey: string;
@@ -71,14 +72,8 @@ export class PatientListComponent implements OnInit {
    // this.dialog.open(ProductComponent, dialogConfig);
   }
 
-  onEdit(patient) {
-    this.service.populateForm(patient);
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    dialogConfig.disableClose = true;
-    dialogConfig.width = "90%";
-
-    //this.dialog.open(ProductComponent, dialogConfig);
+  onEdit(patientId) {
+    this.router.navigate(["/patients/" + patientId]);
   }
 
   onDelete(patientId) {

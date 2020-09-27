@@ -24,6 +24,7 @@ import { ProductSelectComponent } from './products/product-select/product-select
 import { PatientsComponent } from './patients/patients.component';
 import { PatientListComponent } from './patients/patient-list/patient-list.component';
 import {PatientService} from "./service/patient.service";
+import { PatientComponent } from './patients/patient/patient.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -32,6 +33,7 @@ const routes: Routes = [
   {path: "products", component:ProductsComponent},
   {path: "dishes", component:DishesComponent},
   {path: "patients", component:PatientsComponent},
+  {path: "patients/:patient_id", component: PatientComponent},
 ];
 
 @NgModule({
@@ -48,6 +50,7 @@ const routes: Routes = [
     DishComponent,
     PatientsComponent,
     PatientListComponent,
+    PatientComponent,
   ],
   imports: [
     BrowserModule,

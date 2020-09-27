@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GlobalVariable} from "../global";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -34,7 +34,7 @@ export class PatientService {
     currentLifestyleNote: new FormControl(''),
     changedLifestyleNote: new FormControl(''),
     dietaryPurpose: new FormControl(''),
-    //measurements:...
+    measurements: new FormControl(null),
     //interviewanswers
     //diets
   });
@@ -54,12 +54,22 @@ export class PatientService {
       currentLifestyleNote: '',
       changedLifestyleNote: '',
       dietaryPurpose: '',
+      measurements: null,
     })
   }
 
   getPatients() {
     this.patientList = this.http.get("http://localhost:8080/api/v1/patients", this.httpOptions);
     return this.patientList;
+  }
+
+  getPatientById(patientId) {
+    this.http.get("http://localhost:8080/api/v1/patients/" + patientId, this.httpOptions)
+      .toPromise().then(
+        result => {
+          this.populateForm(result);
+        }
+    );
   }
 
   populateForm(patient) {
