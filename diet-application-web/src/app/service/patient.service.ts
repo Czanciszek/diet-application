@@ -87,7 +87,6 @@ export class PatientService {
   }
 
   populateForm(patient) {
-    console.log(patient);
     this.form.setValue(patient);
   }
 }

@@ -75,7 +75,6 @@ export class PatientListComponent implements OnInit {
   }
 
   onEdit(patient) {
-    console.log(patient);
     this.service.populateForm(patient);
     this.openDialog();
   }

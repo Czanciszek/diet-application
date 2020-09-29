@@ -3,6 +3,7 @@ package com.springboot.dietapplication;
 import com.springboot.dietapplication.model.base.DocRef;
 import com.springboot.dietapplication.model.base.Header;
 import com.springboot.dietapplication.model.dish.Dish;
+import com.springboot.dietapplication.model.patient.Measurement;
 import com.springboot.dietapplication.model.patient.Patient;
 import com.springboot.dietapplication.model.product.AmountType;
 import com.springboot.dietapplication.model.product.Category;
@@ -14,6 +15,7 @@ import com.springboot.dietapplication.repository.*;
 import io.github.biezhi.excel.plus.Reader;
 import org.joda.time.DateTime;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -29,15 +31,17 @@ public class DbSeeder implements CommandLineRunner {
     private UserRepository userRepository;
     private CategoryRepository categoryRepository;
     private PatientRepository patientRepository;
+    private MeasurementRepository measurementRepository;
 
     public DbSeeder(ProductRepository productRepository, DishRepository dishRepository,
                     UserRepository userRepository, CategoryRepository categoryRepository,
-                    PatientRepository patientRepository) {
+                    PatientRepository patientRepository, MeasurementRepository measurementRepository) {
         this.productRepository = productRepository;
         this.dishRepository = dishRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.patientRepository = patientRepository;
+        this.measurementRepository = measurementRepository;
     }
 
     @Override
@@ -47,6 +51,7 @@ public class DbSeeder implements CommandLineRunner {
         this.userRepository.deleteAll();
         this.categoryRepository.deleteAll();
         this.patientRepository.deleteAll();
+        this.measurementRepository.deleteAll();
 
         User user1 = new User("aaa",
                 "$2y$12$xQyJdsoamI/19a4p3bgRcOj2KeLpxPWj3.whkTrjz2jzIbO9fnr6m", "imageId");
@@ -122,5 +127,17 @@ public class DbSeeder implements CommandLineRunner {
         patient.setDietaryPurpose("Schudnąć xD");
         this.patientRepository.save(patient);
 
+        DocRef<Patient> patientDocRef = DocRef.fromDoc(patient);
+
+        Measurement measurement = new Measurement();
+        measurement.setPatientDocRef(patientDocRef);
+        measurement.setArm(2.0f);
+        this.measurementRepository.save(measurement);
+
+        Measurement measurement2 = new Measurement();
+        measurement2.setPatientDocRef(patientDocRef);
+        measurement2.setAbdominal(3.0f);
+        this.measurementRepository.save(measurement2);
+        System.out.println(measurement.getId());
     }
 }

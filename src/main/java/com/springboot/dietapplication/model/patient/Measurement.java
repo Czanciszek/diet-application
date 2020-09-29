@@ -1,10 +1,14 @@
 package com.springboot.dietapplication.model.patient;
 
-public class Measurement {
+import com.springboot.dietapplication.model.base.BaseDoc;
+import com.springboot.dietapplication.model.base.DocRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "Measurements")
+public class Measurement extends BaseDoc {
+
+    private DocRef<Patient> patientDocRef;
     private String measurementDate; //Data pomiaru
-
-    private boolean sex; //Płeć //1 - Kobieta; 0 - Mężczyzna
 
     /**
      * Measurements for everyone
@@ -30,12 +34,15 @@ public class Measurement {
     private float chest; //Klatka piersiowa
     private float arm; //Ramię
 
+    public Measurement() {
+    }
+
     /**
      * Constructor for women measurements
      */
-    public Measurement(String measurementDate, boolean sex, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float breast, float underBreast, float hipBones, float thighNarrowest) {
+    public Measurement(DocRef<Patient> patientDocRef, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float breast, float underBreast, float hipBones, float thighNarrowest) {
+        this.patientDocRef = patientDocRef;
         this.measurementDate = measurementDate;
-        this.sex = sex;
         this.bodyWeight = bodyWeight;
         this.waist = waist;
         this.abdominal = abdominal;
@@ -51,9 +58,9 @@ public class Measurement {
     /**
      * Constructor for men measurements
      */
-    public Measurement(String measurementDate, boolean sex, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float chest, float arm) {
+    public Measurement(DocRef<Patient> patientDocRef, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float chest, float arm) {
+        this.patientDocRef = patientDocRef;
         this.measurementDate = measurementDate;
-        this.sex = sex;
         this.bodyWeight = bodyWeight;
         this.waist = waist;
         this.abdominal = abdominal;
@@ -64,20 +71,20 @@ public class Measurement {
         this.arm = arm;
     }
 
+    public DocRef<Patient> getPatientDocRef() {
+        return patientDocRef;
+    }
+
+    public void setPatientDocRef(DocRef<Patient> patientDocRef) {
+        this.patientDocRef = patientDocRef;
+    }
+
     public String getMeasurementDate() {
         return measurementDate;
     }
 
     public void setMeasurementDate(String measurementDate) {
         this.measurementDate = measurementDate;
-    }
-
-    public boolean getSex() {
-        return sex;
-    }
-
-    public void setSex(boolean sex) {
-        this.sex = sex;
     }
 
     public float getBodyWeight() {

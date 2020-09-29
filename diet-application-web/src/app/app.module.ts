@@ -26,6 +26,7 @@ import { PatientListComponent } from './patients/patient-list/patient-list.compo
 import {PatientService} from "./service/patient.service";
 import { PatientComponent } from './patients/patient/patient.component';
 import { PatientEditComponent } from './patients/patient-edit/patient-edit.component';
+import { MeasurementListComponent } from './measurements/measurement-list/measurement-list.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -53,6 +54,7 @@ const routes: Routes = [
     PatientListComponent,
     PatientComponent,
     PatientEditComponent,
+    MeasurementListComponent,
   ],
   imports: [
     BrowserModule,

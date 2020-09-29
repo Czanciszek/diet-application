@@ -10,6 +10,16 @@ public abstract class BaseDoc implements BaseDocInterface {
     private String name;
     private String primaryImageId;
 
+    public BaseDoc() {
+    }
+
+    public BaseDoc(String id, Header header, String name, String primaryImageId) {
+        this.id = id;
+        this.header = header;
+        this.name = name;
+        this.primaryImageId = primaryImageId;
+    }
+
     @Override
     public Header getHeader() {
         return header;
