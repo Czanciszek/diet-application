@@ -5,5 +5,6 @@ public enum AmountType {
     G,
     ML,
     PIECE,
+    SPOON,
 
 }

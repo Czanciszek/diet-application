@@ -6,6 +6,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {Router} from "@angular/router";
+import {PatientEditComponent} from "../patient-edit/patient-edit.component";
 
 @Component({
   selector: 'app-patient-list',
@@ -40,11 +41,13 @@ export class PatientListComponent implements OnInit {
             birthDate: item.birthDate,
             numberPhone: item.numberPhone,
             email: item.email,
+            sex: item.sex,
             bodyWeight: item.bodyWeight,
             bodyHeight: item.bodyHeight,
             currentLifestyleNote: item.currentLifestyleNote,
             changedLifestyleNote: item.changedLifestyleNote,
             dietaryPurpose: item.dietaryPurpose,
+            measurements: item.measurements,
           };
         });
         this.listData = new MatTableDataSource(array);
@@ -64,22 +67,36 @@ export class PatientListComponent implements OnInit {
 
   onCreate() {
     this.service.initializeFormGroup();
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    dialogConfig.disableClose = true;
-    dialogConfig.width = "90%";
-
-   // this.dialog.open(ProductComponent, dialogConfig);
+    this.openDialog();
   }
 
-  onEdit(patientId) {
+  onEnterDetails(patientId) {
     this.router.navigate(["/patients/" + patientId]);
   }
 
+  onEdit(patient) {
+    console.log(patient);
+    this.service.populateForm(patient);
+    this.openDialog();
+  }
+
+  openDialog() {
+    let dialogRef = this.dialog.open(PatientEditComponent, {
+      disableClose: true,
+      autoFocus: true,
+      width: "90%"
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      this.ngOnInit();
+    });
+  }
+
   onDelete(patientId) {
-    if (confirm("Are you sure to delete this product?")) {
-      //this.service.deleteProduct(productId);
+    if (confirm("Are you sure to delete this patient?")) {
+      this.service.deletePatient(patientId);
       this.notificationService.warn(":: Deleted succesfully! ::");
+      this.ngOnInit();
     }
   }
 

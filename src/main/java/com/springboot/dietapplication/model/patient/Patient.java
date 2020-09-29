@@ -11,6 +11,7 @@ public class Patient extends BaseDoc {
     private String birthDate;
     private String numberPhone;
     private String email;
+    private boolean sex;
     private float bodyWeight;
     private int bodyHeight;
 
@@ -50,6 +51,14 @@ public class Patient extends BaseDoc {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isSex() {
+        return sex;
+    }
+
+    public void setSex(boolean sex) {
+        this.sex = sex;
     }
 
     public float getBodyWeight() {

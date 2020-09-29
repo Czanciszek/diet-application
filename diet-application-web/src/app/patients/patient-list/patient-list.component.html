@@ -27,7 +27,8 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="onEdit(element.id)"><mat-icon>person</mat-icon></button>
+        <button mat-icon-button (click)="onEnterDetails(element.id)"><mat-icon>person</mat-icon></button>
+        <button mat-icon-button (click)="onEdit(element)"><mat-icon>launch</mat-icon></button>
         <button mat-icon-button (click)="onDelete(element.id)"><mat-icon>delete</mat-icon></button>
       </mat-cell>
     </ng-container>

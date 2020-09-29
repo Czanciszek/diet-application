@@ -2,10 +2,8 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.patient.Patient;
 import com.springboot.dietapplication.repository.PatientRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,5 +25,23 @@ public class PatientController {
     @GetMapping(path = "/{patientId}")
     public Optional<Patient> getFilteredProducts(@PathVariable("patientId") String patientId) {
         return this.patientRepository.findById(patientId);
+    }
+
+    @PostMapping(produces = "application/json")
+    ResponseEntity<Patient> insertPatient(@RequestBody Patient patient) throws NoSuchFieldException {
+        patientRepository.save(patient);
+        return ResponseEntity.ok().body(null);
+    }
+
+    @PutMapping(path = "/{patientId}", produces = "application/json")
+    ResponseEntity<Patient> updatePatient(@RequestBody Patient patient) {
+        patientRepository.save(patient);
+        return ResponseEntity.ok().body(patient);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    ResponseEntity<Patient> deletePatient(@PathVariable String id) {
+        patientRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

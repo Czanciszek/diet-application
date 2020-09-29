@@ -16,6 +16,9 @@ import {MatPaginatorIntl, MatPaginatorModule} from "@angular/material/paginator"
 import {MatSortModule} from "@angular/material/sort";
 import {getPolishPaginatorIntl} from "./helper/polish-paginator-ingtl";
 import {MatSliderModule} from "@angular/material/slider";
+import {MatCardModule} from "@angular/material/card";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [],
@@ -35,6 +38,8 @@ import {MatSliderModule} from "@angular/material/slider";
     MatPaginatorModule,
     MatSortModule,
     MatSliderModule,
+    MatCardModule,
+    MatDatepickerModule,
   ],
   exports: [
     MatToolbarModule,
@@ -51,10 +56,17 @@ import {MatSliderModule} from "@angular/material/slider";
     MatPaginatorModule,
     MatSortModule,
     MatSliderModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [
     MatSnackBar,
-    { provide: MatPaginatorIntl, useValue: getPolishPaginatorIntl() }
+    MatDatepickerModule,
+    MatNativeDateModule,
+    { provide: MatPaginatorIntl, useValue: getPolishPaginatorIntl() },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
   ]
 })
 export class MaterialModule { }

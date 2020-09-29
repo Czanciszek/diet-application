@@ -22,7 +22,8 @@ export class DishComponent implements OnInit {
   amountTypes = [
     { id: "G", value: "G" },
     { id: "ML", value: "ML" },
-    { id: "PIECE", value: "Ilość" },
+    { id: "PIECE", value: "Sztuka" },
+    { id: "SPOON", value: "Łyżka"}
   ];
 
   ngOnInit(): void {

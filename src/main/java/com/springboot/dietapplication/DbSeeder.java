@@ -44,7 +44,6 @@ public class DbSeeder implements CommandLineRunner {
     public void run(String... args) {
 
         this.productRepository.deleteAll();
-        this.dishRepository.deleteAll();
         this.userRepository.deleteAll();
         this.categoryRepository.deleteAll();
         this.patientRepository.deleteAll();
@@ -113,42 +112,15 @@ public class DbSeeder implements CommandLineRunner {
             this.productRepository.saveAll(products);
         }
 
-        List<Product> cukier = this.productRepository.findByNameLike("Cukier");
-        List<Product> karmelki = this.productRepository.findByNameLike("Karmelki nadziewane");
-        List<Product> kawa = this.productRepository.findByNameLike("Kawa");
-
-        List<ProductForDish> productsToAdd = new ArrayList<>();
-        ProductForDish productForDish = new ProductForDish(DocRef.fromDoc(cukier.get(0)), 12.0f, AmountType.PIECE);
-        ProductForDish productForDish2 = new ProductForDish(DocRef.fromDoc(karmelki.get(0)), 0.3f, AmountType.G);
-        ProductForDish productForDish3 = new ProductForDish(DocRef.fromDoc(kawa.get(0)), 200.0f, AmountType.ML);
-
-        productsToAdd.add(productForDish);
-        productsToAdd.add(productForDish2);
-
-        Dish dish = new Dish(productsToAdd);
-        dish.setName("Karmelki cukrowane");
-        dish.setPrimaryImageId("Zdjecie karmelkow");
-        dish.setPortions(3.0f);
-        dish.setRecipe("Połącz karmelki z cukrem");
-        this.dishRepository.save(dish);
-
-        productsToAdd.add(productForDish3);
-        Dish dish2 = new Dish(productsToAdd);
-        dish2.setName("Karmelki cukrowane z kawą");
-        dish2.setPrimaryImageId("Zdjecie karmelkow");
-        dish2.setPortions(4.0f);
-        dish2.setRecipe("Połącz karmelki z cukrem i kawusią");
-        this.dishRepository.save(dish2);
-
         Patient patient = new Patient();
         patient.setBirthDate("11111111");
         patient.setBodyWeight(120);
         patient.setName("Pacjent");
+        patient.setSex(false);
         patient.setEmail("email@email.com");
         patient.setNumberPhone("123456789");
         patient.setDietaryPurpose("Schudnąć xD");
         this.patientRepository.save(patient);
 
-        System.out.println(dish.getId());
     }
 }

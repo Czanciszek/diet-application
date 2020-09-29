@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GlobalVariable} from "../global";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +26,10 @@ export class PatientService {
     primaryImageId: new FormControl(null),
     type: new FormControl(''),
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    birthDate: new FormControl(''),
+    birthDate: new FormControl('', [Validators.required]),
     numberPhone: new FormControl(''),
-    email: new FormControl(''),
+    email: new FormControl('', [Validators.email]),
+    sex: new FormControl(false),
     bodyWeight: new FormControl(null),
     bodyHeight: new FormControl(null),
     currentLifestyleNote: new FormControl(''),
@@ -49,6 +50,7 @@ export class PatientService {
       birthDate: '',
       numberPhone: '',
       email: '',
+      sex: false,
       bodyHeight: null,
       bodyWeight: null,
       currentLifestyleNote: '',
@@ -66,13 +68,26 @@ export class PatientService {
   getPatientById(patientId) {
     this.http.get("http://localhost:8080/api/v1/patients/" + patientId, this.httpOptions)
       .toPromise().then(
-        result => {
-          this.populateForm(result);
-        }
+      result => {
+        this.populateForm(result);
+      }
     );
   }
 
+  insertPatient(patient) {
+    return this.http.post("http://localhost:8080/api/v1/patients", patient, this.httpOptions);
+  }
+
+  updatePatient(patient) {
+    return this.http.put("http://localhost:8080/api/v1/patients/" + patient.id, patient, this.httpOptions);
+  }
+
+  deletePatient(id: string) {
+    return this.http.delete("http://localhost:8080/api/v1/patients/" + id, this.httpOptions).subscribe();
+  }
+
   populateForm(patient) {
+    console.log(patient);
     this.form.setValue(patient);
   }
 }

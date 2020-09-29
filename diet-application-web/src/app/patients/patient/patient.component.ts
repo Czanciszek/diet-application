@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {PatientService} from "../../service/patient.service";
 import {ActivatedRoute} from "@angular/router";
-import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-patient',
@@ -18,7 +17,6 @@ export class PatientComponent implements OnInit {
   ngOnInit(): void {
     let patientId = this.route.snapshot.paramMap.get("patient_id");
     this.service.getPatientById(patientId);
-    console.log(this.service.form);
   }
 
 }
