@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {NotificationService} from "../../service/notification.service";
-import {MatTableDataSource} from "@angular/material/table";
+import {Component, OnInit} from '@angular/core';
+import {MatDialogRef} from "@angular/material/dialog";
 import {MeasurementService} from "../../service/measurement.service";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-measurement-list',
@@ -13,14 +12,18 @@ export class MeasurementListComponent implements OnInit {
 
   constructor(
     private service: MeasurementService,
-    private dialog: MatDialog,
-    private notificationService: NotificationService
+    private dialogRef: MatDialogRef<MeasurementListComponent>
   ) { }
 
+  startDate = new Date();
+
   listData: MatTableDataSource<any>;
+  showTable = false;
+  objectKeys: any[];
+
+  showNewMeasurement = false;
 
   ngOnInit(): void {
-    //console.log(this.service.patientId);
     this.service.getMeasurementsByPatientId(this.service.patientId)
       .subscribe(
         list => {
@@ -47,9 +50,44 @@ export class MeasurementListComponent implements OnInit {
               arm: item.arm,
             }
           });
+
+          for (let element of array) {
+            if (element.measurementDate != null) {
+              var dateFormat = new Date(element.measurementDate);
+              var date = dateFormat.getDate();
+              var month = dateFormat.getMonth();
+              var year = dateFormat.getFullYear();
+              element.measurementDate = date + "/" + (month + 1) + "/" + year;
+            }
+          }
+
           this.listData = new MatTableDataSource(array);
-          console.log(this.listData);
+          this.showTable = true;
+          this.objectKeys = Object.keys(this.listData.data["0"]);
         });
+  }
+
+  onSubmit() {
+    if (this.service.form.valid) {
+        this.service.insertMeasurement(this.service.form.value, this.service.patientId).subscribe();
+        this.showNewMeasurement = false;
+        this.onClear();
+        this.ngOnInit();
+    }
+  }
+
+  onClear() {
+    this.service.form.reset();
+    this.service.initializeFormGroup();
+  }
+
+  onClose() {
+    this.onClear();
+    this.dialogRef.close();
+  }
+
+  addNewMeasurement() {
+    this.showNewMeasurement = true;
   }
 
 }

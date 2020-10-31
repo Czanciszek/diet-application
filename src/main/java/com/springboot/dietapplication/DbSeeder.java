@@ -15,7 +15,6 @@ import com.springboot.dietapplication.repository.*;
 import io.github.biezhi.excel.plus.Reader;
 import org.joda.time.DateTime;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -118,7 +117,7 @@ public class DbSeeder implements CommandLineRunner {
         }
 
         Patient patient = new Patient();
-        patient.setBirthDate("11111111");
+        patient.setBirthDate(new DateTime().toString());
         patient.setBodyWeight(120);
         patient.setName("Pacjent");
         patient.setSex(false);

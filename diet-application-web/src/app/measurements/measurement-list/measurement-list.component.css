@@ -1,0 +1,44 @@
+
+.div.container {
+  margin: 0 30px;
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+form.normal-form {
+  margin: 10px;
+}
+
+.control-container {
+  width: 100%;
+  padding: 5%;
+}
+
+.control-container > * {
+  width: 100%;
+}
+
+.add-bottom-padding {
+  padding-bottom: 2px;
+}
+
+mat-radio-group mat-radio-button {
+  margin-left: 5px;
+}
+
+.button-row button {
+  margin: 2px;
+}
+
+div mat-checkbox {
+  padding-right: 10px;
+}
+
+.btn-dialog-close {
+  width: 35px;
+  min-width: 0px !important;
+  height: 35px;
+  padding: 0px !important;
+}

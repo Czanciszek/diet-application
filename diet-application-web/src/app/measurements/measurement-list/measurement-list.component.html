@@ -1,1 +1,89 @@
-<p>measurement-list works!</p>
+<div class="container">
+  <mat-toolbar>
+    <span class="fill-remaining-space"></span>
+    <span>Lista pomiarów</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+  </mat-toolbar>
+</div>
+
+<mat-dialog-content>
+  <div class ="normal-form" *ngIf="showTable">
+
+    <form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
+      <mat-grid-list cols="3" rowHeight="40px">
+        <mat-grid-tile>
+          <div class="control-container">
+            <button mat-raised-button (click)="addNewMeasurement()">
+              <mat-icon>add</mat-icon>Dodaj pomiar
+            </button>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="button-row" *ngIf="showNewMeasurement">
+              <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Zapisz</button>
+            </div>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="button-row" *ngIf="showNewMeasurement">
+              <button mat-raised-button color="warn" type="button" (click)="onClear()">Wyczyść</button>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <div *ngFor="let column of objectKeys; index as i;">
+
+        <div *ngIf="
+        column != 'id' && column != 'header' && column != 'type'
+        && column != 'name' && column != 'patientDocRef' && column != 'primaryImageId'
+        ">
+        <mat-grid-list cols="{{listData.data.length+3}}" rowHeight="65px">
+          <mat-grid-tile colspan="2">
+            <div class="control-container">
+              <div class="add-bottom-padding">
+                  {{service.measurementKeywords.get(column)}}:
+              </div>
+            </div>
+          </mat-grid-tile>
+            <div *ngFor="let user of listData.data; index as i;">
+              <mat-grid-tile>
+                <div class="control-container">
+                  <span>{{user[column]}}</span>
+                </div>
+              </mat-grid-tile>
+          </div>
+
+          <mat-grid-tile>
+            <div class="control-container add-bottom-padding" *ngIf="showNewMeasurement">
+
+                <div *ngIf="column === 'measurementDate' then measurementBlock else otherBlock"></div>
+                  <ng-template #measurementBlock>
+                    <mat-form-field class="example-full-width">
+                    <mat-label>Data pomiaru*</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="{{column}}">
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                      <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
+                      <mat-error *ngIf="service.form.controls['measurementDate'].errors?.required">Wprowadź poprawną datę</mat-error>
+                    </mat-form-field>
+                  </ng-template>
+                  <ng-template #otherBlock>
+                    <mat-form-field>
+                      <input matInput formControlName="{{column}}" matInput placeholder="{{service.measurementKeywords.get(column)}}">
+                    </mat-form-field>
+                  </ng-template>
+
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>

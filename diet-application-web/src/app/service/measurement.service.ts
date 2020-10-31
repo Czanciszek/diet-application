@@ -21,6 +21,12 @@ export class MeasurementService {
   patientId: '';
   measurementList: any;
 
+  measurementKeywords = new Map([ ['measurementDate', 'Data pomiaru'], ['bodyWeight', 'Masa ciała'], ['waist', 'Talia'],
+    ['abdominal', 'Pas'], ['hips', 'Biodra'], ['thighWidest', 'Udo najszersze'],
+    ['calf', 'Łydka'], ['breast', 'Biust'], ['underBreast', 'Pod biustem'],
+    ['hipBones', 'Kości biodrowe'], ['thighNarrowest', 'Udo najwęższe'], ['chest', 'Klatka piersiowa'], ['arm', 'Ramię'] ]);
+
+
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     header: new FormControl(null),
@@ -28,7 +34,7 @@ export class MeasurementService {
     type: new FormControl(''),
     name: new FormControl(''),
     patientDocRef: new FormControl(null),
-    measurementDate: new FormControl(null),
+    measurementDate: new FormControl('', [Validators.required]),
     // Measurements only for all
     bodyWeight: new FormControl(null),
     waist: new FormControl(null),
@@ -80,5 +86,9 @@ export class MeasurementService {
 
   populateForm(measurement) {
     this.form.setValue(measurement);
+  }
+
+  insertMeasurement(measurement, patientId) {
+    return this.http.post("http://localhost:8080/api/v1/measurements/" + patientId, measurement, this.httpOptions);
   }
 }
