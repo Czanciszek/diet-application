@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {PatientService} from "../../service/patient.service";
-import {ActivatedRoute} from "@angular/router";
-import {PatientEditComponent} from "../patient-edit/patient-edit.component";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {MeasurementListComponent} from "../../measurements/measurement-list/measurement-list.component";
 import {MeasurementService} from "../../service/measurement.service";
-import {MatTableDataSource} from "@angular/material/table";
+import {DietListComponent} from "../../diets/diet-list/diet-list.component";
 
 @Component({
   selector: 'app-patient',
@@ -15,6 +14,7 @@ import {MatTableDataSource} from "@angular/material/table";
 export class PatientComponent implements OnInit {
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private service: PatientService,
     private measurementService: MeasurementService,
@@ -29,6 +29,11 @@ export class PatientComponent implements OnInit {
   onEnterMeasurements(patientId) {
     this.measurementService.patientId = patientId;
     this.openDialog();
+  }
+
+  onEnterDiets(patientId) {
+    this.measurementService.patientId = patientId;
+    this.router.navigate(["/patients/" + patientId + "/diets"]);
   }
 
   openDialog() {

@@ -129,11 +129,14 @@ public class DbSeeder implements CommandLineRunner {
         DocRef<Patient> patientDocRef = DocRef.fromDoc(patient);
 
         Measurement measurement = new Measurement();
+        measurement.setMeasurementDate(DateTime.parse("2020-10-13").toString());
         measurement.setPatientDocRef(patientDocRef);
         measurement.setArm(2.0f);
         this.measurementRepository.save(measurement);
 
         Measurement measurement2 = new Measurement();
+
+        measurement2.setMeasurementDate(DateTime.parse("2020-10-20").toString());
         measurement2.setPatientDocRef(patientDocRef);
         measurement2.setAbdominal(3.0f);
         this.measurementRepository.save(measurement2);

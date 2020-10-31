@@ -27,6 +27,7 @@ import {PatientService} from "./service/patient.service";
 import { PatientComponent } from './patients/patient/patient.component';
 import { PatientEditComponent } from './patients/patient-edit/patient-edit.component';
 import { MeasurementListComponent } from './measurements/measurement-list/measurement-list.component';
+import { DietListComponent } from './diets/diet-list/diet-list.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -36,6 +37,7 @@ const routes: Routes = [
   {path: "dishes", component:DishesComponent},
   {path: "patients", component:PatientsComponent},
   {path: "patients/:patient_id", component: PatientComponent},
+  {path: "patients/:patient_id/diets", component: DietListComponent},
 ];
 
 @NgModule({
@@ -55,6 +57,7 @@ const routes: Routes = [
     PatientComponent,
     PatientEditComponent,
     MeasurementListComponent,
+    DietListComponent,
   ],
   imports: [
     BrowserModule,
