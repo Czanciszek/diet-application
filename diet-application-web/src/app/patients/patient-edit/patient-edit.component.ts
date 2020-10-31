@@ -33,10 +33,10 @@ export class PatientEditComponent implements OnInit {
     if (this.service.form.valid) {
       if (!this.service.form.get('id').value) {
         this.service.insertPatient(this.service.form.value).subscribe();
-        this.notificationService.success(":: Product created successfully! ::");
+        this.notificationService.success(":: Patient created successfully! ::");
       } else {
         this.service.updatePatient(this.service.form.value).subscribe();
-        this.notificationService.success(":: Product updated successfully! ::");
+        this.notificationService.success(":: Patient updated successfully! ::");
       }
       this.onClose();
     }
