@@ -1,6 +1,6 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NotificationService} from "../../service/notification.service";
-import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DishService} from "../../service/dish.service";
 import {FormArray} from "@angular/forms";
 import {ProductSelectComponent} from "../../products/product-select/product-select.component";
@@ -24,6 +24,16 @@ export class DishComponent implements OnInit {
     { id: "ML", value: "ML" },
     { id: "PIECE", value: "Sztuka" },
     { id: "SPOON", value: "Łyżka"}
+  ];
+
+  mealTypes = [
+    { id: "BREAKFEST", value: "Śniadanie" },
+    { id: "BRUNCH", value: "II śniadanie" },
+    { id: "DINNER", value: "Obiad" },
+    { id: "TEA", value: "Podwieczorek"},
+    { id: "SUPPER", value: "Kolacja" },
+    { id: "PRE_WORKOUT", value: "Przedtreningówka" },
+    { id: "POST_WORKOUT", value: "Potreningówka"},
   ];
 
   ngOnInit(): void {

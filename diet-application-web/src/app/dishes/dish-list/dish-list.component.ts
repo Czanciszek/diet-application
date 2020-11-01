@@ -1,13 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {DishService} from "../../service/dish.service";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {NotificationService} from "../../service/notification.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {DishComponent} from "../dish/dish.component";
 import {FormArray} from "@angular/forms";
-import {ProductSelectComponent} from "../../products/product-select/product-select.component";
 
 @Component({
   selector: 'app-dish-list',
@@ -23,7 +22,7 @@ export class DishListComponent implements OnInit {
   ) { }
 
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['name', 'portions', 'recipe', 'actions'];
+  displayedColumns: string[] = ['name', 'portions', 'mealType', 'actions'];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -40,6 +39,7 @@ export class DishListComponent implements OnInit {
             type: item.type,
             name: item.name,
             products: item.products,
+            mealType: item.mealType,
             portions: item.portions,
             recipe: item.recipe
           };

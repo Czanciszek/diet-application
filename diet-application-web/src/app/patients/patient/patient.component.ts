@@ -4,7 +4,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {MeasurementListComponent} from "../../measurements/measurement-list/measurement-list.component";
 import {MeasurementService} from "../../service/measurement.service";
-import {DietListComponent} from "../../diets/diet-list/diet-list.component";
 
 @Component({
   selector: 'app-patient',
@@ -31,9 +30,9 @@ export class PatientComponent implements OnInit {
     this.openDialog();
   }
 
-  onEnterDiets(patientId) {
+  onEnterMenus(patientId) {
     this.measurementService.patientId = patientId;
-    this.router.navigate(["/patients/" + patientId + "/diets"]);
+    this.router.navigate(["/patients/" + patientId + "/menus"]);
   }
 
   openDialog() {

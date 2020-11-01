@@ -25,8 +25,8 @@ public class Patient extends BaseDoc {
     //odpowiedzi na wywiad
     //private InterviewAnswers answers;
 
-    //lista diet
-    //private List<Diet> diets;
+    //lista jadłospisów
+    //private List<Menu> menus;
 
 
     public String getBirthDate() {

@@ -29,6 +29,7 @@ export class DishService {
     products: new FormArray([
       //this.addProductFormGroup()
     ]),
+    mealType: new FormControl(null),
     portions: new FormControl(null),
     recipe: new FormControl('')
   });
@@ -65,6 +66,7 @@ export class DishService {
           }
         }
       ],
+      mealType: '',
       portions: 1,
       recipe: ''
     })

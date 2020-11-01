@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.model.dish;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
+import com.springboot.dietapplication.model.menu.MealType;
 import com.springboot.dietapplication.model.product.ProductForDish;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,6 +11,7 @@ import java.util.List;
 public class Dish extends BaseDoc {
 
     private List<ProductForDish> products;
+    private MealType mealType;
     private float portions;
     private String recipe;
 
@@ -27,6 +29,14 @@ public class Dish extends BaseDoc {
 
     public void setProducts(List<ProductForDish> products) {
         this.products = products;
+    }
+
+    public MealType getMealType() {
+        return mealType;
+    }
+
+    public void setMealType(MealType mealType) {
+        this.mealType = mealType;
     }
 
     public float getPortions() {
