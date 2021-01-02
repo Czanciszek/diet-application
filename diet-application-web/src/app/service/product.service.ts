@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GlobalVariable} from "../global";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -10,13 +10,15 @@ export class ProductService {
 
   httpOptions = {
     headers: new HttpHeaders({
-      Authorization: 'Basic '+
-        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)})
+      Authorization: 'Basic ' +
+        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)
+    })
   };
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+  }
 
   productList: any;
 
@@ -28,26 +30,28 @@ export class ProductService {
     category: new FormControl('', Validators.required),
     subcategory: new FormControl('', Validators.required),
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    energyValue: new FormControl(null),
-    proteins: new FormControl(null),
-    fats: new FormControl(null),
-    saturatedFattyAcids: new FormControl(null),
-    monoUnsaturatedFattyAcids: new FormControl(null),
-    polyUnsaturatedFattyAcids: new FormControl(null),
-    cholesterol: new FormControl(null),
-    carbohydrates: new FormControl(null),
-    sucrose: new FormControl(null),
-    dietaryFibres: new FormControl(null),
-    sodium: new FormControl(null),
-    potassium: new FormControl(null),
-    calcium: new FormControl(null),
-    phosphorus: new FormControl(null),
-    magnesium: new FormControl(null),
-    iron: new FormControl(null),
-    selenium: new FormControl(null),
-    betaCarotene: new FormControl(null),
-    vitaminD: new FormControl(null),
-    vitaminC: new FormControl(null),
+    foodProperties: new FormGroup({
+      energyValue: new FormControl(null),
+      proteins: new FormControl(null),
+      fats: new FormControl(null),
+      saturatedFattyAcids: new FormControl(null),
+      monoUnsaturatedFattyAcids: new FormControl(null),
+      polyUnsaturatedFattyAcids: new FormControl(null),
+      cholesterol: new FormControl(null),
+      carbohydrates: new FormControl(null),
+      sucrose: new FormControl(null),
+      dietaryFibres: new FormControl(null),
+      sodium: new FormControl(null),
+      potassium: new FormControl(null),
+      calcium: new FormControl(null),
+      phosphorus: new FormControl(null),
+      magnesium: new FormControl(null),
+      iron: new FormControl(null),
+      selenium: new FormControl(null),
+      betaCarotene: new FormControl(null),
+      vitaminD: new FormControl(null),
+      vitaminC: new FormControl(null),
+    }),
     lactose: new FormControl(false),
     starch: new FormControl(false),
     gluten: new FormControl(false),
@@ -62,26 +66,28 @@ export class ProductService {
       category: '',
       subcategory: '',
       name: '',
-      energyValue: null,
-      proteins: null,
-      fats: null,
-      saturatedFattyAcids: null,
-      monoUnsaturatedFattyAcids: null,
-      polyUnsaturatedFattyAcids: null,
-      cholesterol: null,
-      carbohydrates: null,
-      sucrose: null,
-      dietaryFibres: null,
-      sodium: null,
-      potassium: null,
-      calcium: null,
-      phosphorus: null,
-      magnesium: null,
-      iron: null,
-      selenium: null,
-      betaCarotene: null,
-      vitaminD: null,
-      vitaminC: null,
+      foodProperties: {
+        energyValue: null,
+        proteins: null,
+        fats: null,
+        saturatedFattyAcids: null,
+        monoUnsaturatedFattyAcids: null,
+        polyUnsaturatedFattyAcids: null,
+        cholesterol: null,
+        carbohydrates: null,
+        sucrose: null,
+        dietaryFibres: null,
+        sodium: null,
+        potassium: null,
+        calcium: null,
+        phosphorus: null,
+        magnesium: null,
+        iron: null,
+        selenium: null,
+        betaCarotene: null,
+        vitaminD: null,
+        vitaminC: null,
+      },
       lactose: false,
       starch: false,
       gluten: false,
@@ -105,7 +111,7 @@ export class ProductService {
     return this.http.get("http://localhost:8080/api/v1/categories", this.httpOptions);
   }
 
-  getFilteredProducts(category:string, subcategory:string) {
+  getFilteredProducts(category: string, subcategory: string) {
     if (category == null) {
       category = "*ANY*";
     }
