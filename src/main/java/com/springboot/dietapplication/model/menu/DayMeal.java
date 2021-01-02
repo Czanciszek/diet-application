@@ -2,18 +2,32 @@ package com.springboot.dietapplication.model.menu;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
 import com.springboot.dietapplication.model.base.DocRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@Document(collection = "DayMeals")
 public class DayMeal extends BaseDoc {
 
-    DocRef<Menu> menuDocRef;
+    private DocRef<Menu> menuDocRef;
 
-    List<Meal> mealList;
+    private DocRef<WeekMeal> weekMealDocRef;
 
-    public DayMeal(DocRef<Menu> menuDocRef, List<Meal> mealList) {
+    private List<String> mealList; // Lista odnośników do posiłków
+
+    private String date;
+
+    //private Map<String, Float> limits; // Limity kaloryczności
+
+    public DayMeal() {
+
+    }
+
+    public DayMeal(DocRef<Menu> menuDocRef, DocRef<WeekMeal> weekMealDocRef, List<String> mealList, String date) {
         this.menuDocRef = menuDocRef;
+        this.weekMealDocRef = weekMealDocRef;
         this.mealList = mealList;
+        this.date = date;
     }
 
     public DocRef<Menu> getMenuDocRef() {
@@ -24,11 +38,27 @@ public class DayMeal extends BaseDoc {
         this.menuDocRef = menuDocRef;
     }
 
-    public List<Meal> getMealList() {
+    public DocRef<WeekMeal> getWeekMealDocRef() {
+        return weekMealDocRef;
+    }
+
+    public void setWeekMealDocRef(DocRef<WeekMeal> weekMealDocRef) {
+        this.weekMealDocRef = weekMealDocRef;
+    }
+
+    public List<String> getMealList() {
         return mealList;
     }
 
-    public void setMealList(List<Meal> mealList) {
+    public void setMealList(List<String> mealList) {
         this.mealList = mealList;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

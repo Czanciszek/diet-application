@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/menus")
@@ -21,6 +22,16 @@ public class MenuController {
         return this.menuRepository.findAll();
     }
 
+    @GetMapping(path = "/{menuId}")
+    public Optional<Menu> getMenuById(@PathVariable("menuId") String menuId) {
+        return this.menuRepository.findById(menuId);
+    }
+
+    @GetMapping(path = "/patient/{patientId}")
+    public List<Menu> getMenusByPatientId(@PathVariable("patientId") String patientId) {
+        return this.menuRepository.findByPatientDocRefId(patientId);
+    }
+    
     @PostMapping(produces = "application/json")
     ResponseEntity<Menu> insertMenu(@RequestBody Menu menu) throws NoSuchFieldException {
         menuRepository.save(menu);

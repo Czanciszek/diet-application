@@ -4,9 +4,11 @@ import com.springboot.dietapplication.model.base.BaseDoc;
 import com.springboot.dietapplication.model.base.DocRef;
 import com.springboot.dietapplication.model.dish.DishForMeal;
 import com.springboot.dietapplication.model.product.ProductForDish;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@Document(collection = "Meals")
 public class Meal extends BaseDoc {
 
     DocRef<DayMeal> dayMealDocRef;
@@ -17,7 +19,7 @@ public class Meal extends BaseDoc {
 
     private MealType mealType; //Rodzaj posiłku
 
-    protected Meal() {
+    public Meal() {
 
     }
 

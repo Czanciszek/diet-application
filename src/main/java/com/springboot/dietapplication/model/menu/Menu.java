@@ -2,6 +2,7 @@ package com.springboot.dietapplication.model.menu;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
 import com.springboot.dietapplication.model.base.DocRef;
+import com.springboot.dietapplication.model.patient.Measurement;
 import com.springboot.dietapplication.model.patient.Patient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,26 +11,39 @@ import java.util.List;
 @Document(collection = "Menus")
 public class Menu extends BaseDoc {
 
-    private DocRef<Patient> patientDocRef; // Dane pacjenta
+    private DocRef<Patient> patientDocRef; // Ref - Dane pacjenta
 
-    private String menuStartDate; // Data rozpoczęcia
+    private DocRef<Measurement> measurementDocRef; // Ref - Dane pomiarowe
 
-    private List<DayMeal> dayMealList; // Zbiór dziennych posiłków
+    private List<String> weekMealList; // Lista odnośników do tygodniowych jadłospisów
 
-    private List<MealType> mealTypes; // Rodzaje posiłków do menuy
+    private List<MealType> mealTypes; // Rodzaje posiłków do menu
 
-    //private Map<String, Float> limits; // Limity kaloryczności
+    private String startDate; // Najwcześniejsza data z listy DayMeals
 
-    protected Menu() {
+    private String endDate; // Najpóźniejsza data z listy DayMeals
+
+    public Menu() {
 
     }
 
-    public Menu(DocRef<Patient> patientDocRef, String menuStartDate,
-                List<DayMeal> dayMealList, List<MealType> mealTypes) {
+    public Menu(Menu menu) {
+        this.patientDocRef = menu.patientDocRef;
+        this.measurementDocRef = menu.measurementDocRef;
+        this.weekMealList = menu.weekMealList;
+        this.mealTypes = menu.mealTypes;
+        this.startDate = menu.startDate;
+        this.endDate = menu.endDate;
+    }
+
+    public Menu(DocRef<Patient> patientDocRef, DocRef<Measurement> measurementDocRef, List<String> weekMealList, List<MealType> mealTypes,
+                String startDate, String endDate) {
         this.patientDocRef = patientDocRef;
-        this.menuStartDate = menuStartDate;
-        this.dayMealList = dayMealList;
+        this.measurementDocRef = measurementDocRef;
+        this.weekMealList = weekMealList;
         this.mealTypes = mealTypes;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public DocRef<Patient> getPatientDocRef() {
@@ -40,20 +54,20 @@ public class Menu extends BaseDoc {
         this.patientDocRef = patientDocRef;
     }
 
-    public String getMenuStartDate() {
-        return menuStartDate;
+    public DocRef<Measurement> getMeasurementDocRef() {
+        return measurementDocRef;
     }
 
-    public void setMenuStartDate(String menuStartDate) {
-        this.menuStartDate = menuStartDate;
+    public void setMeasurementDocRef(DocRef<Measurement> measurementDocRef) {
+        this.measurementDocRef = measurementDocRef;
     }
 
-    public List<DayMeal> getDayMealList() {
-        return dayMealList;
+    public List<String> getWeekMealList() {
+        return weekMealList;
     }
 
-    public void setDayMealList(List<DayMeal> dayMealList) {
-        this.dayMealList = dayMealList;
+    public void setWeekMealList(List<String> weekMealList) {
+        this.weekMealList = weekMealList;
     }
 
     public List<MealType> getMealTypes() {
@@ -62,5 +76,21 @@ public class Menu extends BaseDoc {
 
     public void setMealTypes(List<MealType> mealTypes) {
         this.mealTypes = mealTypes;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 }

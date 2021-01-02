@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GlobalVariable} from "../global";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -19,6 +19,7 @@ export class MeasurementService {
   ) { }
 
   patientId: '';
+  measurementObject: any;
   measurementList: any;
 
   measurementKeywords = new Map([ ['measurementDate', 'Data pomiaru'], ['bodyWeight', 'Masa ciała'], ['waist', 'Talia'],
@@ -77,6 +78,11 @@ export class MeasurementService {
       chest: null,
       arm: null,
     })
+  }
+
+  getMeasurementsById(measurementId) {
+    this.measurementObject = this.http.get("http://localhost:8080/api/v1/measurements/" + measurementId, this.httpOptions);
+    return this.measurementObject;
   }
 
   getMeasurementsByPatientId(patientId) {
