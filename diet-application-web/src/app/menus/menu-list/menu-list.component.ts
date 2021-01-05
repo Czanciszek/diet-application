@@ -24,6 +24,7 @@ export class MenuListComponent implements OnInit {
   listLoaded = false;
 
   menuListItems = Array<{
+    menuId: string,
     dateRange: string,
     weekCount: string,
     measurementDate: string
@@ -56,6 +57,7 @@ export class MenuListComponent implements OnInit {
   async initListItems() {
     // @ts-ignore
     for (let item of this.listData) {
+      let menuId = item.id;
       let dateRange = this.dateTimeParser(item);
       let weekCount = this.weekCount(item.weekMealList.length);
       var measurementDate = null;
@@ -69,6 +71,7 @@ export class MenuListComponent implements OnInit {
       }
 
       let menuItem = {
+        menuId: menuId,
         dateRange: dateRange,
         weekCount: weekCount,
         measurementDate: measurementDate
@@ -99,5 +102,10 @@ export class MenuListComponent implements OnInit {
     if (count == 1) return " tydzień";
     else if (count >= 2 && count <= 4) return " tygodnie";
     else return " tygodni";
+  }
+
+  openMenuDetails(menuId) {
+    let patientId = this.service.form.controls["patientDocRef"].value.id;
+    this.router.navigate(["/patients/" + patientId + "/menu/" + menuId]);
   }
 }

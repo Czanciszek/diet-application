@@ -28,6 +28,7 @@ import { PatientComponent } from './patients/patient/patient.component';
 import { PatientEditComponent } from './patients/patient-edit/patient-edit.component';
 import { MeasurementListComponent } from './measurements/measurement-list/measurement-list.component';
 import { MenuListComponent } from './menus/menu-list/menu-list.component';
+import { WeekViewComponent } from './menus/week-view/week-view.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -38,6 +39,7 @@ const routes: Routes = [
   {path: "patients", component:PatientsComponent},
   {path: "patients/:patient_id", component: PatientComponent},
   {path: "patients/:patient_id/menus", component: MenuListComponent},
+  {path: "patients/:patient_id/menu/:menu_id", component: WeekViewComponent},
 ];
 
 @NgModule({
@@ -58,6 +60,7 @@ const routes: Routes = [
     PatientEditComponent,
     MeasurementListComponent,
     MenuListComponent,
+    WeekViewComponent,
   ],
   imports: [
     BrowserModule,

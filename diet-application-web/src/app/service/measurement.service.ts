@@ -36,19 +36,16 @@ export class MeasurementService {
     name: new FormControl(''),
     patientDocRef: new FormControl(null),
     measurementDate: new FormControl('', [Validators.required]),
-    // Measurements only for all
     bodyWeight: new FormControl(null),
-    waist: new FormControl(null),
-    abdominal: new FormControl(null),
-    hips: new FormControl(null),
-    thighWidest: new FormControl(null),
-    calf: new FormControl(null),
-    // Measurements only for women
     breast: new FormControl(null),
     underBreast: new FormControl(null),
+    waist: new FormControl(null),
+    abdominal: new FormControl(null),
     hipBones: new FormControl(null),
+    hips: new FormControl(null),
+    thighWidest: new FormControl(null),
     thighNarrowest: new FormControl(null),
-    // Measurements only for men
+    calf: new FormControl(null),
     chest: new FormControl(null),
     arm: new FormControl(null),
   });
@@ -62,21 +59,18 @@ export class MeasurementService {
       name: '',
       patientDocRef: null,
       measurementDate: null,
-      // Measurements only for all
-      bodyWeight: null,
-      waist: null,
-      abdominal: null,
-      hips: null,
-      thighWidest: null,
-      calf: null,
-      // Measurements only for women
-      breast: null,
-      underBreast: null,
-      hipBones: null,
-      thighNarrowest: null,
-      // Measurements only for men
-      chest: null,
-      arm: null,
+      bodyWeight: 0.0,
+      breast: 0.0,
+      underBreast: 0.0,
+      waist: 0.0,
+      abdominal: 0.0,
+      hipBones: 0.0,
+      hips: 0.0,
+      thighWidest: 0.0,
+      thighNarrowest: 0.0,
+      calf: 0.0,
+      chest: 0.0,
+      arm: 0.0,
     })
   }
 

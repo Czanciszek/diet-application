@@ -10,29 +10,18 @@ public class Measurement extends BaseDoc {
     private DocRef<Patient> patientDocRef;
     private String measurementDate; //Data pomiaru
 
-    /**
-     * Measurements for everyone
-     */
     private float bodyWeight; //Masa ciała
+    private float breast; // Biust - Only for women
+    private float underBreast; //Pod biustem - Only for women
     private float waist; //Talia
     private float abdominal; //Pas
+    private float hipBones; //Kości biodrowe - Only for women
     private float hips; //Biodra
     private float thighWidest; //Udo najszersze miejsce
+    private float thighNarrowest; //Udo najwęższe - Only for women
     private float calf; //Łydka
-
-    /**
-     * Measurements only for women
-     */
-    private float breast; //Biust
-    private float underBreast; //Pod biustem
-    private float hipBones; //Kości biodrowe
-    private float thighNarrowest; //Udo najwęższe
-
-    /**
-     * Measurements only for men
-     */
-    private float chest; //Klatka piersiowa
-    private float arm; //Ramię
+    private float chest; //Klatka piersiowa - Only for men
+    private float arm; //Ramię - Only for men
 
     public Measurement() {
     }

@@ -37,15 +37,15 @@ export class MeasurementListComponent implements OnInit {
               patientDocRef: item.patientDocRef,
               measurementDate: item.measurementDate,
               bodyWeight: item.bodyWeight,
-              waist: item.waist,
-              abdominal: item.abdominal,
-              hips: item.hips,
-              thighWidest: item.thighWidest,
-              calf: item.calf,
               breast: item.breast,
               underBreast: item.underBreast,
+              waist: item.waist,
+              abdominal: item.abdominal,
               hipBones: item.hipBones,
+              hips: item.hips,
+              thighWidest: item.thighWidest,
               thighNarrowest: item.thighNarrowest,
+              calf: item.calf,
               chest: item.chest,
               arm: item.arm,
             }
@@ -61,9 +61,14 @@ export class MeasurementListComponent implements OnInit {
             }
           }
 
-          this.listData = new MatTableDataSource(array);
+          if (array.length > 0) {
+            this.listData = new MatTableDataSource(array);
+          } else {
+            this.listData = new MatTableDataSource();
+          }
+
           this.showTable = true;
-          this.objectKeys = Object.keys(this.listData.data["0"]);
+          this.objectKeys = Object.keys(this.service.form.value);
         });
   }
 

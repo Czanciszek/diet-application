@@ -2,11 +2,13 @@
 <div class="normal-form" *ngIf="listLoaded">
   <mat-grid-list cols="3">
     <div *ngFor="let menuItem of menuListItems, index as i;">
-      <mat-grid-tile>
-        <p>Zakres dat: {{menuItem.dateRange}}</p>
-        <p>Ilość tygodni: {{menuItem.weekCount}}</p>
-        <p>Data pomiaru: {{menuItem.measurementDate}}</p>
-      </mat-grid-tile>
+      <div (click)="openMenuDetails(menuItem.menuId)">
+        <mat-grid-tile>
+          <p>Zakres dat: {{menuItem.dateRange}}</p>
+          <p>Ilość tygodni: {{menuItem.weekCount}}</p>
+          <p>Data pomiaru: {{menuItem.measurementDate}}</p>
+        </mat-grid-tile>
+      </div>
     </div>
   </mat-grid-list>
 </div>
