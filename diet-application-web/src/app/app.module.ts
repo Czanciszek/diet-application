@@ -29,6 +29,9 @@ import { PatientEditComponent } from './patients/patient-edit/patient-edit.compo
 import { MeasurementListComponent } from './measurements/measurement-list/measurement-list.component';
 import { MenuListComponent } from './menus/menu-list/menu-list.component';
 import { WeekViewComponent } from './menus/week-view/week-view.component';
+import { DishTypeComponent } from './menus/dish-type/dish-type.component';
+import { DishSummaryComponent } from './menus/dish-summary/dish-summary.component';
+import { DishAddComponent } from './menus/dish-add/dish-add.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -39,7 +42,7 @@ const routes: Routes = [
   {path: "patients", component:PatientsComponent},
   {path: "patients/:patient_id", component: PatientComponent},
   {path: "patients/:patient_id/menus", component: MenuListComponent},
-  {path: "patients/:patient_id/menu/:menu_id", component: WeekViewComponent},
+  {path: "menu/:menu_id", component: WeekViewComponent},
 ];
 
 @NgModule({
@@ -61,6 +64,9 @@ const routes: Routes = [
     MeasurementListComponent,
     MenuListComponent,
     WeekViewComponent,
+    DishTypeComponent,
+    DishSummaryComponent,
+    DishAddComponent,
   ],
   imports: [
     BrowserModule,

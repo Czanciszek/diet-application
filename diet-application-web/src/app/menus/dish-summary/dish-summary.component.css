@@ -1,0 +1,12 @@
+mat-card {
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.mat-card-dish {
+  margin-top: 5px;
+}
+
+button {
+  margin-right: 15px;
+}

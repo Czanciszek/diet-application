@@ -105,7 +105,6 @@ export class MenuListComponent implements OnInit {
   }
 
   openMenuDetails(menuId) {
-    let patientId = this.service.form.controls["patientDocRef"].value.id;
-    this.router.navigate(["/patients/" + patientId + "/menu/" + menuId]);
+    this.router.navigate(["/menu/" + menuId]);
   }
 }

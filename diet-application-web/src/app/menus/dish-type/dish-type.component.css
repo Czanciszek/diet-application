@@ -1,0 +1,15 @@
+mat-card {
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+mat-card-header {
+  color: black;
+  width: 100% !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-card-dish-type {
+  margin-top: 20px;
+}
