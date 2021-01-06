@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {NotificationService} from "../../service/notification.service";
 import {MenuService} from "../../service/menu.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {ActivatedRoute, Router} from "@angular/router";
