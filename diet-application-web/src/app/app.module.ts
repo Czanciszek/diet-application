@@ -40,9 +40,9 @@ const routes: Routes = [
   {path: "products", component:ProductsComponent},
   {path: "dishes", component:DishesComponent},
   {path: "patients", component:PatientsComponent},
+  {path: "menu/:menu_id", component: WeekViewComponent},
   {path: "patients/:patient_id", component: PatientComponent},
   {path: "patients/:patient_id/menus", component: MenuListComponent},
-  {path: "menu/:menu_id", component: WeekViewComponent},
 ];
 
 @NgModule({

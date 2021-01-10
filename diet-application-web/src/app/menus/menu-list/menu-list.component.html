@@ -1,14 +1,51 @@
+<div class="search-div">
+  <button mat-raised-button >
+    <mat-icon>add</mat-icon>Nowy
+  </button>
+  <mat-form-field class="search-form-field" floatLabel="never">
+    <input matInput [(ngModel)]="searchKey" placeholder="Szukaj" autocomplete="off" (keyup)="applyFilter()">
+    <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
 
-<div class="normal-form" *ngIf="listLoaded">
-  <mat-grid-list cols="3">
-    <div *ngFor="let menuItem of menuListItems, index as i;">
-      <div (click)="openMenuDetails(menuItem.menuId)">
-        <mat-grid-tile>
-          <p>Zakres dat: {{menuItem.dateRange}}</p>
-          <p>Ilość tygodni: {{menuItem.weekCount}}</p>
-          <p>Data pomiaru: {{menuItem.measurementDate}}</p>
-        </mat-grid-tile>
-      </div>
-    </div>
-  </mat-grid-list>
+<div class ="mat-elevation-z8">
+  <mat-table [dataSource]="listData" matSort>
+    <ng-container matColumnDef="dateRange">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Zakres dat</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{dateTimeParser(element)}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="weekCount">
+      <mat-header-cell *matHeaderCellDef  mat-sort-header>Długość trwania diety</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{weekCount(element.weekMealList.length)}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="measurementDate">
+      <mat-header-cell *matHeaderCellDef  mat-sort-header>Data pomiaru</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{getMeasurementDate(element.measurementDocRef)}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button mat-icon-button ><mat-icon>launch</mat-icon></button>
+        <button mat-icon-button ><mat-icon>delete</mat-icon></button>
+        <button mat-icon-button ><mat-icon>picture_as_pdf</mat-icon></button>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="loading">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        Ładowanie danych...
+      </mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        Brak danych.
+      </mat-footer-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': dataLoaded}"></mat-footer-row>
+    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data != null && listData.data.length==0)}"></mat-footer-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
 </div>

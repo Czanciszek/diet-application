@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/weekmeals")
@@ -19,6 +20,11 @@ public class WeekMealController {
     @GetMapping
     public List<WeekMeal> getAll() {
         return this.weekMealRepository.findAll();
+    }
+
+    @GetMapping(path = "/{weekMealId}")
+    public Optional<WeekMeal> getWeekMealById(@PathVariable("weekMealId") String weekMealId) {
+        return this.weekMealRepository.findById(weekMealId);
     }
 
     @PostMapping(produces = "application/json")

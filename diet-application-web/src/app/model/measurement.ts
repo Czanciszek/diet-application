@@ -1,0 +1,26 @@
+export interface Measurement {
+  id: string,
+  header: object,
+  primaryImageId: string,
+  type: string,
+  name: string,
+  patientDocRef: {
+    id: string,
+    name: string,
+    primaryImageId: string,
+    type: string
+  },
+  measurementDate: string,
+  bodyWeight: number,
+  breast: number,
+  underBreast: number,
+  waist: number,
+  abdominal: number,
+  hipBones: number,
+  hips: number,
+  thighWidest: number,
+  thighNarrowest: number,
+  calf: number,
+  chest: number,
+  arm: number,
+}

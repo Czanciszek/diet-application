@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GlobalVariable} from "../global";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Measurement} from "../model/measurement";
 
 @Injectable({
   providedIn: 'root'
@@ -75,8 +76,7 @@ export class MeasurementService {
   }
 
   getMeasurementsById(measurementId) {
-    this.measurementObject = this.http.get("http://localhost:8080/api/v1/measurements/" + measurementId, this.httpOptions);
-    return this.measurementObject;
+    return this.http.get<Measurement>("http://localhost:8080/api/v1/measurements/" + measurementId, this.httpOptions);
   }
 
   getMeasurementsByPatientId(patientId) {

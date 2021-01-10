@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MenuService} from "../../service/menu.service";
-import {MatTableDataSource} from "@angular/material/table";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MeasurementService} from "../../service/measurement.service";
+import {Menu} from "../../model/menu";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
+import {Measurement} from "../../model/measurement";
 
 @Component({
   selector: 'app-menu-list',
@@ -18,70 +21,66 @@ export class MenuListComponent implements OnInit {
     private measurementService: MeasurementService,
   ) { }
 
-  listData: MatTableDataSource<any>;
-  listLoaded = false;
+  displayedColumns: string[] = ['dateRange', 'weekCount', 'measurementDate', 'actions'];
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  searchKey: string;
 
-  menuListItems = Array<{
-    menuId: string,
-    dateRange: string,
-    weekCount: string,
-    measurementDate: string
+  listData: any;
+
+  measurements = Array<{
+    measurementId: string,
+    measurementDate: string,
   }>();
+
+  measurement: any;
+  dataLoaded = false;
 
   ngOnInit(): void {
     let patientId = this.route.snapshot.paramMap.get("patient_id");
-    this.service.getMenusByPatientId(patientId).subscribe(
-      list => {
-        let array = list.map(item => {
-          return {
-            id: item.id,
-            header: item.header,
-            primaryImageId: item.primaryImageId,
-            type: item.type,
-            name: item.name,
-            measurementDocRef: item.measurementDocRef,
-            patientDocRef: item.patientDocRef,
-            weekMealList: item.weekMealList,
-            mealTypes: item.mealTypes,
-            startDate: item.startDate,
-            endDate: item.endDate
-          };
-        });
-        this.listData = array;
-        this.initListItems();
-      });
+    this.service.getMenusByPatientId(patientId)
+      .subscribe(
+        (data: Menu[]) => {
+          this.listData = [ ...data];
+          this.listData.sort = this.sort;
+          this.listData.paginator = this.paginator;
+          this.getMeasurementDates();
+        }
+      );
   }
 
-  async initListItems() {
-    // @ts-ignore
-    for (let item of this.listData) {
-      let menuId = item.id;
-      let dateRange = this.dateTimeParser(item);
-      let weekCount = this.weekCount(item.weekMealList.length);
-      var measurementDate = null;
-      if (item.measurementDocRef != null) {
-        const date = await this.getMeasurementDate(item.measurementDocRef.id);
-        measurementDate = new Date(date).toDateString();
-      }
+  onSearchClear() {
+    this.searchKey = "";
+    this.applyFilter();
+  }
 
-      if (measurementDate == null) {
-        measurementDate = "Nie wybrano";
-      }
+  applyFilter() {
+    this.listData.filter = this.searchKey.trim().toLowerCase();
+  }
 
-      let menuItem = {
-        menuId: menuId,
-        dateRange: dateRange,
-        weekCount: weekCount,
-        measurementDate: measurementDate
-      };
-      this.menuListItems.push(menuItem);
+  getMeasurementDates() {
+    for (let data of this.listData) {
+      if (data.measurementDocRef != null) {
+        this.getMeasurementById(data.measurementDocRef.id);
+      }
     }
-    this.listLoaded = true;
+    this.dataLoaded = true;
   }
 
-   async getMeasurementDate(measurementId) {
-    let measurement = await this.measurementService.getMeasurementsById(measurementId).toPromise();
-    return measurement.measurementDate;
+  async getMeasurementById(measurementId) {
+    const measurement = <Measurement> await this.measurementService.getMeasurementsById(measurementId).toPromise();
+    const date = new Date(measurement.measurementDate).toDateString();
+    this.measurements.push({measurementId: measurement.id, measurementDate: date});
+  }
+
+  getMeasurementDate(measurement) {
+    if (measurement != null) {
+      let filtered = this.measurements.find(ss => ss.measurementId == measurement.id);
+      if (filtered != null) {
+        return filtered.measurementDate;
+      }
+    }
+    return "Nie wybrano";
   }
 
   dateTimeParser(menu) {
@@ -102,7 +101,4 @@ export class MenuListComponent implements OnInit {
     else return " tygodni";
   }
 
-  openMenuDetails(menuId) {
-    this.router.navigate(["/menu/" + menuId]);
-  }
 }
