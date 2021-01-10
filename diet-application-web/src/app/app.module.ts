@@ -32,6 +32,7 @@ import { WeekViewComponent } from './menus/week-view/week-view.component';
 import { DishTypeComponent } from './menus/dish-type/dish-type.component';
 import { DishSummaryComponent } from './menus/dish-summary/dish-summary.component';
 import { DishAddComponent } from './menus/dish-add/dish-add.component';
+import { MenusComponent } from './menus/menus.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -42,7 +43,7 @@ const routes: Routes = [
   {path: "patients", component:PatientsComponent},
   {path: "menu/:menu_id", component: WeekViewComponent},
   {path: "patients/:patient_id", component: PatientComponent},
-  {path: "patients/:patient_id/menus", component: MenuListComponent},
+  {path: "patients/:patient_id/menus", component: MenusComponent},
 ];
 
 @NgModule({
@@ -67,6 +68,7 @@ const routes: Routes = [
     DishTypeComponent,
     DishSummaryComponent,
     DishAddComponent,
+    MenusComponent,
   ],
   imports: [
     BrowserModule,

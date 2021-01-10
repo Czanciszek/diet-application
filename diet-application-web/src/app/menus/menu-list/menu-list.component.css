@@ -1,11 +1,3 @@
-.control-container {
-  margin-top: 300px;
-}
-
-div.normal-form {
-  margin: 120px;
-}
-
 .hide {
   display: none;
 }
@@ -17,8 +9,8 @@ mat-footer-row mat-footer-cell {
 
 
 /* Filter controls */
-.search-div {
-  margin: 10px;
+.panel-div {
+  margin: 10px auto;
 }
 
 .search-form-field {
