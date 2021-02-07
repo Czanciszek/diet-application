@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GlobalVariable} from "../global";
-import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import { FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
 import {Menu} from '../model/menu';
-import {init} from "protractor/built/launcher";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +20,26 @@ export class MenuService {
     private http: HttpClient
   ) { }
 
+  form: FormGroup = new FormGroup({
+    id: new FormControl(null),
+    weekCount: new FormControl('', [Validators.required, Validators.min(1), Validators.max(8)]),
+    mealTypes: new FormControl(null),
+    measurementId: new FormControl(null),
+    patientId: new FormControl(null),
+    startDate: new FormControl('', [Validators.required]),
+  });
+
+  initializeFormGroup() {
+    this.form.setValue({
+      id: null,
+      measurementId: null,
+      patientId: null,
+      weekCount: null ,
+      mealTypes: null,
+      startDate: null,
+    })
+  }
+
   menuList: any;
 
   getMenusByPatientId(patientId): Observable<Menu[]> {
@@ -31,5 +50,9 @@ export class MenuService {
   getMenuById(menuId): Observable<Menu[]> {
     return this.http.get<Menu[]>("http://localhost:8080/api/v1/menus/" + menuId, this.httpOptions)
       .pipe();
+  }
+
+  insertMenu(menu) {
+    return this.http.post("http://localhost:8080/api/v1/menus", menu, this.httpOptions);
   }
 }

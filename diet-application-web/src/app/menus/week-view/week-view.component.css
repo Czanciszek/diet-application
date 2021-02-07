@@ -1,20 +1,3 @@
-.table-day {
-  top: 3em;
-  width: 100%;
-  height: 100% !important;
-}
-
-.table-column {
-  height: 100% !important;
-  width: 100%;
-  border-right: 5px solid !important;
-}
-
-.name-day {
-  text-align: center;
-}
-
-
 .fill-remaining-space {
   flex: 1 1 auto;
 }
@@ -22,32 +5,16 @@
 .container {
   width: 100%;
   min-width: 100%;
-}
-
-mat-card-header {
-  color: black;
-  width: 100% !important;
-  justify-content: center;
-  align-items: center;
-}
-
-.mat-card-dish-type {
-  margin-top: 20px;
-}
-
-.mat-card-dish {
-  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .mat-card-header-day-name {
-  color: blue;
+  width: 100%;
+  min-width: 100% !important;
+  background: white;
+  text-align: center;
 }
 
-mat-card {
-  border: 0 !important;
-  border-radius: 0 !important;
-}
-
-mat-grid-list {
-
+.column {
+  width: 25%;
 }

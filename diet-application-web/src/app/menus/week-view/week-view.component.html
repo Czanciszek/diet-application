@@ -8,45 +8,25 @@
   </mat-toolbar>
 </div>
 
-<mat-grid-list cols="7" rowHeight="fit" class="table-day">
 
-  <div *ngFor="let day of days">
-    <mat-grid-tile>
+<div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+  <div fxFlex="14%" *ngFor="let day of days">
 
-      <mat-grid-list cols="1" rowHeight="fit" class="table-column">
-        <mat-card>
-          <mat-card-header class="mat-card-header-day-name">
-            <mat-card-title>{{day}}</mat-card-title>
-          </mat-card-header>
-        </mat-card>
+    <div class="mat-card-header-day-name">
+      <h2>{{day}}</h2>
+    </div>
 
-        <app-dish-type [typeName]="'ŚNIADANIE'"></app-dish-type>
+    <div *ngFor="let dishType of menuItemData.mealTypes">
 
-        <app-dish-summary [dishName]="'Potrawa1'"></app-dish-summary>
-        <div *ngIf="day=='Monday'">
-          <app-dish-summary [dishName]="'Potrawa2'"></app-dish-summary>
-        </div>
+      <app-dish-type [typeName]="dishType"></app-dish-type>
 
-        <app-dish-add></app-dish-add>
+      <app-dish-summary [dishName]="'Potrawa1'"></app-dish-summary>
+      <div *ngIf="dishType=='DINNER'">
+        <app-dish-summary [dishName]="'Potrawa2'"></app-dish-summary>
+      </div>
+      <app-dish-add></app-dish-add>
+    </div>
 
-        <app-dish-type [typeName]="'OBIAD'"></app-dish-type>
-
-        <app-dish-summary [dishName]="'Potrawa Obiad'"></app-dish-summary>
-
-        <app-dish-add></app-dish-add>
-
-        <app-dish-type [typeName]="'PODWIECZOREK'"></app-dish-type>
-
-        <app-dish-add></app-dish-add>
-
-        <app-dish-type [typeName]="'KOLACJA'"></app-dish-type>
-
-        <app-dish-summary [dishName]="'Potrawa Kolacja'"></app-dish-summary>
-
-        <app-dish-add></app-dish-add>
-
-      </mat-grid-list>
-    </mat-grid-tile>
   </div>
+</div>
 
-</mat-grid-list>

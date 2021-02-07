@@ -1,5 +1,5 @@
 <div class="panel-div">
-  <button mat-raised-button >
+  <button mat-raised-button (click)="onCreate()">
     <mat-icon>add</mat-icon>Nowy
   </button>
 </div>
@@ -21,7 +21,7 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <button mat-icon-button ><mat-icon>launch</mat-icon></button>
+        <button mat-icon-button (click)="onEnterMenuDetails(element.id)"><mat-icon>launch</mat-icon></button>
         <button mat-icon-button ><mat-icon>delete</mat-icon></button>
         <button mat-icon-button ><mat-icon>picture_as_pdf</mat-icon></button>
       </mat-cell>

@@ -80,7 +80,7 @@ export class MeasurementService {
   }
 
   getMeasurementsByPatientId(patientId) {
-    this.measurementList = this.http.get("http://localhost:8080/api/v1/measurements/patient/" + patientId, this.httpOptions);
+    this.measurementList = this.http.get("http://localhost:8080/api/v1/measurements/patient/" + patientId, this.httpOptions).pipe();
     return this.measurementList;
   }
 

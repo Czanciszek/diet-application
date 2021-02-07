@@ -6,11 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/daymeals")
 public class DayMealController {
-    private DayMealRepository dayMealRepository;
+    private final DayMealRepository dayMealRepository;
 
     public DayMealController(DayMealRepository dayMealRepository) {
         this.dayMealRepository = dayMealRepository;
@@ -19,6 +20,11 @@ public class DayMealController {
     @GetMapping
     public List<DayMeal> getAll() {
         return this.dayMealRepository.findAll();
+    }
+
+    @GetMapping(path = "/{dayMealId}")
+    public Optional<DayMeal> getFilteredProducts(@PathVariable("dayMealId") String dayMealId) {
+        return this.dayMealRepository.findById(dayMealId);
     }
 
     @PostMapping(produces = "application/json")

@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {forwardRef, NgModule} from '@angular/core';
 import {MaterialModule} from "./material/material.module";
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -33,6 +34,7 @@ import { DishTypeComponent } from './menus/dish-type/dish-type.component';
 import { DishSummaryComponent } from './menus/dish-summary/dish-summary.component';
 import { DishAddComponent } from './menus/dish-add/dish-add.component';
 import { MenusComponent } from './menus/menus.component';
+import { MenuAddComponent } from './menus/menu-add/menu-add.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -69,6 +71,7 @@ const routes: Routes = [
     DishSummaryComponent,
     DishAddComponent,
     MenusComponent,
+    MenuAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +82,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialModule,
+    FlexLayoutModule,
   ],
   providers: [
     RestapiService,

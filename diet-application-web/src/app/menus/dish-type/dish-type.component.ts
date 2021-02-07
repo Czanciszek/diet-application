@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {translateDishType} from "../../material/helper/polish-translate";
 
 @Component({
   selector: 'app-dish-type',
@@ -15,4 +16,7 @@ export class DishTypeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  translateDishType(type) {
+    return translateDishType(type);
+  }
 }

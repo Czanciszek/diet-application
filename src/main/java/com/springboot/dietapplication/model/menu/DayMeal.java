@@ -15,6 +15,8 @@ public class DayMeal extends BaseDoc {
 
     private List<String> mealList; // Lista odnośników do posiłków
 
+    private DayType dayType; //Day name
+
     private String date;
 
     //private Map<String, Float> limits; // Limity kaloryczności
@@ -23,10 +25,11 @@ public class DayMeal extends BaseDoc {
 
     }
 
-    public DayMeal(DocRef<Menu> menuDocRef, DocRef<WeekMeal> weekMealDocRef, List<String> mealList, String date) {
+    public DayMeal(DocRef<Menu> menuDocRef, DocRef<WeekMeal> weekMealDocRef, List<String> mealList, DayType dayType, String date) {
         this.menuDocRef = menuDocRef;
         this.weekMealDocRef = weekMealDocRef;
         this.mealList = mealList;
+        this.dayType = dayType;
         this.date = date;
     }
 
@@ -52,6 +55,14 @@ public class DayMeal extends BaseDoc {
 
     public void setMealList(List<String> mealList) {
         this.mealList = mealList;
+    }
+
+    public DayType getDayType() {
+        return dayType;
+    }
+
+    public void setDayType(DayType dayType) {
+        this.dayType = dayType;
     }
 
     public String getDate() {

@@ -6,6 +6,8 @@ import {Menu} from "../../model/menu";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {Measurement} from "../../model/measurement";
+import {MatDialog} from "@angular/material/dialog";
+import {MenuAddComponent} from "../menu-add/menu-add.component";
 
 @Component({
   selector: 'app-menu-list',
@@ -18,6 +20,7 @@ export class MenuListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private service: MenuService,
+    private dialog: MatDialog,
     private measurementService: MeasurementService,
   ) { }
 
@@ -75,7 +78,7 @@ export class MenuListComponent implements OnInit {
 
   getMeasurementDate(measurement) {
     if (measurement != null) {
-      let filtered = this.measurements.find(ss => ss.measurementId == measurement.id);
+      let filtered = this.measurements.find(ms => ms.measurementId == measurement.id);
       if (filtered != null) {
         return filtered.measurementDate;
       }
@@ -99,6 +102,27 @@ export class MenuListComponent implements OnInit {
     if (count == 1) return " tydzień";
     else if (count >= 2 && count <= 4) return " tygodnie";
     else return " tygodni";
+  }
+
+  onEnterMenuDetails(menuId) {
+    this.router.navigate(["/menu/" + menuId]);
+  }
+
+  onCreate() {
+    this.service.initializeFormGroup();
+    this.openDialog();
+  }
+
+  openDialog() {
+    let dialogRef = this.dialog.open(MenuAddComponent, {
+      disableClose: true,
+      autoFocus: true,
+      width: "90%"
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      this.ngOnInit();
+    });
   }
 
 }

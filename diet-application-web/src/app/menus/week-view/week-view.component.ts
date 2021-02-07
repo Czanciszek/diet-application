@@ -39,7 +39,7 @@ export class WeekViewComponent implements OnInit {
         (data: Menu[]) => {
           this.menuItemData = { ...data};
           let weekMealId = this.menuItemData.weekMealList[0];
-          console.log(this.menuItemData);
+          console.log("Menu", this.menuItemData);
           this.getWeekMealDetails(weekMealId);
         }
       );
@@ -50,7 +50,7 @@ export class WeekViewComponent implements OnInit {
       .subscribe(
         (data: WeekMeal[]) => {
           this.weekMealItemData = { ...data};
-          console.log(this.weekMealItemData);
+          console.log("Week", this.weekMealItemData);
         }
       );
   }
