@@ -5,6 +5,7 @@ import com.springboot.dietapplication.repository.DayMealRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +24,13 @@ public class DayMealController {
     }
 
     @GetMapping(path = "/{dayMealId}")
-    public Optional<DayMeal> getFilteredProducts(@PathVariable("dayMealId") String dayMealId) {
+    public Optional<DayMeal> getDayMealById(@PathVariable("dayMealId") String dayMealId) {
         return this.dayMealRepository.findById(dayMealId);
+    }
+
+    @GetMapping(path = "/list/{dayMealIdList}")
+    public List<DayMeal> getDayMealById(@PathVariable("dayMealIdList") List<String> dayMealIdList) {
+        return (List<DayMeal>) this.dayMealRepository.findAllById(dayMealIdList);
     }
 
     @PostMapping(produces = "application/json")

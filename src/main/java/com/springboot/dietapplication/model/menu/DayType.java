@@ -4,7 +4,7 @@ public enum DayType {
     MONDAY,
     TUESDAY,
     WEDNESDAY,
-    THRUSDAY,
+    THURSDAY,
     FRIDAY,
     SATURDAY,
     SUNDAY
