@@ -1,24 +1,25 @@
 package com.springboot.dietapplication.model.menu;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
-import com.springboot.dietapplication.model.base.DocRef;
-import com.springboot.dietapplication.model.product.AmountType;
+import com.springboot.dietapplication.model.product.ProductForDish;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document(collection = "Meals")
 public class Meal extends BaseDoc {
 
-    private DocRef<DayMeal> dayMealDocRef;
+    private String dayMealId; // Reference to day
 
-    private String foodId; //Id reference for product or dish
+    private int isProduct; // true - for Product; false - for Dish
 
-    private boolean isProduct; // 1 - for Product; 0 - for Dish
+    private List<ProductForDish> productForDishList; // Product list for dish type
 
-    private float portions; // Portions for dish meal
+    private float grams; // Gram value for product type
 
-    private float amount; // Amount for product
+    private float portions; // Portions for dish meal (For now should be always 1)
 
-    private AmountType amountType; // type of amount for product
+    private String recipe; // Recipe for dish meal
 
     private MealType mealType; //Rodzaj posiłku
 
@@ -26,38 +27,59 @@ public class Meal extends BaseDoc {
 
     }
 
-    public Meal(DocRef<DayMeal> dayMealDocRef, String foodId, boolean isProduct, float portions, float amount, AmountType amountType, MealType mealType) {
-        this.dayMealDocRef = dayMealDocRef;
-        this.foodId = foodId;
+    public Meal(Meal meal) {
+        this.setName(meal.getName());
+        this.dayMealId = meal.dayMealId;
+        this.isProduct = meal.isProduct;
+        this.productForDishList = meal.productForDishList;
+        this.grams = meal.grams;
+        this.portions = meal.portions;
+        this.recipe = meal.recipe;
+        this.mealType = meal.mealType;
+    }
+
+    public Meal(String dayMealId, String name, int isProduct, List<ProductForDish> productForDishList,
+                float grams, float portions, String recipe, MealType mealType) {
+        this.setName(name);
+        this.dayMealId = dayMealId;
         this.isProduct = isProduct;
+        this.productForDishList = productForDishList;
+        this.grams = grams;
         this.portions = portions;
-        this.amount = amount;
-        this.amountType = amountType;
+        this.recipe = recipe;
         this.mealType = mealType;
     }
 
-    public DocRef<DayMeal> getDayMealDocRef() {
-        return dayMealDocRef;
+    public String getDayMealId() {
+        return dayMealId;
     }
 
-    public void setDayMealDocRef(DocRef<DayMeal> dayMealDocRef) {
-        this.dayMealDocRef = dayMealDocRef;
+    public void setDayMealId(String dayMealId) {
+        this.dayMealId = dayMealId;
     }
 
-    public String getFoodId() {
-        return foodId;
-    }
-
-    public void setFoodId(String foodId) {
-        this.foodId = foodId;
-    }
-
-    public boolean isProduct() {
+    public int getIsProduct() {
         return isProduct;
     }
 
-    public void setProduct(boolean product) {
-        isProduct = product;
+    public void setIsProduct(int isProduct) {
+        this.isProduct = isProduct;
+    }
+
+    public List<ProductForDish> getProductForDishList() {
+        return productForDishList;
+    }
+
+    public void setProductForDishList(List<ProductForDish> productForDishList) {
+        this.productForDishList = productForDishList;
+    }
+
+    public float getGrams() {
+        return grams;
+    }
+
+    public void setGrams(float grams) {
+        this.grams = grams;
     }
 
     public float getPortions() {
@@ -68,20 +90,12 @@ public class Meal extends BaseDoc {
         this.portions = portions;
     }
 
-    public float getAmount() {
-        return amount;
+    public String getRecipe() {
+        return recipe;
     }
 
-    public void setAmount(float amount) {
-        this.amount = amount;
-    }
-
-    public AmountType getAmountType() {
-        return amountType;
-    }
-
-    public void setAmountType(AmountType amountType) {
-        this.amountType = amountType;
+    public void setRecipe(String recipe) {
+        this.recipe = recipe;
     }
 
     public MealType getMealType() {

@@ -6,6 +6,9 @@ import {Menu} from "../../model/menu";
 import {WeekMeal} from "../../model/week-meal";
 import {DayMealService} from "../../service/day-meal.service";
 import {DayMeal} from "../../model/day-meal";
+import {translateDayType} from "../../material/helper/polish-translate";
+import {MealService} from "../../service/meal.service";
+import {Meal} from "../../model/meal";
 
 @Component({
   selector: 'week-view.component',
@@ -24,12 +27,15 @@ export class WeekViewComponent implements OnInit {
     private route: ActivatedRoute,
     private menuService: MenuService,
     private weekMealService: WeekMealService,
-    private dayMealService: DayMealService
+    private dayMealService: DayMealService,
+    private mealService: MealService
   ) {};
 
   menuItemData: any;
   weekMealItemData: any;
   dayMealListItemData: any;
+  mealListItemData: any;
+  dataLoaded = false;
 
   ngOnInit(): void {
     let menuId = this.route.snapshot.paramMap.get("menu_id");
@@ -63,9 +69,24 @@ export class WeekViewComponent implements OnInit {
     this.dayMealService.getDayMealListByListId(daysListId)
       .subscribe(
         (daysData: DayMeal[]) => {
-          this.dayMealListItemData = {...daysData};
+          this.dayMealListItemData = [...daysData];
           console.log("Days", this.dayMealListItemData);
+          this.getMealListDetails(daysListId);
         });
+  }
+
+  getMealListDetails(daysListId) {
+    this.mealService.getMealListByListId(daysListId)
+      .subscribe(
+        (mealsData: Meal[]) => {
+          this.mealListItemData = [...mealsData];
+          console.log("Meals", this.mealListItemData);
+          this.dataLoaded = true;
+        });
+  }
+
+  translateDayType(name) {
+    return translateDayType(name);
   }
 
 }

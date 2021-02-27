@@ -5,11 +5,13 @@ import com.springboot.dietapplication.model.base.DocRef;
 public class ProductForDish {
 
     private DocRef<Product> product;
+    private float grams;
     private float amount;
     private AmountType amountType;
 
-    public ProductForDish(DocRef<Product> product, float amount, AmountType amountType) {
+    public ProductForDish(DocRef<Product> product, float grams, float amount, AmountType amountType) {
         this.product = product;
+        this.grams = grams;
         this.amount = amount;
         this.amountType = amountType;
     }
@@ -20,6 +22,14 @@ public class ProductForDish {
 
     public void setProduct(DocRef<Product> product) {
         this.product = product;
+    }
+
+    public float getGrams() {
+        return grams;
+    }
+
+    public void setGrams(float grams) {
+        this.grams = grams;
     }
 
     public float getAmount() {

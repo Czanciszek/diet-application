@@ -10,3 +10,11 @@ mat-card {
 button {
   margin-right: 15px;
 }
+
+::ng-deep .langSelect div.mat-select-arrow-wrapper {
+  display: none;
+}
+
+::ng-deep .langSelect.mat-select {
+  display: inline;
+}

@@ -1,12 +1,23 @@
 <div class="mat-card-column">
   <div class="mat-card-dish">
     <div>
-      <p>{{dishName}}</p>
+      <p>{{mealItem.name}}</p>
     </div>
     <div>
       <button mat-mini-fab ><mat-icon>launch</mat-icon></button>
-      <button mat-mini-fab ><mat-icon>delete</mat-icon></button>
-      <button mat-mini-fab ><mat-icon>content_copy</mat-icon></button>
+      <button mat-mini-fab (click)="onDeleteMealButtonClick(mealItem.id)"><mat-icon>delete</mat-icon></button>
+      <button mat-mini-fab  (click)=select.open() matTooltip="Kopiuj danie">
+        <mat-icon>content_copy</mat-icon>
+        <mat-select #select class="langSelect">
+          <mat-option (click)="copyMeal(mealItem, 'MONDAY')">Poniedziałek</mat-option>
+          <mat-option (click)="copyMeal(mealItem, 'TUESDAY')">Wtorek</mat-option>
+          <mat-option (click)="copyMeal(mealItem, 'WEDNESDAY')">Środa</mat-option>
+          <mat-option (click)="copyMeal(mealItem, 'THURSDAY')">Czwartek</mat-option>
+          <mat-option (click)="copyMeal(mealItem, 'FRIDAY')">Piątek</mat-option>
+          <mat-option (click)="copyMeal(mealItem, 'SATURDAY')">Sobota</mat-option>
+          <mat-option (click)="copyMeal(mealItem, 'SUNDAY')">Niedziela</mat-option>
+        </mat-select>
+      </button>
     </div>
   </div>
 </div>

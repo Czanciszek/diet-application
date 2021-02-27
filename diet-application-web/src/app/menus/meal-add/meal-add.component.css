@@ -1,0 +1,54 @@
+
+.div.container {
+  margin: 0 30px;
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+form.normal-form {
+  margin: 0;
+}
+
+.control-container {
+  width: 100%;
+  padding: 5%;
+}
+
+.control-container > * {
+  width: 100%;
+}
+
+.recipe-grid-list-height {
+  height: 150px;
+}
+
+.add-bottom-padding {
+  padding-bottom: 5px;
+}
+
+.add-slider-padding {
+  padding-top: 5px;
+  padding-right: 20px;
+  padding-bottom: 5px;
+}
+
+mat-radio-group mat-radio-button {
+  margin-left: 5px;
+}
+
+.button-row button {
+  margin: 5px;
+}
+
+div mat-checkbox {
+  padding-right: 10px;
+}
+
+.btn-dialog-close {
+  width: 35px;
+  min-width: 0 !important;
+  height: 35px;
+  padding: 0 !important;
+}

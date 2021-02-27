@@ -8,25 +8,26 @@
   </mat-toolbar>
 </div>
 
+<div *ngIf="dataLoaded">
+  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+    <div fxFlex="14%" *ngFor="let day of dayMealListItemData">
 
-<div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
-  <div fxFlex="14%" *ngFor="let day of days">
-
-    <div class="mat-card-header-day-name">
-      <h2>{{day}}</h2>
-    </div>
-
-    <div *ngFor="let dishType of menuItemData.mealTypes">
-
-      <app-dish-type [typeName]="dishType"></app-dish-type>
-
-      <app-dish-summary [dishName]="'Potrawa1'"></app-dish-summary>
-      <div *ngIf="dishType=='DINNER'">
-        <app-dish-summary [dishName]="'Potrawa2'"></app-dish-summary>
+      <div class="mat-card-header-day-name">
+        <h2>{{translateDayType(day.dayType)}}</h2>
       </div>
-      <app-dish-add></app-dish-add>
-    </div>
 
+      <div *ngFor="let dishType of menuItemData.mealTypes">
+
+        <app-dish-type [typeName]="dishType"></app-dish-type>
+
+        <div *ngFor="let meal of mealListItemData">
+          <div *ngIf="meal.mealType === dishType && meal.dayMealId === day.id">
+            <app-dish-summary [mealItem]="meal" [daysList]="dayMealListItemData"></app-dish-summary>
+          </div>
+        </div>
+
+        <app-dish-add [dayId]="day.id" [menuItem]="menuItemData" [dishType]="dishType" ></app-dish-add>
+      </div>
+    </div>
   </div>
 </div>
-

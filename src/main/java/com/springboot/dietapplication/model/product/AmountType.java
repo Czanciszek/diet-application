@@ -2,9 +2,12 @@ package com.springboot.dietapplication.model.product;
 
 public enum AmountType {
 
-    G,
-    ML,
-    PIECE,
-    SPOON,
+    PIECE, // Sztuka
+    SPOON, // Łyżka
+    SCOOPS, // Miarka
+    HANDFUL, // Garść
+    SLICE, // Plaster
+    LEAVES, // Listki
+    GLASS, // Szklanka
 
 }

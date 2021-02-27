@@ -20,10 +20,13 @@ export class DishComponent implements OnInit {
   ) { }
 
   amountTypes = [
-    { id: "G", value: "G" },
-    { id: "ML", value: "ML" },
     { id: "PIECE", value: "Sztuka" },
-    { id: "SPOON", value: "Łyżka"}
+    { id: "SPOON", value: "Łyżka" },
+    { id: "SCOOPS", value: "Miarka" },
+    { id: "HANDFUL", value: "Garść" },
+    { id: "SLICE", value: "Plaster" },
+    { id: "LEAVES", value: "Listek" },
+    { id: "GLASS", value: "Szklanka" },
   ];
 
   mealTypes = [

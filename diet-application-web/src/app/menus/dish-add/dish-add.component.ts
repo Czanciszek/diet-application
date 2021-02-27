@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {MatDialog} from "@angular/material/dialog";
+import {MealAddComponent} from "../meal-add/meal-add.component";
+import {MealService} from "../../service/meal.service";
+import {Menu} from "../../model/menu";
 
 @Component({
   selector: 'app-dish-add',
@@ -7,9 +11,34 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DishAddComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private dialog: MatDialog,
+    private mealSerivce: MealService
+  ) { }
+
+  @Input()
+  dayId: string;
+  @Input()
+  dishType: string;
+  @Input()
+  menuItem: Menu;
 
   ngOnInit(): void {
   }
 
+  openDialog() {
+    this.mealSerivce.initializeFormGroup();
+    this.mealSerivce.form.get('mealType').patchValue(this.dishType);
+    this.mealSerivce.form.get('dayMealId').patchValue(this.dayId);
+
+    let dialogRef = this.dialog.open(MealAddComponent, {
+      disableClose: true,
+      autoFocus: true,
+      width: "90%"
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      this.ngOnInit();
+    });
+  }
 }

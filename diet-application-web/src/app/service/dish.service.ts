@@ -36,6 +36,7 @@ export class DishService {
 
   addProductFormGroup(): FormGroup {
     return new FormGroup( {
+      grams: new FormControl(null),
       amount: new FormControl(null),
       amountType: new FormControl(null),
       product: new FormGroup( {
@@ -56,6 +57,7 @@ export class DishService {
       type: '',
       products: [
         {
+          grams: null,
           amount: null,
           amountType: null,
           product: {

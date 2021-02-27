@@ -49,23 +49,33 @@
     </mat-grid-list>
     <mat-grid-list cols="1" class="recipe-grid-list-height" rowHeight="fit">
       <mat-dialog-content>
-      <mat-grid-tile>
-        <div class="control-container">
-          <mat-form-field>
-            <div class="add-bottom-padding">
-              <textarea rows="5" formControlName="recipe" matInput  style="resize: none;" placeholder="Przepis">
+        <mat-grid-tile>
+          <div class="control-container">
+            <mat-form-field>
+              <div class="add-bottom-padding">
+                <textarea rows="5" formControlName="recipe" matInput  style="resize: none;" placeholder="Przepis">
 
-              </textarea>
-            </div>
-          </mat-form-field>
-        </div>
-      </mat-grid-tile>
+                </textarea>
+              </div>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
       </mat-dialog-content>
     </mat-grid-list>
 
     <div formArrayName="products" *ngFor="let product of service.form.get('products').controls; let i = index">
       <div [formGroupName]="i">
         <mat-grid-list cols="8" rowHeight="60px">
+          <mat-grid-tile>
+            <div class="control-container">
+              <mat-form-field>
+                <div class="add-bottom-padding">
+                  <input matInput placeholder="Gram" formControlName="grams">
+                </div>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
           <mat-grid-tile>
             <div class="control-container">
               <mat-form-field>
@@ -90,7 +100,7 @@
             </div>
           </mat-grid-tile>
 
-          <mat-grid-tile colspan="5">
+          <mat-grid-tile colspan="4">
             <div class="control-container">
               <mat-form-field>
                 <div class="add-bottom-padding" formGroupName="product">
