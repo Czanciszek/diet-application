@@ -2,6 +2,9 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {MealService} from "../../service/meal.service";
 import {Meal} from "../../model/meal";
 import {DayMeal} from "../../model/day-meal";
+import {FormArray} from "@angular/forms";
+import {MealAddComponent} from "../meal-add/meal-add.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-dish-summary',
@@ -18,10 +21,31 @@ export class DishSummaryComponent implements OnInit {
   refreshItems = new EventEmitter<boolean>();
 
   constructor(
+    private dialog: MatDialog,
     private service: MealService,
   ) { }
 
   ngOnInit(): void {
+  }
+
+  onEdit(meal) {
+    for (const product of meal.productForDishList) {
+      (<FormArray>this.service.form.get('productForDishList')).push(this.service.addProductFormGroup());
+    }
+    this.service.populateForm(meal);
+    this.openDialog();
+  }
+
+  openDialog() {
+    let dialogRef = this.dialog.open(MealAddComponent, {
+      disableClose: true,
+      autoFocus: true,
+      width: "90%"
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      this.refreshItems.emit();
+    });
   }
 
   onDeleteMealButtonClick(mealId) {

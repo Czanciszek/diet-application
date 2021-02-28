@@ -115,12 +115,15 @@ export class MealAddComponent implements OnInit {
 
         // Update value in Form Group
         this.service.form.get('name').patchValue(result.name);
+        this.service.form.get('isProduct').patchValue(1);
 
-        let isProduct = 1;
-        this.service.form.get('isProduct').patchValue(isProduct);
         if (this.service.form.get('grams').value == null) {
           this.service.form.get('grams').patchValue(100);
         }
+        let productForm = this.service.addProductFormGroup();
+        productForm.get('product').get('id').patchValue(result.id);
+        productForm.get('product').get('name').patchValue(result.name);
+        (<FormArray>this.service.form.get('productForDishList')).push(productForm);
       }
     });
   }

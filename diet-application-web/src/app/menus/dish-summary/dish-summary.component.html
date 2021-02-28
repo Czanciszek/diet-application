@@ -4,9 +4,9 @@
       <p>{{mealItem.name}}</p>
     </div>
     <div>
-      <button mat-mini-fab ><mat-icon>launch</mat-icon></button>
+      <button mat-mini-fab (click)="onEdit(mealItem)"><mat-icon>launch</mat-icon></button>
       <button mat-mini-fab (click)="onDeleteMealButtonClick(mealItem.id)"><mat-icon>delete</mat-icon></button>
-      <button mat-mini-fab  (click)=select.open() matTooltip="Kopiuj danie">
+      <button mat-mini-fab (click)=select.open() matTooltip="Kopiuj danie">
         <mat-icon>content_copy</mat-icon>
         <mat-select #select class="langSelect">
           <mat-option (click)="copyMeal(mealItem, 'MONDAY')">Poniedziałek</mat-option>

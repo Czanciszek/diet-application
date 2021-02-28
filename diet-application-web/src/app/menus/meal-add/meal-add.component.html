@@ -135,23 +135,6 @@
 
         <mat-grid-list cols="8" rowHeight="70px">
 
-          <mat-grid-tile colspan="2">
-            <div class="control-container">
-              <mat-form-field>
-                <div class="add-bottom-padding">
-                  <mat-select matInput placeholder="Typ" formControlName="mealType">
-                    <ng-container *ngFor="let mealType of mealTypes">
-                      <mat-option value="{{mealType.id}}">{{mealType.value}}</mat-option>
-                    </ng-container>
-                  </mat-select>
-                </div>
-              </mat-form-field>
-            </div>
-          </mat-grid-tile>
-
-          <mat-grid-tile>
-          </mat-grid-tile>
-
           <mat-grid-tile>
             <div class="control-container">
               <mat-form-field>
@@ -165,7 +148,24 @@
           <mat-grid-tile colspan="4">
             <div class="control-container">
               <mat-form-field>
-                <input matInput (click)="selectProduct()" [id]="'foodName'" placeholder="Produkt" readonly>
+                <input matInput (click)="selectProduct()" [id]="'foodName'" formControlName="name" placeholder="Produkt" readonly>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+          </mat-grid-tile>
+
+          <mat-grid-tile colspan="2">
+            <div class="control-container">
+              <mat-form-field>
+                <div class="add-bottom-padding">
+                  <mat-select matInput placeholder="Typ" formControlName="mealType">
+                    <ng-container *ngFor="let mealType of mealTypes">
+                      <mat-option value="{{mealType.id}}">{{mealType.value}}</mat-option>
+                    </ng-container>
+                  </mat-select>
+                </div>
               </mat-form-field>
             </div>
           </mat-grid-tile>

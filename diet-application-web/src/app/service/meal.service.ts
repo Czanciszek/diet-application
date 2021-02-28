@@ -64,6 +64,10 @@ export class MealService {
     })
   }
 
+  populateForm(meal) {
+    this.form.setValue(meal);
+  }
+
   getMealListByListId(dayMealIdList) {
     return this.http.get("http://localhost:8080/api/v1/meals/list/" + dayMealIdList, this.httpOptions);
   }

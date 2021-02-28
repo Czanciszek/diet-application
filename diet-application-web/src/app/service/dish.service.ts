@@ -74,6 +74,10 @@ export class DishService {
     })
   }
 
+  populateForm(dish) {
+    this.form.setValue(dish);
+  }
+
   getDishes() {
     this.dishList = this.http.get("http://localhost:8080/api/v1/dishes", this.httpOptions);
     return this.dishList;
@@ -89,10 +93,6 @@ export class DishService {
 
   deleteDish(id: string) {
     return this.http.delete("http://localhost:8080/api/v1/dishes/" + id, this.httpOptions).subscribe();
-  }
-
-  populateForm(dish) {
-    this.form.setValue(dish);
   }
 
 }
