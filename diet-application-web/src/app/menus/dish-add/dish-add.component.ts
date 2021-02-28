@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {MealAddComponent} from "../meal-add/meal-add.component";
 import {MealService} from "../../service/meal.service";
@@ -22,6 +22,8 @@ export class DishAddComponent implements OnInit {
   dishType: string;
   @Input()
   menuItem: Menu;
+  @Output()
+  refreshItems = new EventEmitter<boolean>();
 
   ngOnInit(): void {
   }
@@ -38,7 +40,7 @@ export class DishAddComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe( result => {
-      this.ngOnInit();
+      this.refreshItems.emit();
     });
   }
 }

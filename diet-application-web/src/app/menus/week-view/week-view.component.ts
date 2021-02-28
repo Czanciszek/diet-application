@@ -17,11 +17,6 @@ import {Meal} from "../../model/meal";
 })
 export class WeekViewComponent implements OnInit {
 
-  days = [
-    'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek',
-    'Piątek', 'Sobota', 'Niedziela'
-  ];
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -87,6 +82,10 @@ export class WeekViewComponent implements OnInit {
 
   translateDayType(name) {
     return translateDayType(name);
+  }
+
+  refreshMealList() {
+    this.getMealListDetails(this.weekMealItemData.dayMealList);
   }
 
 }
