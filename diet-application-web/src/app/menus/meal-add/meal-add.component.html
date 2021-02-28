@@ -102,7 +102,7 @@
             <div class="control-container">
               <mat-form-field>
                 <div class="add-bottom-padding" formGroupName="product">
-                  <input matInput [id]="'name'+i" placeholder="Produkt" formControlName="name" readonly>
+                  <input matInput (click)="selectProductForDish(i)" [id]="'name'+i" placeholder="Produkt" formControlName="name" readonly>
                 </div>
               </mat-form-field>
             </div>

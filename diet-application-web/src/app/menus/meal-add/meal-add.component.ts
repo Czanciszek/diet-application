@@ -77,6 +77,31 @@ export class MealAddComponent implements OnInit {
     (<FormArray>this.service.form.get('productForDishList')).removeAt(productIndex);
   }
 
+  selectProductForDish(index) {
+
+    let dialogRef = this.dialog.open(ProductSelectComponent, {
+      autoFocus: true,
+      width: "90%"
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      if (result != null) {
+        // Update value in HTML form
+        (<HTMLInputElement>document.getElementById("name"+index)).value = result.name;
+
+        // Update value in Form Group
+        let products = (<FormArray>this.service.form.get('productForDishList'));
+        products.at(index).value.product.id = result.id;
+        products.at(index).value.product.name = result.name;
+        products.at(index).value.product.type = result.type;
+        products.at(index).value.product.primaryImageId = result.primaryImageId;
+        this.service.form.patchValue({
+          products: [products]
+        });
+      }
+    });
+  }
+
   selectProduct() {
 
     let dialogRef = this.dialog.open(ProductSelectComponent, {
@@ -96,8 +121,6 @@ export class MealAddComponent implements OnInit {
         if (this.service.form.get('grams').value == null) {
           this.service.form.get('grams').patchValue(100);
         }
-
-        console.log(this.service.form.value);
       }
     });
   }
@@ -127,7 +150,6 @@ export class MealAddComponent implements OnInit {
           productForm.get('amountType').patchValue(product.amountType);
           (<FormArray>this.service.form.get('productForDishList')).push(productForm);
         }
-        console.log(this.service.form.value);
       }
     });
   }
