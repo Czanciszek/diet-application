@@ -10,8 +10,8 @@
 
 <form [formGroup]="service.form" class="normal-form" (ngSubmit)="onSubmit()">
 
-<mat-tab-group mat-stretch-tabs class="container">
-  <mat-tab label="Potrawa">
+<mat-tab-group mat-stretch-tabs class="container" [(selectedIndex)]="tabIndex">
+  <mat-tab label="Potrawa" [disabled]="blockDish">
 
     <mat-grid-list cols="9" rowHeight="70px">
 
@@ -131,7 +131,7 @@
     </mat-grid-list>
 
   </mat-tab>
-  <mat-tab label="Produkt">
+  <mat-tab label="Produkt" [disabled]="blockProduct">
 
         <mat-grid-list cols="8" rowHeight="70px">
 

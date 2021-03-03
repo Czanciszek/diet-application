@@ -42,7 +42,19 @@ export class MealAddComponent implements OnInit {
     { id: "POST_WORKOUT", value: "Potreningówka"},
   ];
 
+  blockProduct = false;
+  blockDish = false;
+  tabIndex = 0;
+
   ngOnInit(): void {
+    if (this.service.form.get('id').value != null) {
+      this.tabIndex = this.service.form.get('isProduct').value;
+      if (this.tabIndex == 1) {
+        this.blockDish = true;
+      } else {
+        this.blockProduct = true;
+      }
+    }
   }
 
   onClear() {
