@@ -92,6 +92,7 @@ export class DishComponent implements OnInit {
         products.at(productIndex).value.product.name = result.name;
         products.at(productIndex).value.product.type = result.type;
         products.at(productIndex).value.product.primaryImageId = result.primaryImageId;
+        products.at(productIndex).get('foodProperties').patchValue(result.foodProperties);
         this.service.form.patchValue({
           products: [products]
         });

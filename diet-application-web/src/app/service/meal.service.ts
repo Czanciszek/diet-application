@@ -38,11 +38,12 @@ export class MealService {
       grams: new FormControl(null),
       amount: new FormControl(null),
       amountType: new FormControl(null),
+      foodProperties: new FormControl(),
       product: new FormGroup( {
         id: new FormControl(null),
         name: new FormControl(null),
         primaryImageId: new FormControl(null),
-        type: new FormControl(null)
+        type: new FormControl(null),
       }),
     });
   }

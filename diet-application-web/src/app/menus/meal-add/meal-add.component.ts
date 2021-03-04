@@ -70,7 +70,6 @@ export class MealAddComponent implements OnInit {
   onSubmit() {
     if (this.service.form.valid) {
       if (!this.service.form.get('id').value) {
-        console.log(this.service.form.value);
         this.service.insertMeal(this.service.form.value).subscribe();
         this.notificationService.success(":: Meal created successfully! ::");
       } else {
@@ -107,6 +106,7 @@ export class MealAddComponent implements OnInit {
         products.at(index).value.product.name = result.name;
         products.at(index).value.product.type = result.type;
         products.at(index).value.product.primaryImageId = result.primaryImageId;
+        products.at(index).get('foodProperties').patchValue(result.foodProperties);
         this.service.form.patchValue({
           products: [products]
         });
@@ -135,6 +135,7 @@ export class MealAddComponent implements OnInit {
         let productForm = this.service.addProductFormGroup();
         productForm.get('product').get('id').patchValue(result.id);
         productForm.get('product').get('name').patchValue(result.name);
+        productForm.get('foodProperties').patchValue(result.foodProperties);
         (<FormArray>this.service.form.get('productForDishList')).push(productForm);
       }
     });
@@ -163,9 +164,42 @@ export class MealAddComponent implements OnInit {
           productForm.get('grams').patchValue(product.grams);
           productForm.get('amount').patchValue(product.amount);
           productForm.get('amountType').patchValue(product.amountType);
+          productForm.get('foodProperties').patchValue(product.foodProperties);
           (<FormArray>this.service.form.get('productForDishList')).push(productForm);
         }
       }
     });
+  }
+
+
+  getProductSummary(index) {
+    let product = this.service.form.get('productForDishList').value[index];
+    if (product != null && product.foodProperties != null) {
+      let isProduct = (this.service.form.get('isProduct').value == 1);
+      let grams;
+      if (isProduct) {
+        grams = this.service.form.get('grams').value;
+      } else {
+        grams = product.grams;
+      }
+
+      let energy = (product.foodProperties.energyValue * grams) / 100;
+      let proteins = (product.foodProperties.proteins * grams) / 100;
+      let fats = (product.foodProperties.fats * grams) / 100;
+      let carbohydrates = (product.foodProperties.carbohydrates * grams) / 100;
+
+      if (isProduct) {
+        let portions = this.service.form.get('portions').value;
+        energy /= portions;
+        proteins /= portions;
+        fats /= portions;
+        carbohydrates /= portions;
+      }
+
+      return "Kcal: " + energy.toFixed(2) + "    B: " + proteins.toFixed(2) +
+        "    T: " + fats.toFixed(2) + "    W: " + carbohydrates.toFixed(2);
+    } else {
+      return "";
+    }
   }
 }

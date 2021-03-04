@@ -3,6 +3,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {MealAddComponent} from "../meal-add/meal-add.component";
 import {MealService} from "../../service/meal.service";
 import {Menu} from "../../model/menu";
+import {FormArray} from "@angular/forms";
 
 @Component({
   selector: 'app-dish-add',
@@ -32,6 +33,7 @@ export class DishAddComponent implements OnInit {
     this.mealSerivce.initializeFormGroup();
     this.mealSerivce.form.get('mealType').patchValue(this.dishType);
     this.mealSerivce.form.get('dayMealId').patchValue(this.dayId);
+    (<FormArray>this.mealSerivce.form.get('productForDishList')).push(this.mealSerivce.addProductFormGroup());
 
     let dialogRef = this.dialog.open(MealAddComponent, {
       disableClose: true,

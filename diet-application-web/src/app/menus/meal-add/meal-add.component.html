@@ -63,7 +63,7 @@
 
     <div formArrayName="productForDishList" *ngFor="let product of service.form.get('productForDishList').controls; let i = index">
       <div [formGroupName]="i">
-        <mat-grid-list cols="8" rowHeight="60px">
+        <mat-grid-list cols="12" rowHeight="60px">
           <mat-grid-tile>
             <div class="control-container">
               <mat-form-field>
@@ -84,7 +84,7 @@
             </div>
           </mat-grid-tile>
 
-          <mat-grid-tile>
+          <mat-grid-tile colspan="2">
             <div class="control-container">
               <mat-form-field>
                 <div class="add-bottom-padding">
@@ -105,6 +105,16 @@
                   <input matInput (click)="selectProductForDish(i)" [id]="'name'+i" placeholder="Produkt" formControlName="name" readonly>
                 </div>
               </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile colspan="3">
+            <div class="control-container">
+              <div class="add-bottom-padding">
+                <div *ngIf="service.form.get('productForDishList').value.length > 0">
+                  {{getProductSummary(i)}}
+                </div>
+              </div>
             </div>
           </mat-grid-tile>
 
@@ -133,7 +143,7 @@
   </mat-tab>
   <mat-tab label="Produkt" [disabled]="blockProduct">
 
-        <mat-grid-list cols="8" rowHeight="70px">
+        <mat-grid-list cols="12" rowHeight="70px">
 
           <mat-grid-tile>
             <div class="control-container">
@@ -145,11 +155,21 @@
             </div>
           </mat-grid-tile>
 
-          <mat-grid-tile colspan="4">
+          <mat-grid-tile colspan="5">
             <div class="control-container">
               <mat-form-field>
                 <input matInput (click)="selectProduct()" [id]="'foodName'" formControlName="name" placeholder="Produkt" readonly>
               </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile colspan="3">
+            <div class="control-container">
+              <div class="add-bottom-padding">
+                <div *ngIf="service.form.get('productForDishList').value.length > 0">
+                  {{getProductSummary(0)}}
+                </div>
+              </div>
             </div>
           </mat-grid-tile>
 
