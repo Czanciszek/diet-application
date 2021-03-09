@@ -17,6 +17,6 @@ export interface DayMeal {
     type: string
   },
   date: string,
-  mealList: object,
+  mealList: any[],
   dayType: string,
 }

@@ -9,6 +9,7 @@ import {DayMeal} from "../../model/day-meal";
 import {translateDayType} from "../../material/helper/polish-translate";
 import {MealService} from "../../service/meal.service";
 import {Meal} from "../../model/meal";
+import {FormArray} from "@angular/forms";
 
 @Component({
   selector: 'week-view.component',
@@ -86,6 +87,18 @@ export class WeekViewComponent implements OnInit {
 
   refreshMealList() {
     this.getMealListDetails(this.weekMealItemData.dayMealList);
+  }
+
+  getFoodPropertiesDaySummary(day: DayMeal) {
+    if (day.mealList == null)
+      return "";
+    let dayMeals = day.mealList;
+    let meals = this.mealListItemData.filter(
+    (value) => {
+      dayMeals.indexOf(value) > -1
+    });
+    console.log(day.dayType, dayMeals);
+    return "SUMMARY";
   }
 
 }

@@ -6,8 +6,9 @@ export interface Meal {
   name: string,
   dayMealId: string,
   foodId: string,
-  isProduct: boolean,
-  productForDishList: object,
+  isProduct: number,
+  productForDishList: any[],
+  grams: number,
   portions: number,
   recipe: string,
   mealType: string

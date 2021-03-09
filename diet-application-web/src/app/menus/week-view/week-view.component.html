@@ -30,4 +30,10 @@
       </div>
     </div>
   </div>
+
+  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+    <div fxFlex="14%" *ngFor="let day of dayMealListItemData">
+      {{getFoodPropertiesDaySummary(day)}}
+    </div>
+  </div>
 </div>

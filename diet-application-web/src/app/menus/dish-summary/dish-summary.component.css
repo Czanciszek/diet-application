@@ -5,6 +5,7 @@ mat-card {
 
 .mat-card-dish {
   margin-top: 5px;
+  background-color: white;
 }
 
 button {

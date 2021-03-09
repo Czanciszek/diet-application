@@ -20,12 +20,15 @@ export class DishSummaryComponent implements OnInit {
   @Output()
   refreshItems = new EventEmitter<boolean>();
 
+  foodPropertiesSummary = "";
+
   constructor(
     private dialog: MatDialog,
     private service: MealService,
   ) { }
 
   ngOnInit(): void {
+    this.getFoodProperties();
   }
 
   onEdit(meal) {
@@ -61,5 +64,41 @@ export class DishSummaryComponent implements OnInit {
     this.service.copyMeal(copyMeal).subscribe( () => {
       this.refreshItems.emit();
     });
+  }
+
+  getFoodProperties() {
+    let grams = 0;
+    let energy = 0;
+    let proteins = 0;
+    let fats = 0;
+    let carbohydrates = 0;
+
+    let products = this.mealItem.productForDishList;
+    let isProduct = (this.mealItem.isProduct == 1);
+    for (let product of products) {
+      if (isProduct) {
+        grams = this.mealItem.grams;
+      } else {
+        grams = product.grams;
+      }
+
+      energy += (product.foodProperties.energyValue * grams) / 100;
+      proteins += (product.foodProperties.proteins * grams) / 100;
+      fats += (product.foodProperties.fats * grams) / 100;
+      carbohydrates += (product.foodProperties.carbohydrates * grams) / 100;
+    }
+
+    if (!isProduct) {
+      let portions = this.mealItem.portions;
+      energy /= portions;
+      proteins /= portions;
+      fats /= portions;
+      carbohydrates /= portions;
+    }
+
+      this.foodPropertiesSummary = "Kcal: " + energy.toFixed(2) +
+        "    B: " + proteins.toFixed(2) +
+        "    T: " + fats.toFixed(2) +
+        "    W: " + carbohydrates.toFixed(2);
   }
 }
