@@ -1,9 +1,7 @@
 package com.springboot.dietapplication.controller;
 
-import com.springboot.dietapplication.model.menu.DayMeal;
 import com.springboot.dietapplication.model.menu.Meal;
-import com.springboot.dietapplication.repository.DayMealRepository;
-import com.springboot.dietapplication.repository.MealRepository;
+import com.springboot.dietapplication.service.MealService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,61 +11,48 @@ import java.util.*;
 @RequestMapping("api/v1/meals")
 public class MealController {
 
-    private final MealRepository mealRepository;
-    private final DayMealRepository dayMealRepository;
+    private final MealService mealService;
 
-    public MealController(MealRepository mealRepository, DayMealRepository dayMealRepository) {
-        this.mealRepository = mealRepository;
-        this.dayMealRepository = dayMealRepository;
+    public MealController(MealService mealService) {
+        this.mealService = mealService;
     }
 
     @GetMapping
     public List<Meal> getAll() {
-        return this.mealRepository.findAll();
+        return this.mealService.getAllMeals();
     }
 
     @GetMapping(path = "/list/{dayMealIdList}")
     public List<Meal> getMealsByDayMealList(@PathVariable("dayMealIdList") List<String> dayMealIdList) {
-        List<Meal> mealList = new ArrayList<>();
-        for (String dayMealId: dayMealIdList) {
-            mealList.addAll(mealRepository.findByDayMealIdLike(dayMealId));
-        }
-        return mealList;
+        return this.mealService.getMealsByDayMealList(dayMealIdList);
     }
 
     @PostMapping(produces = "application/json")
     ResponseEntity<Meal> insertMeal(@RequestBody Meal meal) {
-        mealRepository.save(meal);
-
-        Optional<DayMeal> dayMeal = dayMealRepository.findById(meal.getDayMealId());
-        if (dayMeal.isPresent()) {
-            if (dayMeal.get().getMealList() != null)
-                dayMeal.get().getMealList().add(meal.getId());
-            else
-                dayMeal.get().setMealList(Collections.singletonList(meal.getId()));
-            dayMealRepository.save(dayMeal.get());
-        }
-
+        this.mealService.createMeal(meal, true);
         return ResponseEntity.ok().body(meal);
     }
 
     @PostMapping(path="/copy", produces = "application/json")
     ResponseEntity<Meal> copyMeal(@RequestBody Meal meal) {
         Meal newMeal = new Meal(meal);
-        mealRepository.save(newMeal);
-
+        this.mealService.createMeal(newMeal, true);
         return ResponseEntity.ok().body(meal);
     }
 
     @PutMapping(path = "/{mealId}", produces = "application/json")
     ResponseEntity<Meal> updateMeal(@RequestBody Meal meal) {
-        mealRepository.save(meal);
+        this.mealService.createMeal(meal, false);
         return ResponseEntity.ok().body(meal);
     }
 
-    @DeleteMapping(path = "/{id}")
-    ResponseEntity<Meal> deleteMeal(@PathVariable String id) {
-        mealRepository.deleteById(id);
+    @DeleteMapping(path = "/{mealId}")
+    ResponseEntity<Meal> deleteMeal(@PathVariable String mealId) {
+        Optional<Meal> meal = this.mealService.getMealById(mealId);
+        if (!meal.isPresent()) {
+            return ResponseEntity.ok().build();
+        }
+        this.mealService.removeMeal(meal.get());
         return ResponseEntity.ok().build();
     }
 }
