@@ -4,6 +4,7 @@ import com.springboot.dietapplication.model.base.BaseDoc;
 import com.springboot.dietapplication.model.base.DocRef;
 import com.springboot.dietapplication.model.patient.Measurement;
 import com.springboot.dietapplication.model.patient.Patient;
+import com.springboot.dietapplication.model.properties.FoodProperties;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public class Menu extends BaseDoc {
 
     private String endDate; // Najpóźniejsza data z listy DayMeals
 
+    private FoodProperties foodProperties;
+
     public Menu() {
 
     }
@@ -34,16 +37,18 @@ public class Menu extends BaseDoc {
         this.mealTypes = menu.mealTypes;
         this.startDate = menu.startDate;
         this.endDate = menu.endDate;
+        this.foodProperties = menu.foodProperties;
     }
 
     public Menu(DocRef<Patient> patientDocRef, DocRef<Measurement> measurementDocRef, List<String> weekMealList, List<MealType> mealTypes,
-                String startDate, String endDate) {
+                String startDate, String endDate, FoodProperties foodProperties) {
         this.patientDocRef = patientDocRef;
         this.measurementDocRef = measurementDocRef;
         this.weekMealList = weekMealList;
         this.mealTypes = mealTypes;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.foodProperties = foodProperties;
     }
 
     public DocRef<Patient> getPatientDocRef() {
@@ -92,5 +97,13 @@ public class Menu extends BaseDoc {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public FoodProperties getFoodProperties() {
+        return foodProperties;
+    }
+
+    public void setFoodProperties(FoodProperties foodProperties) {
+        this.foodProperties = foodProperties;
     }
 }

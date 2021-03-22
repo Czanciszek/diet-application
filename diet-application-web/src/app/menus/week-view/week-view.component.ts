@@ -86,19 +86,62 @@ export class WeekViewComponent implements OnInit {
   }
 
   refreshMealList() {
-    this.getMealListDetails(this.weekMealItemData.dayMealList);
+    this.getWeekMealDetails(this.weekMealItemData.id);
   }
 
   getFoodPropertiesDaySummary(day: DayMeal) {
     if (day.mealList == null)
       return "";
     let dayMeals = day.mealList;
-    let meals = this.mealListItemData.filter(
-    (value) => {
-      dayMeals.indexOf(value) > -1
+    let meals = this.mealListItemData.filter( meal => {
+      return dayMeals.includes(meal.id);
     });
-    console.log(day.dayType, dayMeals);
-    return "SUMMARY";
+
+    return this.getFoodProperties(meals);
+  }
+
+  getFoodProperties(meals: Meal[]) {
+    let grams = 0;
+    let energy = 0;
+    let proteins = 0;
+    let fats = 0;
+    let carbohydrates = 0;
+
+    for (let meal of meals) {
+      let isProduct = (meal.isProduct == 1);
+      if (isProduct) {
+        grams = meal.grams;
+      }
+
+      for (let product of meal.productForDishList) {
+        if (!isProduct) {
+          grams = product.grams;
+        }
+
+        let productEnergy = (product.foodProperties.energyValue * grams) / 100;
+        let productProteins = (product.foodProperties.proteins * grams) / 100;
+        let productFats = (product.foodProperties.fats * grams) / 100;
+        let productCarbohydrates = (product.foodProperties.carbohydrates * grams) / 100;
+
+        if (!isProduct) {
+          let portions = meal.portions;
+          productEnergy /= portions;
+          productProteins /= portions;
+          productFats /= portions;
+          productCarbohydrates /= portions;
+        }
+
+        energy += productEnergy;
+        proteins += productProteins;
+        fats += productFats;
+        carbohydrates += productCarbohydrates;
+      }
+    }
+
+    return "Kcal: " + energy.toFixed(2) +
+      "    B: " + proteins.toFixed(2) +
+      "    T: " + fats.toFixed(2) +
+      "    W: " + carbohydrates.toFixed(2);
   }
 
 }

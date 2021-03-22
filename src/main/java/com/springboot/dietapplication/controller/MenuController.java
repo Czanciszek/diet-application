@@ -59,11 +59,19 @@ public class MenuController {
         menu.setEndDate(endDate.toString());
         menu.setMealTypes(menuType.getMealTypes());
 
-        Optional<Measurement> measurement = measurementRepository.findById(menuType.getMeasurementId());
-        measurement.ifPresent(m -> menu.setMeasurementDocRef(DocRef.fromDoc(m)));
-
-        Optional<Patient> patient = patientRepository.findById(menuType.getPatientId());
-        patient.ifPresent(p -> menu.setPatientDocRef(DocRef.fromDoc(p)));
+        Optional<Measurement> optionalMeasurement = measurementRepository.findById(menuType.getMeasurementId());
+        if (optionalMeasurement.isPresent()) {
+            Measurement measurement = optionalMeasurement.get();
+            Optional<Patient> optionalPatient = patientRepository.findById(menuType.getPatientId());
+            if (optionalPatient.isPresent()) {
+                Patient patient = optionalPatient.get();
+                menu.setPatientDocRef(DocRef.fromDoc(patient));
+                float height = patient.getBodyHeight();
+                String birthDate = patient.getBirthDate();
+                float weight = measurement.getBodyWeight();
+            }
+            menu.setMeasurementDocRef(DocRef.fromDoc(measurement));
+        }
 
         DateTime actualDate = dateTime;
         List<String> weekMealList = new ArrayList<>();
