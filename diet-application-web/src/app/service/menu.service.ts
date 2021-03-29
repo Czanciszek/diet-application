@@ -27,6 +27,7 @@ export class MenuService {
     measurementId: new FormControl(null),
     patientId: new FormControl(null),
     startDate: new FormControl('', [Validators.required]),
+    activityLevel: new FormControl('', [Validators.required, Validators.min(1.1), Validators.max(2)]),
   });
 
   initializeFormGroup() {
@@ -34,9 +35,10 @@ export class MenuService {
       id: null,
       measurementId: null,
       patientId: null,
-      weekCount: null ,
+      weekCount: 1,
       mealTypes: null,
       startDate: null,
+      activityLevel: 1.1
     })
   }
 

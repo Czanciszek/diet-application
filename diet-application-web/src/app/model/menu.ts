@@ -19,5 +19,6 @@ export interface Menu {
   weekMealList: string[],
   mealTypes:string [],
   startDate: string,
-  endDate: string
+  endDate: string,
+  activityLevel: number
 }

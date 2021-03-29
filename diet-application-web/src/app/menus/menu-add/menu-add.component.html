@@ -8,11 +8,11 @@
 </div>
 
 <form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
-  <mat-grid-list cols="4" rowHeight="70px">
-    <mat-grid-tile>
+  <mat-grid-list cols="8" rowHeight="70px">
+    <mat-grid-tile colspan="2">
       <div class="control-container">
         <div class="add-bottom-padding">
-          <mat-form-field class="example-full-width">
+          <mat-form-field>
             <mat-label>Początek diety*</mat-label>
             <input matInput [matDatepickerFilter]="onlyMonday" [matDatepicker]="picker" formControlName="startDate" >
             <mat-datepicker-toggle matSuffix [for]="picker" >
@@ -24,24 +24,24 @@
         </div>
       </div>
     </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <mat-form-field>
-          <div class="add-bottom-padding">
-            <mat-select matInput placeholder="Typy posiłków*" formControlName="mealTypes" multiple>
-              <ng-container *ngFor="let mealType of mealTypes">
-                <mat-option value="{{mealType.id}}">{{mealType.value}}</mat-option>
-              </ng-container>
-            </mat-select>
-          </div>
-        </mat-form-field>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
+    <mat-grid-tile colspan="2">
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field>
-            <input type="number" min="1" max="8" formControlName="weekCount" matInput placeholder="Ilość tygodni*">
+              <mat-select matInput placeholder="Typy posiłków*" formControlName="mealTypes" multiple>
+                <ng-container *ngFor="let mealType of mealTypes">
+                  <mat-option value="{{mealType.id}}">{{mealType.value}}</mat-option>
+                </ng-container>
+              </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <div class="control-container">
+        <div class="add-bottom-padding">
+          <mat-form-field >
+            <input type="number" min="1" max="8" step="1" formControlName="weekCount" matInput placeholder="Ilość tygodni*">
             <mat-error *ngIf="service.form.controls['weekCount'].errors?.required">Uzupełnij ilość</mat-error>
             <mat-error *ngIf="service.form.controls['weekCount'].errors?.min">Wartość zbyt mała</mat-error>
             <mat-error *ngIf="service.form.controls['weekCount'].errors?.max">Wartość zbyt duża</mat-error>
@@ -49,17 +49,31 @@
         </div>
       </div>
     </mat-grid-tile>
-    <mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="8" rowHeight="70px">
+    <mat-grid-tile colspan="2">
       <div class="control-container">
-        <mat-form-field>
-          <div class="add-bottom-padding">
-            <mat-select matInput placeholder="Data pomiaru" formControlName="measurementId">
-              <ng-container *ngFor="let date of getMeasurementDates()">
-                <mat-option value="{{date.id}}">{{date.value}}</mat-option>
-              </ng-container>
-            </mat-select>
-          </div>
-        </mat-form-field>
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input type="number" min="1.1" max="2" step="0.01" formControlName="activityLevel" matInput placeholder="Poziom aktywności*">
+            <mat-error *ngIf="service.form.controls['activityLevel'].errors?.required">Uzupełnij ilość</mat-error>
+            <mat-error *ngIf="service.form.controls['activityLevel'].errors?.min">Wartość zbyt mała</mat-error>
+            <mat-error *ngIf="service.form.controls['activityLevel'].errors?.max">Wartość zbyt duża</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <div class="control-container">
+        <div class="add-bottom-padding">
+          <mat-form-field>
+              <mat-select matInput placeholder="Data pomiaru" formControlName="measurementId">
+                <ng-container *ngFor="let date of getMeasurementDates()">
+                  <mat-option value="{{date.id}}">{{date.value}}</mat-option>
+                </ng-container>
+              </mat-select>
+          </mat-form-field>
+        </div>
       </div>
     </mat-grid-tile>
   </mat-grid-list>

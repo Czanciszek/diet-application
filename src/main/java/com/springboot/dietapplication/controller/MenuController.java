@@ -4,6 +4,7 @@ import com.springboot.dietapplication.model.base.DocRef;
 import com.springboot.dietapplication.model.menu.*;
 import com.springboot.dietapplication.model.patient.Measurement;
 import com.springboot.dietapplication.model.patient.Patient;
+import com.springboot.dietapplication.model.properties.FoodProperties;
 import com.springboot.dietapplication.repository.*;
 import org.joda.time.DateTime;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +59,7 @@ public class MenuController {
         menu.setStartDate(menuType.getStartDate());
         menu.setEndDate(endDate.toString());
         menu.setMealTypes(menuType.getMealTypes());
+        menu.setActivityLevel(menuType.getActivityLevel());
 
         Optional<Measurement> optionalMeasurement = measurementRepository.findById(menuType.getMeasurementId());
         if (optionalMeasurement.isPresent()) {
@@ -66,9 +68,11 @@ public class MenuController {
             if (optionalPatient.isPresent()) {
                 Patient patient = optionalPatient.get();
                 menu.setPatientDocRef(DocRef.fromDoc(patient));
-                float height = patient.getBodyHeight();
-                String birthDate = patient.getBirthDate();
                 float weight = measurement.getBodyWeight();
+                float activityLevel = menu.getActivityLevel();
+                int PPM = calculatePPM(patient, weight, activityLevel);
+                FoodProperties foodProperties = calculateBasicFoodProperties(PPM);
+                menu.setFoodProperties(foodProperties);
             }
             menu.setMeasurementDocRef(DocRef.fromDoc(measurement));
         }
@@ -110,5 +114,40 @@ public class MenuController {
     ResponseEntity<Menu> deleteMenu(@PathVariable String id) {
         menuRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    private int calculatePPM(Patient patient, float weight, float activityLevel) {
+        float ppmBase = (patient.isSex()) ? 655.1f : 66.5f;
+        float weightFactor = (patient.isSex()) ? 9.563f : 13.75f;
+        float heightFactor = (patient.isSex()) ? 1.85f : 5.003f;
+        float ageFactor = (patient.isSex()) ? 4.676f : 6.775f;
+
+        DateTime birthDateTime = new DateTime(patient.getBirthDate());
+        DateTime currentTime = new DateTime();
+        int age = currentTime.getYear() - birthDateTime.getYear();
+        float height = patient.getBodyHeight();
+
+        float ppm = ppmBase +
+                weightFactor * weight +
+                heightFactor * height +
+                ageFactor * age;
+
+        return (int) (ppm * activityLevel);
+    }
+
+    private FoodProperties calculateBasicFoodProperties(int kcal) {
+        FoodProperties foodProperties = new FoodProperties();
+        foodProperties.setEnergyValue(kcal);
+
+        float proteins = (0.1f * kcal) / 4.0f;
+        foodProperties.setProteins(proteins);
+
+        float fats = (0.3f * kcal) / 9.0f;
+        foodProperties.setFats(fats);
+
+        float carbohydrates = (0.6f * kcal) / 4.0f;
+        foodProperties.setCarbohydrates(carbohydrates);
+
+        return foodProperties;
     }
 }

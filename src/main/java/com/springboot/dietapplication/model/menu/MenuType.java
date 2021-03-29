@@ -16,17 +16,26 @@ public class MenuType {
 
     private int weekCount;
 
+    private float activityLevel;
+
     public MenuType() {
 
     }
 
-    public MenuType(String id, String startDate, List<MealType> mealTypes, String measurementId, String patientId, int weekCount) {
+    public MenuType(String id,
+                    String startDate,
+                    List<MealType> mealTypes,
+                    String measurementId,
+                    String patientId,
+                    int weekCount,
+                    float activityLevel) {
         this.id = id;
         this.startDate = startDate;
         this.mealTypes = mealTypes;
         this.measurementId = measurementId;
         this.patientId = patientId;
         this.weekCount = weekCount;
+        this.activityLevel = activityLevel;
     }
 
     public String getId() {
@@ -75,5 +84,13 @@ public class MenuType {
 
     public void setWeekCount(int weekCount) {
         this.weekCount = weekCount;
+    }
+
+    public float getActivityLevel() {
+        return activityLevel;
+    }
+
+    public void setActivityLevel(float activityLevel) {
+        this.activityLevel = activityLevel;
     }
 }

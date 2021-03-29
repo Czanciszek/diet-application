@@ -9,7 +9,6 @@ import {DayMeal} from "../../model/day-meal";
 import {translateDayType} from "../../material/helper/polish-translate";
 import {MealService} from "../../service/meal.service";
 import {Meal} from "../../model/meal";
-import {FormArray} from "@angular/forms";
 
 @Component({
   selector: 'week-view.component',
@@ -138,10 +137,15 @@ export class WeekViewComponent implements OnInit {
       }
     }
 
-    return "Kcal: " + energy.toFixed(2) +
-      "    B: " + proteins.toFixed(2) +
-      "    T: " + fats.toFixed(2) +
-      "    W: " + carbohydrates.toFixed(2);
+    let energyLimit = this.menuItemData.foodProperties.energyValue;
+    let proteinsLimit = this.menuItemData.foodProperties.proteins;
+    let fatsLimit = this.menuItemData.foodProperties.fats;
+    let carbohydratesLimit = this.menuItemData.foodProperties.carbohydrates;
+
+    return "Kcal: " + energy.toFixed(2) + "/" + energyLimit.toFixed(2) +
+      "    B: " + proteins.toFixed(2) + "/" + proteinsLimit.toFixed(2) + "g" +
+      "    T: " + fats.toFixed(2) + "/" + fatsLimit.toFixed(2) + "g" +
+      "    W: " + carbohydrates.toFixed(2) + "/" + carbohydratesLimit.toFixed(2) + "g";
   }
 
 }

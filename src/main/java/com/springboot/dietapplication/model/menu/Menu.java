@@ -26,6 +26,8 @@ public class Menu extends BaseDoc {
 
     private FoodProperties foodProperties;
 
+    private Float activityLevel;
+
     public Menu() {
 
     }
@@ -38,10 +40,11 @@ public class Menu extends BaseDoc {
         this.startDate = menu.startDate;
         this.endDate = menu.endDate;
         this.foodProperties = menu.foodProperties;
+        this.activityLevel = menu.activityLevel;
     }
 
     public Menu(DocRef<Patient> patientDocRef, DocRef<Measurement> measurementDocRef, List<String> weekMealList, List<MealType> mealTypes,
-                String startDate, String endDate, FoodProperties foodProperties) {
+                String startDate, String endDate, FoodProperties foodProperties, Float activityLevel) {
         this.patientDocRef = patientDocRef;
         this.measurementDocRef = measurementDocRef;
         this.weekMealList = weekMealList;
@@ -49,6 +52,7 @@ public class Menu extends BaseDoc {
         this.startDate = startDate;
         this.endDate = endDate;
         this.foodProperties = foodProperties;
+        this.activityLevel = activityLevel;
     }
 
     public DocRef<Patient> getPatientDocRef() {
@@ -105,5 +109,13 @@ public class Menu extends BaseDoc {
 
     public void setFoodProperties(FoodProperties foodProperties) {
         this.foodProperties = foodProperties;
+    }
+
+    public Float getActivityLevel() {
+        return activityLevel;
+    }
+
+    public void setActivityLevel(Float activityLevel) {
+        this.activityLevel = activityLevel;
     }
 }
