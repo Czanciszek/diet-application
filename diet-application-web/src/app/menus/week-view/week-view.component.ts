@@ -31,10 +31,11 @@ export class WeekViewComponent implements OnInit {
   dayMealListItemData: any;
   mealListItemData: any;
   dataLoaded = false;
+  weekIndex: number;
 
   ngOnInit(): void {
     let menuId = this.route.snapshot.paramMap.get("menu_id");
-
+    this.weekIndex = 0;
     this.getMenuDetails(menuId);
   }
 
@@ -43,11 +44,27 @@ export class WeekViewComponent implements OnInit {
       .subscribe(
         (data: Menu[]) => {
           this.menuItemData = { ...data};
-          let weekMealId = this.menuItemData.weekMealList[0];
-          console.log("Menu", this.menuItemData);
-          this.getWeekMealDetails(weekMealId);
+          if (this.menuItemData.weekMealList.length > 0) {
+            let weekMealId = this.menuItemData.weekMealList[this.weekIndex];
+            console.log("Menu", this.menuItemData);
+            this.getWeekMealDetails(weekMealId);
+          }
         }
       );
+  }
+
+  swapWeek(next: Boolean) {
+    if (next && (this.menuItemData.weekMealList.length > (this.weekIndex + 1))) {
+      this.weekIndex += 1;
+    } else if (!next && (this.weekIndex > 0)) {
+      this.weekIndex -= 1;
+    } else {
+      return;
+    }
+
+    this.mealListItemData = [];
+    let weekMealId = this.menuItemData.weekMealList[this.weekIndex];
+    this.getWeekMealDetails(weekMealId);
   }
 
   getWeekMealDetails(weekMealId) {

@@ -1,10 +1,10 @@
 <div class="container">
   <mat-toolbar>
-    <button mat-stroked-button tabindex="-1"><mat-icon>arrow_back</mat-icon></button>
+    <button mat-stroked-button tabindex="-1" (click)="swapWeek(false)"><mat-icon>arrow_back</mat-icon></button>
     <span class="fill-remaining-space"></span>
-    <span>Tydzień 1</span>
+    <span>Tydzień {{weekIndex+1}}</span>
     <span class="fill-remaining-space"></span>
-    <button mat-stroked-button tabindex="-1"><mat-icon>arrow_forward</mat-icon></button>
+    <button mat-stroked-button tabindex="-1" (click)="swapWeek(true)"><mat-icon>arrow_forward</mat-icon></button>
   </mat-toolbar>
 </div>
 
