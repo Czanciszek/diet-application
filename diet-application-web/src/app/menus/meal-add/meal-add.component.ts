@@ -51,11 +51,15 @@ export class MealAddComponent implements OnInit {
   ngOnInit(): void {
     if (this.service.form.get('id').value != null) {
       this.tabIndex = this.service.form.get('isProduct').value;
+      let products = (<FormArray>this.service.form.get('productList'));
       if (this.tabIndex == 1) {
         this.blockDish = true;
+        let productGrams = products.at(0).get('grams').value;
+        setTimeout( () => {
+          (<HTMLInputElement>document.getElementById("product_grams")).value = productGrams;
+        });
       } else {
         this.blockProduct = true;
-        let products = (<FormArray>this.service.form.get('productList'));
         for (let i = 0; i < products.length; i++) {
           let productId = products.at(i).get('productId').value;
           setTimeout( () => {
