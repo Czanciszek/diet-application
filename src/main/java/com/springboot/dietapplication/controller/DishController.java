@@ -1,16 +1,18 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.dish.Dish;
+import com.springboot.dietapplication.model.product.Product;
 import com.springboot.dietapplication.repository.DishRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/dishes")
 public class DishController {
-    private DishRepository dishRepository;
+    private final DishRepository dishRepository;
 
     public DishController(DishRepository dishRepository) {
         this.dishRepository = dishRepository;
@@ -19,6 +21,11 @@ public class DishController {
     @GetMapping
     public List<Dish> getAll() {
         return this.dishRepository.findAll();
+    }
+
+    @GetMapping(path = "/{dishId}")
+    public Optional<Dish> getDishById(@PathVariable("dishId") String dishId) {
+        return this.dishRepository.findById(dishId);
     }
 
     @PostMapping(produces = "application/json")

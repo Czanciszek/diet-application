@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface MenuRepository extends MongoRepository<Menu, String> {
 
-    List<Menu> findByPatientDocRefId(String id);
+    List<Menu> findByPatientId(String id);
 
 }

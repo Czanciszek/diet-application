@@ -33,7 +33,7 @@ export class DishAddComponent implements OnInit {
     this.mealSerivce.initializeFormGroup();
     this.mealSerivce.form.get('mealType').patchValue(this.dishType);
     this.mealSerivce.form.get('dayMealId').patchValue(this.dayId);
-    (<FormArray>this.mealSerivce.form.get('productForDishList')).push(this.mealSerivce.addProductFormGroup());
+    (<FormArray>this.mealSerivce.form.get('productList')).push(this.mealSerivce.addProductFormGroup());
 
     let dialogRef = this.dialog.open(MealAddComponent, {
       disableClose: true,

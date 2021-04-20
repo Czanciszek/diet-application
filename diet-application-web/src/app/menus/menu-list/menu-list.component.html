@@ -16,7 +16,7 @@
     </ng-container>
     <ng-container matColumnDef="measurementDate">
       <mat-header-cell *matHeaderCellDef  mat-sort-header>Data pomiaru</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{getMeasurementDate(element.measurementDocRef)}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{getMeasurementDate(element.measurementId)}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>

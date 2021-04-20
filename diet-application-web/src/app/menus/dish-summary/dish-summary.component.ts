@@ -5,6 +5,7 @@ import {DayMeal} from "../../model/day-meal";
 import {FormArray} from "@angular/forms";
 import {MealAddComponent} from "../meal-add/meal-add.component";
 import {MatDialog} from "@angular/material/dialog";
+import {ProductService} from "../../service/product.service";
 
 @Component({
   selector: 'app-dish-summary',
@@ -25,6 +26,7 @@ export class DishSummaryComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private service: MealService,
+    private productService: ProductService
   ) { }
 
   ngOnInit(): void {
@@ -32,8 +34,8 @@ export class DishSummaryComponent implements OnInit {
   }
 
   onEdit(meal) {
-    for (const product of meal.productForDishList) {
-      (<FormArray>this.service.form.get('productForDishList')).push(this.service.addProductFormGroup());
+    for (const product of meal.productList) {
+      (<FormArray>this.service.form.get('productList')).push(this.service.addProductFormGroup());
     }
     this.service.populateForm(meal);
     this.openDialog();
@@ -73,19 +75,19 @@ export class DishSummaryComponent implements OnInit {
     let fats = 0;
     let carbohydrates = 0;
 
-    let products = this.mealItem.productForDishList;
+    let products = this.mealItem.productList;
     let isProduct = (this.mealItem.isProduct == 1);
     for (let product of products) {
-      if (isProduct) {
-        grams = this.mealItem.grams;
-      } else {
-        grams = product.grams;
-      }
+      grams = product.grams;
 
-      energy += (product.foodProperties.energyValue * grams) / 100;
-      proteins += (product.foodProperties.proteins * grams) / 100;
-      fats += (product.foodProperties.fats * grams) / 100;
-      carbohydrates += (product.foodProperties.carbohydrates * grams) / 100;
+      if (this.productService.menuProductMap[product.productId] != null) {
+        let foodProperties = this.productService.menuProductMap[product.productId].foodProperties;
+
+        energy += (foodProperties.energyValue * grams) / 100;
+        proteins += (foodProperties.proteins * grams) / 100;
+        fats += (foodProperties.fats * grams) / 100;
+        carbohydrates += (foodProperties.carbohydrates * grams) / 100;
+      }
     }
 
     if (!isProduct) {

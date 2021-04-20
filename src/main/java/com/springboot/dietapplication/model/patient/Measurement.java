@@ -1,13 +1,12 @@
 package com.springboot.dietapplication.model.patient;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
-import com.springboot.dietapplication.model.base.DocRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Measurements")
 public class Measurement extends BaseDoc {
 
-    private DocRef<Patient> patientDocRef;
+    private String patientId;
     private String measurementDate; //Data pomiaru
 
     private float bodyWeight; //Masa ciała
@@ -29,8 +28,8 @@ public class Measurement extends BaseDoc {
     /**
      * Constructor for women measurements
      */
-    public Measurement(DocRef<Patient> patientDocRef, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float breast, float underBreast, float hipBones, float thighNarrowest) {
-        this.patientDocRef = patientDocRef;
+    public Measurement(String patientId, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float breast, float underBreast, float hipBones, float thighNarrowest) {
+        this.patientId = patientId;
         this.measurementDate = measurementDate;
         this.bodyWeight = bodyWeight;
         this.waist = waist;
@@ -47,8 +46,8 @@ public class Measurement extends BaseDoc {
     /**
      * Constructor for men measurements
      */
-    public Measurement(DocRef<Patient> patientDocRef, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float chest, float arm) {
-        this.patientDocRef = patientDocRef;
+    public Measurement(String patientId, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float chest, float arm) {
+        this.patientId = patientId;
         this.measurementDate = measurementDate;
         this.bodyWeight = bodyWeight;
         this.waist = waist;
@@ -60,12 +59,12 @@ public class Measurement extends BaseDoc {
         this.arm = arm;
     }
 
-    public DocRef<Patient> getPatientDocRef() {
-        return patientDocRef;
+    public String getPatientId() {
+        return patientId;
     }
 
-    public void setPatientDocRef(DocRef<Patient> patientDocRef) {
-        this.patientDocRef = patientDocRef;
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 
     public String getMeasurementDate() {

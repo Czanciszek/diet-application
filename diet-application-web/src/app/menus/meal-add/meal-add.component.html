@@ -61,7 +61,7 @@
       </mat-grid-tile>
     </mat-grid-list>
 
-    <div formArrayName="productForDishList" *ngFor="let product of service.form.get('productForDishList').controls; let i = index">
+    <div formArrayName="productList" *ngFor="let product of service.form.get('productList').controls; let i = index">
       <div [formGroupName]="i">
         <mat-grid-list cols="12" rowHeight="60px">
           <mat-grid-tile>
@@ -101,8 +101,8 @@
           <mat-grid-tile colspan="4">
             <div class="control-container">
               <mat-form-field>
-                <div class="add-bottom-padding" formGroupName="product">
-                  <input matInput (click)="selectProductForDish(i)" [id]="'name'+i" placeholder="Produkt" formControlName="name" readonly>
+                <div class="add-bottom-padding">
+                  <input matInput (click)="selectProductForDish(i)" [id]="'name'+i" placeholder="Produkt" readonly>
                 </div>
               </mat-form-field>
             </div>
@@ -111,7 +111,7 @@
           <mat-grid-tile colspan="3">
             <div class="control-container">
               <div class="add-bottom-padding">
-                <div *ngIf="service.form.get('productForDishList').value.length > 0">
+                <div *ngIf="service.form.get('productList').value.length > 0">
                   {{getProductSummary(i)}}
                 </div>
               </div>
@@ -120,7 +120,7 @@
 
           <mat-grid-tile>
             <div class="control-container">
-              <div class="add-bottom-padding" *ngIf="service.form.get('productForDishList').length>1">
+              <div class="add-bottom-padding" *ngIf="service.form.get('productList').length>1">
                 <button mat-icon-button type="button" (click)="onProductDeleteButtonClick(i)"><mat-icon>clear</mat-icon></button>
               </div>
             </div>
@@ -149,7 +149,7 @@
             <div class="control-container">
               <mat-form-field>
                 <div class="add-bottom-padding">
-                  <input matInput placeholder="Gram" formControlName="grams">
+                  <input id="product_grams" matInput placeholder="Gram" (input)="gramsChanged($event.target.value)">
                 </div>
               </mat-form-field>
             </div>
@@ -166,7 +166,7 @@
           <mat-grid-tile colspan="3">
             <div class="control-container">
               <div class="add-bottom-padding">
-                <div *ngIf="service.form.get('productForDishList').value.length > 0">
+                <div *ngIf="service.form.get('productList').value.length > 0">
                   {{getProductSummary(0)}}
                 </div>
               </div>

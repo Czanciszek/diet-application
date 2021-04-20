@@ -1,6 +1,5 @@
 package com.springboot.dietapplication.controller;
 
-import com.springboot.dietapplication.model.base.DocRef;
 import com.springboot.dietapplication.model.patient.Measurement;
 import com.springboot.dietapplication.model.patient.Patient;
 import com.springboot.dietapplication.repository.MeasurementRepository;
@@ -14,8 +13,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/measurements")
 public class MeasurementController {
-    private MeasurementRepository measurementRepository;
-    private PatientRepository patientRepository;
+    private final MeasurementRepository measurementRepository;
+    private final PatientRepository patientRepository;
 
     public MeasurementController(MeasurementRepository measurementRepository, PatientRepository patientRepository) {
         this.measurementRepository = measurementRepository;
@@ -34,7 +33,7 @@ public class MeasurementController {
 
     @GetMapping(path = "/patient/{patientId}")
     public List<Measurement> getMeasurementsByPatientId(@PathVariable("patientId") String patientId) {
-        return this.measurementRepository.findByPatientDocRefId(patientId);
+        return this.measurementRepository.findByPatientId(patientId);
     }
 
     @PostMapping(path = "/{patientId}", produces = "application/json")
@@ -42,7 +41,7 @@ public class MeasurementController {
                                                   @RequestBody Measurement measurement) throws NoSuchFieldException {
         Optional<Patient> patient = patientRepository.findById(patientId);
         if (patient.isPresent()) {
-            measurement.setPatientDocRef(DocRef.fromDoc(patient.get()));
+            measurement.setPatientId(patientId);
             measurementRepository.save(measurement);
             return ResponseEntity.ok().body(measurement);
         }

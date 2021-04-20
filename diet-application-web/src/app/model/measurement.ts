@@ -4,12 +4,7 @@ export interface Measurement {
   primaryImageId: string,
   type: string,
   name: string,
-  patientDocRef: {
-    id: string,
-    name: string,
-    primaryImageId: string,
-    type: string
-  },
+  patientId: string,
   measurementDate: string,
   bodyWeight: number,
   breast: number,

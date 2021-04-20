@@ -1,9 +1,6 @@
 package com.springboot.dietapplication.model.menu;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
-import com.springboot.dietapplication.model.base.DocRef;
-import com.springboot.dietapplication.model.patient.Measurement;
-import com.springboot.dietapplication.model.patient.Patient;
 import com.springboot.dietapplication.model.properties.FoodProperties;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,9 +9,9 @@ import java.util.List;
 @Document(collection = "Menus")
 public class Menu extends BaseDoc {
 
-    private DocRef<Patient> patientDocRef; // Ref - Dane pacjenta
+    private String patientId; // Ref - Dane pacjenta
 
-    private DocRef<Measurement> measurementDocRef; // Ref - Dane pomiarowe
+    private String measurementId; // Ref - Dane pomiarowe
 
     private List<String> weekMealList; // Lista odnośników do tygodniowych jadłospisów
 
@@ -33,8 +30,8 @@ public class Menu extends BaseDoc {
     }
 
     public Menu(Menu menu) {
-        this.patientDocRef = menu.patientDocRef;
-        this.measurementDocRef = menu.measurementDocRef;
+        this.patientId = menu.patientId;
+        this.measurementId = menu.measurementId;
         this.weekMealList = menu.weekMealList;
         this.mealTypes = menu.mealTypes;
         this.startDate = menu.startDate;
@@ -43,10 +40,9 @@ public class Menu extends BaseDoc {
         this.activityLevel = menu.activityLevel;
     }
 
-    public Menu(DocRef<Patient> patientDocRef, DocRef<Measurement> measurementDocRef, List<String> weekMealList, List<MealType> mealTypes,
-                String startDate, String endDate, FoodProperties foodProperties, Float activityLevel) {
-        this.patientDocRef = patientDocRef;
-        this.measurementDocRef = measurementDocRef;
+    public Menu(String patientId, String measurementId, List<String> weekMealList, List<MealType> mealTypes, String startDate, String endDate, FoodProperties foodProperties, Float activityLevel) {
+        this.patientId = patientId;
+        this.measurementId = measurementId;
         this.weekMealList = weekMealList;
         this.mealTypes = mealTypes;
         this.startDate = startDate;
@@ -55,20 +51,20 @@ public class Menu extends BaseDoc {
         this.activityLevel = activityLevel;
     }
 
-    public DocRef<Patient> getPatientDocRef() {
-        return patientDocRef;
+    public String getPatientId() {
+        return patientId;
     }
 
-    public void setPatientDocRef(DocRef<Patient> patientDocRef) {
-        this.patientDocRef = patientDocRef;
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 
-    public DocRef<Measurement> getMeasurementDocRef() {
-        return measurementDocRef;
+    public String getMeasurementId() {
+        return measurementId;
     }
 
-    public void setMeasurementDocRef(DocRef<Measurement> measurementDocRef) {
-        this.measurementDocRef = measurementDocRef;
+    public void setMeasurementId(String measurementId) {
+        this.measurementId = measurementId;
     }
 
     public List<String> getWeekMealList() {

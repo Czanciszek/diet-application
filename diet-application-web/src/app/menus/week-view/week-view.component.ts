@@ -9,6 +9,7 @@ import {DayMeal} from "../../model/day-meal";
 import {translateDayType} from "../../material/helper/polish-translate";
 import {MealService} from "../../service/meal.service";
 import {Meal} from "../../model/meal";
+import {ProductService} from "../../service/product.service";
 
 @Component({
   selector: 'week-view.component',
@@ -23,7 +24,8 @@ export class WeekViewComponent implements OnInit {
     private menuService: MenuService,
     private weekMealService: WeekMealService,
     private dayMealService: DayMealService,
-    private mealService: MealService
+    private mealService: MealService,
+    private productService: ProductService
   ) {};
 
   menuItemData: any;
@@ -93,6 +95,16 @@ export class WeekViewComponent implements OnInit {
         (mealsData: Meal[]) => {
           this.mealListItemData = [...mealsData];
           console.log("Meals", this.mealListItemData);
+          this.getMenuProductMap();
+        });
+  }
+
+  getMenuProductMap() {
+    this.productService.getMenuProducts(this.menuItemData.id)
+      .subscribe(
+        (data: {} ) => {
+          this.productService.menuProductMap = {...data};
+          console.log("Map Products", this.productService.menuProductMap);
           this.dataLoaded = true;
         });
   }
@@ -125,19 +137,19 @@ export class WeekViewComponent implements OnInit {
 
     for (let meal of meals) {
       let isProduct = (meal.isProduct == 1);
-      if (isProduct) {
-        grams = meal.grams;
-      }
 
-      for (let product of meal.productForDishList) {
-        if (!isProduct) {
-          grams = product.grams;
+      for (let product of meal.productList) {
+        grams = product.grams;
+
+        if (this.productService.menuProductMap[product.productId] == null) {
+          continue;
         }
+        let foodProperties = this.productService.menuProductMap[product.productId].foodProperties;
 
-        let productEnergy = (product.foodProperties.energyValue * grams) / 100;
-        let productProteins = (product.foodProperties.proteins * grams) / 100;
-        let productFats = (product.foodProperties.fats * grams) / 100;
-        let productCarbohydrates = (product.foodProperties.carbohydrates * grams) / 100;
+        let productEnergy = (foodProperties.energyValue * grams) / 100;
+        let productProteins = (foodProperties.proteins * grams) / 100;
+        let productFats = (foodProperties.fats * grams) / 100;
+        let productCarbohydrates = (foodProperties.carbohydrates * grams) / 100;
 
         if (!isProduct) {
           let portions = meal.portions;

@@ -4,11 +4,6 @@ export interface WeekMeal {
   primaryImageId: string,
   type: string,
   name: string,
-  menuDocRef: {
-    id: string,
-    name: string,
-    primaryImageId: string,
-    type: string
-  },
+  menuId: string,
   dayMealList: string[],
 }

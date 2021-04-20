@@ -11,7 +11,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/patients")
 public class PatientController {
-    private PatientRepository patientRepository;
+    private final PatientRepository patientRepository;
 
     public PatientController(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;

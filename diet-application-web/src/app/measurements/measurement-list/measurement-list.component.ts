@@ -34,7 +34,7 @@ export class MeasurementListComponent implements OnInit {
               primaryImageId: item.primaryImageId,
               type: item.type,
               name: item.name,
-              patientDocRef: item.patientDocRef,
+              patientId: item.patientId,
               measurementDate: item.measurementDate,
               bodyWeight: item.bodyWeight,
               breast: item.breast,

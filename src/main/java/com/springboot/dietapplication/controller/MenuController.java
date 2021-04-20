@@ -1,6 +1,5 @@
 package com.springboot.dietapplication.controller;
 
-import com.springboot.dietapplication.model.base.DocRef;
 import com.springboot.dietapplication.model.menu.*;
 import com.springboot.dietapplication.model.patient.Measurement;
 import com.springboot.dietapplication.model.patient.Patient;
@@ -45,7 +44,7 @@ public class MenuController {
 
     @GetMapping(path = "/patient/{patientId}")
     public List<Menu> getMenusByPatientId(@PathVariable("patientId") String patientId) {
-        return this.menuRepository.findByPatientDocRefId(patientId);
+        return this.menuRepository.findByPatientId(patientId);
     }
     
     @PostMapping(produces = "application/json")
@@ -67,14 +66,14 @@ public class MenuController {
             Optional<Patient> optionalPatient = patientRepository.findById(menuType.getPatientId());
             if (optionalPatient.isPresent()) {
                 Patient patient = optionalPatient.get();
-                menu.setPatientDocRef(DocRef.fromDoc(patient));
+                menu.setPatientId(patient.getId());
                 float weight = measurement.getBodyWeight();
                 float activityLevel = menu.getActivityLevel();
                 int PPM = calculatePPM(patient, weight, activityLevel);
                 FoodProperties foodProperties = calculateBasicFoodProperties(PPM);
                 menu.setFoodProperties(foodProperties);
             }
-            menu.setMeasurementDocRef(DocRef.fromDoc(measurement));
+            menu.setMeasurementId(measurement.getId());
         }
 
         DateTime actualDate = dateTime;
@@ -87,14 +86,13 @@ public class MenuController {
                 DayMeal dayMeal = new DayMeal();
                 dayMeal.setDayType(dayType);
                 dayMeal.setDate(actualDate.toString());
-                dayMeal.setMenuDocRef(DocRef.fromDoc(menu));
-                dayMeal.setWeekMealDocRef(DocRef.fromDoc(weekMeal));
+                dayMeal.setWeekMealId(weekMeal.getId());
                 dayMealRepository.save(dayMeal);
                 dayMealList.add(dayMeal.getId());
                 actualDate = actualDate.plusDays(1);
             }
             weekMeal.setDayMealList(dayMealList);
-            weekMeal.setMenuDocRef(DocRef.fromDoc(menu));
+            weekMeal.setMenuId(menu.getId());
             weekMealRepository.save(weekMeal);
             weekMealList.add(weekMeal.getId());
         }

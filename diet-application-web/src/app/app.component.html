@@ -1,23 +1,21 @@
 
-<div *ngIf="!loginPage">
+<div class="nav-bar" *ngIf="!loginPage">
     <!-- Sidebar (hidden by default) -->
-  <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
-    <a href="javascript:void(0)" (click)="w3_close()" class="w3-bar-item w3-button">Zamknij Menu</a>
-    <a href="/home" (click)="w3_close()" class="w3-bar-item w3-button">Strona główna</a>
+  <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:40%;max-width:150px" id="mySidebar">
+    <a href="javascript:void(0)" (click)="w3_close()" class="w3-bar-item w3-button">☰</a>
+    <a href="/home" (click)="w3_close()" class="w3-bar-item w3-button">Menu</a>
     <a href="/products" (click)="w3_close()" class="w3-bar-item w3-button">Produkty</a>
     <a href="/dishes" (click)="w3_close()" class="w3-bar-item w3-button">Potrawy</a>
     <a href="/patients" (click)="w3_close()" class="w3-bar-item w3-button">Pacjenci</a>
+    <a href="#" (click)="w3_close()" class="w3-bar-item w3-button">Ustawienia</a>
   </nav>
-<!--
+
   <div class="w3-top">
     <div class="w3-white w3-xlarge" style="max-width:100%;margin:0px">
       <div class="w3-button w3-padding-16 w3-left" (click)="w3_open()">☰</div>
       <div class="w3-right w3-padding-16">{{currentUserName}}</div>
-      <div class="w3-center w3-padding-16">Moje diety</div>
     </div>
   </div>
-  -->
-
 
 </div>
 

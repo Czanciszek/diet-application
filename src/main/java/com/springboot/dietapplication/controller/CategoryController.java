@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api/v1/categories")
 public class CategoryController {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public CategoryController(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;

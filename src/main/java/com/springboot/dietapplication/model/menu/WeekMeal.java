@@ -1,7 +1,6 @@
 package com.springboot.dietapplication.model.menu;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
-import com.springboot.dietapplication.model.base.DocRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
 @Document(collection = "WeekMeals")
 public class WeekMeal extends BaseDoc {
 
-    private DocRef<Menu> menuDocRef;
+    private String menuId;
 
     private List<String> dayMealList; // Lista odnośników do dziennych jadłospisów
 
@@ -19,17 +18,17 @@ public class WeekMeal extends BaseDoc {
 
     }
 
-    public WeekMeal(DocRef<Menu> menuDocRef, List<String> dayMealList) {
-        this.menuDocRef = menuDocRef;
+    public WeekMeal(String menuId, List<String> dayMealList) {
+        this.menuId = menuId;
         this.dayMealList = dayMealList;
     }
 
-    public DocRef<Menu> getMenuDocRef() {
-        return menuDocRef;
+    public String getMenuId() {
+        return menuId;
     }
 
-    public void setMenuDocRef(DocRef<Menu> menuDocRef) {
-        this.menuDocRef = menuDocRef;
+    public void setMenuId(String menuId) {
+        this.menuId = menuId;
     }
 
     public List<String> getDayMealList() {

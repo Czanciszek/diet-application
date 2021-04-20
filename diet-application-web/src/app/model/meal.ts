@@ -7,7 +7,7 @@ export interface Meal {
   dayMealId: string,
   foodId: string,
   isProduct: number,
-  productForDishList: any[],
+  productList: any[],
   grams: number,
   portions: number,
   recipe: string,

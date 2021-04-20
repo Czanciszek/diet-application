@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {RestapiService} from "../service/restapi.service";
-import {GlobalVariable} from "../global";
 import {Router} from "@angular/router";
 
 @Component({

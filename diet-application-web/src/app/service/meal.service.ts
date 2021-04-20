@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GlobalVariable} from "../global";
 
 @Injectable({
@@ -25,8 +25,7 @@ export class MealService {
     name: new FormControl(''),
     type: new FormControl(''),
     dayMealId: new FormControl('', [Validators.required]),
-    grams: new FormControl(null),
-    productForDishList: new FormArray([]),
+    productList: new FormArray([]),
     isProduct: new FormControl(null),
     portions: new FormControl(null),
     recipe: new FormControl(null),
@@ -35,16 +34,10 @@ export class MealService {
 
   addProductFormGroup(): FormGroup {
     return new FormGroup( {
+      productId: new FormControl(null),
       grams: new FormControl(null),
       amount: new FormControl(null),
-      amountType: new FormControl(null),
-      foodProperties: new FormControl(),
-      product: new FormGroup( {
-        id: new FormControl(null),
-        name: new FormControl(null),
-        primaryImageId: new FormControl(null),
-        type: new FormControl(null),
-      }),
+      amountType: new FormControl(null)
     });
   }
 
@@ -55,9 +48,8 @@ export class MealService {
       primaryImageId: null,
       name: '',
       type: '',
-      productForDishList: [],
+      productList: [],
       dayMealId: '',
-      grams: null,
       isProduct: 0,
       portions: 1,
       recipe: '',

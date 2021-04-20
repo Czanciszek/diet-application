@@ -21,6 +21,7 @@ export class ProductService {
   }
 
   productList: any;
+  menuProductMap: any;
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
@@ -97,6 +98,12 @@ export class ProductService {
   getProducts() {
     this.productList = this.http.get("http://localhost:8080/api/v1/products", this.httpOptions);
     return this.productList;
+  }
+
+  getMenuProducts(menuId) {
+    let productsMapData: any;
+    productsMapData = this.http.get("http://localhost:8080/api/v1/products/menu/" + menuId, this.httpOptions);
+    return productsMapData;
   }
 
   insertProduct(product) {

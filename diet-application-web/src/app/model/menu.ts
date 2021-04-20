@@ -4,18 +4,8 @@ export interface Menu {
   primaryImageId: string,
   type: string,
   name: string,
-  patientDocRef: {
-    id: string,
-    name: string,
-    primaryImageId: string,
-    type: string
-  },
-  measurementDocRef: {
-    id: string,
-    name: string,
-    primaryImageId: string,
-    type: string
-  },
+  patientId: string,
+  measurementId: string,
   weekMealList: string[],
   mealTypes:string [],
   startDate: string,

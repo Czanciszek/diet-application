@@ -11,7 +11,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/weekmeals")
 public class WeekMealController {
-    private WeekMealRepository weekMealRepository;
+    private final WeekMealRepository weekMealRepository;
 
     public WeekMealController(WeekMealRepository weekMealRepository) {
         this.weekMealRepository = weekMealRepository;

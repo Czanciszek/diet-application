@@ -38,12 +38,7 @@ export class DishService {
       amount: new FormControl(null),
       amountType: new FormControl(null),
       foodProperties: new FormControl(),
-      product: new FormGroup( {
-        id: new FormControl(null),
-        name: new FormControl(null),
-        primaryImageId: new FormControl(null),
-        type: new FormControl(null)
-      }),
+      productId: new FormControl(null)
     });
   }
 
@@ -59,12 +54,7 @@ export class DishService {
           grams: null,
           amount: null,
           amountType: null,
-          product: {
-            id: null,
-            name: null,
-            primaryImageId: null,
-            type: null
-          },
+          productId: null,
           foodProperties: null,
         }
       ],

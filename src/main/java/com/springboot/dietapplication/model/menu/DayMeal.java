@@ -1,7 +1,6 @@
 package com.springboot.dietapplication.model.menu;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
-import com.springboot.dietapplication.model.base.DocRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -9,9 +8,7 @@ import java.util.List;
 @Document(collection = "DayMeals")
 public class DayMeal extends BaseDoc {
 
-    private DocRef<Menu> menuDocRef;
-
-    private DocRef<WeekMeal> weekMealDocRef;
+    private String weekMealId;
 
     private List<String> mealList; // Lista odnośników do posiłków
 
@@ -25,28 +22,19 @@ public class DayMeal extends BaseDoc {
 
     }
 
-    public DayMeal(DocRef<Menu> menuDocRef, DocRef<WeekMeal> weekMealDocRef, List<String> mealList, DayType dayType, String date) {
-        this.menuDocRef = menuDocRef;
-        this.weekMealDocRef = weekMealDocRef;
+    public DayMeal(String weekMealId, List<String> mealList, DayType dayType, String date) {
+        this.weekMealId = weekMealId;
         this.mealList = mealList;
         this.dayType = dayType;
         this.date = date;
     }
 
-    public DocRef<Menu> getMenuDocRef() {
-        return menuDocRef;
+    public String getWeekMealId() {
+        return weekMealId;
     }
 
-    public void setMenuDocRef(DocRef<Menu> menuDocRef) {
-        this.menuDocRef = menuDocRef;
-    }
-
-    public DocRef<WeekMeal> getWeekMealDocRef() {
-        return weekMealDocRef;
-    }
-
-    public void setWeekMealDocRef(DocRef<WeekMeal> weekMealDocRef) {
-        this.weekMealDocRef = weekMealDocRef;
+    public void setWeekMealId(String weekMealId) {
+        this.weekMealId = weekMealId;
     }
 
     public List<String> getMealList() {

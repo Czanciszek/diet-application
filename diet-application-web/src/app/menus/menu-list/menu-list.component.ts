@@ -63,8 +63,8 @@ export class MenuListComponent implements OnInit {
 
   getMeasurementDates() {
     for (let data of this.listData) {
-      if (data.measurementDocRef != null) {
-        this.getMeasurementById(data.measurementDocRef.id);
+      if (data.measurementId != null) {
+        this.getMeasurementById(data.measurementId);
       }
     }
     this.dataLoaded = true;
