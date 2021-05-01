@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.patient.Patient;
-import com.springboot.dietapplication.repository.PatientRepository;
+import com.springboot.dietapplication.repository.mongo.PatientRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

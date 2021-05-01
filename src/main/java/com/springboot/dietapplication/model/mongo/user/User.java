@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.model.user;
+package com.springboot.dietapplication.model.mongo.user;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
 import org.springframework.data.mongodb.core.mapping.Document;

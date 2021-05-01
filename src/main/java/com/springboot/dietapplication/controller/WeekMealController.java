@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.menu.WeekMeal;
-import com.springboot.dietapplication.repository.WeekMealRepository;
+import com.springboot.dietapplication.repository.mongo.WeekMealRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

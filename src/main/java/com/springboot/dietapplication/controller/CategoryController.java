@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.product.Category;
-import com.springboot.dietapplication.repository.CategoryRepository;
+import com.springboot.dietapplication.repository.mongo.CategoryRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

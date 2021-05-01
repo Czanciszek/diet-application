@@ -2,8 +2,8 @@ package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.menu.DayMeal;
 import com.springboot.dietapplication.model.menu.Meal;
-import com.springboot.dietapplication.repository.DayMealRepository;
-import com.springboot.dietapplication.repository.MealRepository;
+import com.springboot.dietapplication.repository.mongo.DayMealRepository;
+import com.springboot.dietapplication.repository.mongo.MealRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

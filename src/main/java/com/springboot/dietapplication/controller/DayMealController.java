@@ -1,11 +1,10 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.menu.DayMeal;
-import com.springboot.dietapplication.repository.DayMealRepository;
+import com.springboot.dietapplication.repository.mongo.DayMealRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

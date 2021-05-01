@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.repository;
+package com.springboot.dietapplication.repository.mongo;
 
 import com.springboot.dietapplication.model.menu.DayMeal;
 import org.springframework.data.mongodb.repository.MongoRepository;

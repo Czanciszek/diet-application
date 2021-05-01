@@ -1,46 +1,29 @@
-package com.springboot.dietapplication.controller;
+package com.springboot.dietapplication.controller.psql;
 
-import com.springboot.dietapplication.model.menu.DayMeal;
-import com.springboot.dietapplication.model.menu.Meal;
-import com.springboot.dietapplication.model.menu.Menu;
-import com.springboot.dietapplication.model.menu.WeekMeal;
-import com.springboot.dietapplication.model.product.Product;
-import com.springboot.dietapplication.model.product.ProductForDish;
-import com.springboot.dietapplication.repository.*;
+import com.springboot.dietapplication.model.psql.product.Product;
+import com.springboot.dietapplication.repository.psql.PSQLProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/v1/products")
-public class ProductController {
-    private final ProductRepository productRepository;
-    private final MenuRepository menuRepository;
-    private final WeekMealRepository weekMealRepository;
-    private final DayMealRepository dayMealRepository;
-    private final MealRepository mealRepository;
+@RequestMapping("/api/v2/products")
+public class PSQLProductController {
 
-    public ProductController(ProductRepository productRepository,
-                             MenuRepository menuRepository,
-                             WeekMealRepository weekMealRepository,
-                             DayMealRepository dayMealRepository,
-                             MealRepository mealRepository) {
-        this.productRepository = productRepository;
-        this.menuRepository = menuRepository;
-        this.weekMealRepository = weekMealRepository;
-        this.dayMealRepository = dayMealRepository;
-        this.mealRepository = mealRepository;
-    }
+    @Autowired
+    PSQLProductRepository psqlProductRepository;
 
     @GetMapping
     public List<Product> getAll() {
-        return this.productRepository.findAll();
+        List<Product> productList =  this.psqlProductRepository.findAllProducts();
+        return productList;
     }
 
     @GetMapping(path = "/{productId}")
-    public Optional<Product> getProductById(@PathVariable("productId") String productId) {
-        return this.productRepository.findById(productId);
+    public Optional<Product> getProductById(@PathVariable("productId") Long productId) {
+        return this.psqlProductRepository.findById(productId);
     }
 
     @GetMapping(path = "/{category}/{subcategory}")
@@ -50,22 +33,26 @@ public class ProductController {
         String TAG_ANY = "*ANY*";
         List<Product> filteredProducts;
         if (category.equals(TAG_ANY) && subcategory.equals(TAG_ANY)) {
-            filteredProducts = this.productRepository.findAll();
+            filteredProducts = this.psqlProductRepository.findAll();
         } else if (category.equals(TAG_ANY)) {
-            filteredProducts = this.productRepository.findBySubcategoryLike(subcategory);
+            //filteredProducts = this.psqlProductRepository.findBySubcategoryNameLike(subcategory);
+            filteredProducts = new ArrayList<>();
         } else if (subcategory.equals(TAG_ANY)) {
-            filteredProducts = this.productRepository.findByCategoryLike(category);
+            //filteredProducts = this.psqlProductRepository.findByCategoryNameLike(category);
+            filteredProducts = new ArrayList<>();
         } else {
-            filteredProducts = this.productRepository.findByCategoryLikeAndSubcategoryLike(category, subcategory);
+            //filteredProducts = this.psqlProductRepository.findByCategoryNameLikeAndSubcategoryNameLike(category, subcategory);
+            filteredProducts = new ArrayList<>();
         }
 
         return filteredProducts;
     }
 
     @GetMapping(path = "/menu/{menuId}")
-    public Map<String,Product> getMenuProducts(@PathVariable("menuId") String menuId) {
-        Set<String> productIdList = new HashSet<>();
-        Map<String, Product> productMap = new HashMap<>();
+    public Map<Long,Product> getMenuProducts(@PathVariable("menuId") String menuId) {
+        Set<Long> productIdList = new HashSet<>();
+        Map<Long, Product> productMap = new HashMap<>();
+        /*
         Optional<Menu> menu = this.menuRepository.findById(menuId);
         if (menu.isPresent()) {
             for (String weekMealId : menu.get().getWeekMealList()) {
@@ -87,8 +74,9 @@ public class ProductController {
                 }
             }
         }
+        */
 
-        List<Product> productList = this.productRepository.findProductsByIdIn(productIdList);
+        List<Product> productList = this.psqlProductRepository.findProductsByIdIn(productIdList);
         for (Product product : productList) {
             productMap.put(product.getId(), product);
         }
@@ -98,24 +86,25 @@ public class ProductController {
 
     @GetMapping(path = "/name/{name}")
     public List<Product> getFilteredProducts(@PathVariable("name") String name) {
-        return this.productRepository.findByNameLike(name);
+        //return this.psqlProductRepository.findByNameLike(name);
+        return new ArrayList<>();
     }
 
     @PostMapping(produces = "application/json")
     ResponseEntity<Product> insertProduct(@RequestBody Product product) throws NoSuchFieldException {
-        productRepository.save(product);
+        psqlProductRepository.save(product);
         return ResponseEntity.ok().body(product);
     }
 
     @PutMapping(path = "/{productId}", produces = "application/json")
     ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-        productRepository.save(product);
+        psqlProductRepository.save(product);
         return ResponseEntity.ok().body(product);
     }
 
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<Product> deleteProduct(@PathVariable String id) {
-        productRepository.deleteById(id);
+    ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
+        psqlProductRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }

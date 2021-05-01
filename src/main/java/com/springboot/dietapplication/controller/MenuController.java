@@ -4,7 +4,7 @@ import com.springboot.dietapplication.model.menu.*;
 import com.springboot.dietapplication.model.patient.Measurement;
 import com.springboot.dietapplication.model.patient.Patient;
 import com.springboot.dietapplication.model.properties.FoodProperties;
-import com.springboot.dietapplication.repository.*;
+import com.springboot.dietapplication.repository.mongo.*;
 import org.joda.time.DateTime;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

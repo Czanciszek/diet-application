@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.controller;
 
-import com.springboot.dietapplication.model.user.User;
+import com.springboot.dietapplication.model.mongo.user.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

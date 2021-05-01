@@ -1,8 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.dish.Dish;
-import com.springboot.dietapplication.model.product.Product;
-import com.springboot.dietapplication.repository.DishRepository;
+import com.springboot.dietapplication.repository.mongo.DishRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

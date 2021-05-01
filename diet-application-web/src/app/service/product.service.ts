@@ -25,13 +25,11 @@ export class ProductService {
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
-    header: new FormControl(null),
-    primaryImageId: new FormControl(null),
-    type: new FormControl(''),
     category: new FormControl('', Validators.required),
     subcategory: new FormControl('', Validators.required),
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     foodProperties: new FormGroup({
+      id: new FormControl(null),
       energyValue: new FormControl(null),
       proteins: new FormControl(null),
       fats: new FormControl(null),
@@ -61,13 +59,11 @@ export class ProductService {
   initializeFormGroup() {
     this.form.setValue({
       id: null,
-      header: null,
-      primaryImageId: null,
-      type: '',
       category: '',
       subcategory: '',
       name: '',
       foodProperties: {
+        id: null,
         energyValue: null,
         proteins: null,
         fats: null,
@@ -96,7 +92,7 @@ export class ProductService {
   }
 
   getProducts() {
-    this.productList = this.http.get("http://localhost:8080/api/v1/products", this.httpOptions);
+    this.productList = this.http.get("http://localhost:8080/api/v2/products", this.httpOptions);
     return this.productList;
   }
 
@@ -138,6 +134,7 @@ export class ProductService {
   }
 
   populateForm(product) {
+    console.log(product);
     this.form.setValue(product);
   }
 }

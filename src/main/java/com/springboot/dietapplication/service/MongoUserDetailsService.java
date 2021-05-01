@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.service;
 
-import com.springboot.dietapplication.model.user.User;
-import com.springboot.dietapplication.repository.UserRepository;
+import com.springboot.dietapplication.model.mongo.user.User;
+import com.springboot.dietapplication.repository.mongo.MongoUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,11 +16,11 @@ import java.util.List;
 public class MongoUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private MongoUserRepository mongoUserRepository;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = userRepository.findByName(name);
+        User user = mongoUserRepository.findByName(name);
         if (user == null) {
             throw new UsernameNotFoundException("User with provided name doesn't exist.");
         }

@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.repository;
+package com.springboot.dietapplication.repository.mongo;
 
 import com.springboot.dietapplication.model.product.Product;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface ProductRepository extends MongoRepository<Product, String> {
+public interface MongoProductRepository extends MongoRepository<Product, String> {
 
     List<Product> findByNameLike(String name);
 
