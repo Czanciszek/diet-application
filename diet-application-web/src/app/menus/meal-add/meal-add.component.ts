@@ -186,36 +186,32 @@ export class MealAddComponent implements OnInit {
 
   getProductSummary(index) {
     let product = this.service.form.get('productList').value[index];
-    if (product != null) {
-      let isProduct = (this.service.form.get('isProduct').value == 1);
-      let grams = product.grams;
-
-      if (this.productService.menuProductMap[product.productId] == null) {
-        return "";
-      }
-
-      let foodProperties = this.productService.menuProductMap[product.productId].foodProperties;
-
-      let energy = (foodProperties.energyValue * grams) / 100;
-      let proteins = (foodProperties.proteins * grams) / 100;
-      let fats = (foodProperties.fats * grams) / 100;
-      let carbohydrates = (foodProperties.carbohydrates * grams) / 100;
-
-      if (isProduct) {
-        let portions = this.service.form.get('portions').value;
-        energy /= portions;
-        proteins /= portions;
-        fats /= portions;
-        carbohydrates /= portions;
-      }
-
-      return "Kcal: " + energy.toFixed(2) +
-        "    B: " + proteins.toFixed(2) +
-        "    T: " + fats.toFixed(2) +
-        "    W: " + carbohydrates.toFixed(2);
-    } else {
+    if (product == null || this.productService.menuProductMap[product.productId] == null) {
       return "";
     }
+
+    let isProduct = (this.service.form.get('isProduct').value == 1);
+    let grams = product.grams;
+
+    let foodProperties = this.productService.menuProductMap[product.productId].foodProperties;
+
+    let energy = (foodProperties.energyValue * grams) / 100;
+    let proteins = (foodProperties.proteins * grams) / 100;
+    let fats = (foodProperties.fats * grams) / 100;
+    let carbohydrates = (foodProperties.carbohydrates * grams) / 100;
+
+    if (isProduct) {
+      let portions = this.service.form.get('portions').value;
+      energy /= portions;
+      proteins /= portions;
+      fats /= portions;
+      carbohydrates /= portions;
+    }
+
+    return "Kcal: " + energy.toFixed(2) +
+      "    B: " + proteins.toFixed(2) +
+      "    T: " + fats.toFixed(2) +
+      "    W: " + carbohydrates.toFixed(2);
   }
 
   gramsChanged(grams) {
