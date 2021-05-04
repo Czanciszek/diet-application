@@ -4,9 +4,9 @@ import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import com.springboot.dietapplication.model.psql.product.PsqlProduct;
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.model.type.ProductType;
-import com.springboot.dietapplication.repository.psql.PSQLCategoryRepository;
-import com.springboot.dietapplication.repository.psql.PSQLFoodPropertiesRepository;
-import com.springboot.dietapplication.repository.psql.PSQLProductRepository;
+import com.springboot.dietapplication.repository.psql.PsqlCategoryRepository;
+import com.springboot.dietapplication.repository.psql.PsqlFoodPropertiesRepository;
+import com.springboot.dietapplication.repository.psql.PsqlProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,13 +17,13 @@ import java.util.*;
 public class PsqlProductService {
 
     @Autowired
-    PSQLProductRepository productRepository;
+    PsqlProductRepository productRepository;
 
     @Autowired
-    PSQLCategoryRepository categoryRepository;
+    PsqlCategoryRepository categoryRepository;
 
     @Autowired
-    PSQLFoodPropertiesRepository foodPropertiesRepository;
+    PsqlFoodPropertiesRepository foodPropertiesRepository;
 
     private final PsqlFoodPropertiesService foodPropertiesService;
     private final PsqlCategoryService categoryService;

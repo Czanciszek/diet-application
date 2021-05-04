@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface PSQLProductRepository extends JpaRepository<PsqlProduct, Long> {
+public interface PsqlProductRepository extends JpaRepository<PsqlProduct, Long> {
 
     List<PsqlProduct> findProductsByIdIn(Set<Long> productIdList);
 

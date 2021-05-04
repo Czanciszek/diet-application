@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PSQLCategoryRepository extends JpaRepository<PsqlCategory, Long> {
+public interface PsqlCategoryRepository extends JpaRepository<PsqlCategory, Long> {
 
     PsqlCategory getCategoryByCategoryAndSubcategory(String category, String subcategory);
 

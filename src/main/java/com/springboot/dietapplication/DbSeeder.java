@@ -31,7 +31,7 @@ public class DbSeeder implements CommandLineRunner {
 
     private final DishRepository dishRepository;
 
-    private final CategoryRepository categoryRepository;
+    private final MongoCategoryRepository categoryRepository;
     private final PatientRepository patientRepository;
     private final MeasurementRepository measurementRepository;
     private final MenuRepository menuRepository;
@@ -40,17 +40,17 @@ public class DbSeeder implements CommandLineRunner {
     private final MealRepository mealRepository;
 
     @Autowired
-    PSQLFoodPropertiesRepository PSQLFoodPropertiesRepository;
+    PsqlFoodPropertiesRepository PSQLFoodPropertiesRepository;
     @Autowired
-    PSQLCategoryRepository PSQLCategoryRepository;
+    PsqlCategoryRepository PSQLCategoryRepository;
     @Autowired
-    PSQLProductRepository PSQLProductRepository;
+    PsqlProductRepository PSQLProductRepository;
 
     public DbSeeder(MongoUserRepository mongoUserRepository,
                     MongoProductRepository mongoProductRepository,
                     MongoFoodPropertiesRepository mongoFoodPropertiesRepository,
                     DishRepository dishRepository,
-                    CategoryRepository categoryRepository,
+                    MongoCategoryRepository categoryRepository,
                     PatientRepository patientRepository,
                     MeasurementRepository measurementRepository,
                     MenuRepository menuRepository,

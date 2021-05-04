@@ -2,7 +2,7 @@ package com.springboot.dietapplication.service.psql;
 
 import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import com.springboot.dietapplication.model.type.ProductType;
-import com.springboot.dietapplication.repository.psql.PSQLCategoryRepository;
+import com.springboot.dietapplication.repository.psql.PsqlCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class PsqlCategoryService {
 
     @Autowired
-    PSQLCategoryRepository categoryRepository;
+    PsqlCategoryRepository categoryRepository;
 
     public PsqlCategory findCategory(ProductType productType) {
         String category = productType.getCategory();

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PSQLUserRepository extends JpaRepository<User, Long> {
+public interface PsqlUserRepository extends JpaRepository<User, Long> {
 
     List<User> findAll();
 

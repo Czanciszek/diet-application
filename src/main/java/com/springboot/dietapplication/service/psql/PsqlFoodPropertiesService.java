@@ -1,9 +1,8 @@
 package com.springboot.dietapplication.service.psql;
 
-import com.springboot.dietapplication.model.mongo.properties.MongoFoodProperties;
 import com.springboot.dietapplication.model.psql.properties.PsqlFoodProperties;
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
-import com.springboot.dietapplication.repository.psql.PSQLFoodPropertiesRepository;
+import com.springboot.dietapplication.repository.psql.PsqlFoodPropertiesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ import java.util.Optional;
 public class PsqlFoodPropertiesService {
 
     @Autowired
-    PSQLFoodPropertiesRepository foodPropertiesRepository;
+    PsqlFoodPropertiesRepository foodPropertiesRepository;
 
     public FoodPropertiesType findById(Long foodPropertiesId) {
         Optional<PsqlFoodProperties> foodProperties = this.foodPropertiesRepository.findById(foodPropertiesId);
