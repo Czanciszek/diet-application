@@ -1,82 +1,39 @@
-package com.springboot.dietapplication.model.psql.properties;
+package com.springboot.dietapplication.model.mongo.properties;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
+import com.springboot.dietapplication.model.type.FoodPropertiesType;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-import java.io.Serializable;
+@Document(collection = "FoodProperties")
+public class MongoFoodProperties {
 
-@Entity
-@Table(name = "food_properties")
-public class FoodProperties implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
-    @Column(name = "energy_value")
+    private String id;
     private int energyValue;
-
-    @Column(name = "proteins")
     private float proteins;
-
-    @Column(name = "fats")
     private float fats;
-
-    @Column(name = "saturated_fatty_acids")
     private float saturatedFattyAcids;
-
-    @Column(name = "mono_unsaturated_fatty_acids")
     private float monoUnsaturatedFattyAcids;
-
-    @Column(name = "poly_unsaturated_fatty_acids")
     private float polyUnsaturatedFattyAcids;
-
-    @Column(name = "cholesterol")
     private float cholesterol;
-
-    @Column(name = "carbohydrates")
     private float carbohydrates;
-
-    @Column(name = "sucrose")
     private float sucrose;
-
-    @Column(name = "dietary_fibres")
     private float dietaryFibres;
-
-    @Column(name = "sodium")
     private float sodium;
-
-    @Column(name = "potassium")
     private float potassium;
-
-    @Column(name = "calcium")
     private float calcium;
-
-    @Column(name = "phosphorus")
     private float phosphorus;
-
-    @Column(name = "magnesium")
     private float magnesium;
-
-    @Column(name = "iron")
     private float iron;
-
-    @Column(name = "selenium")
     private float selenium;
-
-    @Column(name = "beta_carotene")
     private float betaCarotene;
-
-    @Column(name = "vitamin_d")
     private float vitaminD;
-
-    @Column(name = "vitamin_c")
     private float vitaminC;
 
-    public FoodProperties() {
+    public MongoFoodProperties() {
+
     }
 
-    public FoodProperties(ProductExcel productExcel) {
+    public MongoFoodProperties(ProductExcel productExcel) {
         this.energyValue = productExcel.getEnergyValue();
         this.proteins = productExcel.getProteins();
         this.fats = productExcel.getFats();
@@ -99,11 +56,36 @@ public class FoodProperties implements Serializable {
         this.vitaminC = productExcel.getVitaminC();
     }
 
-    public long getId() {
+    public MongoFoodProperties(FoodPropertiesType foodPropertiesType) {
+        if (foodPropertiesType.getId() != null && !foodPropertiesType.getId().isEmpty())
+            this.id = foodPropertiesType.getId();
+        this.energyValue = foodPropertiesType.getEnergyValue();
+        this.proteins = foodPropertiesType.getProteins();
+        this.fats = foodPropertiesType.getFats();
+        this.saturatedFattyAcids = foodPropertiesType.getSaturatedFattyAcids();
+        this.monoUnsaturatedFattyAcids = foodPropertiesType.getMonoUnsaturatedFattyAcids();
+        this.polyUnsaturatedFattyAcids = foodPropertiesType.getPolyUnsaturatedFattyAcids();
+        this.cholesterol = foodPropertiesType.getCholesterol();
+        this.carbohydrates = foodPropertiesType.getCarbohydrates();
+        this.sucrose = foodPropertiesType.getSucrose();
+        this.dietaryFibres = foodPropertiesType.getDietaryFibres();
+        this.sodium = foodPropertiesType.getSodium();
+        this.potassium = foodPropertiesType.getPotassium();
+        this.calcium = foodPropertiesType.getCalcium();
+        this.phosphorus = foodPropertiesType.getPhosphorus();
+        this.magnesium = foodPropertiesType.getMagnesium();
+        this.iron = foodPropertiesType.getIron();
+        this.selenium = foodPropertiesType.getSelenium();
+        this.betaCarotene = foodPropertiesType.getBetaCarotene();
+        this.vitaminD = foodPropertiesType.getVitaminD();
+        this.vitaminC = foodPropertiesType.getVitaminC();
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

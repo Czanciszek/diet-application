@@ -1,7 +1,16 @@
-package com.springboot.dietapplication.model.properties;
+package com.springboot.dietapplication.model.type;
 
-public class FoodProperties {
+import com.springboot.dietapplication.model.mongo.properties.MongoFoodProperties;
+import com.springboot.dietapplication.model.psql.properties.PsqlFoodProperties;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class FoodPropertiesType {
+
+    @Id
+    private String id;
     private int energyValue;
     private float proteins;
     private float fats;
@@ -23,35 +32,64 @@ public class FoodProperties {
     private float vitaminD;
     private float vitaminC;
 
-    public FoodProperties() {
+    public FoodPropertiesType() {
 
     }
 
-    public FoodProperties(int energyValue, float proteins, float fats, float saturatedFattyAcids,
-                          float monoUnsaturatedFattyAcids, float polyUnsaturatedFattyAcids, float cholesterol,
-                          float carbohydrates, float sucrose, float dietaryFibres, float sodium, float potassium,
-                          float calcium, float phosphorus, float magnesium, float iron, float selenium,
-                          float betaCarotene, float vitaminD, float vitaminC) {
-        this.energyValue = energyValue;
-        this.proteins = proteins;
-        this.fats = fats;
-        this.saturatedFattyAcids = saturatedFattyAcids;
-        this.monoUnsaturatedFattyAcids = monoUnsaturatedFattyAcids;
-        this.polyUnsaturatedFattyAcids = polyUnsaturatedFattyAcids;
-        this.cholesterol = cholesterol;
-        this.carbohydrates = carbohydrates;
-        this.sucrose = sucrose;
-        this.dietaryFibres = dietaryFibres;
-        this.sodium = sodium;
-        this.potassium = potassium;
-        this.calcium = calcium;
-        this.phosphorus = phosphorus;
-        this.magnesium = magnesium;
-        this.iron = iron;
-        this.selenium = selenium;
-        this.betaCarotene = betaCarotene;
-        this.vitaminD = vitaminD;
-        this.vitaminC = vitaminC;
+    public FoodPropertiesType(MongoFoodProperties foodProperties) {
+        this.id = foodProperties.getId();
+        this.energyValue = foodProperties.getEnergyValue();
+        this.proteins = foodProperties.getProteins();
+        this.fats = foodProperties.getFats();
+        this.saturatedFattyAcids = foodProperties.getSaturatedFattyAcids();
+        this.monoUnsaturatedFattyAcids = foodProperties.getMonoUnsaturatedFattyAcids();
+        this.polyUnsaturatedFattyAcids = foodProperties.getPolyUnsaturatedFattyAcids();
+        this.cholesterol = foodProperties.getCholesterol();
+        this.carbohydrates = foodProperties.getCarbohydrates();
+        this.sucrose = foodProperties.getSucrose();
+        this.dietaryFibres = foodProperties.getDietaryFibres();
+        this.sodium = foodProperties.getSodium();
+        this.potassium = foodProperties.getPotassium();
+        this.calcium = foodProperties.getCalcium();
+        this.phosphorus = foodProperties.getPhosphorus();
+        this.magnesium = foodProperties.getMagnesium();
+        this.iron = foodProperties.getIron();
+        this.selenium = foodProperties.getSelenium();
+        this.betaCarotene = foodProperties.getBetaCarotene();
+        this.vitaminD = foodProperties.getVitaminD();
+        this.vitaminC = foodProperties.getVitaminC();
+    }
+
+    public FoodPropertiesType(PsqlFoodProperties foodProperties) {
+        this.id = String.valueOf(foodProperties.getId());
+        this.energyValue = foodProperties.getEnergyValue();
+        this.proteins = foodProperties.getProteins();
+        this.fats = foodProperties.getFats();
+        this.saturatedFattyAcids = foodProperties.getSaturatedFattyAcids();
+        this.monoUnsaturatedFattyAcids = foodProperties.getMonoUnsaturatedFattyAcids();
+        this.polyUnsaturatedFattyAcids = foodProperties.getPolyUnsaturatedFattyAcids();
+        this.cholesterol = foodProperties.getCholesterol();
+        this.carbohydrates = foodProperties.getCarbohydrates();
+        this.sucrose = foodProperties.getSucrose();
+        this.dietaryFibres = foodProperties.getDietaryFibres();
+        this.sodium = foodProperties.getSodium();
+        this.potassium = foodProperties.getPotassium();
+        this.calcium = foodProperties.getCalcium();
+        this.phosphorus = foodProperties.getPhosphorus();
+        this.magnesium = foodProperties.getMagnesium();
+        this.iron = foodProperties.getIron();
+        this.selenium = foodProperties.getSelenium();
+        this.betaCarotene = foodProperties.getBetaCarotene();
+        this.vitaminD = foodProperties.getVitaminD();
+        this.vitaminC = foodProperties.getVitaminC();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getEnergyValue() {

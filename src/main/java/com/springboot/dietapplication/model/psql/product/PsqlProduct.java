@@ -1,14 +1,14 @@
 package com.springboot.dietapplication.model.psql.product;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
-import com.springboot.dietapplication.model.psql.properties.FoodProperties;
+import com.springboot.dietapplication.model.type.ProductType;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "products")
-public class Product implements Serializable {
+public class PsqlProduct implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,16 +20,8 @@ public class Product implements Serializable {
     @Column(name = "category_id")
     private long categoryId;
 
-    private String category;
-
-    @Column(name = "subcategory_id")
-    private long subcategoryId;
-
-    private String subcategory;
-
-    @ManyToOne
-    @JoinColumn(name = "food_properties_id")
-    private FoodProperties foodProperties;
+    @Column(name = "food_properties_id")
+    private long foodPropertiesId;
 
     @Column(name = "lactose")
     private boolean lactose;
@@ -40,14 +32,23 @@ public class Product implements Serializable {
     @Column(name = "gluten")
     private boolean gluten;
 
-    public Product() {
+    public PsqlProduct() {
     }
 
-    public Product(ProductExcel productExcel) {
+    public PsqlProduct(ProductExcel productExcel) {
         this.name = productExcel.getName();
         this.lactose = productExcel.getLactose() != null && !productExcel.getLactose().isEmpty();
         this.starch = productExcel.getStarch() != null && !productExcel.getStarch().isEmpty();
         this.gluten = productExcel.getGluten() != null && !productExcel.getGluten().isEmpty();
+    }
+
+    public PsqlProduct(ProductType productType) {
+        if (productType.getId() != null && !productType.getId().isEmpty())
+            this.id = Long.parseLong(productType.getId());
+        this.name = productType.getName();
+        this.lactose = productType.isLactose();
+        this.starch = productType.isStarch();
+        this.gluten = productType.isGluten();
     }
 
     public long getId() {
@@ -66,36 +67,12 @@ public class Product implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public String getCategory() {
-        return category;
+    public long getFoodPropertiesId() {
+        return foodPropertiesId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public long getSubcategoryId() {
-        return subcategoryId;
-    }
-
-    public void setSubcategoryId(long subcategoryId) {
-        this.subcategoryId = subcategoryId;
-    }
-
-    public String getSubcategory() {
-        return subcategory;
-    }
-
-    public void setSubcategory(String subcategory) {
-        this.subcategory = subcategory;
-    }
-
-    public FoodProperties getFoodProperties() {
-        return foodProperties;
-    }
-
-    public void setFoodProperties(FoodProperties foodProperties) {
-        this.foodProperties = foodProperties;
+    public void setFoodPropertiesId(long foodPropertiesId) {
+        this.foodPropertiesId = foodPropertiesId;
     }
 
     public String getName() {

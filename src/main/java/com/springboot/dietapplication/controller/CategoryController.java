@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.controller;
 
-import com.springboot.dietapplication.model.product.Category;
+import com.springboot.dietapplication.model.mongo.product.MongoCategory;
 import com.springboot.dietapplication.repository.mongo.CategoryRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getAll() {
+    public List<MongoCategory> getAll() {
         return this.categoryRepository.findAll();
     }
 }

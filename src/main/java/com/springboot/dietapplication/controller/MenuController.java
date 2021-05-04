@@ -3,7 +3,8 @@ package com.springboot.dietapplication.controller;
 import com.springboot.dietapplication.model.menu.*;
 import com.springboot.dietapplication.model.patient.Measurement;
 import com.springboot.dietapplication.model.patient.Patient;
-import com.springboot.dietapplication.model.properties.FoodProperties;
+import com.springboot.dietapplication.model.type.FoodPropertiesType;
+import com.springboot.dietapplication.model.type.DayType;
 import com.springboot.dietapplication.repository.mongo.*;
 import org.joda.time.DateTime;
 import org.springframework.http.ResponseEntity;
@@ -70,8 +71,8 @@ public class MenuController {
                 float weight = measurement.getBodyWeight();
                 float activityLevel = menu.getActivityLevel();
                 int PPM = calculatePPM(patient, weight, activityLevel);
-                FoodProperties foodProperties = calculateBasicFoodProperties(PPM);
-                menu.setFoodProperties(foodProperties);
+                FoodPropertiesType foodPropertiesType = calculateBasicFoodProperties(PPM);
+                menu.setFoodProperties(foodPropertiesType);
             }
             menu.setMeasurementId(measurement.getId());
         }
@@ -133,19 +134,19 @@ public class MenuController {
         return (int) (ppm * activityLevel);
     }
 
-    private FoodProperties calculateBasicFoodProperties(int kcal) {
-        FoodProperties foodProperties = new FoodProperties();
-        foodProperties.setEnergyValue(kcal);
+    private FoodPropertiesType calculateBasicFoodProperties(int kcal) {
+        FoodPropertiesType foodPropertiesType = new FoodPropertiesType();
+        foodPropertiesType.setEnergyValue(kcal);
 
         float proteins = (0.1f * kcal) / 4.0f;
-        foodProperties.setProteins(proteins);
+        foodPropertiesType.setProteins(proteins);
 
         float fats = (0.3f * kcal) / 9.0f;
-        foodProperties.setFats(fats);
+        foodPropertiesType.setFats(fats);
 
         float carbohydrates = (0.6f * kcal) / 4.0f;
-        foodProperties.setCarbohydrates(carbohydrates);
+        foodPropertiesType.setCarbohydrates(carbohydrates);
 
-        return foodProperties;
+        return foodPropertiesType;
     }
 }

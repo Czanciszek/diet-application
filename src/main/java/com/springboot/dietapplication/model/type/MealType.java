@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.model.menu;
+package com.springboot.dietapplication.model.type;
 
 public enum MealType {
 

@@ -15,7 +15,7 @@
           <mat-form-field>
             <mat-select formControlName="category" placeholder="Kategoria*">
               <ng-container *ngFor="let category of categories">
-                <mat-option value="{{category.category}}">{{category.category}}</mat-option>
+                <mat-option value="{{category}}">{{category}}</mat-option>
               </ng-container>
             </mat-select>
             <mat-error *ngIf="service.form.controls['category'].errors?.required">Pole wymagane</mat-error>

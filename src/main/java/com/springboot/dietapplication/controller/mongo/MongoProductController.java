@@ -1,121 +1,61 @@
 package com.springboot.dietapplication.controller.mongo;
 
-import com.springboot.dietapplication.model.menu.DayMeal;
-import com.springboot.dietapplication.model.menu.Meal;
-import com.springboot.dietapplication.model.menu.Menu;
-import com.springboot.dietapplication.model.menu.WeekMeal;
-import com.springboot.dietapplication.model.product.Product;
-import com.springboot.dietapplication.model.product.ProductForDish;
-import com.springboot.dietapplication.repository.mongo.*;
+import com.springboot.dietapplication.model.mongo.product.MongoProduct;
+import com.springboot.dietapplication.model.type.ProductType;
+import com.springboot.dietapplication.service.mongo.MongoProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/mongo/products")
 public class MongoProductController {
-    private final MongoProductRepository mongoProductRepository;
-    private final MenuRepository menuRepository;
-    private final WeekMealRepository weekMealRepository;
-    private final DayMealRepository dayMealRepository;
-    private final MealRepository mealRepository;
 
-    public MongoProductController(MongoProductRepository mongoProductRepository,
-                                  MenuRepository menuRepository,
-                                  WeekMealRepository weekMealRepository,
-                                  DayMealRepository dayMealRepository,
-                                  MealRepository mealRepository) {
-        this.mongoProductRepository = mongoProductRepository;
-        this.menuRepository = menuRepository;
-        this.weekMealRepository = weekMealRepository;
-        this.dayMealRepository = dayMealRepository;
-        this.mealRepository = mealRepository;
+    private final MongoProductService productService;
+
+    public MongoProductController(MongoProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping
-    public List<Product> getAll() {
-        return this.mongoProductRepository.findAll();
+    public List<ProductType> getAll() {
+        return this.productService.getAll();
     }
 
     @GetMapping(path = "/{productId}")
-    public Optional<Product> getProductById(@PathVariable("productId") String productId) {
-        return this.mongoProductRepository.findById(productId);
+    public ProductType getProductById(@PathVariable("productId") String productId) {
+        return this.productService.getProductById(productId);
     }
 
     @GetMapping(path = "/{category}/{subcategory}")
-    public List<Product> getFilteredProducts(@PathVariable("category") String category,
-                                             @PathVariable("subcategory") String subcategory) {
-
-        String TAG_ANY = "*ANY*";
-        List<Product> filteredProducts;
-        if (category.equals(TAG_ANY) && subcategory.equals(TAG_ANY)) {
-            filteredProducts = this.mongoProductRepository.findAll();
-        } else if (category.equals(TAG_ANY)) {
-            filteredProducts = this.mongoProductRepository.findBySubcategoryLike(subcategory);
-        } else if (subcategory.equals(TAG_ANY)) {
-            filteredProducts = this.mongoProductRepository.findByCategoryLike(category);
-        } else {
-            filteredProducts = this.mongoProductRepository.findByCategoryLikeAndSubcategoryLike(category, subcategory);
-        }
-
-        return filteredProducts;
+    public List<MongoProduct> getFilteredProducts(@PathVariable("category") String category,
+                                                  @PathVariable("subcategory") String subcategory) {
+        return this.productService.getFilteredProducts(category, subcategory);
     }
 
     @GetMapping(path = "/menu/{menuId}")
-    public Map<String,Product> getMenuProducts(@PathVariable("menuId") String menuId) {
-        Set<String> productIdList = new HashSet<>();
-        Map<String, Product> productMap = new HashMap<>();
-        Optional<Menu> menu = this.menuRepository.findById(menuId);
-        if (menu.isPresent()) {
-            for (String weekMealId : menu.get().getWeekMealList()) {
-                Optional<WeekMeal> weekMeal = this.weekMealRepository.findById(weekMealId);
-                if (weekMeal.isPresent()) {
-                    for (String dayMealId : weekMeal.get().getDayMealList()) {
-                        Optional<DayMeal> dayMeal = this.dayMealRepository.findById(dayMealId);
-                        if (dayMeal.isPresent() && dayMeal.get().getMealList() != null) {
-                            for (String mealId : dayMeal.get().getMealList()) {
-                                Optional<Meal> meal = this.mealRepository.findById(mealId);
-                                if (meal.isPresent()) {
-                                    for (ProductForDish productForDish : meal.get().getProductList()) {
-                                        productIdList.add(productForDish.getProductId());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        List<Product> productList = this.mongoProductRepository.findProductsByIdIn(productIdList);
-        for (Product product : productList) {
-            productMap.put(product.getId(), product);
-        }
-
-        return productMap;
+    public Map<String, MongoProduct> getMenuProducts(@PathVariable("menuId") String menuId) {
+        return this.productService.getMenuProducts(menuId);
     }
 
     @GetMapping(path = "/name/{name}")
-    public List<Product> getFilteredProducts(@PathVariable("name") String name) {
-        return this.mongoProductRepository.findByNameLike(name);
+    public List<MongoProduct> getFilteredProducts(@PathVariable("name") String name) {
+        return this.productService.getFilteredProducts(name);
     }
 
     @PostMapping(produces = "application/json")
-    ResponseEntity<Product> insertProduct(@RequestBody Product product) throws NoSuchFieldException {
-        mongoProductRepository.save(product);
-        return ResponseEntity.ok().body(product);
+    ResponseEntity<ProductType> insert(@RequestBody ProductType productType) {
+        return this.productService.insert(productType);
     }
 
     @PutMapping(path = "/{productId}", produces = "application/json")
-    ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-        mongoProductRepository.save(product);
-        return ResponseEntity.ok().body(product);
+    ResponseEntity<ProductType> update(@RequestBody ProductType productType) {
+        return this.productService.insert(productType);
     }
 
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<Product> deleteProduct(@PathVariable String id) {
-        mongoProductRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+    ResponseEntity<Void> deleteProduct(@PathVariable String id) {
+        return this.productService.delete(id);
     }
 }

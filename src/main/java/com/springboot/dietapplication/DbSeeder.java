@@ -1,15 +1,16 @@
 package com.springboot.dietapplication;
 
-import com.springboot.dietapplication.model.product.Category;
-import com.springboot.dietapplication.model.product.Product;
+import com.springboot.dietapplication.model.mongo.product.MongoCategory;
+import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.excel.ProductExcel;
+import com.springboot.dietapplication.model.mongo.properties.MongoFoodProperties;
 import com.springboot.dietapplication.model.mongo.user.User;
-import com.springboot.dietapplication.model.psql.product.Subcategory;
-import com.springboot.dietapplication.model.psql.properties.FoodProperties;
+import com.springboot.dietapplication.model.psql.product.PsqlCategory;
+import com.springboot.dietapplication.model.psql.product.PsqlProduct;
+import com.springboot.dietapplication.model.psql.properties.PsqlFoodProperties;
 import com.springboot.dietapplication.repository.mongo.*;
 import com.springboot.dietapplication.repository.psql.*;
 import io.github.biezhi.excel.plus.Reader;
-import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,9 +25,12 @@ import java.util.*;
 @Component
 public class DbSeeder implements CommandLineRunner {
 
-    private final MongoProductRepository mongoProductRepository;
-    private final DishRepository dishRepository;
     private final MongoUserRepository mongoUserRepository;
+    private final MongoProductRepository mongoProductRepository;
+    private final MongoFoodPropertiesRepository mongoFoodPropertiesRepository;
+
+    private final DishRepository dishRepository;
+
     private final CategoryRepository categoryRepository;
     private final PatientRepository patientRepository;
     private final MeasurementRepository measurementRepository;
@@ -40,17 +44,23 @@ public class DbSeeder implements CommandLineRunner {
     @Autowired
     PSQLCategoryRepository PSQLCategoryRepository;
     @Autowired
-    PSQLSubcategoryRepository PSQLSubcategoryRepository;
-    @Autowired
     PSQLProductRepository PSQLProductRepository;
 
-    public DbSeeder(MongoProductRepository mongoProductRepository, DishRepository dishRepository, MongoUserRepository mongoUserRepository,
-                    CategoryRepository categoryRepository, PatientRepository patientRepository, MeasurementRepository measurementRepository,
-                    MenuRepository menuRepository, WeekMealRepository weekMealRepository, DayMealRepository dayMealRepository,
+    public DbSeeder(MongoUserRepository mongoUserRepository,
+                    MongoProductRepository mongoProductRepository,
+                    MongoFoodPropertiesRepository mongoFoodPropertiesRepository,
+                    DishRepository dishRepository,
+                    CategoryRepository categoryRepository,
+                    PatientRepository patientRepository,
+                    MeasurementRepository measurementRepository,
+                    MenuRepository menuRepository,
+                    WeekMealRepository weekMealRepository,
+                    DayMealRepository dayMealRepository,
                     MealRepository mealRepository) {
-        this.mongoProductRepository = mongoProductRepository;
-        this.dishRepository = dishRepository;
         this.mongoUserRepository = mongoUserRepository;
+        this.mongoProductRepository = mongoProductRepository;
+        this.mongoFoodPropertiesRepository = mongoFoodPropertiesRepository;
+        this.dishRepository = dishRepository;
         this.categoryRepository = categoryRepository;
         this.patientRepository = patientRepository;
         this.measurementRepository = measurementRepository;
@@ -108,36 +118,31 @@ public class DbSeeder implements CommandLineRunner {
         this.mongoProductRepository.deleteAll();
         this.categoryRepository.deleteAll();
 
-        Set<String> subcategories = new TreeSet<>();
-        String category = "";
-        List<Product> products = new ArrayList<>();
+        List<MongoProduct> products = new ArrayList<>();
         for (ProductExcel productExcel : importedProducts) {
-            if (!productExcel.getCategory().equals(category)) {
-                if (!category.equals("")) {
-                    Category sendCategory = new Category();
-                    sendCategory.setCategory(category);
-                    sendCategory.setSubcategories(subcategories);
-                    try {
-                        this.categoryRepository.save(sendCategory);
-                    } catch (DuplicateKeyException e) {
-                        e.printStackTrace();
-                    }
-                }
-                subcategories.clear();
-                category = productExcel.getCategory();
-            }
-            subcategories.add(productExcel.getSubcategory());
-            products.add(new Product(productExcel));
-        }
-        if (!category.equals("")) {
-            Category sendCategory = new Category();
-            sendCategory.setCategory(category);
-            sendCategory.setSubcategories(subcategories);
+            MongoProduct product = new MongoProduct(productExcel);
+
+            MongoFoodProperties foodProperties = new MongoFoodProperties(productExcel);
+            this.mongoFoodPropertiesRepository.save(foodProperties);
+
+            MongoCategory category = new MongoCategory(
+                    productExcel.getCategory(),
+                    productExcel.getSubcategory()
+            );
+
             try {
-                this.categoryRepository.save(sendCategory);
+                this.categoryRepository.save(category);
             } catch (DuplicateKeyException e) {
-                e.printStackTrace();
+                MongoCategory actualCategory =
+                        this.categoryRepository.getCategoryByCategoryAndSubcategory(
+                                category.getCategory(),
+                                category.getSubcategory());
+                category.setId(actualCategory.getId());
             }
+
+            product.setFoodPropertiesId(foodProperties.getId());
+            product.setCategoryId(category.getId());
+            products.add(product);
         }
 
         this.mongoProductRepository.saveAll(products);
@@ -147,42 +152,35 @@ public class DbSeeder implements CommandLineRunner {
 
         this.PSQLProductRepository.deleteAll();
         this.PSQLFoodPropertiesRepository.deleteAll();
-        this.PSQLSubcategoryRepository.deleteAll();
         this.PSQLCategoryRepository.deleteAll();
 
-
         for (ProductExcel productExcel : importedProducts) {
-            com.springboot.dietapplication.model.psql.product.Category category =
-                    new com.springboot.dietapplication.model.psql.product.Category(productExcel.getCategory());
+            PsqlCategory category =
+                    new PsqlCategory(
+                            productExcel.getCategory(),
+                            productExcel.getSubcategory()
+                    );
             try {
                 this.PSQLCategoryRepository.save(category);
             } catch (DataIntegrityViolationException e) {
-                com.springboot.dietapplication.model.psql.product.Category actualCategory =
-                        this.PSQLCategoryRepository.getCategoryByNameLike(category.getName());
-                if (actualCategory != null)
-                    category.setId(actualCategory.getId());
+                PsqlCategory actualCategory =
+                        this.PSQLCategoryRepository.getCategoryByCategoryAndSubcategory(
+                                category.getCategory(),
+                                category.getSubcategory());
+                category.setId(actualCategory.getId());
             }
 
-            Subcategory subcategory = new Subcategory(category, productExcel.getSubcategory());
-            try {
-                this.PSQLSubcategoryRepository.save(subcategory);
-            } catch (DataIntegrityViolationException e) {
-                Subcategory actualSubcategory = this.PSQLSubcategoryRepository.getSubcategoryByName(subcategory.getName());
-                if (actualSubcategory != null)
-                    subcategory.setId(actualSubcategory.getId());
-            }
-
-            FoodProperties foodProperties = new FoodProperties(productExcel);
+            PsqlFoodProperties foodProperties = new PsqlFoodProperties(productExcel);
             try {
                 PSQLFoodPropertiesRepository.save(foodProperties);
             } catch (DataIntegrityViolationException e) { }
 
-            com.springboot.dietapplication.model.psql.product.Product product = new com.springboot.dietapplication.model.psql.product.Product(productExcel);
-            product.setCategoryId(category.getId());
-            product.setSubcategoryId(subcategory.getId());
-            product.setFoodProperties(foodProperties);
+            PsqlProduct psqlProduct =
+                    new PsqlProduct(productExcel);
+            psqlProduct.setCategoryId(category.getId());
+            psqlProduct.setFoodPropertiesId(foodProperties.getId());
             try {
-                PSQLProductRepository.save(product);
+                PSQLProductRepository.save(psqlProduct);
             } catch (DataIntegrityViolationException e) { }
 
         }

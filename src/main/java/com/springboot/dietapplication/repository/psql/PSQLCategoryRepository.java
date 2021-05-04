@@ -1,11 +1,12 @@
 package com.springboot.dietapplication.repository.psql;
 
-import com.springboot.dietapplication.model.psql.product.Category;
+import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PSQLCategoryRepository extends JpaRepository<Category, Long> {
+public interface PSQLCategoryRepository extends JpaRepository<PsqlCategory, Long> {
 
-    Category getCategoryByNameLike(String name);
+    PsqlCategory getCategoryByCategoryAndSubcategory(String category, String subcategory);
+
 }

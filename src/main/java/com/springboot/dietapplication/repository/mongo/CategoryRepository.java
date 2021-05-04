@@ -1,8 +1,10 @@
 package com.springboot.dietapplication.repository.mongo;
 
-import com.springboot.dietapplication.model.product.Category;
+import com.springboot.dietapplication.model.mongo.product.MongoCategory;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface CategoryRepository extends MongoRepository<Category, String> {
+public interface CategoryRepository extends MongoRepository<MongoCategory, String> {
+
+    MongoCategory getCategoryByCategoryAndSubcategory(String category, String subcategory);
 
 }

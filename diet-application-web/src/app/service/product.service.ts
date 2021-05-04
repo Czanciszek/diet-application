@@ -8,6 +8,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class ProductService {
 
+  dbService = "api/psql/";
+
   httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Basic ' +
@@ -92,22 +94,22 @@ export class ProductService {
   }
 
   getProducts() {
-    this.productList = this.http.get("http://localhost:8080/api/v2/products", this.httpOptions);
+    this.productList = this.http.get("http://localhost:8080/" + this.dbService + "products", this.httpOptions);
     return this.productList;
   }
 
   getMenuProducts(menuId) {
     let productsMapData: any;
-    productsMapData = this.http.get("http://localhost:8080/api/v1/products/menu/" + menuId, this.httpOptions);
+    productsMapData = this.http.get("http://localhost:8080/" +  + this.dbService + "products/menu/" + menuId, this.httpOptions);
     return productsMapData;
   }
 
   insertProduct(product) {
-    return this.http.post("http://localhost:8080/api/v1/products", product, this.httpOptions);
+    return this.http.post("http://localhost:8080/" + this.dbService + "products", product, this.httpOptions);
   }
 
   updateProduct(product) {
-    return this.http.put("http://localhost:8080/api/v1/products/" + product.id, product, this.httpOptions);
+    return this.http.put("http://localhost:8080/" + this.dbService + "products/" + product.id, product, this.httpOptions);
   }
 
   getCategories() {
@@ -126,15 +128,14 @@ export class ProductService {
   }
 
   getFilteredProductsByName(name:string) {
-    return this.http.get("http://localhost:8080/api/v1/products/name/" + name , this.httpOptions);
+    return this.http.get("http://localhost:8080/" + this.dbService + "products/name/" + name , this.httpOptions);
   }
 
   deleteProduct(id: string) {
-    return this.http.delete("http://localhost:8080/api/v1/products/" + id, this.httpOptions).subscribe();
+    return this.http.delete("http://localhost:8080/" + this.dbService + "products/" + id, this.httpOptions).subscribe();
   }
 
   populateForm(product) {
-    console.log(product);
     this.form.setValue(product);
   }
 }

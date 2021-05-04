@@ -1,5 +1,7 @@
 package com.springboot.dietapplication.model.menu;
 
+import com.springboot.dietapplication.model.type.MealType;
+
 import java.util.List;
 
 public class MenuType {

@@ -11,8 +11,8 @@ import {NotificationService} from "../../service/notification.service";
 })
 export class ProductComponent implements OnInit {
 
-  categories: any;
-  subcategories: any = [];
+  categories: any = new Set();
+  subcategories: any = new Set();
 
   constructor(
     private service: ProductService,
@@ -27,9 +27,10 @@ export class ProductComponent implements OnInit {
   getCategories() {
     let response = this.service.getCategories();
     response.subscribe(data => {
-      this.categories = data;
-      for (const key of Object.values(data))
-        this.subcategories = this.subcategories.concat(key.subcategories);
+      for (const key of Object.values(data)) {
+        this.categories.add(key.category);
+        this.subcategories.add(key.subcategory);
+      }
     });
   }
 

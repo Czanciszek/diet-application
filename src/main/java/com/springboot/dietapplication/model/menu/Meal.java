@@ -1,7 +1,8 @@
 package com.springboot.dietapplication.model.menu;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
-import com.springboot.dietapplication.model.product.ProductForDish;
+import com.springboot.dietapplication.model.mongo.product.ProductForDish;
+import com.springboot.dietapplication.model.type.MealType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;

@@ -1,4 +1,6 @@
-package com.springboot.dietapplication.model.product;
+package com.springboot.dietapplication.model.mongo.product;
+
+import com.springboot.dietapplication.model.type.AmountType;
 
 public class ProductForDish {
 

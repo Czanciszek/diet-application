@@ -1,7 +1,8 @@
 package com.springboot.dietapplication.model.menu;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
-import com.springboot.dietapplication.model.properties.FoodProperties;
+import com.springboot.dietapplication.model.type.FoodPropertiesType;
+import com.springboot.dietapplication.model.type.MealType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class Menu extends BaseDoc {
 
     private String endDate; // Najpóźniejsza data z listy DayMeals
 
-    private FoodProperties foodProperties;
+    private FoodPropertiesType foodPropertiesType;
 
     private Float activityLevel;
 
@@ -36,18 +37,18 @@ public class Menu extends BaseDoc {
         this.mealTypes = menu.mealTypes;
         this.startDate = menu.startDate;
         this.endDate = menu.endDate;
-        this.foodProperties = menu.foodProperties;
+        this.foodPropertiesType = menu.foodPropertiesType;
         this.activityLevel = menu.activityLevel;
     }
 
-    public Menu(String patientId, String measurementId, List<String> weekMealList, List<MealType> mealTypes, String startDate, String endDate, FoodProperties foodProperties, Float activityLevel) {
+    public Menu(String patientId, String measurementId, List<String> weekMealList, List<MealType> mealTypes, String startDate, String endDate, FoodPropertiesType foodPropertiesType, Float activityLevel) {
         this.patientId = patientId;
         this.measurementId = measurementId;
         this.weekMealList = weekMealList;
         this.mealTypes = mealTypes;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.foodProperties = foodProperties;
+        this.foodPropertiesType = foodPropertiesType;
         this.activityLevel = activityLevel;
     }
 
@@ -99,12 +100,12 @@ public class Menu extends BaseDoc {
         this.endDate = endDate;
     }
 
-    public FoodProperties getFoodProperties() {
-        return foodProperties;
+    public FoodPropertiesType getFoodProperties() {
+        return foodPropertiesType;
     }
 
-    public void setFoodProperties(FoodProperties foodProperties) {
-        this.foodProperties = foodProperties;
+    public void setFoodProperties(FoodPropertiesType foodPropertiesType) {
+        this.foodPropertiesType = foodPropertiesType;
     }
 
     public Float getActivityLevel() {
