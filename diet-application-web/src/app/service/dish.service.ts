@@ -8,6 +8,9 @@ import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class DishService {
 
+  serverAddress = "http://localhost:8080/";
+  dbService = "api/psql/";
+
   httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Basic '+
@@ -22,10 +25,7 @@ export class DishService {
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
-    header: new FormControl(null),
-    primaryImageId: new FormControl(null),
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    type: new FormControl(''),
     products: new FormArray([]),
     mealType: new FormControl(null),
     portions: new FormControl(null),
@@ -37,7 +37,6 @@ export class DishService {
       grams: new FormControl(null),
       amount: new FormControl(null),
       amountType: new FormControl(null),
-      foodProperties: new FormControl(),
       productId: new FormControl(null)
     });
   }
@@ -45,17 +44,13 @@ export class DishService {
   initializeFormGroup() {
     this.form.setValue({
       id: null,
-      header: null,
-      primaryImageId: null,
       name: '',
-      type: '',
       products: [
         {
           grams: null,
           amount: null,
           amountType: null,
           productId: null,
-          foodProperties: null,
         }
       ],
       mealType: '',
@@ -69,20 +64,20 @@ export class DishService {
   }
 
   getDishes() {
-    this.dishList = this.http.get("http://localhost:8080/api/v1/dishes", this.httpOptions);
+    this.dishList = this.http.get(this.serverAddress + this.dbService + "dishes", this.httpOptions);
     return this.dishList;
   }
 
   insertDish(dish) {
-    return this.http.post("http://localhost:8080/api/v1/dishes", dish, this.httpOptions);
+    return this.http.post(this.serverAddress + this.dbService + "dishes", dish, this.httpOptions);
   }
 
   updateDish(dish) {
-    return this.http.put("http://localhost:8080/api/v1/dishes/" + dish.id, dish, this.httpOptions);
+    return this.http.put(this.serverAddress + this.dbService + "dishes/" + dish.id, dish, this.httpOptions);
   }
 
   deleteDish(id: string) {
-    return this.http.delete("http://localhost:8080/api/v1/dishes/" + id, this.httpOptions).subscribe();
+    return this.http.delete(this.serverAddress + this.dbService + "dishes/" + id, this.httpOptions).subscribe();
   }
 
 }

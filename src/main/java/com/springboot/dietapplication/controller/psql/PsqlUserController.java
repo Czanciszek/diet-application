@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v2/users")
-public class PSQLUserController {
+public class PsqlUserController {
 
     @Autowired
     PsqlUserRepository PSQLUserRepository;

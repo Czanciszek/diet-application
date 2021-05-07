@@ -1,19 +1,25 @@
-package com.springboot.dietapplication.model.mongo.product;
+package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.type.AmountType;
+import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
 
-public class ProductForDish {
+public class ProductDishType {
 
     private String productId;
     private float grams;
     private float amount;
     private AmountType amountType;
 
-    public ProductForDish(String productId, float grams, float amount, AmountType amountType) {
+    public ProductDishType(String productId, float grams, float amount, AmountType amountType) {
         this.productId = productId;
         this.grams = grams;
         this.amount = amount;
         this.amountType = amountType;
+    }
+
+    public ProductDishType(PsqlProductDish psqlProductDish) {
+        this.productId = String.valueOf(psqlProductDish.getProductId());
+        this.grams = psqlProductDish.getGrams();
+        this.amount = psqlProductDish.getAmount();
     }
 
     public String getProductId() {

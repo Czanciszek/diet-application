@@ -6,7 +6,7 @@ import com.springboot.dietapplication.model.menu.Menu;
 import com.springboot.dietapplication.model.menu.WeekMeal;
 import com.springboot.dietapplication.model.mongo.product.MongoCategory;
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
-import com.springboot.dietapplication.model.mongo.product.ProductForDish;
+import com.springboot.dietapplication.model.type.ProductDishType;
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.model.type.ProductType;
 import com.springboot.dietapplication.repository.mongo.*;
@@ -45,49 +45,28 @@ public class MongoProductService {
     }
 
     public List<ProductType> getAll() {
-        List<ProductType> productTypeList = new ArrayList<>();
         List<MongoProduct> mongoProductList = this.productRepository.findAll();
-        List<MongoCategory> categories = this.categoryService.getAll();
-
-        for (MongoProduct product : mongoProductList) {
-            ProductType productType = new ProductType(product);
-
-            Optional<MongoCategory> filtered = categories.stream()
-                    .filter(category -> category.getId().equals(product.getCategoryId()))
-                    .findFirst();
-            if (filtered.isPresent() ) {
-                productType.setCategory(filtered.get().getCategory());
-                productType.setSubcategory(filtered.get().getSubcategory());
-            }
-
-            FoodPropertiesType foodPropertiesType = this.foodPropertiesService.findById(product.getFoodPropertiesId());
-            productType.setFoodProperties(foodPropertiesType);
-
-            productTypeList.add(productType);
-        }
-
-        return productTypeList;
+        return convertMongoProductListToProductTypes(mongoProductList);
     }
 
     public ProductType getProductById(String productId) {
         return new ProductType();
     }
 
-    public List<MongoProduct> getFilteredProducts(String category, String subcategory) {
+    public List<ProductType> getFilteredProducts(String category, String subcategory) {
 
         String TAG_ANY = "*ANY*";
-        List<MongoProduct> filteredMongoProducts;
+        List<ProductType> filteredMongoProducts = new ArrayList<>();
         if (category.equals(TAG_ANY) && subcategory.equals(TAG_ANY)) {
-            filteredMongoProducts = this.productRepository.findAll();
-        } else if (category.equals(TAG_ANY)) {
-            filteredMongoProducts = new ArrayList<>();
-            //filteredProducts = this.mongoProductRepository.findBySubcategoryLike(subcategory);
+            filteredMongoProducts.addAll(getAll());
         } else if (subcategory.equals(TAG_ANY)) {
-            filteredMongoProducts = new ArrayList<>();
-            //filteredProducts = this.mongoProductRepository.findByCategoryLike(category);
+            Set<String> categoryIds = this.categoryService.findCategoryIdsByCategoryName(category);
+            List<MongoProduct> products = this.productRepository.findMongoProductsByCategoryIdIn(categoryIds);
+            filteredMongoProducts.addAll(convertMongoProductListToProductTypes(products));
         } else {
-            filteredMongoProducts = new ArrayList<>();
-            //filteredProducts = this.mongoProductRepository.findByCategoryLikeAndSubcategoryLike(category, subcategory);
+            MongoCategory mongoCategory = this.categoryService.findCategoryBySubcategoryName(subcategory);
+            List<MongoProduct> products = this.productRepository.findMongoProductsByCategoryId(mongoCategory.getId());
+            filteredMongoProducts.addAll(convertMongoProductListToProductTypes(products));
         }
 
         return filteredMongoProducts;
@@ -107,7 +86,7 @@ public class MongoProductService {
                             for (String mealId : dayMeal.get().getMealList()) {
                                 Optional<Meal> meal = this.mealRepository.findById(mealId);
                                 if (meal.isPresent()) {
-                                    for (ProductForDish productForDish : meal.get().getProductList()) {
+                                    for (ProductDishType productForDish : meal.get().getProductList()) {
                                         productIdList.add(productForDish.getProductId());
                                     }
                                 }
@@ -130,7 +109,7 @@ public class MongoProductService {
         return this.productRepository.findByNameLike(name);
     }
 
-    public ResponseEntity<ProductType> insert(ProductType productType) {
+    public ProductType insert(ProductType productType) {
         MongoProduct product = new MongoProduct(productType);
 
         this.foodPropertiesService.insertFoodProperties(productType.getFoodProperties());
@@ -142,7 +121,7 @@ public class MongoProductService {
         this.productRepository.save(product);
         productType.setId(product.getId());
 
-        return ResponseEntity.ok().body(productType);
+        return productType;
     }
 
     public ResponseEntity<Void> delete(String id) {
@@ -153,6 +132,30 @@ public class MongoProductService {
                 this.foodPropertiesService.delete(mongoProduct.getFoodPropertiesId()));
 
         return ResponseEntity.ok().build();
+    }
+
+    private List<ProductType> convertMongoProductListToProductTypes(List<MongoProduct> products) {
+        List<ProductType> productTypeList = new ArrayList<>();
+        List<MongoCategory> categories = this.categoryService.getAll();
+
+        for (MongoProduct product : products) {
+            ProductType productType = new ProductType(product);
+
+            Optional<MongoCategory> filtered = categories.stream()
+                    .filter(category -> category.getId().equals(product.getCategoryId()))
+                    .findFirst();
+            if (filtered.isPresent() ) {
+                productType.setCategory(filtered.get().getCategory());
+                productType.setSubcategory(filtered.get().getSubcategory());
+            }
+
+            FoodPropertiesType foodPropertiesType = this.foodPropertiesService.findById(product.getFoodPropertiesId());
+            productType.setFoodProperties(foodPropertiesType);
+
+            productTypeList.add(productType);
+        }
+
+        return productTypeList;
     }
 
 }

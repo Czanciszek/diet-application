@@ -14,7 +14,7 @@
         <mat-form-field>
           <mat-select [(ngModel)]="selectedCategory" placeholder="Kategoria">
             <ng-container *ngFor="let category of categories">
-              <mat-option value="{{category.category}}">{{category.category}}</mat-option>
+              <mat-option value="{{category}}">{{category}}</mat-option>
             </ng-container>
           </mat-select>
         </mat-form-field>

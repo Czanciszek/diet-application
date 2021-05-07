@@ -29,7 +29,7 @@ public class MongoProductController {
     }
 
     @GetMapping(path = "/{category}/{subcategory}")
-    public List<MongoProduct> getFilteredProducts(@PathVariable("category") String category,
+    public List<ProductType> getFilteredProducts(@PathVariable("category") String category,
                                                   @PathVariable("subcategory") String subcategory) {
         return this.productService.getFilteredProducts(category, subcategory);
     }
@@ -46,12 +46,14 @@ public class MongoProductController {
 
     @PostMapping(produces = "application/json")
     ResponseEntity<ProductType> insert(@RequestBody ProductType productType) {
-        return this.productService.insert(productType);
+        ProductType product = this.productService.insert(productType);
+        return ResponseEntity.ok().body(product);
     }
 
     @PutMapping(path = "/{productId}", produces = "application/json")
     ResponseEntity<ProductType> update(@RequestBody ProductType productType) {
-        return this.productService.insert(productType);
+        ProductType product = this.productService.insert(productType);
+        return ResponseEntity.ok().body(product);
     }
 
     @DeleteMapping(path = "/{id}")

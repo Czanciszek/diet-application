@@ -13,4 +13,9 @@ public interface MongoProductRepository extends MongoRepository<MongoProduct, St
     List<MongoProduct> findByNameLike(String name);
 
     List<MongoProduct> findProductsByIdIn(Set<String> productIdList);
+
+    List<MongoProduct> findMongoProductsByCategoryId(String categoryIdList);
+
+    List<MongoProduct> findMongoProductsByCategoryIdIn(Set<String> categoryIdList);
+
 }

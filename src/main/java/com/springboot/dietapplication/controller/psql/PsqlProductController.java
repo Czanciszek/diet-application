@@ -9,11 +9,11 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/psql/products")
-public class PSQLProductController {
+public class PsqlProductController {
 
     private final PsqlProductService productService;
 
-    public PSQLProductController(PsqlProductService productService) {
+    public PsqlProductController(PsqlProductService productService) {
         this.productService = productService;
     }
 

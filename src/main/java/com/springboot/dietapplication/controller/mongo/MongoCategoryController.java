@@ -1,7 +1,7 @@
-package com.springboot.dietapplication.controller;
+package com.springboot.dietapplication.controller.mongo;
 
 import com.springboot.dietapplication.model.mongo.product.MongoCategory;
-import com.springboot.dietapplication.repository.mongo.MongoCategoryRepository;
+import com.springboot.dietapplication.service.mongo.MongoCategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,16 +10,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/categories")
-public class CategoryController {
+public class MongoCategoryController {
 
-    private final MongoCategoryRepository categoryRepository;
+    private final MongoCategoryService categoryService;
 
-    public CategoryController(MongoCategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public MongoCategoryController(MongoCategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @GetMapping
     public List<MongoCategory> getAll() {
-        return this.categoryRepository.findAll();
+        return this.categoryService.getAll();
     }
 }

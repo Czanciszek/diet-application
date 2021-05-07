@@ -28,10 +28,9 @@ public class DbSeeder implements CommandLineRunner {
     private final MongoUserRepository mongoUserRepository;
     private final MongoProductRepository mongoProductRepository;
     private final MongoFoodPropertiesRepository mongoFoodPropertiesRepository;
-
-    private final DishRepository dishRepository;
-
     private final MongoCategoryRepository categoryRepository;
+
+    private final MongoDishRepository dishRepository;
     private final PatientRepository patientRepository;
     private final MeasurementRepository measurementRepository;
     private final MenuRepository menuRepository;
@@ -49,7 +48,7 @@ public class DbSeeder implements CommandLineRunner {
     public DbSeeder(MongoUserRepository mongoUserRepository,
                     MongoProductRepository mongoProductRepository,
                     MongoFoodPropertiesRepository mongoFoodPropertiesRepository,
-                    DishRepository dishRepository,
+                    MongoDishRepository dishRepository,
                     MongoCategoryRepository categoryRepository,
                     PatientRepository patientRepository,
                     MeasurementRepository measurementRepository,
@@ -79,7 +78,7 @@ public class DbSeeder implements CommandLineRunner {
                 "$2y$12$xQyJdsoamI/19a4p3bgRcOj2KeLpxPWj3.whkTrjz2jzIbO9fnr6m", "imageId");
         mongoUserRepository.save(user1);
 
-        List<ProductExcel> productExcelList = importProductsFromExcel();
+        //List<ProductExcel> productExcelList = importProductsFromExcel();
 
         //saveProductsToMongoDb(productExcelList);
         //saveProductsToPsqlDb(productExcelList);

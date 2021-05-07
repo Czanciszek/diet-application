@@ -100,8 +100,19 @@ export class ProductService {
 
   getMenuProducts(menuId) {
     let productsMapData: any;
-    productsMapData = this.http.get("http://localhost:8080/" +  + this.dbService + "products/menu/" + menuId, this.httpOptions);
+    productsMapData = this.http.get("http://localhost:8080/" + this.dbService + "products/menu/" + menuId, this.httpOptions);
     return productsMapData;
+  }
+
+  getCategories() {
+    return this.http.get("http://localhost:8080/api/v1/categories", this.httpOptions);
+  }
+
+  getFilteredProducts(category: string, subcategory: string) {
+    let categoryName = (category != null) ? category : "*ANY*";
+    let subcategoryName = (subcategory != null) ? subcategory : "*ANY*";
+    this.productList = this.http.get("http://localhost:8080/" + this.dbService + "products/" + categoryName + "/" + subcategoryName, this.httpOptions);
+    return this.productList;
   }
 
   insertProduct(product) {
@@ -110,25 +121,6 @@ export class ProductService {
 
   updateProduct(product) {
     return this.http.put("http://localhost:8080/" + this.dbService + "products/" + product.id, product, this.httpOptions);
-  }
-
-  getCategories() {
-    return this.http.get("http://localhost:8080/api/v1/categories", this.httpOptions);
-  }
-
-  getFilteredProducts(category: string, subcategory: string) {
-    if (category == null) {
-      category = "*ANY*";
-    }
-    if (subcategory == null) {
-      subcategory = "*ANY*";
-    }
-    this.productList = this.http.get("http://localhost:8080/api/v1/products/" + category + "/" + subcategory, this.httpOptions);
-    return this.productList;
-  }
-
-  getFilteredProductsByName(name:string) {
-    return this.http.get("http://localhost:8080/" + this.dbService + "products/name/" + name , this.httpOptions);
   }
 
   deleteProduct(id: string) {

@@ -84,12 +84,11 @@ export class DishComponent implements OnInit {
       if (result != null) {
 
         // Update value in HTML form
-        (<HTMLInputElement>document.getElementById("name"+productIndex)).value = result.id;
+        (<HTMLInputElement>document.getElementById("name"+productIndex)).value = result.name;
 
         // Update value in Form Group
         let products = (<FormArray>this.service.form.get('products'));
         products.at(productIndex).get('productId').patchValue(result.id);
-        products.at(productIndex).get('foodProperties').patchValue(result.foodProperties);
         this.service.form.patchValue({
           products: [products]
         });

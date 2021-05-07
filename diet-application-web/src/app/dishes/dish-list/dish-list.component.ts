@@ -34,9 +34,6 @@ export class DishListComponent implements OnInit {
         let array = list.map(item => {
           return {
             id: item.id,
-            header: item.header,
-            primaryImageId: item.primaryImageId,
-            type: item.type,
             name: item.name,
             products: item.products,
             mealType: item.mealType,
