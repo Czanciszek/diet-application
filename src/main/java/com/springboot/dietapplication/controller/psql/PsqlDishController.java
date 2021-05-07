@@ -1,7 +1,6 @@
 package com.springboot.dietapplication.controller.psql;
 
 import com.springboot.dietapplication.model.type.DishType;
-import com.springboot.dietapplication.service.mongo.MongoDishService;
 import com.springboot.dietapplication.service.psql.PsqlDishService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

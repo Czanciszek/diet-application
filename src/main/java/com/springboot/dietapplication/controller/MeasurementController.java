@@ -1,9 +1,9 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.patient.Measurement;
-import com.springboot.dietapplication.model.patient.Patient;
+import com.springboot.dietapplication.model.patient.MongoPatient;
 import com.springboot.dietapplication.repository.mongo.MeasurementRepository;
-import com.springboot.dietapplication.repository.mongo.PatientRepository;
+import com.springboot.dietapplication.repository.mongo.MongoPatientRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +14,9 @@ import java.util.Optional;
 @RequestMapping("/api/v1/measurements")
 public class MeasurementController {
     private final MeasurementRepository measurementRepository;
-    private final PatientRepository patientRepository;
+    private final MongoPatientRepository patientRepository;
 
-    public MeasurementController(MeasurementRepository measurementRepository, PatientRepository patientRepository) {
+    public MeasurementController(MeasurementRepository measurementRepository, MongoPatientRepository patientRepository) {
         this.measurementRepository = measurementRepository;
         this.patientRepository = patientRepository;
     }
@@ -39,7 +39,7 @@ public class MeasurementController {
     @PostMapping(path = "/{patientId}", produces = "application/json")
     ResponseEntity<Measurement> insertMeasurement(@PathVariable("patientId") String patientId,
                                                   @RequestBody Measurement measurement) throws NoSuchFieldException {
-        Optional<Patient> patient = patientRepository.findById(patientId);
+        Optional<MongoPatient> patient = patientRepository.findById(patientId);
         if (patient.isPresent()) {
             measurement.setPatientId(patientId);
             measurementRepository.save(measurement);

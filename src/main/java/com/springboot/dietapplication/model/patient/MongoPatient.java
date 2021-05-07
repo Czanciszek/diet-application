@@ -1,12 +1,13 @@
 package com.springboot.dietapplication.model.patient;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
+import com.springboot.dietapplication.model.type.PatientType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 @Document(collection = "Patients")
-public class Patient extends BaseDoc {
+public class MongoPatient extends BaseDoc {
 
     private String birthDate;
     private String numberPhone;
@@ -28,6 +29,20 @@ public class Patient extends BaseDoc {
     //lista jadłospisów
     //private List<Menu> menus;
 
+    public MongoPatient() {
+
+    }
+
+    public MongoPatient(PatientType patientType) {
+        this.setId(patientType.getId());
+        this.setName(patientType.getName());
+        this.email = patientType.getEmail();
+        this.birthDate = patientType.getBirthDate();
+        this.bodyHeight = patientType.getBodyHeight();
+        this.changedLifestyleNote = patientType.getChangedLifestyleNote();
+        this.currentLifestyleNote = patientType.getCurrentLifestyleNote();
+        this.dietaryPurpose = patientType.getDietaryPurpose();
+    }
 
     public String getBirthDate() {
         return birthDate;

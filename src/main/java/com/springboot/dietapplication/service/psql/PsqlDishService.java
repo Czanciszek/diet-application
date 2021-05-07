@@ -52,7 +52,6 @@ public class PsqlDishService {
 
     public ResponseEntity<DishType> insert(DishType dish) {
         PsqlDish psqlDish = new PsqlDish(dish);
-
         this.dishRepository.save(psqlDish);
 
         if (psqlDish.getId() > 0)
@@ -64,7 +63,9 @@ public class PsqlDishService {
             this.productDishRepository.save(psqlProductDish);
         }
 
-        return ResponseEntity.ok().body(null);
+        dish.setId(String.valueOf(psqlDish.getId()));
+
+        return ResponseEntity.ok().body(dish);
     }
 
     public ResponseEntity<Void> delete(Long id) {

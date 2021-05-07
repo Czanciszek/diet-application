@@ -2,7 +2,7 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.menu.*;
 import com.springboot.dietapplication.model.patient.Measurement;
-import com.springboot.dietapplication.model.patient.Patient;
+import com.springboot.dietapplication.model.patient.MongoPatient;
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.model.type.DayType;
 import com.springboot.dietapplication.repository.mongo.*;
@@ -21,11 +21,11 @@ public class MenuController {
     private final WeekMealRepository weekMealRepository;
     private final DayMealRepository dayMealRepository;
     private final MeasurementRepository measurementRepository;
-    private final PatientRepository patientRepository;
+    private final MongoPatientRepository patientRepository;
 
     public MenuController(MenuRepository menuRepository, WeekMealRepository weekMealRepository,
                           DayMealRepository dayMealRepository, MeasurementRepository measurementRepository,
-                          PatientRepository patientRepository) {
+                          MongoPatientRepository patientRepository) {
         this.menuRepository = menuRepository;
         this.weekMealRepository = weekMealRepository;
         this.dayMealRepository = dayMealRepository;
@@ -64,9 +64,9 @@ public class MenuController {
         Optional<Measurement> optionalMeasurement = measurementRepository.findById(menuType.getMeasurementId());
         if (optionalMeasurement.isPresent()) {
             Measurement measurement = optionalMeasurement.get();
-            Optional<Patient> optionalPatient = patientRepository.findById(menuType.getPatientId());
+            Optional<MongoPatient> optionalPatient = patientRepository.findById(menuType.getPatientId());
             if (optionalPatient.isPresent()) {
-                Patient patient = optionalPatient.get();
+                MongoPatient patient = optionalPatient.get();
                 menu.setPatientId(patient.getId());
                 float weight = measurement.getBodyWeight();
                 float activityLevel = menu.getActivityLevel();
@@ -115,7 +115,7 @@ public class MenuController {
         return ResponseEntity.ok().build();
     }
 
-    private int calculatePPM(Patient patient, float weight, float activityLevel) {
+    private int calculatePPM(MongoPatient patient, float weight, float activityLevel) {
         float ppmBase = (patient.isSex()) ? 655.1f : 66.5f;
         float weightFactor = (patient.isSex()) ? 9.563f : 13.75f;
         float heightFactor = (patient.isSex()) ? 1.85f : 5.003f;
