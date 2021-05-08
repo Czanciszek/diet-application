@@ -4,7 +4,6 @@ import {MatDialogRef} from "@angular/material/dialog";
 import {MenuService} from "../../service/menu.service";
 import {MeasurementService} from "../../service/measurement.service";
 import {Measurement} from "../../model/measurement";
-import Global = WebAssembly.Global;
 import {GlobalVariable} from "../../global";
 
 @Component({

@@ -1,14 +1,10 @@
 package com.springboot.dietapplication.repository.psql;
 
-import com.springboot.dietapplication.model.psql.user.User;
+import com.springboot.dietapplication.model.psql.user.PsqlUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface PsqlUserRepository extends JpaRepository<User, Long> {
-
-    List<User> findAll();
+public interface PsqlUserRepository extends JpaRepository<PsqlUser, Long> {
 
 }

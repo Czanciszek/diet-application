@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.model.mongo.user;
+package com.springboot.dietapplication.model.type;
 
 public enum UserType {
 

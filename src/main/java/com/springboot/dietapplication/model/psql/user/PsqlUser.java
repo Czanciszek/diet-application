@@ -10,7 +10,7 @@ import java.io.Serializable;
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"),
         foreignKey = @ForeignKey(name = "user_type_id")
 )
-public class User implements Serializable {
+public class PsqlUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
