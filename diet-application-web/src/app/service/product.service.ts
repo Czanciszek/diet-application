@@ -8,8 +8,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class ProductService {
 
-  dbService = "api/psql/";
-
   httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Basic ' +
@@ -94,37 +92,51 @@ export class ProductService {
   }
 
   getProducts() {
-    this.productList = this.http.get("http://localhost:8080/" + this.dbService + "products", this.httpOptions);
+    this.productList = this.http.get(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "products", this.httpOptions);
     return this.productList;
   }
 
   getMenuProducts(menuId) {
     let productsMapData: any;
-    productsMapData = this.http.get("http://localhost:8080/" + this.dbService + "products/menu/" + menuId, this.httpOptions);
+    productsMapData = this.http.get(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "products/menu/" + menuId, this.httpOptions);
     return productsMapData;
   }
 
   getCategories() {
-    return this.http.get("http://localhost:8080/api/v1/categories", this.httpOptions);
+    return this.http.get(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "categories", this.httpOptions);
   }
 
   getFilteredProducts(category: string, subcategory: string) {
     let categoryName = (category != null) ? category : "*ANY*";
     let subcategoryName = (subcategory != null) ? subcategory : "*ANY*";
-    this.productList = this.http.get("http://localhost:8080/" + this.dbService + "products/" + categoryName + "/" + subcategoryName, this.httpOptions);
+    this.productList = this.http.get(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "products/" + categoryName + "/" + subcategoryName, this.httpOptions);
     return this.productList;
   }
 
   insertProduct(product) {
-    return this.http.post("http://localhost:8080/" + this.dbService + "products", product, this.httpOptions);
+    return this.http.post(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "products", product, this.httpOptions);
   }
 
   updateProduct(product) {
-    return this.http.put("http://localhost:8080/" + this.dbService + "products/" + product.id, product, this.httpOptions);
+    return this.http.put(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "products/" + product.id, product, this.httpOptions);
   }
 
   deleteProduct(id: string) {
-    return this.http.delete("http://localhost:8080/" + this.dbService + "products/" + id, this.httpOptions).subscribe();
+    return this.http.delete(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "products/" + id, this.httpOptions).subscribe();
   }
 
   populateForm(product) {

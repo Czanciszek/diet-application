@@ -8,9 +8,6 @@ import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class DishService {
 
-  serverAddress = "http://localhost:8080/";
-  dbService = "api/psql/";
-
   httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Basic '+
@@ -64,20 +61,20 @@ export class DishService {
   }
 
   getDishes() {
-    this.dishList = this.http.get(this.serverAddress + this.dbService + "dishes", this.httpOptions);
+    this.dishList = this.http.get(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes", this.httpOptions);
     return this.dishList;
   }
 
   insertDish(dish) {
-    return this.http.post(this.serverAddress + this.dbService + "dishes", dish, this.httpOptions);
+    return this.http.post(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes", dish, this.httpOptions);
   }
 
   updateDish(dish) {
-    return this.http.put(this.serverAddress + this.dbService + "dishes/" + dish.id, dish, this.httpOptions);
+    return this.http.put(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes/" + dish.id, dish, this.httpOptions);
   }
 
   deleteDish(id: string) {
-    return this.http.delete(this.serverAddress + this.dbService + "dishes/" + id, this.httpOptions).subscribe();
+    return this.http.delete(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes/" + id, this.httpOptions).subscribe();
   }
 
 }

@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.repository.mongo;
 
-import com.springboot.dietapplication.model.patient.MongoPatient;
+import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

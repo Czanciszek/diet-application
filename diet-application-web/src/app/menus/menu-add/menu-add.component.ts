@@ -4,6 +4,8 @@ import {MatDialogRef} from "@angular/material/dialog";
 import {MenuService} from "../../service/menu.service";
 import {MeasurementService} from "../../service/measurement.service";
 import {Measurement} from "../../model/measurement";
+import Global = WebAssembly.Global;
+import {GlobalVariable} from "../../global";
 
 @Component({
   selector: 'app-menu-add',
@@ -32,7 +34,11 @@ export class MenuAddComponent implements OnInit {
   measurementDates = [];
 
   ngOnInit(): void {
-    this.getMeasurementList("5ff05f1fde578b7aa1774775");
+    if (GlobalVariable.DATABASE_SERVICE.toString().includes("mongo")) {
+      this.getMeasurementList("5ff05f1fde578b7aa1774775");
+    } else {
+      this.getMeasurementList("83709");
+    }
   }
 
   onClear() {
@@ -85,7 +91,7 @@ export class MenuAddComponent implements OnInit {
         this.notificationService.success(":: Menu created successfully! ::");
       } else {
         //this.service.updateMenu(this.service.form.value).subscribe();
-        //this.notificationService.success(":: Patient updated successfully! ::");
+        //this.notificationService.success(":: Menu updated successfully! ::");
       }
       this.onClose();
     }

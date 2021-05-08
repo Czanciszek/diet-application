@@ -8,9 +8,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class PatientService {
 
-  serverAddress = "http://localhost:8080/";
-  dbService = "api/psql/";
-
   httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Basic '+
@@ -58,12 +55,17 @@ export class PatientService {
   }
 
   getPatients() {
-    this.patientList = this.http.get(this.serverAddress + this.dbService + "patients", this.httpOptions);
+    this.patientList = this.http.get(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "patients",
+      this.httpOptions);
     return this.patientList;
   }
 
   getPatientById(patientId) {
-    this.http.get(this.serverAddress + this.dbService + "patients/" + patientId, this.httpOptions)
+    this.http.get(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "patients/" + patientId, this.httpOptions)
       .toPromise().then(
       result => {
         this.populateForm(result);
@@ -72,15 +74,21 @@ export class PatientService {
   }
 
   insertPatient(patient) {
-    return this.http.post(this.serverAddress + this.dbService + "patients", patient, this.httpOptions);
+    return this.http.post(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "patients", patient, this.httpOptions);
   }
 
   updatePatient(patient) {
-    return this.http.put(this.serverAddress + this.dbService + "patients/" + patient.id, patient, this.httpOptions);
+    return this.http.put(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "patients/" + patient.id, patient, this.httpOptions);
   }
 
   deletePatient(id: string) {
-    return this.http.delete(this.serverAddress + this.dbService + "patients/" + id, this.httpOptions).subscribe();
+    return this.http.delete(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "patients/" + id, this.httpOptions).subscribe();
   }
 
   populateForm(patient) {

@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.model.patient;
+package com.springboot.dietapplication.model.mongo.patient;
 
 import com.springboot.dietapplication.model.base.BaseDoc;
 import com.springboot.dietapplication.model.type.PatientType;
@@ -21,7 +21,7 @@ public class MongoPatient extends BaseDoc {
     private String changedLifestyleNote;
     private String dietaryPurpose;
 
-    private List<Measurement> measurements;
+    private List<MongoMeasurement> measurements;
 
     //odpowiedzi na wywiad
     //private InterviewAnswers answers;
@@ -37,7 +37,9 @@ public class MongoPatient extends BaseDoc {
         this.setId(patientType.getId());
         this.setName(patientType.getName());
         this.email = patientType.getEmail();
+        this.numberPhone = patientType.getNumberPhone();
         this.birthDate = patientType.getBirthDate();
+        this.sex = patientType.isSex();
         this.bodyHeight = patientType.getBodyHeight();
         this.changedLifestyleNote = patientType.getChangedLifestyleNote();
         this.currentLifestyleNote = patientType.getCurrentLifestyleNote();
@@ -116,11 +118,11 @@ public class MongoPatient extends BaseDoc {
         this.dietaryPurpose = dietaryPurpose;
     }
 
-    public List<Measurement> getMeasurements() {
+    public List<MongoMeasurement> getMeasurements() {
         return measurements;
     }
 
-    public void setMeasurements(List<Measurement> measurements) {
+    public void setMeasurements(List<MongoMeasurement> measurements) {
         this.measurements = measurements;
     }
 }

@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.service.mongo;
 
-import com.springboot.dietapplication.model.patient.MongoPatient;
+import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
 import com.springboot.dietapplication.model.type.PatientType;
 import com.springboot.dietapplication.repository.mongo.MongoPatientRepository;
 import org.springframework.http.ResponseEntity;

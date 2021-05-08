@@ -1,10 +1,8 @@
 package com.springboot.dietapplication.model.psql.patient;
 
-import com.springboot.dietapplication.model.patient.Measurement;
 import com.springboot.dietapplication.model.type.PatientType;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "patients")
@@ -50,7 +48,9 @@ public class PsqlPatient {
             this.id = Long.parseLong(patientType.getId());
         this.name = patientType.getName();
         this.email = patientType.getEmail();
+        this.numberPhone = patientType.getNumberPhone();
         this.birthDate = patientType.getBirthDate();
+        this.sex = patientType.isSex();
         this.bodyHeight = patientType.getBodyHeight();
         this.changedLifestyleNote = patientType.getChangedLifestyleNote();
         this.currentLifestyleNote = patientType.getCurrentLifestyleNote();

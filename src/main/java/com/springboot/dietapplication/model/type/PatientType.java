@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.patient.Measurement;
-import com.springboot.dietapplication.model.patient.MongoPatient;
+import com.springboot.dietapplication.model.mongo.patient.MongoMeasurement;
+import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class PatientType {
     private String changedLifestyleNote;
     private String dietaryPurpose;
 
-    private List<Measurement> measurements;
+    private List<MongoMeasurement> measurements;
 
     //odpowiedzi na wywiad
     //private InterviewAnswers answers;
@@ -38,7 +38,9 @@ public class PatientType {
         this.id = String.valueOf(mongoPatient.getId());
         this.name = mongoPatient.getName();
         this.email = mongoPatient.getEmail();
+        this.numberPhone = mongoPatient.getNumberPhone();
         this.birthDate = mongoPatient.getBirthDate();
+        this.sex = mongoPatient.isSex();
         this.bodyHeight = mongoPatient.getBodyHeight();
         this.changedLifestyleNote = mongoPatient.getChangedLifestyleNote();
         this.currentLifestyleNote = mongoPatient.getCurrentLifestyleNote();
@@ -49,7 +51,9 @@ public class PatientType {
         this.id = String.valueOf(psqlPatient.getId());
         this.name = psqlPatient.getName();
         this.email = psqlPatient.getEmail();
+        this.numberPhone = psqlPatient.getNumberPhone();
         this.birthDate = psqlPatient.getBirthDate();
+        this.sex = psqlPatient.isSex();
         this.bodyHeight = psqlPatient.getBodyHeight();
         this.changedLifestyleNote = psqlPatient.getChangedLifestyleNote();
         this.currentLifestyleNote = psqlPatient.getCurrentLifestyleNote();
@@ -144,11 +148,11 @@ public class PatientType {
         this.dietaryPurpose = dietaryPurpose;
     }
 
-    public List<Measurement> getMeasurements() {
+    public List<MongoMeasurement> getMeasurements() {
         return measurements;
     }
 
-    public void setMeasurements(List<Measurement> measurements) {
+    public void setMeasurements(List<MongoMeasurement> measurements) {
         this.measurements = measurements;
     }
 

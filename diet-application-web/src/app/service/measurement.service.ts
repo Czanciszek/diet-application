@@ -9,6 +9,9 @@ import {Measurement} from "../model/measurement";
 })
 export class MeasurementService {
 
+  serverAddress = "http://localhost:8080/";
+  dbService = "api/mongo/";
+
   httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Basic '+
@@ -31,10 +34,6 @@ export class MeasurementService {
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
-    header: new FormControl(null),
-    primaryImageId: new FormControl(null),
-    type: new FormControl(''),
-    name: new FormControl(''),
     patientId: new FormControl(null),
     measurementDate: new FormControl('', [Validators.required]),
     bodyWeight: new FormControl(null),
@@ -54,10 +53,6 @@ export class MeasurementService {
   initializeFormGroup() {
     this.form.setValue({
       id: null,
-      header: null,
-      primaryImageId: null,
-      type: '',
-      name: '',
       patientId: null,
       measurementDate: null,
       bodyWeight: null,
@@ -76,19 +71,25 @@ export class MeasurementService {
   }
 
   getMeasurementsById(measurementId) {
-    return this.http.get<Measurement>("http://localhost:8080/api/v1/measurements/" + measurementId, this.httpOptions);
+    return this.http.get<Measurement>(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "measurements/" + measurementId, this.httpOptions);
   }
 
   getMeasurementsByPatientId(patientId) {
-    this.measurementList = this.http.get("http://localhost:8080/api/v1/measurements/patient/" + patientId, this.httpOptions).pipe();
+    this.measurementList = this.http.get(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "measurements/patient/" + patientId, this.httpOptions).pipe();
     return this.measurementList;
+  }
+
+  insertMeasurement(measurement) {
+    return this.http.post(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "measurements", measurement, this.httpOptions);
   }
 
   populateForm(measurement) {
     this.form.setValue(measurement);
-  }
-
-  insertMeasurement(measurement, patientId) {
-    return this.http.post("http://localhost:8080/api/v1/measurements/" + patientId, measurement, this.httpOptions);
   }
 }

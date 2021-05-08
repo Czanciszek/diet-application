@@ -1,8 +1,8 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.menu.*;
-import com.springboot.dietapplication.model.patient.Measurement;
-import com.springboot.dietapplication.model.patient.MongoPatient;
+import com.springboot.dietapplication.model.mongo.patient.MongoMeasurement;
+import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.model.type.DayType;
 import com.springboot.dietapplication.repository.mongo.*;
@@ -20,11 +20,11 @@ public class MenuController {
     private final MenuRepository menuRepository;
     private final WeekMealRepository weekMealRepository;
     private final DayMealRepository dayMealRepository;
-    private final MeasurementRepository measurementRepository;
+    private final MongoMeasurementRepository measurementRepository;
     private final MongoPatientRepository patientRepository;
 
     public MenuController(MenuRepository menuRepository, WeekMealRepository weekMealRepository,
-                          DayMealRepository dayMealRepository, MeasurementRepository measurementRepository,
+                          DayMealRepository dayMealRepository, MongoMeasurementRepository measurementRepository,
                           MongoPatientRepository patientRepository) {
         this.menuRepository = menuRepository;
         this.weekMealRepository = weekMealRepository;
@@ -61,9 +61,9 @@ public class MenuController {
         menu.setMealTypes(menuType.getMealTypes());
         menu.setActivityLevel(menuType.getActivityLevel());
 
-        Optional<Measurement> optionalMeasurement = measurementRepository.findById(menuType.getMeasurementId());
+        Optional<MongoMeasurement> optionalMeasurement = measurementRepository.findById(menuType.getMeasurementId());
         if (optionalMeasurement.isPresent()) {
-            Measurement measurement = optionalMeasurement.get();
+            MongoMeasurement measurement = optionalMeasurement.get();
             Optional<MongoPatient> optionalPatient = patientRepository.findById(menuType.getPatientId());
             if (optionalPatient.isPresent()) {
                 MongoPatient patient = optionalPatient.get();

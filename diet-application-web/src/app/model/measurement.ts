@@ -1,9 +1,5 @@
 export interface Measurement {
   id: string,
-  header: object,
-  primaryImageId: string,
-  type: string,
-  name: string,
   patientId: string,
   measurementDate: string,
   bodyWeight: number,

@@ -1,11 +1,11 @@
-package com.springboot.dietapplication.model.patient;
+package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.base.BaseDoc;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.springboot.dietapplication.model.mongo.patient.MongoMeasurement;
+import com.springboot.dietapplication.model.psql.patient.PsqlMeasurement;
 
-@Document(collection = "Measurements")
-public class Measurement extends BaseDoc {
+public class MeasurementType {
 
+    private String id;
     private String patientId;
     private String measurementDate; //Data pomiaru
 
@@ -22,13 +22,13 @@ public class Measurement extends BaseDoc {
     private float chest; //Klatka piersiowa - Only for men
     private float arm; //Ramię - Only for men
 
-    public Measurement() {
+    public MeasurementType() {
     }
 
     /**
      * Constructor for women measurements
      */
-    public Measurement(String patientId, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float breast, float underBreast, float hipBones, float thighNarrowest) {
+    public MeasurementType(String patientId, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float breast, float underBreast, float hipBones, float thighNarrowest) {
         this.patientId = patientId;
         this.measurementDate = measurementDate;
         this.bodyWeight = bodyWeight;
@@ -46,7 +46,7 @@ public class Measurement extends BaseDoc {
     /**
      * Constructor for men measurements
      */
-    public Measurement(String patientId, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float chest, float arm) {
+    public MeasurementType(String patientId, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float chest, float arm) {
         this.patientId = patientId;
         this.measurementDate = measurementDate;
         this.bodyWeight = bodyWeight;
@@ -57,6 +57,50 @@ public class Measurement extends BaseDoc {
         this.calf = calf;
         this.chest = chest;
         this.arm = arm;
+    }
+
+    public MeasurementType(MongoMeasurement measurement) {
+        this.id = measurement.getId();
+        this.patientId = measurement.getPatientId();
+        this.measurementDate = measurement.getMeasurementDate();
+        this.bodyWeight = measurement.getBodyWeight();
+        this.breast = measurement.getBreast();
+        this.underBreast = measurement.getUnderBreast();
+        this.waist = measurement.getWaist();
+        this.abdominal = measurement.getAbdominal();
+        this.hipBones = measurement.getHipBones();
+        this.hips = measurement.getHips();
+        this.thighWidest = measurement.getThighWidest();
+        this.thighNarrowest = measurement.getThighNarrowest();
+        this.calf = measurement.getCalf();
+        this.chest = measurement.getChest();
+        this.arm = measurement.getArm();
+    }
+
+    public MeasurementType(PsqlMeasurement measurement) {
+        this.id = String.valueOf(measurement.getId());
+        this.patientId = String.valueOf(measurement.getPatientId());
+        this.measurementDate = measurement.getMeasurementDate();
+        this.bodyWeight = measurement.getBodyWeight();
+        this.breast = measurement.getBreast();
+        this.underBreast = measurement.getUnderBreast();
+        this.waist = measurement.getWaist();
+        this.abdominal = measurement.getAbdominal();
+        this.hipBones = measurement.getHipBones();
+        this.hips = measurement.getHips();
+        this.thighWidest = measurement.getThighWidest();
+        this.thighNarrowest = measurement.getThighNarrowest();
+        this.calf = measurement.getCalf();
+        this.chest = measurement.getChest();
+        this.arm = measurement.getArm();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPatientId() {

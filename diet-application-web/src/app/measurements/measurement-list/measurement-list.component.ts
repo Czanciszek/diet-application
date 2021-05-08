@@ -30,10 +30,6 @@ export class MeasurementListComponent implements OnInit {
           let array = list.map(item => {
             return {
               id: item.id,
-              header: item.header,
-              primaryImageId: item.primaryImageId,
-              type: item.type,
-              name: item.name,
               patientId: item.patientId,
               measurementDate: item.measurementDate,
               bodyWeight: item.bodyWeight,
@@ -53,10 +49,10 @@ export class MeasurementListComponent implements OnInit {
 
           for (let element of array) {
             if (element.measurementDate != null) {
-              var dateFormat = new Date(element.measurementDate);
-              var date = dateFormat.getDate();
-              var month = dateFormat.getMonth();
-              var year = dateFormat.getFullYear();
+              let dateFormat = new Date(element.measurementDate);
+              let date = dateFormat.getDate();
+              let month = dateFormat.getMonth();
+              let year = dateFormat.getFullYear();
               element.measurementDate = date + "/" + (month + 1) + "/" + year;
             }
           }
@@ -74,10 +70,11 @@ export class MeasurementListComponent implements OnInit {
 
   onSubmit() {
     if (this.service.form.valid) {
-        this.service.insertMeasurement(this.service.form.value, this.service.patientId).subscribe();
-        this.showNewMeasurement = false;
-        this.onClear();
-        this.ngOnInit();
+      this.service.form.get("patientId").patchValue(this.service.patientId);
+      this.service.insertMeasurement(this.service.form.value).subscribe();
+      this.showNewMeasurement = false;
+      this.onClear();
+      this.ngOnInit();
     }
   }
 
