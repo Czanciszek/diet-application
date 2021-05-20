@@ -33,7 +33,7 @@ public class DbSeeder implements CommandLineRunner {
     private final MongoDishRepository dishRepository;
     private final MongoPatientRepository patientRepository;
     private final MongoMeasurementRepository measurementRepository;
-    private final MenuRepository menuRepository;
+    private final MongoMenuRepository menuRepository;
     private final WeekMealRepository weekMealRepository;
     private final DayMealRepository dayMealRepository;
     private final MealRepository mealRepository;
@@ -52,7 +52,7 @@ public class DbSeeder implements CommandLineRunner {
                     MongoCategoryRepository categoryRepository,
                     MongoPatientRepository patientRepository,
                     MongoMeasurementRepository measurementRepository,
-                    MenuRepository menuRepository,
+                    MongoMenuRepository menuRepository,
                     WeekMealRepository weekMealRepository,
                     DayMealRepository dayMealRepository,
                     MealRepository mealRepository) {

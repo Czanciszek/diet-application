@@ -45,16 +45,19 @@ export class MenuService {
   menuList: any;
 
   getMenusByPatientId(patientId): Observable<Menu[]> {
-    return this.http.get<Menu[]>("http://localhost:8080/api/v1/menus/patient/" + patientId, this.httpOptions)
+    return this.http.get<Menu[]>(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE + "menus/patient/" + patientId, this.httpOptions)
       .pipe();
   }
 
   getMenuById(menuId): Observable<Menu[]> {
-    return this.http.get<Menu[]>("http://localhost:8080/api/v1/menus/" + menuId, this.httpOptions)
+    return this.http.get<Menu[]>(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE + "menus/" + menuId, this.httpOptions)
       .pipe();
   }
 
   insertMenu(menu) {
-    return this.http.post("http://localhost:8080/api/v1/menus", menu, this.httpOptions);
+    return this.http.post(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE + "menus", menu, this.httpOptions);
   }
 }

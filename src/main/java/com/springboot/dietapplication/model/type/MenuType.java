@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.model.menu;
+package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.type.MealType;
 

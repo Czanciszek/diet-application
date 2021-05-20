@@ -9,6 +9,10 @@ public class ProductDishType {
     private float amount;
     private AmountType amountType;
 
+    public ProductDishType() {
+
+    }
+
     public ProductDishType(String productId, float grams, float amount, AmountType amountType) {
         this.productId = productId;
         this.grams = grams;

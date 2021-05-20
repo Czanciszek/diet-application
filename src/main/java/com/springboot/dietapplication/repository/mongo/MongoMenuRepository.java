@@ -1,14 +1,14 @@
 package com.springboot.dietapplication.repository.mongo;
 
-import com.springboot.dietapplication.model.menu.Menu;
+import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface MenuRepository extends MongoRepository<Menu, String> {
+public interface MongoMenuRepository extends MongoRepository<MongoMenu, String> {
 
-    List<Menu> findByPatientId(String id);
+    List<MongoMenu> findByPatientId(String id);
 
 }

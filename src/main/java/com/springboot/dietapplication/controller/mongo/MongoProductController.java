@@ -35,7 +35,7 @@ public class MongoProductController {
     }
 
     @GetMapping(path = "/menu/{menuId}")
-    public Map<String, MongoProduct> getMenuProducts(@PathVariable("menuId") String menuId) {
+    public Map<String, ProductType> getMenuProducts(@PathVariable("menuId") String menuId) {
         return this.productService.getMenuProducts(menuId);
     }
 

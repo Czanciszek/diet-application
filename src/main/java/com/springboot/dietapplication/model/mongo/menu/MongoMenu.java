@@ -1,6 +1,5 @@
-package com.springboot.dietapplication.model.menu;
+package com.springboot.dietapplication.model.mongo.menu;
 
-import com.springboot.dietapplication.model.base.BaseDoc;
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.model.type.MealType;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,7 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document(collection = "Menus")
-public class Menu extends BaseDoc {
+public class MongoMenu {
+
+    private String id;
 
     private String patientId; // Ref - Dane pacjenta
 
@@ -26,30 +27,16 @@ public class Menu extends BaseDoc {
 
     private Float activityLevel;
 
-    public Menu() {
+    public MongoMenu() {
 
     }
 
-    public Menu(Menu menu) {
-        this.patientId = menu.patientId;
-        this.measurementId = menu.measurementId;
-        this.weekMealList = menu.weekMealList;
-        this.mealTypes = menu.mealTypes;
-        this.startDate = menu.startDate;
-        this.endDate = menu.endDate;
-        this.foodPropertiesType = menu.foodPropertiesType;
-        this.activityLevel = menu.activityLevel;
+    public String getId() {
+        return id;
     }
 
-    public Menu(String patientId, String measurementId, List<String> weekMealList, List<MealType> mealTypes, String startDate, String endDate, FoodPropertiesType foodPropertiesType, Float activityLevel) {
-        this.patientId = patientId;
-        this.measurementId = measurementId;
-        this.weekMealList = weekMealList;
-        this.mealTypes = mealTypes;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.foodPropertiesType = foodPropertiesType;
-        this.activityLevel = activityLevel;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPatientId() {

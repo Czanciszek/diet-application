@@ -1,31 +1,34 @@
-package com.springboot.dietapplication.controller;
+package com.springboot.dietapplication.service.mongo;
 
-import com.springboot.dietapplication.model.menu.*;
+import com.springboot.dietapplication.model.menu.DayMeal;
+import com.springboot.dietapplication.model.type.MenuType;
+import com.springboot.dietapplication.model.menu.WeekMeal;
+import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import com.springboot.dietapplication.model.mongo.patient.MongoMeasurement;
 import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
-import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.model.type.DayType;
+import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.repository.mongo.*;
 import org.joda.time.DateTime;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("api/v1/menus")
-public class MenuController {
-    private final MenuRepository menuRepository;
+@Service
+public class MongoMenuService {
+
+    private final MongoMenuRepository menuRepository;
     private final WeekMealRepository weekMealRepository;
     private final DayMealRepository dayMealRepository;
     private final MongoMeasurementRepository measurementRepository;
     private final MongoPatientRepository patientRepository;
 
-    public MenuController(MenuRepository menuRepository, WeekMealRepository weekMealRepository,
-                          DayMealRepository dayMealRepository, MongoMeasurementRepository measurementRepository,
-                          MongoPatientRepository patientRepository) {
+    public MongoMenuService(MongoMenuRepository menuRepository, WeekMealRepository weekMealRepository,
+                            DayMealRepository dayMealRepository, MongoMeasurementRepository measurementRepository,
+                            MongoPatientRepository patientRepository) {
         this.menuRepository = menuRepository;
         this.weekMealRepository = weekMealRepository;
         this.dayMealRepository = dayMealRepository;
@@ -33,24 +36,21 @@ public class MenuController {
         this.patientRepository = patientRepository;
     }
 
-    @GetMapping
-    public List<Menu> getAll() {
+    public List<MongoMenu> getAll() {
         return this.menuRepository.findAll();
     }
 
-    @GetMapping(path = "/{menuId}")
-    public Optional<Menu> getMenuById(@PathVariable("menuId") String menuId) {
-        return this.menuRepository.findById(menuId);
+    public MongoMenu getMenuById(String menuId) {
+        Optional<MongoMenu> measurement = this.menuRepository.findById(menuId);
+        return measurement.orElseGet(MongoMenu::new);
     }
 
-    @GetMapping(path = "/patient/{patientId}")
-    public List<Menu> getMenusByPatientId(@PathVariable("patientId") String patientId) {
+    public List<MongoMenu> getMenusByPatientId(String patientId) {
         return this.menuRepository.findByPatientId(patientId);
     }
-    
-    @PostMapping(produces = "application/json")
-    ResponseEntity<Menu> insertMenu(@RequestBody MenuType menuType) throws NoSuchFieldException {
-        Menu menu = new Menu();
+
+    public ResponseEntity<MongoMenu> insert(MenuType menuType) {
+        MongoMenu menu = new MongoMenu();
         menuRepository.save(menu);
 
         DateTime dateTime = new DateTime(menuType.getStartDate());
@@ -100,17 +100,10 @@ public class MenuController {
         menu.setWeekMealList(weekMealList);
         menuRepository.save(menu);
 
-        return ResponseEntity.ok().body(null);
-    }
-
-    @PutMapping(path = "/{menuId}", produces = "application/json")
-    ResponseEntity<Menu> updateMenu(@RequestBody Menu menu) {
-        menuRepository.save(menu);
         return ResponseEntity.ok().body(menu);
     }
 
-    @DeleteMapping(path = "/{id}")
-    ResponseEntity<Menu> deleteMenu(@PathVariable String id) {
+    public ResponseEntity<MongoMenu> delete(String id) {
         menuRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }

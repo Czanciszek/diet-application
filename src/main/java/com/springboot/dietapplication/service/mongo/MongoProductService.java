@@ -2,7 +2,7 @@ package com.springboot.dietapplication.service.mongo;
 
 import com.springboot.dietapplication.model.menu.DayMeal;
 import com.springboot.dietapplication.model.menu.Meal;
-import com.springboot.dietapplication.model.menu.Menu;
+import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import com.springboot.dietapplication.model.menu.WeekMeal;
 import com.springboot.dietapplication.model.mongo.product.MongoCategory;
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
@@ -22,7 +22,7 @@ public class MongoProductService {
     private final MongoFoodPropertiesService foodPropertiesService;
     private final MongoCategoryService categoryService;
     private final MongoProductRepository productRepository;
-    private final MenuRepository menuRepository;
+    private final MongoMenuRepository menuRepository;
     private final WeekMealRepository weekMealRepository;
     private final DayMealRepository dayMealRepository;
     private final MealRepository mealRepository;
@@ -31,7 +31,7 @@ public class MongoProductService {
     public MongoProductService(MongoFoodPropertiesService foodPropertiesService,
                                MongoCategoryService categoryService,
                                MongoProductRepository productRepository,
-                               MenuRepository menuRepository,
+                               MongoMenuRepository menuRepository,
                                WeekMealRepository weekMealRepository,
                                DayMealRepository dayMealRepository,
                                MealRepository mealRepository) {
@@ -72,10 +72,11 @@ public class MongoProductService {
         return filteredMongoProducts;
     }
 
-    public Map<String, MongoProduct> getMenuProducts(String menuId) {
+    public Map<String, ProductType> getMenuProducts(String menuId) {
+        Map<String, ProductType> productMap = new HashMap<>();
+
         Set<String> productIdList = new HashSet<>();
-        Map<String, MongoProduct> productMap = new HashMap<>();
-        Optional<Menu> menu = this.menuRepository.findById(menuId);
+        Optional<MongoMenu> menu = this.menuRepository.findById(menuId);
         if (menu.isPresent()) {
             for (String weekMealId : menu.get().getWeekMealList()) {
                 Optional<WeekMeal> weekMeal = this.weekMealRepository.findById(weekMealId);
@@ -98,8 +99,9 @@ public class MongoProductService {
         }
 
         List<MongoProduct> mongoProductList = this.productRepository.findProductsByIdIn(productIdList);
-        for (MongoProduct mongoProduct : mongoProductList) {
-            productMap.put(mongoProduct.getId(), mongoProduct);
+        List<ProductType> productTypeList = convertMongoProductListToProductTypes(mongoProductList);
+        for (ProductType productType : productTypeList) {
+            productMap.put(productType.getId(), productType);
         }
 
         return productMap;
