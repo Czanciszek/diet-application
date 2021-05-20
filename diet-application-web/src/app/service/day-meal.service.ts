@@ -18,6 +18,7 @@ export class DayMealService {
   ) { }
 
   getDayMealListByListId(dayMealIdList) {
-    return this.http.get("http://localhost:8080/api/v1/daymeals/list/" + dayMealIdList, this.httpOptions);
+    return this.http.get(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE + "daymeals/list/" + dayMealIdList, this.httpOptions);
   }
 }

@@ -1,13 +1,14 @@
-package com.springboot.dietapplication.model.menu;
+package com.springboot.dietapplication.model.mongo.menu;
 
-import com.springboot.dietapplication.model.base.BaseDoc;
 import com.springboot.dietapplication.model.type.DayType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 @Document(collection = "DayMeals")
-public class DayMeal extends BaseDoc {
+public class MongoDayMeal {
+
+    private String id;
 
     private String weekMealId;
 
@@ -19,15 +20,23 @@ public class DayMeal extends BaseDoc {
 
     //private Map<String, Float> limits; // Limity kaloryczności
 
-    public DayMeal() {
+    public MongoDayMeal() {
 
     }
 
-    public DayMeal(String weekMealId, List<String> mealList, DayType dayType, String date) {
+    public MongoDayMeal(String weekMealId, List<String> mealList, DayType dayType, String date) {
         this.weekMealId = weekMealId;
         this.mealList = mealList;
         this.dayType = dayType;
         this.date = date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getWeekMealId() {

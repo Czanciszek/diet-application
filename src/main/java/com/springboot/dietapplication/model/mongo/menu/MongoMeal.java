@@ -1,6 +1,5 @@
-package com.springboot.dietapplication.model.menu;
+package com.springboot.dietapplication.model.mongo.menu;
 
-import com.springboot.dietapplication.model.base.BaseDoc;
 import com.springboot.dietapplication.model.type.ProductDishType;
 import com.springboot.dietapplication.model.type.MealType;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,7 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document(collection = "Meals")
-public class Meal extends BaseDoc {
+public class MongoMeal {
+
+    private String id;
+
+    private String name;
 
     private String dayMealId; // Reference to day
 
@@ -22,12 +25,12 @@ public class Meal extends BaseDoc {
 
     private MealType mealType; //Rodzaj posiłku
 
-    public Meal() {
+    public MongoMeal() {
 
     }
 
-    public Meal(Meal meal) {
-        this.setName(meal.getName());
+    public MongoMeal(MongoMeal meal) {
+        this.name = meal.name;
         this.dayMealId = meal.dayMealId;
         this.isProduct = meal.isProduct;
         this.productList = meal.productList;
@@ -36,16 +39,32 @@ public class Meal extends BaseDoc {
         this.mealType = meal.mealType;
     }
 
-    public Meal(String dayMealId, String name, int isProduct,
-                List<ProductDishType> productList, float portions,
-                String recipe, MealType mealType) {
-        this.setName(name);
+    public MongoMeal(String dayMealId, String name, int isProduct,
+                     List<ProductDishType> productList, float portions,
+                     String recipe, MealType mealType) {
+        this.name = name;
         this.dayMealId = dayMealId;
         this.isProduct = isProduct;
         this.productList = productList;
         this.portions = portions;
         this.recipe = recipe;
         this.mealType = mealType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDayMealId() {

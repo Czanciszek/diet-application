@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.service;
+package com.springboot.dietapplication.service.mongo;
 
 import com.springboot.dietapplication.model.mongo.user.User;
 import com.springboot.dietapplication.repository.mongo.MongoUserRepository;

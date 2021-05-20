@@ -1,14 +1,14 @@
 package com.springboot.dietapplication.repository.mongo;
 
-import com.springboot.dietapplication.model.menu.Meal;
+import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface MealRepository extends MongoRepository<Meal, String> {
+public interface MongoMealRepository extends MongoRepository<MongoMeal, String> {
 
-    List<Meal> findByDayMealIdLike(String dayMealId);
+    List<MongoMeal> findByDayMealIdLike(String dayMealId);
 
 }

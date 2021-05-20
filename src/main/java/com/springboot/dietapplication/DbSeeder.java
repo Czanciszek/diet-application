@@ -34,9 +34,9 @@ public class DbSeeder implements CommandLineRunner {
     private final MongoPatientRepository patientRepository;
     private final MongoMeasurementRepository measurementRepository;
     private final MongoMenuRepository menuRepository;
-    private final WeekMealRepository weekMealRepository;
-    private final DayMealRepository dayMealRepository;
-    private final MealRepository mealRepository;
+    private final MongoWeekMealRepository weekMealRepository;
+    private final MongoDayMealRepository dayMealRepository;
+    private final MongoMealRepository mealRepository;
 
     @Autowired
     PsqlFoodPropertiesRepository PSQLFoodPropertiesRepository;
@@ -53,9 +53,9 @@ public class DbSeeder implements CommandLineRunner {
                     MongoPatientRepository patientRepository,
                     MongoMeasurementRepository measurementRepository,
                     MongoMenuRepository menuRepository,
-                    WeekMealRepository weekMealRepository,
-                    DayMealRepository dayMealRepository,
-                    MealRepository mealRepository) {
+                    MongoWeekMealRepository weekMealRepository,
+                    MongoDayMealRepository dayMealRepository,
+                    MongoMealRepository mealRepository) {
         this.mongoUserRepository = mongoUserRepository;
         this.mongoProductRepository = mongoProductRepository;
         this.mongoFoodPropertiesRepository = mongoFoodPropertiesRepository;

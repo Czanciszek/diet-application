@@ -9,9 +9,6 @@ import {Measurement} from "../model/measurement";
 })
 export class MeasurementService {
 
-  serverAddress = "http://localhost:8080/";
-  dbService = "api/mongo/";
-
   httpOptions = {
     headers: new HttpHeaders({
       Authorization: 'Basic '+

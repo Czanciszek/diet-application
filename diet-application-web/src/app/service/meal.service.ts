@@ -20,10 +20,7 @@ export class MealService {
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
-    header: new FormControl(null),
-    primaryImageId: new FormControl(null),
     name: new FormControl(''),
-    type: new FormControl(''),
     dayMealId: new FormControl('', [Validators.required]),
     productList: new FormArray([]),
     isProduct: new FormControl(null),
@@ -44,10 +41,7 @@ export class MealService {
   initializeFormGroup() {
     this.form.setValue({
       id: null,
-      header: null,
-      primaryImageId: null,
       name: '',
-      type: '',
       productList: [],
       dayMealId: '',
       isProduct: 0,
@@ -62,22 +56,27 @@ export class MealService {
   }
 
   getMealListByListId(dayMealIdList) {
-    return this.http.get("http://localhost:8080/api/v1/meals/list/" + dayMealIdList, this.httpOptions);
+    return this.http.get(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE + "meals/list/" + dayMealIdList, this.httpOptions);
   }
 
   insertMeal(meal) {
-    return this.http.post("http://localhost:8080/api/v1/meals", meal, this.httpOptions);
+    return this.http.post(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +"meals", meal, this.httpOptions);
   }
 
   copyMeal(meal) {
-    return this.http.post("http://localhost:8080/api/v1/meals/copy", meal, this.httpOptions);
+    return this.http.post(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE + "meals/copy", meal, this.httpOptions);
   }
 
   updateMeal(meal) {
-    return this.http.put("http://localhost:8080/api/v1/meals/" + meal.id, meal, this.httpOptions);
+    return this.http.put(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE + "meals/" + meal.id, meal, this.httpOptions);
   }
 
   deleteMeal(id: string) {
-    return this.http.delete("http://localhost:8080/api/v1/meals/" + id, this.httpOptions);
+    return this.http.delete(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE + "meals/" + id, this.httpOptions);
   }
 }

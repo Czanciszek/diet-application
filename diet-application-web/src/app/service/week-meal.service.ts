@@ -18,6 +18,7 @@ export class WeekMealService {
   ) { }
 
   getWeekMealById(weekMealId) {
-    return this.http.get("http://localhost:8080/api/v1/weekmeals/" + weekMealId, this.httpOptions);
+    return this.http.get(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE + "weekmeals/" + weekMealId, this.httpOptions);
   }
 }

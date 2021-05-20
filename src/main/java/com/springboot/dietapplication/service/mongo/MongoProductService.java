@@ -1,9 +1,9 @@
 package com.springboot.dietapplication.service.mongo;
 
-import com.springboot.dietapplication.model.menu.DayMeal;
-import com.springboot.dietapplication.model.menu.Meal;
+import com.springboot.dietapplication.model.mongo.menu.MongoDayMeal;
+import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
 import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
-import com.springboot.dietapplication.model.menu.WeekMeal;
+import com.springboot.dietapplication.model.mongo.menu.MongoWeekMeal;
 import com.springboot.dietapplication.model.mongo.product.MongoCategory;
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.type.ProductDishType;
@@ -23,18 +23,18 @@ public class MongoProductService {
     private final MongoCategoryService categoryService;
     private final MongoProductRepository productRepository;
     private final MongoMenuRepository menuRepository;
-    private final WeekMealRepository weekMealRepository;
-    private final DayMealRepository dayMealRepository;
-    private final MealRepository mealRepository;
+    private final MongoWeekMealRepository weekMealRepository;
+    private final MongoDayMealRepository dayMealRepository;
+    private final MongoMealRepository mealRepository;
 
     @Autowired
     public MongoProductService(MongoFoodPropertiesService foodPropertiesService,
                                MongoCategoryService categoryService,
                                MongoProductRepository productRepository,
                                MongoMenuRepository menuRepository,
-                               WeekMealRepository weekMealRepository,
-                               DayMealRepository dayMealRepository,
-                               MealRepository mealRepository) {
+                               MongoWeekMealRepository weekMealRepository,
+                               MongoDayMealRepository dayMealRepository,
+                               MongoMealRepository mealRepository) {
         this.foodPropertiesService = foodPropertiesService;
         this.categoryService = categoryService;
         this.productRepository = productRepository;
@@ -79,13 +79,13 @@ public class MongoProductService {
         Optional<MongoMenu> menu = this.menuRepository.findById(menuId);
         if (menu.isPresent()) {
             for (String weekMealId : menu.get().getWeekMealList()) {
-                Optional<WeekMeal> weekMeal = this.weekMealRepository.findById(weekMealId);
+                Optional<MongoWeekMeal> weekMeal = this.weekMealRepository.findById(weekMealId);
                 if (weekMeal.isPresent()) {
                     for (String dayMealId : weekMeal.get().getDayMealList()) {
-                        Optional<DayMeal> dayMeal = this.dayMealRepository.findById(dayMealId);
+                        Optional<MongoDayMeal> dayMeal = this.dayMealRepository.findById(dayMealId);
                         if (dayMeal.isPresent() && dayMeal.get().getMealList() != null) {
                             for (String mealId : dayMeal.get().getMealList()) {
-                                Optional<Meal> meal = this.mealRepository.findById(mealId);
+                                Optional<MongoMeal> meal = this.mealRepository.findById(mealId);
                                 if (meal.isPresent()) {
                                     for (ProductDishType productForDish : meal.get().getProductList()) {
                                         productIdList.add(productForDish.getProductId());

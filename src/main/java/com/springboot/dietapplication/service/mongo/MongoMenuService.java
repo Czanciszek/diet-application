@@ -1,8 +1,8 @@
 package com.springboot.dietapplication.service.mongo;
 
-import com.springboot.dietapplication.model.menu.DayMeal;
+import com.springboot.dietapplication.model.mongo.menu.MongoDayMeal;
 import com.springboot.dietapplication.model.type.MenuType;
-import com.springboot.dietapplication.model.menu.WeekMeal;
+import com.springboot.dietapplication.model.mongo.menu.MongoWeekMeal;
 import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import com.springboot.dietapplication.model.mongo.patient.MongoMeasurement;
 import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
@@ -21,13 +21,13 @@ import java.util.Optional;
 public class MongoMenuService {
 
     private final MongoMenuRepository menuRepository;
-    private final WeekMealRepository weekMealRepository;
-    private final DayMealRepository dayMealRepository;
+    private final MongoWeekMealRepository weekMealRepository;
+    private final MongoDayMealRepository dayMealRepository;
     private final MongoMeasurementRepository measurementRepository;
     private final MongoPatientRepository patientRepository;
 
-    public MongoMenuService(MongoMenuRepository menuRepository, WeekMealRepository weekMealRepository,
-                            DayMealRepository dayMealRepository, MongoMeasurementRepository measurementRepository,
+    public MongoMenuService(MongoMenuRepository menuRepository, MongoWeekMealRepository weekMealRepository,
+                            MongoDayMealRepository dayMealRepository, MongoMeasurementRepository measurementRepository,
                             MongoPatientRepository patientRepository) {
         this.menuRepository = menuRepository;
         this.weekMealRepository = weekMealRepository;
@@ -80,11 +80,11 @@ public class MongoMenuService {
         DateTime actualDate = dateTime;
         List<String> weekMealList = new ArrayList<>();
         for (int i = 0; i < menuType.getWeekCount(); i++) {
-            WeekMeal weekMeal = new WeekMeal();
+            MongoWeekMeal weekMeal = new MongoWeekMeal();
             weekMealRepository.save(weekMeal);
             List<String> dayMealList = new ArrayList<>();
             for (DayType dayType : DayType.values()) {
-                DayMeal dayMeal = new DayMeal();
+                MongoDayMeal dayMeal = new MongoDayMeal();
                 dayMeal.setDayType(dayType);
                 dayMeal.setDate(actualDate.toString());
                 dayMeal.setWeekMealId(weekMeal.getId());
