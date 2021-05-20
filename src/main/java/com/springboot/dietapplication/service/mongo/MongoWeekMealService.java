@@ -28,7 +28,7 @@ public class MongoWeekMealService {
 
     public ResponseEntity<MongoWeekMeal> insert(MongoWeekMeal weekMeal) {
         weekMealRepository.save(weekMeal);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(weekMeal);
     }
 
     public ResponseEntity<MongoWeekMeal> delete(String id) {

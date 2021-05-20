@@ -2,6 +2,7 @@ package com.springboot.dietapplication.model.mongo.menu;
 
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.model.type.MealType;
+import com.springboot.dietapplication.model.type.MenuType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -29,6 +30,14 @@ public class MongoMenu {
 
     public MongoMenu() {
 
+    }
+
+    public MongoMenu(MenuType menuType) {
+        this.startDate = menuType.getStartDate();
+        this.mealTypes = menuType.getMealTypes();
+        this.activityLevel = menuType.getActivityLevel();
+        this.measurementId = menuType.getMeasurementId();
+        this.patientId = menuType.getPatientId();
     }
 
     public String getId() {

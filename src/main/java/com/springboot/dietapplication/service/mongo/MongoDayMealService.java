@@ -1,10 +1,13 @@
 package com.springboot.dietapplication.service.mongo;
 
 import com.springboot.dietapplication.model.mongo.menu.MongoDayMeal;
+import com.springboot.dietapplication.model.type.DayType;
 import com.springboot.dietapplication.repository.mongo.MongoDayMealRepository;
+import org.joda.time.DateTime;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,9 +37,25 @@ public class MongoDayMealService {
                 .collect(Collectors.toList());
     }
 
+    public List<String> generateDaysForWeek(DateTime date, String weekMealId) {
+        List<String> dayMealList = new ArrayList<>();
+        for (DayType dayType : DayType.values()) {
+            MongoDayMeal dayMeal = new MongoDayMeal();
+            dayMeal.setDayType(dayType);
+            dayMeal.setDate(date.toString());
+            dayMeal.setWeekMealId(weekMealId);
+            insert(dayMeal);
+
+            dayMealList.add(dayMeal.getId());
+            date = date.plusDays(1);
+        }
+
+        return dayMealList;
+    }
+
     public ResponseEntity<MongoDayMeal> insert(MongoDayMeal dayMeal) {
         dayMealRepository.save(dayMeal);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(dayMeal);
     }
 
     public ResponseEntity<MongoDayMeal> delete(String id) {
