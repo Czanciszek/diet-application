@@ -1,9 +1,9 @@
 package com.springboot.dietapplication.repository.psql;
 
-import com.springboot.dietapplication.model.psql.menu.PsqlMealType;
+import com.springboot.dietapplication.model.psql.menu.PsqlFoodType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PsqlMealRepository extends JpaRepository<PsqlMealType, Long> {
+public interface PsqlMealRepository extends JpaRepository<PsqlFoodType, Long> {
 
 
 }

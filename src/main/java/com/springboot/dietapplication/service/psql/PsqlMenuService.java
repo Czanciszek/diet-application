@@ -3,8 +3,8 @@ package com.springboot.dietapplication.service.psql;
 import com.springboot.dietapplication.helper.FoodPropertiesHelper;
 import com.springboot.dietapplication.model.psql.menu.*;
 import com.springboot.dietapplication.model.type.*;
-import com.springboot.dietapplication.repository.psql.PsqlMealTypeMenuRepository;
-import com.springboot.dietapplication.repository.psql.PsqlMealTypeRepository;
+import com.springboot.dietapplication.repository.psql.PsqlFoodTypeMenuRepository;
+import com.springboot.dietapplication.repository.psql.PsqlFoodTypeRepository;
 import com.springboot.dietapplication.repository.psql.PsqlMenuRepository;
 import org.joda.time.DateTime;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ import java.util.Optional;
 public class PsqlMenuService {
 
     private final PsqlMenuRepository menuRepository;
-    private final PsqlMealTypeRepository mealTypeRepository;
-    private final PsqlMealTypeMenuRepository mealTypeMenuRepository;
+    private final PsqlFoodTypeRepository foodTypeRepository;
+    private final PsqlFoodTypeMenuRepository foodTypeMenuRepository;
 
     private final PsqlMeasurementService measurementService;
     private final PsqlPatientService patientService;
@@ -28,16 +28,16 @@ public class PsqlMenuService {
     private final PsqlDayMealService dayMealService;
 
     public PsqlMenuService(PsqlMenuRepository menuRepository,
-                           PsqlMealTypeRepository mealTypeRepository,
-                           PsqlMealTypeMenuRepository mealTypeMenuRepository,
+                           PsqlFoodTypeRepository foodTypeRepository,
+                           PsqlFoodTypeMenuRepository foodTypeMenuRepository,
                            PsqlMeasurementService measurementService,
                            PsqlPatientService patientService,
                            PsqlFoodPropertiesService foodPropertiesService,
                            PsqlWeekMealService weekMealService,
                            PsqlDayMealService dayMealService) {
         this.menuRepository = menuRepository;
-        this.mealTypeRepository = mealTypeRepository;
-        this.mealTypeMenuRepository = mealTypeMenuRepository;
+        this.foodTypeRepository = foodTypeRepository;
+        this.foodTypeMenuRepository = foodTypeMenuRepository;
         this.measurementService = measurementService;
         this.patientService = patientService;
         this.foodPropertiesService = foodPropertiesService;
@@ -81,10 +81,10 @@ public class PsqlMenuService {
 
         this.menuRepository.save(menu);
 
-        for (MealType mealType : menuSendingType.getMealTypes()) {
-            PsqlMealType psqlMealType = this.mealTypeRepository.getPsqlMealTypeByName(mealType.name());
-            PsqlMealTypeMenu mealTypeMenu = new PsqlMealTypeMenu(psqlMealType.getId(), menu.getId());
-            this.mealTypeMenuRepository.save(mealTypeMenu);
+        for (FoodType foodType : menuSendingType.getFoodTypes()) {
+            PsqlFoodType psqlFoodType = this.foodTypeRepository.getPsqlFoodTypeByName(foodType.name());
+            PsqlFoodTypeMenu foodTypeMenu = new PsqlFoodTypeMenu(psqlFoodType.getId(), menu.getId());
+            this.foodTypeMenuRepository.save(foodTypeMenu);
         }
 
         for (int i = 0; i < menuSendingType.getWeekCount(); i++) {
@@ -117,19 +117,19 @@ public class PsqlMenuService {
     private MenuType convertMongoMenuToMenuType(PsqlMenu psqlMenu) {
         MenuType menuType = new MenuType(psqlMenu);
 
-        List<MealType> mealTypeList = new ArrayList<>();
-        List<PsqlMealTypeMenu> menuTypeList = this.mealTypeMenuRepository.findPsqlMealTypeMenuByMenuId(psqlMenu.getId());
-        for (PsqlMealTypeMenu mealTypeMenu : menuTypeList) {
-            Optional<PsqlMealType> mealType = this.mealTypeRepository.findById(mealTypeMenu.getMealTypeId());
-            mealType.ifPresent(psqlMealType -> mealTypeList.add(MealType.valueOf(psqlMealType.getName())));
+        List<FoodType> foodTypeList = new ArrayList<>();
+        List<PsqlFoodTypeMenu> psqlFoodTypeList = this.foodTypeMenuRepository.findPsqlFoodTypeMenuByMenuId(psqlMenu.getId());
+        for (PsqlFoodTypeMenu foodTypeMenu : psqlFoodTypeList) {
+            Optional<PsqlFoodType> foodType = this.foodTypeRepository.findById(foodTypeMenu.getFoodTypeId());
+            foodType.ifPresent(psqlFoodType -> foodTypeList.add(FoodType.valueOf(psqlFoodType.getName())));
         }
-        menuType.setMealTypes(mealTypeList);
+        menuType.setFoodTypes(foodTypeList);
 
         List<String> weekMealIdList = this.weekMealService.getWeekMealIdList(psqlMenu.getId());
         menuType.setWeekMealList(weekMealIdList);
 
         FoodPropertiesType foodPropertiesType = this.foodPropertiesService.findById(psqlMenu.getFoodPropertiesId());
-        menuType.setFoodProperties(foodPropertiesType);
+        menuType.setFoodPropertiesType(foodPropertiesType);
 
         return menuType;
     }

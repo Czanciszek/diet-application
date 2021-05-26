@@ -21,7 +21,7 @@ export class DishSelectComponent implements OnInit {
   ) { }
 
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['name', 'portions', 'mealType', 'actions'];
+  displayedColumns: string[] = ['name', 'portions', 'foodType', 'actions'];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -37,7 +37,7 @@ export class DishSelectComponent implements OnInit {
             type: item.type,
             name: item.name,
             products: item.products,
-            mealType: item.mealType,
+            foodType: item.foodType,
             portions: item.portions,
             recipe: item.recipe
           };

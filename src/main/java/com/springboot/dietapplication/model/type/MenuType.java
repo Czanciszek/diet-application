@@ -2,9 +2,6 @@ package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import com.springboot.dietapplication.model.psql.menu.PsqlMenu;
-import com.springboot.dietapplication.model.type.FoodPropertiesType;
-import com.springboot.dietapplication.model.type.MealType;
-import com.springboot.dietapplication.model.type.MenuSendingType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -20,7 +17,7 @@ public class MenuType {
 
     private List<String> weekMealList; // Lista odnośników do tygodniowych jadłospisów
 
-    private List<MealType> mealTypes; // Rodzaje posiłków do menu
+    private List<FoodType> foodTypes; // Rodzaje posiłków do menu
 
     private String startDate; // Najwcześniejsza data z listy DayMeals
 
@@ -36,7 +33,7 @@ public class MenuType {
 
     public MenuType(MenuSendingType menuSendingType) {
         this.startDate = menuSendingType.getStartDate();
-        this.mealTypes = menuSendingType.getMealTypes();
+        this.foodTypes = menuSendingType.getFoodTypes();
         this.activityLevel = menuSendingType.getActivityLevel();
         this.measurementId = menuSendingType.getMeasurementId();
         this.patientId = menuSendingType.getPatientId();
@@ -47,10 +44,10 @@ public class MenuType {
         this.patientId = menu.getPatientId();
         this.measurementId = menu.getMeasurementId();
         this.weekMealList = menu.getWeekMealList();
-        this.mealTypes = menu.getMealTypes();
+        this.foodTypes = menu.getFoodTypes();
         this.startDate = menu.getStartDate();
         this.endDate = menu.getEndDate();
-        this.foodPropertiesType = menu.getFoodProperties();
+        this.foodPropertiesType = menu.getFoodPropertiesType();
         this.activityLevel = menu.getActivityLevel();
     }
 
@@ -98,12 +95,12 @@ public class MenuType {
         this.weekMealList = weekMealList;
     }
 
-    public List<MealType> getMealTypes() {
-        return mealTypes;
+    public List<FoodType> getFoodTypes() {
+        return foodTypes;
     }
 
-    public void setMealTypes(List<MealType> mealTypes) {
-        this.mealTypes = mealTypes;
+    public void setFoodTypes(List<FoodType> foodTypes) {
+        this.foodTypes = foodTypes;
     }
 
     public String getStartDate() {
@@ -122,11 +119,11 @@ public class MenuType {
         this.endDate = endDate;
     }
 
-    public FoodPropertiesType getFoodProperties() {
+    public FoodPropertiesType getFoodPropertiesType() {
         return foodPropertiesType;
     }
 
-    public void setFoodProperties(FoodPropertiesType foodPropertiesType) {
+    public void setFoodPropertiesType(FoodPropertiesType foodPropertiesType) {
         this.foodPropertiesType = foodPropertiesType;
     }
 

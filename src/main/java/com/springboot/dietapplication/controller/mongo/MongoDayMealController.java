@@ -1,12 +1,10 @@
 package com.springboot.dietapplication.controller.mongo;
 
-import com.springboot.dietapplication.model.mongo.menu.MongoDayMeal;
 import com.springboot.dietapplication.model.type.DayMealType;
 import com.springboot.dietapplication.service.mongo.MongoDayMealService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

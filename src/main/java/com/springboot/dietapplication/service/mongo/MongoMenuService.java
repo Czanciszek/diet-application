@@ -67,7 +67,7 @@ public class MongoMenuService {
                 menu.getActivityLevel()
         );
 
-        menu.setFoodProperties(foodPropertiesType);
+        menu.setFoodPropertiesType(foodPropertiesType);
 
         List<String> weekMealList = new ArrayList<>();
         for (int i = 0; i < menuSendingType.getWeekCount(); i++) {

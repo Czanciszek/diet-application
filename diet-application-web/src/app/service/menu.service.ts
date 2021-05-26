@@ -23,7 +23,7 @@ export class MenuService {
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     weekCount: new FormControl('', [Validators.required, Validators.min(1), Validators.max(8)]),
-    mealTypes: new FormControl(null),
+    foodTypes: new FormControl(null),
     measurementId: new FormControl(null),
     patientId: new FormControl(null),
     startDate: new FormControl('', [Validators.required]),
@@ -36,7 +36,7 @@ export class MenuService {
       measurementId: null,
       patientId: null,
       weekCount: 1,
-      mealTypes: null,
+      foodTypes: null,
       startDate: null,
       activityLevel: 1.1
     })

@@ -26,7 +26,7 @@ export class MealService {
     isProduct: new FormControl(null),
     portions: new FormControl(null),
     recipe: new FormControl(null),
-    mealType: new FormControl('')
+    foodType: new FormControl('')
   });
 
   addProductFormGroup(): FormGroup {
@@ -47,7 +47,7 @@ export class MealService {
       isProduct: 0,
       portions: 1,
       recipe: '',
-      mealType: ''
+      foodType: ''
     })
   }
 

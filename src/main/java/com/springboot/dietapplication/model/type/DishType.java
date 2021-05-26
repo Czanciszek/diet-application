@@ -10,7 +10,7 @@ public class DishType {
     private String id;
     private String name;
     private List<ProductDishType> products;
-    private MealType mealType;
+    private FoodType foodType;
     private float portions;
     private String recipe;
 
@@ -22,7 +22,7 @@ public class DishType {
         this.id = dish.getId();
         this.name = dish.getName();
         this.products = dish.getProducts();
-        this.mealType = dish.getMealType();
+        this.foodType = dish.getFoodType();
         this.portions = dish.getPortions();
         this.recipe = dish.getRecipe();
     }
@@ -62,12 +62,12 @@ public class DishType {
         this.products = products;
     }
 
-    public MealType getMealType() {
-        return mealType;
+    public FoodType getFoodType() {
+        return foodType;
     }
 
-    public void setMealType(MealType mealType) {
-        this.mealType = mealType;
+    public void setFoodType(FoodType foodType) {
+        this.foodType = foodType;
     }
 
     public float getPortions() {

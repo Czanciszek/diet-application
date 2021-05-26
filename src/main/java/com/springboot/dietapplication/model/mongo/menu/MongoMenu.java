@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.model.mongo.menu;
 
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
-import com.springboot.dietapplication.model.type.MealType;
+import com.springboot.dietapplication.model.type.FoodType;
 import com.springboot.dietapplication.model.type.MenuSendingType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,7 +18,7 @@ public class MongoMenu {
 
     private List<String> weekMealList; // Lista odnośników do tygodniowych jadłospisów
 
-    private List<MealType> mealTypes; // Rodzaje posiłków do menu
+    private List<FoodType> foodTypes; // Rodzaje posiłków do menu
 
     private String startDate; // Najwcześniejsza data z listy DayMeals
 
@@ -34,7 +34,7 @@ public class MongoMenu {
 
     public MongoMenu(MenuSendingType menuSendingType) {
         this.startDate = menuSendingType.getStartDate();
-        this.mealTypes = menuSendingType.getMealTypes();
+        this.foodTypes = menuSendingType.getFoodTypes();
         this.activityLevel = menuSendingType.getActivityLevel();
         this.measurementId = menuSendingType.getMeasurementId();
         this.patientId = menuSendingType.getPatientId();
@@ -72,12 +72,12 @@ public class MongoMenu {
         this.weekMealList = weekMealList;
     }
 
-    public List<MealType> getMealTypes() {
-        return mealTypes;
+    public List<FoodType> getFoodTypes() {
+        return foodTypes;
     }
 
-    public void setMealTypes(List<MealType> mealTypes) {
-        this.mealTypes = mealTypes;
+    public void setFoodTypes(List<FoodType> foodTypes) {
+        this.foodTypes = foodTypes;
     }
 
     public String getStartDate() {
@@ -96,11 +96,11 @@ public class MongoMenu {
         this.endDate = endDate;
     }
 
-    public FoodPropertiesType getFoodProperties() {
+    public FoodPropertiesType getFoodPropertiesType() {
         return foodPropertiesType;
     }
 
-    public void setFoodProperties(FoodPropertiesType foodPropertiesType) {
+    public void setFoodPropertiesType(FoodPropertiesType foodPropertiesType) {
         this.foodPropertiesType = foodPropertiesType;
     }
 

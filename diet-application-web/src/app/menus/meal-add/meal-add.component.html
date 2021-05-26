@@ -36,9 +36,9 @@
         <div class="control-container">
           <mat-form-field>
             <div class="add-bottom-padding">
-              <mat-select matInput placeholder="Typ" formControlName="mealType">
-                <ng-container *ngFor="let mealType of mealTypes">
-                  <mat-option value="{{mealType.id}}">{{mealType.value}}</mat-option>
+              <mat-select matInput placeholder="Typ" formControlName="foodType">
+                <ng-container *ngFor="let foodType of foodTypes">
+                  <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
                 </ng-container>
               </mat-select>
             </div>
@@ -180,9 +180,9 @@
             <div class="control-container">
               <mat-form-field>
                 <div class="add-bottom-padding">
-                  <mat-select matInput placeholder="Typ" formControlName="mealType">
-                    <ng-container *ngFor="let mealType of mealTypes">
-                      <mat-option value="{{mealType.id}}">{{mealType.value}}</mat-option>
+                  <mat-select matInput placeholder="Typ" formControlName="foodType">
+                    <ng-container *ngFor="let foodType of foodTypes">
+                      <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
                     </ng-container>
                   </mat-select>
                 </div>

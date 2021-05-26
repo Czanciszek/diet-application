@@ -28,9 +28,9 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field>
-              <mat-select matInput placeholder="Typy posiłków*" formControlName="mealTypes" multiple>
-                <ng-container *ngFor="let mealType of mealTypes">
-                  <mat-option value="{{mealType.id}}">{{mealType.value}}</mat-option>
+              <mat-select matInput placeholder="Typy posiłków*" formControlName="foodTypes" multiple>
+                <ng-container *ngFor="let foodType of foodTypes">
+                  <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
                 </ng-container>
               </mat-select>
           </mat-form-field>

@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "meal_types")
-public class PsqlMealType implements Serializable {
+@Table(name = "food_types")
+public class PsqlFoodType implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,7 +14,7 @@ public class PsqlMealType implements Serializable {
     @Column(name = "name")
     private String name;
 
-    public PsqlMealType() {
+    public PsqlFoodType() {
     }
 
     public long getId() {

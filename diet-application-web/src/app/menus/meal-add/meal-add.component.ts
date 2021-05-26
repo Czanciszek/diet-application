@@ -34,7 +34,7 @@ export class MealAddComponent implements OnInit {
     { id: "GLASS", value: "Szklanka" },
   ];
 
-  mealTypes = [
+  foodTypes = [
     { id: "BREAKFEST", value: "Śniadanie" },
     { id: "BRUNCH", value: "II śniadanie" },
     { id: "DINNER", value: "Obiad" },

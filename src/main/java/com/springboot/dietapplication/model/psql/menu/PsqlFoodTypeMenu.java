@@ -1,30 +1,28 @@
 package com.springboot.dietapplication.model.psql.menu;
 
-import com.springboot.dietapplication.model.type.MealType;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "meal_types_menus")
-public class PsqlMealTypeMenu implements Serializable {
+@Table(name = "food_types_menus")
+public class PsqlFoodTypeMenu implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "meal_type_id")
-    private long mealTypeId;
+    @Column(name = "food_type_id")
+    private long foodTypeId;
 
     @Column(name = "menu_id")
     private long menuId;
 
-    public PsqlMealTypeMenu() {
+    public PsqlFoodTypeMenu() {
 
     }
 
-    public PsqlMealTypeMenu(long mealTypeId, long menuId) {
-        this.mealTypeId = mealTypeId;
+    public PsqlFoodTypeMenu(long foodTypeId, long menuId) {
+        this.foodTypeId = foodTypeId;
         this.menuId = menuId;
     }
 
@@ -36,12 +34,12 @@ public class PsqlMealTypeMenu implements Serializable {
         this.id = id;
     }
 
-    public long getMealTypeId() {
-        return mealTypeId;
+    public long getFoodTypeId() {
+        return foodTypeId;
     }
 
-    public void setMealTypeId(long mealTypeId) {
-        this.mealTypeId = mealTypeId;
+    public void setFoodTypeId(long foodTypeId) {
+        this.foodTypeId = foodTypeId;
     }
 
     public long getMenuId() {

@@ -166,10 +166,10 @@ export class WeekViewComponent implements OnInit {
       }
     }
 
-    let energyLimit = this.menuItemData.foodProperties.energyValue;
-    let proteinsLimit = this.menuItemData.foodProperties.proteins;
-    let fatsLimit = this.menuItemData.foodProperties.fats;
-    let carbohydratesLimit = this.menuItemData.foodProperties.carbohydrates;
+    let energyLimit = this.menuItemData.foodPropertiesType.energyValue;
+    let proteinsLimit = this.menuItemData.foodPropertiesType.proteins;
+    let fatsLimit = this.menuItemData.foodPropertiesType.fats;
+    let carbohydratesLimit = this.menuItemData.foodPropertiesType.carbohydrates;
 
     return "Kcal: " + energy.toFixed(2) + "/" + energyLimit.toFixed(2) +
       "    B: " + proteins.toFixed(2) + "/" + proteinsLimit.toFixed(2) + "g" +

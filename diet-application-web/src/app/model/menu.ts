@@ -3,7 +3,8 @@ export interface Menu {
   patientId: string,
   measurementId: string,
   weekMealList: string[],
-  mealTypes:string [],
+  foodPropertiesType: {},
+  foodTypes: string [],
   startDate: string,
   endDate: string,
   activityLevel: number

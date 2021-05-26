@@ -24,7 +24,7 @@ export class DishService {
     id: new FormControl(null),
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     products: new FormArray([]),
-    mealType: new FormControl(null),
+    foodType: new FormControl(null),
     portions: new FormControl(null),
     recipe: new FormControl('')
   });
@@ -50,7 +50,7 @@ export class DishService {
           productId: null,
         }
       ],
-      mealType: '',
+      foodType: '',
       portions: 1,
       recipe: ''
     })

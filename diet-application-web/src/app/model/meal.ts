@@ -11,5 +11,5 @@ export interface Meal {
   grams: number,
   portions: number,
   recipe: string,
-  mealType: string
+  foodType: string
 }

@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.model.type;
 
-public enum MealType {
+public enum FoodType {
 
     BREAKFEST,
     BRUNCH,

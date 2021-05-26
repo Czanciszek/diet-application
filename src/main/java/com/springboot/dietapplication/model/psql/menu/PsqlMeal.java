@@ -14,8 +14,8 @@ public class PsqlMeal implements Serializable {
     @Column(name = "day_meal_id")
     private long dayMealId;
 
-    @Column(name = "meal_type_id")
-    private long mealTypeId;
+    @Column(name = "food_type_id")
+    private long foodTypeId;
 
     @Column(name = "name")
     private String name;
@@ -50,12 +50,12 @@ public class PsqlMeal implements Serializable {
         this.dayMealId = dayMealId;
     }
 
-    public long getMealTypeId() {
-        return mealTypeId;
+    public long getFoodTypeId() {
+        return foodTypeId;
     }
 
-    public void setMealTypeId(long mealTypeId) {
-        this.mealTypeId = mealTypeId;
+    public void setFoodTypeId(long foodTypeId) {
+        this.foodTypeId = foodTypeId;
     }
 
     public String getName() {

@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.model.mongo.menu;
 
+import com.springboot.dietapplication.model.type.FoodType;
 import com.springboot.dietapplication.model.type.ProductDishType;
-import com.springboot.dietapplication.model.type.MealType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class MongoMeal {
 
     private String recipe; // Recipe for dish meal
 
-    private MealType mealType; //Rodzaj posiłku
+    private FoodType foodType; //Rodzaj posiłku
 
     public MongoMeal() {
 
@@ -36,19 +36,19 @@ public class MongoMeal {
         this.productList = meal.productList;
         this.portions = meal.portions;
         this.recipe = meal.recipe;
-        this.mealType = meal.mealType;
+        this.foodType = meal.foodType;
     }
 
     public MongoMeal(String dayMealId, String name, int isProduct,
                      List<ProductDishType> productList, float portions,
-                     String recipe, MealType mealType) {
+                     String recipe, FoodType foodType) {
         this.name = name;
         this.dayMealId = dayMealId;
         this.isProduct = isProduct;
         this.productList = productList;
         this.portions = portions;
         this.recipe = recipe;
-        this.mealType = mealType;
+        this.foodType = foodType;
     }
 
     public String getId() {
@@ -107,11 +107,11 @@ public class MongoMeal {
         this.recipe = recipe;
     }
 
-    public MealType getMealType() {
-        return mealType;
+    public FoodType getFoodType() {
+        return foodType;
     }
 
-    public void setMealType(MealType mealType) {
-        this.mealType = mealType;
+    public void setFoodType(FoodType foodType) {
+        this.foodType = foodType;
     }
 }

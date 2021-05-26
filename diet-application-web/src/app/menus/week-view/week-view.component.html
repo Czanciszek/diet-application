@@ -16,12 +16,12 @@
         <h2>{{translateDayType(day.dayType)}}</h2>
       </div>
 
-      <div *ngFor="let dishType of menuItemData.mealTypes">
+      <div *ngFor="let dishType of menuItemData.foodTypes">
 
         <app-dish-type [typeName]="dishType"></app-dish-type>
 
         <div *ngFor="let meal of mealListItemData">
-          <div *ngIf="meal.mealType === dishType && meal.dayMealId === day.id">
+          <div *ngIf="meal.foodType === dishType && meal.dayMealId === day.id">
             <app-dish-summary [mealItem]="meal" [daysList]="dayMealListItemData" (refreshItems)="refreshMealList()"></app-dish-summary>
           </div>
         </div>
