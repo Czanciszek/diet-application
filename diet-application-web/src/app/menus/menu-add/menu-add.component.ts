@@ -84,7 +84,12 @@ export class MenuAddComponent implements OnInit {
 
   onSubmit() {
     if (this.service.form.valid) {
-      this.service.form.get('patientId').setValue("5ff05f1fde578b7aa1774775");
+      if (GlobalVariable.DATABASE_SERVICE.toString().includes("mongo")) {
+        this.service.form.get('patientId').setValue("5ff05f1fde578b7aa1774775");
+      } else {
+        this.service.form.get('patientId').setValue(83709);
+      }
+
       if (!this.service.form.get('id').value) {
         this.service.insertMenu(this.service.form.value).subscribe();
         this.notificationService.success(":: Menu created successfully! ::");

@@ -1,12 +1,13 @@
-package com.springboot.dietapplication.model.mongo.menu;
+package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.type.WeekMealType;
+import com.springboot.dietapplication.model.mongo.menu.MongoWeekMeal;
+import com.springboot.dietapplication.model.psql.menu.PsqlWeekMeal;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 @Document(collection = "WeekMeals")
-public class MongoWeekMeal {
+public class WeekMealType {
 
     private String id;
 
@@ -16,19 +17,26 @@ public class MongoWeekMeal {
 
     //private Map<String, Float> limits; // Zużyte kaloryczności
 
-    public MongoWeekMeal() {
+    public WeekMealType() {
 
     }
 
-    public MongoWeekMeal(String menuId, List<String> dayMealList) {
+    public WeekMealType(String menuId, List<String> dayMealList) {
         this.menuId = menuId;
         this.dayMealList = dayMealList;
     }
 
-    public MongoWeekMeal(WeekMealType weekMealType) {
-        this.id = weekMealType.getId();
-        this.menuId = weekMealType.getMenuId();
-        this.dayMealList = weekMealType.getDayMealList();
+    public WeekMealType(MongoWeekMeal weekMeal) {
+        this.id = weekMeal.getId();
+        this.menuId = weekMeal.getMenuId();
+        this.dayMealList = weekMeal.getDayMealList();
+    }
+
+    public WeekMealType(PsqlWeekMeal weekMeal) {
+        if (weekMeal.getId() > 0)
+            this.id = String.valueOf(weekMeal.getId());
+        if (weekMeal.getMenuId() > 0)
+            this.menuId = String.valueOf(weekMeal.getMenuId());
     }
 
     public String getId() {

@@ -1,7 +1,6 @@
 package com.springboot.dietapplication.service.mongo;
 
 import com.springboot.dietapplication.helper.FoodPropertiesHelper;
-import com.springboot.dietapplication.helper.PatientHelper;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.model.mongo.menu.MongoWeekMeal;
 import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
@@ -36,40 +35,43 @@ public class MongoMenuService {
         this.patientService = patientService;
     }
 
-    public List<MongoMenu> getAll() {
-        return this.menuRepository.findAll();
+    public List<MenuType> getAll() {
+        List<MongoMenu> mongoMenuList = this.menuRepository.findAll();
+        return convertMongoMenuToMenuType(mongoMenuList);
     }
 
-    public MongoMenu getMenuById(String menuId) {
-        Optional<MongoMenu> measurement = this.menuRepository.findById(menuId);
-        return measurement.orElseGet(MongoMenu::new);
+    public MenuType getMenuById(String menuId) {
+        Optional<MongoMenu> menu = this.menuRepository.findById(menuId);
+        return menu.map(MenuType::new).orElseGet(MenuType::new);
     }
 
-    public List<MongoMenu> getMenusByPatientId(String patientId) {
-        return this.menuRepository.findByPatientId(patientId);
+    public List<MenuType> getMenusByPatientId(String patientId) {
+        List<MongoMenu> mongoMenuList = this.menuRepository.findByPatientId(patientId);
+        return convertMongoMenuToMenuType(mongoMenuList);
     }
 
-    public ResponseEntity<MongoMenu> insert(MenuType menuType) {
-        MongoMenu menu = new MongoMenu(menuType);
+    public ResponseEntity<MenuType> insert(MenuSendingType menuSendingType) {
+        MongoMenu menu = new MongoMenu(menuSendingType);
         menuRepository.save(menu);
 
         DateTime dateTime = new DateTime(menu.getStartDate());
-        DateTime endDate = dateTime.plusWeeks(menuType.getWeekCount()).minusDays(1);
+        DateTime endDate = dateTime.plusWeeks(menuSendingType.getWeekCount()).minusDays(1);
         menu.setEndDate(endDate.toString());
 
         MeasurementType measurement = this.measurementService.getMeasurementById(menu.getMeasurementId());
+        PatientType patient = this.patientService.getPatientById(menuSendingType.getPatientId());
 
-        PatientType patient = this.patientService.getPatientById(menuType.getPatientId());
-        float weight = measurement.getBodyWeight();
-        float activityLevel = menu.getActivityLevel();
+        FoodPropertiesType foodPropertiesType = FoodPropertiesHelper.calculateFoodPropertiesLimit(
+                patient,
+                measurement.getBodyWeight(),
+                menu.getActivityLevel()
+        );
 
-        int PPM = PatientHelper.calculatePPM(patient, weight, activityLevel);
-        FoodPropertiesType foodPropertiesType = FoodPropertiesHelper.calculateBasicFoodProperties(PPM);
         menu.setFoodProperties(foodPropertiesType);
 
         List<String> weekMealList = new ArrayList<>();
-        for (int i = 0; i < menuType.getWeekCount(); i++) {
-            MongoWeekMeal weekMeal = new MongoWeekMeal();
+        for (int i = 0; i < menuSendingType.getWeekCount(); i++) {
+            WeekMealType weekMeal = new WeekMealType();
             this.weekMealService.insert(weekMeal);
 
             List<String> dayMealIdList = this.dayMealService.generateDaysForWeek(dateTime, weekMeal.getId());
@@ -85,12 +87,23 @@ public class MongoMenuService {
         menu.setWeekMealList(weekMealList);
         menuRepository.save(menu);
 
-        return ResponseEntity.ok().body(menu);
+
+        return ResponseEntity.ok().body(new MenuType(menu));
     }
 
-    public ResponseEntity<MongoMenu> delete(String id) {
+    public ResponseEntity<MenuType> delete(String id) {
         menuRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    private List<MenuType> convertMongoMenuToMenuType(List<MongoMenu> mongoMenus) {
+        List<MenuType> menuTypeList = new ArrayList<>();
+
+        for (MongoMenu mongoMenu : mongoMenus) {
+            menuTypeList.add(new MenuType(mongoMenu));
+        }
+
+        return menuTypeList;
     }
 
 }

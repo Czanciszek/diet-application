@@ -1,10 +1,20 @@
 package com.springboot.dietapplication.helper;
 
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
+import com.springboot.dietapplication.model.type.PatientType;
 
 public class FoodPropertiesHelper {
 
-    public static FoodPropertiesType calculateBasicFoodProperties(int kcal) {
+    public static FoodPropertiesType calculateFoodPropertiesLimit(
+            PatientType patientType,
+            float weight,
+            float activityLevel) {
+
+        int PPM = PatientHelper.calculatePPM(patientType, weight, activityLevel);
+        return calculateBasicFoodProperties(PPM);
+    }
+
+    private static FoodPropertiesType calculateBasicFoodProperties(int kcal) {
         FoodPropertiesType foodPropertiesType = new FoodPropertiesType();
         foodPropertiesType.setEnergyValue(kcal);
 

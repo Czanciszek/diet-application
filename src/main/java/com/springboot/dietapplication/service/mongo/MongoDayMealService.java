@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.service.mongo;
 
 import com.springboot.dietapplication.model.mongo.menu.MongoDayMeal;
+import com.springboot.dietapplication.model.type.DayMealType;
 import com.springboot.dietapplication.model.type.DayType;
 import com.springboot.dietapplication.repository.mongo.MongoDayMealRepository;
 import org.joda.time.DateTime;
@@ -22,25 +23,27 @@ public class MongoDayMealService {
         this.dayMealRepository = dayMealRepository;
     }
 
-    public List<MongoDayMeal> getAll() {
-        return this.dayMealRepository.findAll();
+    public List<DayMealType> getAll() {
+        List<MongoDayMeal> dayMealTypeList = this.dayMealRepository.findAll();
+        return convertLists(dayMealTypeList);
     }
 
-    public MongoDayMeal getDayMealById(String dayMealId) {
+    public DayMealType getDayMealById(String dayMealId) {
         Optional<MongoDayMeal> mongoDayMeal = this.dayMealRepository.findById(dayMealId);
-        return mongoDayMeal.orElseGet(MongoDayMeal::new);
+        return mongoDayMeal.map(this::convertMongoDayMealToDayMealType).orElseGet(DayMealType::new);
     }
 
-    public List<MongoDayMeal> getDayMealByIdList(List<String> dayMealIdList) {
+    public List<DayMealType> getDayMealByIdList(List<String> dayMealIdList) {
         Iterable<MongoDayMeal> mongoDayMeals = this.dayMealRepository.findAllById(dayMealIdList);
-        return StreamSupport.stream(mongoDayMeals.spliterator(), false)
+        List<MongoDayMeal> dayMealList = StreamSupport.stream(mongoDayMeals.spliterator(), false)
                 .collect(Collectors.toList());
+        return convertLists(dayMealList);
     }
 
     public List<String> generateDaysForWeek(DateTime date, String weekMealId) {
         List<String> dayMealList = new ArrayList<>();
         for (DayType dayType : DayType.values()) {
-            MongoDayMeal dayMeal = new MongoDayMeal();
+            DayMealType dayMeal = new DayMealType();
             dayMeal.setDayType(dayType);
             dayMeal.setDate(date.toString());
             dayMeal.setWeekMealId(weekMealId);
@@ -53,13 +56,27 @@ public class MongoDayMealService {
         return dayMealList;
     }
 
-    public ResponseEntity<MongoDayMeal> insert(MongoDayMeal dayMeal) {
-        dayMealRepository.save(dayMeal);
+    public ResponseEntity<DayMealType> insert(DayMealType dayMeal) {
+        MongoDayMeal mongoDayMeal = new MongoDayMeal(dayMeal);
+        dayMealRepository.save(mongoDayMeal);
+        dayMeal.setId(mongoDayMeal.getId());
         return ResponseEntity.ok().body(dayMeal);
     }
 
-    public ResponseEntity<MongoDayMeal> delete(String id) {
+    public ResponseEntity<DayMealType> delete(String id) {
         dayMealRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    private List<DayMealType> convertLists(List<MongoDayMeal> dayMealList) {
+        List<DayMealType> dayMealTypeList = new ArrayList<>();
+        for (MongoDayMeal dayMeal : dayMealList) {
+            dayMealTypeList.add(convertMongoDayMealToDayMealType(dayMeal));
+        }
+        return dayMealTypeList;
+    }
+
+    private DayMealType convertMongoDayMealToDayMealType(MongoDayMeal dayMeal) {
+        return new DayMealType(dayMeal);
     }
 }

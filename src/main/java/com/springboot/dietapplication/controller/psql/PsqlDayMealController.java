@@ -1,21 +1,19 @@
-package com.springboot.dietapplication.controller.mongo;
+package com.springboot.dietapplication.controller.psql;
 
-import com.springboot.dietapplication.model.mongo.menu.MongoDayMeal;
 import com.springboot.dietapplication.model.type.DayMealType;
-import com.springboot.dietapplication.service.mongo.MongoDayMealService;
+import com.springboot.dietapplication.service.psql.PsqlDayMealService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/mongo/daymeals")
-public class MongoDayMealController {
+@RequestMapping("api/psql/daymeals")
+public class PsqlDayMealController {
 
-    private final MongoDayMealService dayMealService;
+    private final PsqlDayMealService dayMealService;
 
-    public MongoDayMealController(MongoDayMealService dayMealService) {
+    public PsqlDayMealController(PsqlDayMealService dayMealService) {
         this.dayMealService = dayMealService;
     }
 
@@ -25,7 +23,7 @@ public class MongoDayMealController {
     }
 
     @GetMapping(path = "/{dayMealId}")
-    public DayMealType getDayMealById(@PathVariable("dayMealId") String dayMealId) {
+    public DayMealType getDayMealById(@PathVariable("dayMealId") Long dayMealId) {
         return this.dayMealService.getDayMealById(dayMealId);
     }
 
@@ -35,12 +33,13 @@ public class MongoDayMealController {
     }
 
     @PostMapping(produces = "application/json")
-    ResponseEntity<DayMealType> insertDayMeal(@RequestBody DayMealType dayMeal) {
+    ResponseEntity<DayMealType> insert(@RequestBody DayMealType dayMeal) {
         return this.dayMealService.insert(dayMeal);
     }
 
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<DayMealType> deleteDayMeal(@PathVariable String id) {
+    ResponseEntity<DayMealType> delete(@PathVariable Long id) {
         return this.dayMealService.delete(id);
     }
+
 }

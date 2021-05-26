@@ -1,43 +1,69 @@
 package com.springboot.dietapplication.model.type;
 
+import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
+import com.springboot.dietapplication.model.psql.menu.PsqlMenu;
+import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.model.type.MealType;
+import com.springboot.dietapplication.model.type.MenuSendingType;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@Document(collection = "Menus")
 public class MenuType {
 
     private String id;
 
-    private String startDate;
+    private String patientId; // Ref - Dane pacjenta
 
-    private List<MealType> mealTypes;
+    private String measurementId; // Ref - Dane pomiarowe
 
-    private String measurementId;
+    private List<String> weekMealList; // Lista odnośników do tygodniowych jadłospisów
 
-    private String patientId;
+    private List<MealType> mealTypes; // Rodzaje posiłków do menu
 
-    private int weekCount;
+    private String startDate; // Najwcześniejsza data z listy DayMeals
 
-    private float activityLevel;
+    private String endDate; // Najpóźniejsza data z listy DayMeals
+
+    private FoodPropertiesType foodPropertiesType;
+
+    private Float activityLevel;
 
     public MenuType() {
 
     }
 
-    public MenuType(String id,
-                    String startDate,
-                    List<MealType> mealTypes,
-                    String measurementId,
-                    String patientId,
-                    int weekCount,
-                    float activityLevel) {
-        this.id = id;
-        this.startDate = startDate;
-        this.mealTypes = mealTypes;
-        this.measurementId = measurementId;
-        this.patientId = patientId;
-        this.weekCount = weekCount;
-        this.activityLevel = activityLevel;
+    public MenuType(MenuSendingType menuSendingType) {
+        this.startDate = menuSendingType.getStartDate();
+        this.mealTypes = menuSendingType.getMealTypes();
+        this.activityLevel = menuSendingType.getActivityLevel();
+        this.measurementId = menuSendingType.getMeasurementId();
+        this.patientId = menuSendingType.getPatientId();
+    }
+
+    public MenuType(MongoMenu menu) {
+        this.id = menu.getId();
+        this.patientId = menu.getPatientId();
+        this.measurementId = menu.getMeasurementId();
+        this.weekMealList = menu.getWeekMealList();
+        this.mealTypes = menu.getMealTypes();
+        this.startDate = menu.getStartDate();
+        this.endDate = menu.getEndDate();
+        this.foodPropertiesType = menu.getFoodProperties();
+        this.activityLevel = menu.getActivityLevel();
+    }
+
+    public MenuType(PsqlMenu menu) {
+        if (menu.getId() > 0)
+            this.id = String.valueOf(menu.getId());
+        if (menu.getPatientId() > 0)
+            this.patientId = String.valueOf(menu.getPatientId());
+        if (menu.getMeasurementId() > 0)
+            this.measurementId = String.valueOf(menu.getMeasurementId());
+        this.startDate = menu.getStartDate();
+        this.endDate = menu.getEndDate();
+        this.activityLevel = menu.getActivityLevel();
     }
 
     public String getId() {
@@ -48,20 +74,12 @@ public class MenuType {
         this.id = id;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public String getPatientId() {
+        return patientId;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public List<MealType> getMealTypes() {
-        return mealTypes;
-    }
-
-    public void setMealTypes(List<MealType> mealTypes) {
-        this.mealTypes = mealTypes;
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 
     public String getMeasurementId() {
@@ -72,27 +90,51 @@ public class MenuType {
         this.measurementId = measurementId;
     }
 
-    public String getPatientId() {
-        return patientId;
+    public List<String> getWeekMealList() {
+        return weekMealList;
     }
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
+    public void setWeekMealList(List<String> weekMealList) {
+        this.weekMealList = weekMealList;
     }
 
-    public int getWeekCount() {
-        return weekCount;
+    public List<MealType> getMealTypes() {
+        return mealTypes;
     }
 
-    public void setWeekCount(int weekCount) {
-        this.weekCount = weekCount;
+    public void setMealTypes(List<MealType> mealTypes) {
+        this.mealTypes = mealTypes;
     }
 
-    public float getActivityLevel() {
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public FoodPropertiesType getFoodProperties() {
+        return foodPropertiesType;
+    }
+
+    public void setFoodProperties(FoodPropertiesType foodPropertiesType) {
+        this.foodPropertiesType = foodPropertiesType;
+    }
+
+    public Float getActivityLevel() {
         return activityLevel;
     }
 
-    public void setActivityLevel(float activityLevel) {
+    public void setActivityLevel(Float activityLevel) {
         this.activityLevel = activityLevel;
     }
 }

@@ -16,6 +16,10 @@ public class PsqlCategoryService {
     @Autowired
     PsqlCategoryRepository categoryRepository;
 
+    public List<PsqlCategory> getAll() {
+        return this.categoryRepository.findAll();
+    }
+
     public Set<Long> findCategoryIdsByCategoryName(String categoryName) {
         Set<Long> categoryIdList = new HashSet<>();
         List<PsqlCategory> categories = this.categoryRepository.findMongoCategoriesByCategory(categoryName);
