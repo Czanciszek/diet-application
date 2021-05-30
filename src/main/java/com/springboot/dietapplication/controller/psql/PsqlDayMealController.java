@@ -17,16 +17,6 @@ public class PsqlDayMealController {
         this.dayMealService = dayMealService;
     }
 
-    @GetMapping
-    public List<DayMealType> getAll() {
-        return this.dayMealService.getAll();
-    }
-
-    @GetMapping(path = "/{dayMealId}")
-    public DayMealType getDayMealById(@PathVariable("dayMealId") Long dayMealId) {
-        return this.dayMealService.getDayMealById(dayMealId);
-    }
-
     @GetMapping(path = "/list/{dayMealIdList}")
     public List<DayMealType> getDayMealByIdList(@PathVariable("dayMealIdList") List<String> dayMealIdList) {
         return this.dayMealService.getDayMealByIdList(dayMealIdList);

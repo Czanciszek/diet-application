@@ -1,60 +1,59 @@
 package com.springboot.dietapplication.controller.psql;
 
-import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
-import com.springboot.dietapplication.service.mongo.MongoMealService;
+import com.springboot.dietapplication.model.type.MealType;
+import com.springboot.dietapplication.service.psql.PsqlMealService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/psql/meals")
 public class PsqlMealController {
 
-    private final MongoMealService mealService;
+    private final PsqlMealService mealService;
 
-    public PsqlMealController(MongoMealService mealService) {
+    public PsqlMealController(PsqlMealService mealService) {
         this.mealService = mealService;
     }
 
     @GetMapping
-    public List<MongoMeal> getAll() {
-        return this.mealService.getAllMeals();
+    public List<MealType> getAll() {
+        return this.mealService.getAll();
+    }
+
+    @GetMapping(path = "/{dayMealId}")
+    public MealType getMealById(@PathVariable("dayMealId") Long dayMealId) {
+        return this.mealService.getMealById(dayMealId);
     }
 
     @GetMapping(path = "/list/{dayMealIdList}")
-    public List<MongoMeal> getMealsByDayMealList(@PathVariable("dayMealIdList") List<String> dayMealIdList) {
-        return new ArrayList<>();
+    public List<MealType> getMealsByDayMealList(@PathVariable("dayMealIdList") List<String> dayMealIdList) {
+        return this.mealService.getMealsByDayMealList(dayMealIdList);
     }
 
     @PostMapping(produces = "application/json")
-    ResponseEntity<MongoMeal> insertMeal(@RequestBody MongoMeal meal) {
-        this.mealService.createMeal(meal, true);
+    ResponseEntity<MealType> insertMeal(@RequestBody MealType meal) {
+        this.mealService.insert(meal);
         return ResponseEntity.ok().body(meal);
     }
 
     @PostMapping(path="/copy", produces = "application/json")
-    ResponseEntity<MongoMeal> copyMeal(@RequestBody MongoMeal meal) {
-        MongoMeal newMeal = new MongoMeal(meal);
-        this.mealService.createMeal(newMeal, true);
-        return ResponseEntity.ok().body(meal);
+    ResponseEntity<MealType> copyMeal(@RequestBody MealType meal) {
+        MealType newMeal = new MealType(meal);
+        this.mealService.insert(newMeal);
+        return ResponseEntity.ok().body(newMeal);
     }
 
     @PutMapping(path = "/{mealId}", produces = "application/json")
-    ResponseEntity<MongoMeal> updateMeal(@RequestBody MongoMeal meal) {
-        this.mealService.createMeal(meal, false);
+    ResponseEntity<MealType> update(@RequestBody MealType meal) {
+        this.mealService.insert(meal);
         return ResponseEntity.ok().body(meal);
     }
 
     @DeleteMapping(path = "/{mealId}")
-    ResponseEntity<MongoMeal> deleteMeal(@PathVariable String mealId) {
-        Optional<MongoMeal> meal = this.mealService.getMealById(mealId);
-        if (!meal.isPresent()) {
-            return ResponseEntity.ok().build();
-        }
-        this.mealService.removeMeal(meal.get());
+    ResponseEntity<MealType> deleteMeal(@PathVariable Long mealId) {
+        this.mealService.delete(mealId);
         return ResponseEntity.ok().build();
     }
 }

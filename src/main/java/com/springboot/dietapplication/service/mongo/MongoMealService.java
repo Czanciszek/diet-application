@@ -1,14 +1,11 @@
 package com.springboot.dietapplication.service.mongo;
 
-import com.springboot.dietapplication.model.mongo.menu.MongoDayMeal;
 import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
-import com.springboot.dietapplication.repository.mongo.MongoDayMealRepository;
+import com.springboot.dietapplication.model.type.MealType;
 import com.springboot.dietapplication.repository.mongo.MongoMealRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,58 +13,50 @@ import java.util.Optional;
 public class MongoMealService {
 
     private final MongoMealRepository mealRepository;
-    private final MongoDayMealRepository dayMealRepository;
 
-    @Autowired
-    public MongoMealService(MongoMealRepository mealRepository, MongoDayMealRepository dayMealRepository) {
+    public MongoMealService(MongoMealRepository mealRepository) {
         this.mealRepository = mealRepository;
-        this.dayMealRepository = dayMealRepository;
     }
 
-    public List<MongoMeal> getAllMeals() {
-        return this.mealRepository.findAll();
+    public List<MealType> getAll() {
+        List<MongoMeal> mealList = this.mealRepository.findAll();
+        return convertLists(mealList);
     }
 
-    public Optional<MongoMeal> getMealById(String mealId) {
-        return this.mealRepository.findById(mealId);
+    public MealType getMealById(String mealId) {
+        Optional<MongoMeal> meal = this.mealRepository.findById(mealId);
+        return meal.map(this::convertMongoDayMealToDayMealType).orElseGet(MealType::new);
     }
 
-    public List<MongoMeal> getMealsByDayMealList(List<String> dayMealList) {
+    public List<MealType> getMealsByDayMealList(List<String> dayMealList) {
         List<MongoMeal> mealList = new ArrayList<>();
         for (String dayMealId: dayMealList) {
-            mealList.addAll(mealRepository.findByDayMealIdLike(dayMealId));
+            mealList.addAll(mealRepository.findByDayMealId(dayMealId));
         }
-        return mealList;
+        return convertLists(mealList);
     }
 
-    public void createMeal(MongoMeal meal, boolean updateDayMeals) {
-        mealRepository.save(meal);
-        if (updateDayMeals)
-            addNewMealToDayMeals(meal);
+    public MealType insert(MealType meal) {
+        MongoMeal mongoMeal = new MongoMeal(meal);
+        this.mealRepository.save(mongoMeal);
+        meal.setId(mongoMeal.getId());
+        return meal;
     }
 
-    public void removeMeal(MongoMeal meal) {
-        mealRepository.delete(meal);
-        deleteMealFromDayMeals(meal);
+    public void delete(String mealId) {
+        this.mealRepository.deleteById(mealId);
     }
 
-    private void addNewMealToDayMeals(MongoMeal meal) {
-        Optional<MongoDayMeal> dayMeal = dayMealRepository.findById(meal.getDayMealId());
-        if (dayMeal.isPresent()) {
-            if (dayMeal.get().getMealList() != null)
-                dayMeal.get().getMealList().add(meal.getId());
-            else
-                dayMeal.get().setMealList(Collections.singletonList(meal.getId()));
-            dayMealRepository.save(dayMeal.get());
+    private List<MealType> convertLists(List<MongoMeal> mealList) {
+        List<MealType> mealTypeList = new ArrayList<>();
+        for (MongoMeal meal : mealList) {
+            mealTypeList.add(convertMongoDayMealToDayMealType(meal));
         }
+        return mealTypeList;
     }
 
-    private void deleteMealFromDayMeals(MongoMeal meal) {
-        Optional<MongoDayMeal> dayMeal = dayMealRepository.findById(meal.getDayMealId());
-        if (dayMeal.isPresent()) {
-            if (dayMeal.get().getMealList() != null)
-                dayMeal.get().getMealList().remove(meal.getId());
-            dayMealRepository.save(dayMeal.get());
-        }
+    private MealType convertMongoDayMealToDayMealType(MongoMeal meal) {
+        return new MealType(meal);
     }
+
 }

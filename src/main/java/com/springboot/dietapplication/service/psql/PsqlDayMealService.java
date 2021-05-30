@@ -19,11 +19,6 @@ public class PsqlDayMealService {
     @Autowired
     PsqlDayMealRepository dayMealRepository;
 
-    public List<DayMealType> getAll() {
-        List<PsqlDayMeal> dayMealTypeList = this.dayMealRepository.findAll();
-        return convertLists(dayMealTypeList);
-    }
-
     public DayMealType getDayMealById(Long dayMealId) {
         Optional<PsqlDayMeal> psqlDayMeal = this.dayMealRepository.findById(dayMealId);
         return psqlDayMeal.map(this::convertPsqlDayMealToDayMealType).orElseGet(DayMealType::new);
@@ -73,23 +68,9 @@ public class PsqlDayMealService {
         return ResponseEntity.ok().build();
     }
 
-    private List<DayMealType> convertLists(List<PsqlDayMeal> dayMealList) {
-        List<DayMealType> dayMealTypeList = new ArrayList<>();
-        for (PsqlDayMeal dayMeal : dayMealList) {
-            dayMealTypeList.add(convertPsqlDayMealToDayMealType(dayMeal));
-        }
-        return dayMealTypeList;
-    }
-
     private DayMealType convertPsqlDayMealToDayMealType(PsqlDayMeal dayMeal) {
         DayMealType dayMealType = new DayMealType(dayMeal);
-
         dayMealType.setDayType(DayType.valueOf(dayMeal.getDayType()));
-
-        //List<String> dayMealIdList = this.mealService.getDayMealIdList(weekMeal.getId());
-        //dayMealType.setDayMealList(dayMealIdList);
-        dayMealType.setMealList(new ArrayList<>());
-
         return dayMealType;
     }
 }

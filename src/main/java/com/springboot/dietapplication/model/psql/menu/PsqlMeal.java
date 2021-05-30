@@ -1,5 +1,7 @@
 package com.springboot.dietapplication.model.psql.menu;
 
+import com.springboot.dietapplication.model.type.MealType;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -24,7 +26,7 @@ public class PsqlMeal implements Serializable {
     private boolean isProduct;
 
     @Column(name = "portions")
-    private int portions;
+    private float portions;
 
     @Column(name = "recipe")
     private String recipe;
@@ -32,6 +34,17 @@ public class PsqlMeal implements Serializable {
 
     public PsqlMeal() {
 
+    }
+
+    public PsqlMeal(MealType mealType) {
+        if (mealType.getId() != null && !mealType.getId().isEmpty())
+            this.id = Long.parseLong(mealType.getId());
+        if (mealType.getDayMealId() != null && !mealType.getDayMealId().isEmpty())
+            this.dayMealId = Long.parseLong(mealType.getDayMealId());
+        this.name = mealType.getName();
+        this.isProduct = (mealType.getIsProduct() == 1);
+        this.portions = mealType.getPortions();
+        this.recipe = mealType.getRecipe();
     }
 
     public long getId() {
@@ -74,11 +87,11 @@ public class PsqlMeal implements Serializable {
         isProduct = product;
     }
 
-    public int getPortions() {
+    public float getPortions() {
         return portions;
     }
 
-    public void setPortions(int portions) {
+    public void setPortions(float portions) {
         this.portions = portions;
     }
 

@@ -1,14 +1,11 @@
-package com.springboot.dietapplication.model.mongo.menu;
+package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.type.FoodType;
-import com.springboot.dietapplication.model.type.MealType;
-import com.springboot.dietapplication.model.type.ProductDishType;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
+import com.springboot.dietapplication.model.psql.menu.PsqlMeal;
 
 import java.util.List;
 
-@Document(collection = "Meals")
-public class MongoMeal {
+public class MealType {
 
     private String id;
 
@@ -26,11 +23,11 @@ public class MongoMeal {
 
     private FoodType foodType; //Rodzaj posiłku
 
-    public MongoMeal() {
+    public MealType() {
 
     }
 
-    public MongoMeal(MongoMeal meal) {
+    public MealType(MealType meal) {
         this.name = meal.name;
         this.dayMealId = meal.dayMealId;
         this.isProduct = meal.isProduct;
@@ -40,15 +37,38 @@ public class MongoMeal {
         this.foodType = meal.foodType;
     }
 
-    public MongoMeal(MealType mealType) {
-        this.id = mealType.getId();
-        this.name = mealType.getName();
-        this.dayMealId = mealType.getDayMealId();
-        this.isProduct = mealType.getIsProduct();
-        this.productList = mealType.getProductList();
-        this.portions = mealType.getPortions();
-        this.recipe = mealType.getRecipe();
-        this.foodType = mealType.getFoodType();
+    public MealType(String dayMealId, String name, int isProduct,
+                    List<ProductDishType> productList, float portions,
+                    String recipe, FoodType foodType) {
+        this.name = name;
+        this.dayMealId = dayMealId;
+        this.isProduct = isProduct;
+        this.productList = productList;
+        this.portions = portions;
+        this.recipe = recipe;
+        this.foodType = foodType;
+    }
+
+    public MealType(MongoMeal meal) {
+        this.id = meal.getId();
+        this.name = meal.getName();
+        this.dayMealId = meal.getDayMealId();
+        this.isProduct = meal.getIsProduct();
+        this.productList = meal.getProductList();
+        this.portions = meal.getPortions();
+        this.recipe = meal.getRecipe();
+        this.foodType = meal.getFoodType();
+    }
+
+    public MealType(PsqlMeal meal) {
+        if (meal.getId() > 0)
+            this.id = String.valueOf(meal.getId());
+        if (meal.getDayMealId() > 0)
+            this.dayMealId = String.valueOf(meal.getDayMealId());
+        this.name = meal.getName();
+        this.isProduct = (meal.isProduct() ? 1 : 0);
+        this.portions = meal.getPortions();
+        this.recipe = meal.getRecipe();
     }
 
     public String getId() {

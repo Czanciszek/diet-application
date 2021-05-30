@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface MongoMealRepository extends MongoRepository<MongoMeal, String> {
 
-    List<MongoMeal> findByDayMealIdLike(String dayMealId);
+    List<MongoMeal> findByDayMealId(String dayMealId);
 
 }

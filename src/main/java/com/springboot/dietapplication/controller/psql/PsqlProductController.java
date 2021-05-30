@@ -34,7 +34,7 @@ public class PsqlProductController {
     }
 
     @GetMapping(path = "/menu/{menuId}")
-    public Map<Long, ProductType> getMenuProducts(@PathVariable("menuId") Long menuId) {
+    public Map<String, ProductType> getMenuProducts(@PathVariable("menuId") Long menuId) {
         return this.productService.getMenuProducts(menuId);
     }
 

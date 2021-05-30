@@ -3,12 +3,14 @@ package com.springboot.dietapplication.service.mongo;
 import com.springboot.dietapplication.model.mongo.menu.MongoDayMeal;
 import com.springboot.dietapplication.model.type.DayMealType;
 import com.springboot.dietapplication.model.type.DayType;
+import com.springboot.dietapplication.model.type.MealType;
 import com.springboot.dietapplication.repository.mongo.MongoDayMealRepository;
 import org.joda.time.DateTime;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,6 +56,26 @@ public class MongoDayMealService {
         }
 
         return dayMealList;
+    }
+
+    public void addMealToDayMealResources(MealType meal) {
+        Optional<MongoDayMeal> dayMeal = dayMealRepository.findById(meal.getDayMealId());
+        if (dayMeal.isPresent()) {
+            if (dayMeal.get().getMealList() != null)
+                dayMeal.get().getMealList().add(meal.getId());
+            else
+                dayMeal.get().setMealList(Collections.singletonList(meal.getId()));
+            dayMealRepository.save(dayMeal.get());
+        }
+    }
+
+    public void deleteMealFromDayMealResources(MealType meal) {
+        Optional<MongoDayMeal> dayMeal = dayMealRepository.findById(meal.getDayMealId());
+        if (dayMeal.isPresent()) {
+            if (dayMeal.get().getMealList() != null)
+                dayMeal.get().getMealList().remove(meal.getId());
+            dayMealRepository.save(dayMeal.get());
+        }
     }
 
     public ResponseEntity<DayMealType> insert(DayMealType dayMeal) {

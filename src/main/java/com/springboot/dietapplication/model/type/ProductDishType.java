@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
+import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 
 public class ProductDishType {
 
@@ -24,6 +25,12 @@ public class ProductDishType {
         this.productId = String.valueOf(psqlProductDish.getProductId());
         this.grams = psqlProductDish.getGrams();
         this.amount = psqlProductDish.getAmount();
+    }
+
+    public ProductDishType(PsqlProductMeal psqlProductMeal) {
+        this.productId = String.valueOf(psqlProductMeal.getProductId());
+        this.grams = psqlProductMeal.getGrams();
+        this.amount = psqlProductMeal.getAmount();
     }
 
     public String getProductId() {

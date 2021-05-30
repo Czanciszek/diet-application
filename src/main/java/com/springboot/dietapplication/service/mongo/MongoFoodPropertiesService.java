@@ -2,7 +2,6 @@ package com.springboot.dietapplication.service.mongo;
 
 import com.springboot.dietapplication.model.mongo.properties.MongoFoodProperties;
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
-import com.springboot.dietapplication.model.type.ProductType;
 import com.springboot.dietapplication.repository.mongo.MongoFoodPropertiesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
