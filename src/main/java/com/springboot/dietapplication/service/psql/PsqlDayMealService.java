@@ -3,6 +3,7 @@ package com.springboot.dietapplication.service.psql;
 import com.springboot.dietapplication.model.psql.menu.PsqlDayMeal;
 import com.springboot.dietapplication.model.type.DayMealType;
 import com.springboot.dietapplication.model.type.DayType;
+import com.springboot.dietapplication.model.type.MealType;
 import com.springboot.dietapplication.model.type.WeekMealType;
 import com.springboot.dietapplication.repository.psql.PsqlDayMealRepository;
 import org.joda.time.DateTime;
@@ -22,16 +23,18 @@ public class PsqlDayMealService {
     PsqlDayMealRepository dayMealRepository;
 
     @Autowired
+    PsqlMealService mealService;
+
+    @Autowired
     PsqlWeekMealService weekMealService;
 
-    public PsqlDayMealService(PsqlDayMealRepository dayMealRepository, @Lazy PsqlWeekMealService weekMealService) {
-        this.dayMealRepository = dayMealRepository;
-        this.weekMealService = weekMealService;
-    }
 
-    public DayMealType getDayMealById(Long dayMealId) {
-        Optional<PsqlDayMeal> psqlDayMeal = this.dayMealRepository.findById(dayMealId);
-        return psqlDayMeal.map(this::convertPsqlDayMealToDayMealType).orElseGet(DayMealType::new);
+    public PsqlDayMealService(PsqlDayMealRepository dayMealRepository,
+                              @Lazy PsqlMealService mealService,
+                              @Lazy PsqlWeekMealService weekMealService) {
+        this.dayMealRepository = dayMealRepository;
+        this.mealService = mealService;
+        this.weekMealService = weekMealService;
     }
 
     public List<String> getDayMealIdList(Long weekMealId) {
@@ -79,8 +82,21 @@ public class PsqlDayMealService {
         return ResponseEntity.ok().build();
     }
 
+    private DayMealType getDayMealById(Long dayMealId) {
+        Optional<PsqlDayMeal> psqlDayMeal = this.dayMealRepository.findById(dayMealId);
+        return psqlDayMeal.map(this::convertPsqlDayMealToDayMealType).orElseGet(DayMealType::new);
+    }
+
     private DayMealType convertPsqlDayMealToDayMealType(PsqlDayMeal dayMeal) {
         DayMealType dayMealType = new DayMealType(dayMeal);
+
+        List<MealType> mealList =  this.mealService.getMealsByDayMealId(dayMeal.getId());
+        List<String> mealIdList = new ArrayList<>();
+        for (MealType meal : mealList) {
+            mealIdList.add(meal.getId());
+        }
+        dayMealType.setMealList(mealIdList);
+
         dayMealType.setDayType(DayType.valueOf(dayMeal.getDayType()));
         return dayMealType;
     }

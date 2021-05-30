@@ -48,24 +48,23 @@ public class PsqlMealService {
         return meal.map(this::convertPsqlDayMealToDayMealType).orElseGet(MealType::new);
     }
 
-    public List<MealType> getMealsByDayMealList(List<String> dayMealList) {
-        List<PsqlMeal> mealList = new ArrayList<>();
-        for (String dayMealId: dayMealList) {
-            mealList.addAll(mealRepository.findByDayMealId(Long.parseLong(dayMealId)));
-        }
+    public List<MealType> getMealsByDayMealId(Long dayMealId) {
+        List<PsqlMeal> mealList =  this.mealRepository.findByDayMealId(dayMealId);
         return convertLists(mealList);
     }
 
     public List<MealType> getMealsByWeekMealId(String weekMealId) {
         WeekMealType weekMealType = this.weekMealService.getWeekMealById(Long.parseLong(weekMealId));
-
-        List<PsqlMeal> mealList = new ArrayList<>();
-        for (String dayMealId: weekMealType.getDayMealList()) {
-            mealList.addAll(mealRepository.findByDayMealId(Long.parseLong(dayMealId)));
-        }
-        return convertLists(mealList);
+        return getMealsByDayMealList(weekMealType.getDayMealList());
     }
 
+    public List<MealType> getMealsByDayMealList(List<String> dayMealList) {
+        List<MealType> mealList = new ArrayList<>();
+        for (String dayMealId: dayMealList) {
+            mealList.addAll(getMealsByDayMealId(Long.parseLong(dayMealId)));
+        }
+        return mealList;
+    }
 
     public MealType insert(MealType meal) {
         PsqlMeal psqlMeal = new PsqlMeal(meal);

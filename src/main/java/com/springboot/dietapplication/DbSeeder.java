@@ -30,14 +30,6 @@ public class DbSeeder implements CommandLineRunner {
     private final MongoFoodPropertiesRepository mongoFoodPropertiesRepository;
     private final MongoCategoryRepository categoryRepository;
 
-    private final MongoDishRepository dishRepository;
-    private final MongoPatientRepository patientRepository;
-    private final MongoMeasurementRepository measurementRepository;
-    private final MongoMenuRepository menuRepository;
-    private final MongoWeekMealRepository weekMealRepository;
-    private final MongoDayMealRepository dayMealRepository;
-    private final MongoMealRepository mealRepository;
-
     @Autowired
     PsqlFoodPropertiesRepository PSQLFoodPropertiesRepository;
     @Autowired
@@ -48,25 +40,11 @@ public class DbSeeder implements CommandLineRunner {
     public DbSeeder(MongoUserRepository mongoUserRepository,
                     MongoProductRepository mongoProductRepository,
                     MongoFoodPropertiesRepository mongoFoodPropertiesRepository,
-                    MongoDishRepository dishRepository,
-                    MongoCategoryRepository categoryRepository,
-                    MongoPatientRepository patientRepository,
-                    MongoMeasurementRepository measurementRepository,
-                    MongoMenuRepository menuRepository,
-                    MongoWeekMealRepository weekMealRepository,
-                    MongoDayMealRepository dayMealRepository,
-                    MongoMealRepository mealRepository) {
+                    MongoCategoryRepository categoryRepository) {
         this.mongoUserRepository = mongoUserRepository;
         this.mongoProductRepository = mongoProductRepository;
         this.mongoFoodPropertiesRepository = mongoFoodPropertiesRepository;
-        this.dishRepository = dishRepository;
         this.categoryRepository = categoryRepository;
-        this.patientRepository = patientRepository;
-        this.measurementRepository = measurementRepository;
-        this.menuRepository = menuRepository;
-        this.weekMealRepository = weekMealRepository;
-        this.dayMealRepository = dayMealRepository;
-        this.mealRepository = mealRepository;
     }
 
     @Override

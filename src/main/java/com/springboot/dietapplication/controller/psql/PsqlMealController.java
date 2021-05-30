@@ -33,13 +33,13 @@ public class PsqlMealController {
     }
 
     @PostMapping(produces = "application/json")
-    ResponseEntity<MealType> insertMeal(@RequestBody MealType meal) {
+    ResponseEntity<MealType> insert(@RequestBody MealType meal) {
         this.mealService.insert(meal);
         return ResponseEntity.ok().body(meal);
     }
 
     @PostMapping(path="/copy", produces = "application/json")
-    ResponseEntity<MealType> copyMeal(@RequestBody MealType meal) {
+    ResponseEntity<MealType> copy(@RequestBody MealType meal) {
         MealType newMeal = new MealType(meal);
         this.mealService.insert(newMeal);
         return ResponseEntity.ok().body(newMeal);
@@ -52,7 +52,7 @@ public class PsqlMealController {
     }
 
     @DeleteMapping(path = "/{mealId}")
-    ResponseEntity<MealType> deleteMeal(@PathVariable Long mealId) {
+    ResponseEntity<MealType> delete(@PathVariable Long mealId) {
         this.mealService.delete(mealId);
         return ResponseEntity.ok().build();
     }

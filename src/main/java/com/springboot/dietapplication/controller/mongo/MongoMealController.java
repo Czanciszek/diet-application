@@ -36,14 +36,14 @@ public class MongoMealController {
     }
 
     @PostMapping(produces = "application/json")
-    ResponseEntity<MealType> insertMeal(@RequestBody MealType meal) {
+    ResponseEntity<MealType> insert(@RequestBody MealType meal) {
         this.mealService.insert(meal);
         this.dayMealService.addMealToDayMealResources(meal);
         return ResponseEntity.ok().body(meal);
     }
 
     @PostMapping(path="/copy", produces = "application/json")
-    ResponseEntity<MealType> copyMeal(@RequestBody MealType meal) {
+    ResponseEntity<MealType> copy(@RequestBody MealType meal) {
         MealType newMeal = new MealType(meal);
         this.mealService.insert(newMeal);
         this.dayMealService.addMealToDayMealResources(newMeal);
@@ -57,7 +57,7 @@ public class MongoMealController {
     }
 
     @DeleteMapping(path = "/{mealId}")
-    ResponseEntity<MealType> deleteMeal(@PathVariable String mealId) {
+    ResponseEntity<MealType> delete(@PathVariable String mealId) {
         MealType mealType = this.mealService.getMealById(mealId);
         this.dayMealService.deleteMealFromDayMealResources(mealType);
         this.mealService.delete(mealId);
