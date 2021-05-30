@@ -27,9 +27,9 @@ public class PsqlMealController {
         return this.mealService.getMealById(dayMealId);
     }
 
-    @GetMapping(path = "/list/{dayMealIdList}")
-    public List<MealType> getMealsByDayMealList(@PathVariable("dayMealIdList") List<String> dayMealIdList) {
-        return this.mealService.getMealsByDayMealList(dayMealIdList);
+    @GetMapping(path = "/list/{weekMealId}")
+    public List<MealType> getMealsByWeekMealId(@PathVariable("weekMealId") String weekMealId) {
+        return this.mealService.getMealsByWeekMealId(weekMealId);
     }
 
     @PostMapping(produces = "application/json")

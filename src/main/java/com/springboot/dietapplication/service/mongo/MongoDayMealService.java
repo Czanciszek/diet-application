@@ -4,6 +4,7 @@ import com.springboot.dietapplication.model.mongo.menu.MongoDayMeal;
 import com.springboot.dietapplication.model.type.DayMealType;
 import com.springboot.dietapplication.model.type.DayType;
 import com.springboot.dietapplication.model.type.MealType;
+import com.springboot.dietapplication.model.type.WeekMealType;
 import com.springboot.dietapplication.repository.mongo.MongoDayMealRepository;
 import org.joda.time.DateTime;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,11 @@ public class MongoDayMealService {
 
     private final MongoDayMealRepository dayMealRepository;
 
-    public MongoDayMealService(MongoDayMealRepository dayMealRepository) {
+    private final MongoWeekMealService weekMealService;
+
+    public MongoDayMealService(MongoDayMealRepository dayMealRepository, MongoWeekMealService weekMealService) {
         this.dayMealRepository = dayMealRepository;
+        this.weekMealService = weekMealService;
     }
 
     public List<DayMealType> getAll() {
@@ -35,8 +39,10 @@ public class MongoDayMealService {
         return mongoDayMeal.map(this::convertMongoDayMealToDayMealType).orElseGet(DayMealType::new);
     }
 
-    public List<DayMealType> getDayMealByIdList(List<String> dayMealIdList) {
-        Iterable<MongoDayMeal> mongoDayMeals = this.dayMealRepository.findAllById(dayMealIdList);
+    public List<DayMealType> getDayMealByWeekMealId(String weekMealId) {
+        WeekMealType weekMealType = this.weekMealService.getWeekMealById(weekMealId);
+
+        Iterable<MongoDayMeal> mongoDayMeals = this.dayMealRepository.findAllById(weekMealType.getDayMealList());
         List<MongoDayMeal> dayMealList = StreamSupport.stream(mongoDayMeals.spliterator(), false)
                 .collect(Collectors.toList());
         return convertLists(dayMealList);

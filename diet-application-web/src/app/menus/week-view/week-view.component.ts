@@ -75,22 +75,22 @@ export class WeekViewComponent implements OnInit {
         (data: WeekMeal[]) => {
           this.weekMealItemData = {...data};
           console.log("Week", this.weekMealItemData);
-          this.getDayMealListDetails(this.weekMealItemData.dayMealList);
+          this.getDayMealListDetails(this.weekMealItemData.id);
         });
   }
 
-  getDayMealListDetails(daysListId) {
-    this.dayMealService.getDayMealListByListId(daysListId)
+  getDayMealListDetails(weekMealId) {
+    this.dayMealService.getDayMealListByWeekMealId(weekMealId)
       .subscribe(
         (daysData: DayMeal[]) => {
           this.dayMealListItemData = [...daysData];
           console.log("Days", this.dayMealListItemData);
-          this.getMealListDetails(daysListId);
+          this.getMealListDetails(weekMealId);
         });
   }
 
-  getMealListDetails(daysListId) {
-    this.mealService.getMealListByListId(daysListId)
+  getMealListDetails(weekMealId) {
+    this.mealService.getMealListByWeekMealId(weekMealId)
       .subscribe(
         (mealsData: Meal[]) => {
           this.mealListItemData = [...mealsData];

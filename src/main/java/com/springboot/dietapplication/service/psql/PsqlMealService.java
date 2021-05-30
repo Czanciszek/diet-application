@@ -6,6 +6,7 @@ import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 import com.springboot.dietapplication.model.type.FoodType;
 import com.springboot.dietapplication.model.type.MealType;
 import com.springboot.dietapplication.model.type.ProductDishType;
+import com.springboot.dietapplication.model.type.WeekMealType;
 import com.springboot.dietapplication.repository.psql.PsqlFoodTypeRepository;
 import com.springboot.dietapplication.repository.psql.PsqlMealRepository;
 import com.springboot.dietapplication.repository.psql.PsqlProductMealRepository;
@@ -28,10 +29,13 @@ public class PsqlMealService {
     @Autowired
     private final PsqlProductMealRepository productMealRepository;
 
-    public PsqlMealService(PsqlMealRepository mealRepository, PsqlFoodTypeRepository foodTypeRepository, PsqlProductMealRepository productMealRepository) {
+    private final PsqlWeekMealService weekMealService;
+
+    public PsqlMealService(PsqlMealRepository mealRepository, PsqlFoodTypeRepository foodTypeRepository, PsqlProductMealRepository productMealRepository, PsqlWeekMealService weekMealService) {
         this.mealRepository = mealRepository;
         this.foodTypeRepository = foodTypeRepository;
         this.productMealRepository = productMealRepository;
+        this.weekMealService = weekMealService;
     }
 
     public List<MealType> getAll() {
@@ -51,6 +55,17 @@ public class PsqlMealService {
         }
         return convertLists(mealList);
     }
+
+    public List<MealType> getMealsByWeekMealId(String weekMealId) {
+        WeekMealType weekMealType = this.weekMealService.getWeekMealById(Long.parseLong(weekMealId));
+
+        List<PsqlMeal> mealList = new ArrayList<>();
+        for (String dayMealId: weekMealType.getDayMealList()) {
+            mealList.addAll(mealRepository.findByDayMealId(Long.parseLong(dayMealId)));
+        }
+        return convertLists(mealList);
+    }
+
 
     public MealType insert(MealType meal) {
         PsqlMeal psqlMeal = new PsqlMeal(meal);

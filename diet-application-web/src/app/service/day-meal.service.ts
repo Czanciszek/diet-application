@@ -17,8 +17,8 @@ export class DayMealService {
     private http: HttpClient
   ) { }
 
-  getDayMealListByListId(dayMealIdList) {
+  getDayMealListByWeekMealId(weekMealId) {
     return this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "daymeals/list/" + dayMealIdList, this.httpOptions);
+      GlobalVariable.DATABASE_SERVICE + "daymeals/list/" + weekMealId, this.httpOptions);
   }
 }

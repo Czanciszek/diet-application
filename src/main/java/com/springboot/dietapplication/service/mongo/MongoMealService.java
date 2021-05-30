@@ -2,6 +2,7 @@ package com.springboot.dietapplication.service.mongo;
 
 import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
 import com.springboot.dietapplication.model.type.MealType;
+import com.springboot.dietapplication.model.type.WeekMealType;
 import com.springboot.dietapplication.repository.mongo.MongoMealRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,11 @@ public class MongoMealService {
 
     private final MongoMealRepository mealRepository;
 
-    public MongoMealService(MongoMealRepository mealRepository) {
+    private final MongoWeekMealService weekMealService;
+
+    public MongoMealService(MongoMealRepository mealRepository, MongoWeekMealService weekMealService) {
         this.mealRepository = mealRepository;
+        this.weekMealService = weekMealService;
     }
 
     public List<MealType> getAll() {
@@ -28,9 +32,11 @@ public class MongoMealService {
         return meal.map(this::convertMongoDayMealToDayMealType).orElseGet(MealType::new);
     }
 
-    public List<MealType> getMealsByDayMealList(List<String> dayMealList) {
+    public List<MealType> getMealsByWeekMealId(String weekMealId) {
         List<MongoMeal> mealList = new ArrayList<>();
-        for (String dayMealId: dayMealList) {
+
+        WeekMealType weekMealType = this.weekMealService.getWeekMealById(weekMealId);
+        for (String dayMealId: weekMealType.getDayMealList()) {
             mealList.addAll(mealRepository.findByDayMealId(dayMealId));
         }
         return convertLists(mealList);

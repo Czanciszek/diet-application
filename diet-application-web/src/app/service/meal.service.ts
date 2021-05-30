@@ -55,14 +55,14 @@ export class MealService {
     this.form.setValue(meal);
   }
 
-  getMealListByListId(dayMealIdList) {
+  getMealListByWeekMealId(weekMealId) {
     return this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "meals/list/" + dayMealIdList, this.httpOptions);
+      GlobalVariable.DATABASE_SERVICE + "meals/list/" + weekMealId, this.httpOptions);
   }
 
   insertMeal(meal) {
     return this.http.post(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +"meals", meal, this.httpOptions);
+      GlobalVariable.DATABASE_SERVICE + "meals", meal, this.httpOptions);
   }
 
   copyMeal(meal) {

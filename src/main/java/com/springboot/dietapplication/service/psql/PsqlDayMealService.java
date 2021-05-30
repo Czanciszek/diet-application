@@ -3,9 +3,11 @@ package com.springboot.dietapplication.service.psql;
 import com.springboot.dietapplication.model.psql.menu.PsqlDayMeal;
 import com.springboot.dietapplication.model.type.DayMealType;
 import com.springboot.dietapplication.model.type.DayType;
+import com.springboot.dietapplication.model.type.WeekMealType;
 import com.springboot.dietapplication.repository.psql.PsqlDayMealRepository;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,14 @@ public class PsqlDayMealService {
 
     @Autowired
     PsqlDayMealRepository dayMealRepository;
+
+    @Autowired
+    PsqlWeekMealService weekMealService;
+
+    public PsqlDayMealService(PsqlDayMealRepository dayMealRepository, @Lazy PsqlWeekMealService weekMealService) {
+        this.dayMealRepository = dayMealRepository;
+        this.weekMealService = weekMealService;
+    }
 
     public DayMealType getDayMealById(Long dayMealId) {
         Optional<PsqlDayMeal> psqlDayMeal = this.dayMealRepository.findById(dayMealId);
@@ -35,10 +45,11 @@ public class PsqlDayMealService {
         return dayMealIdList;
     }
 
-    public List<DayMealType> getDayMealByIdList(List<String> dayMealIdList) {
+    public List<DayMealType> getDayMealByWeekMealId(String weekMealId) {
         List<DayMealType> dayMealTypeList = new ArrayList<>();
 
-        for (String dayMealId : dayMealIdList) {
+        WeekMealType weekMealType = this.weekMealService.getWeekMealById(Long.parseLong(weekMealId));
+        for (String dayMealId : weekMealType.getDayMealList()) {
             dayMealTypeList.add(this.getDayMealById(Long.parseLong(dayMealId)));
         }
 
