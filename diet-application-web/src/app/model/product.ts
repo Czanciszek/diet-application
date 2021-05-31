@@ -1,8 +1,5 @@
 export interface Product {
   id: string,
-  header: object,
-  primaryImageId: string,
-  type: string,
   name: string,
   category: string,
   subcategory: string,

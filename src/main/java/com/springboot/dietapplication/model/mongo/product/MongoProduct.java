@@ -16,7 +16,7 @@ public class MongoProduct {
     private boolean starch;
     private boolean gluten;
 
-    protected MongoProduct() {
+    public MongoProduct() {
 
     }
 

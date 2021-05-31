@@ -1,7 +1,6 @@
 package com.springboot.dietapplication.model.psql.menu;
 
 import com.springboot.dietapplication.model.type.DayMealType;
-import com.springboot.dietapplication.model.type.DayType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,9 +27,9 @@ public class PsqlDayMeal implements Serializable {
     }
 
     public PsqlDayMeal(DayMealType dayMealType) {
-        if (!dayMealType.getId().isEmpty())
+        if (dayMealType.getId() != null && !dayMealType.getId().isEmpty())
             this.id = Long.parseLong(dayMealType.getId());
-        if (!dayMealType.getWeekMealId().isEmpty())
+        if (dayMealType.getWeekMealId() != null && !dayMealType.getWeekMealId().isEmpty())
         this.weekMealId = Long.parseLong(dayMealType.getWeekMealId());
         this.dayType = dayMealType.getDayType().toString();
         this.date = dayMealType.getDate();

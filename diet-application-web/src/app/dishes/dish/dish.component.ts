@@ -4,6 +4,8 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DishService} from "../../service/dish.service";
 import {FormArray} from "@angular/forms";
 import {ProductSelectComponent} from "../../products/product-select/product-select.component";
+import {ProductService} from "../../service/product.service";
+import {Dish} from "../../model/dish";
 
 @Component({
   selector: 'app-dish',
@@ -14,6 +16,7 @@ export class DishComponent implements OnInit {
 
   constructor(
     private service: DishService,
+    private productService: ProductService,
     private notificationService: NotificationService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<DishComponent>
@@ -40,11 +43,30 @@ export class DishComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    if (this.service.form.get('id').value) {
+      let dishId = this.service.form.get('id').value;
+      this.getProductsDetails(dishId);
+    }
   }
 
   onClear() {
     (<FormArray>this.service.form.get('products')).clear();
     this.service.form.reset();
+  }
+
+  getProductsDetails(dishId) {
+    this.productService.getProductsByDishId(dishId)
+      .subscribe(
+        (productsData: Dish[]) => {
+          let products = this.service.form.value.products;
+          for (let i = 0; i < products.length; i++) {
+            for (let product of productsData) {
+              if (product.id == products[i].productId) {
+                (<HTMLInputElement>document.getElementById("name"+i)).value = productsData[i].name;
+              }
+            }
+          }
+        });
   }
 
   onSubmit() {

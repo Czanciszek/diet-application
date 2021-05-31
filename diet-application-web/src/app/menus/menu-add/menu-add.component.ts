@@ -5,6 +5,7 @@ import {MenuService} from "../../service/menu.service";
 import {MeasurementService} from "../../service/measurement.service";
 import {Measurement} from "../../model/measurement";
 import {GlobalVariable} from "../../global";
+import {PatientService} from "../../service/patient.service";
 
 @Component({
   selector: 'app-menu-add',
@@ -16,6 +17,7 @@ export class MenuAddComponent implements OnInit {
   constructor(
     private service: MenuService,
     private measurementService: MeasurementService,
+    private patientService: PatientService,
     private notificationService: NotificationService,
     public dialogRef: MatDialogRef<MenuAddComponent>
   ) { }
@@ -32,12 +34,11 @@ export class MenuAddComponent implements OnInit {
 
   measurementDates = [];
 
+  currentPatientId = "";
+
   ngOnInit(): void {
-    if (GlobalVariable.DATABASE_SERVICE.toString().includes("mongo")) {
-      this.getMeasurementList("5ff05f1fde578b7aa1774775");
-    } else {
-      this.getMeasurementList("83709");
-    }
+    this.currentPatientId = this.patientService.form.get("id").value;
+    this.getMeasurementList(this.currentPatientId);
   }
 
   onClear() {
@@ -84,11 +85,7 @@ export class MenuAddComponent implements OnInit {
 
   onSubmit() {
     if (this.service.form.valid) {
-      if (GlobalVariable.DATABASE_SERVICE.toString().includes("mongo")) {
-        this.service.form.get('patientId').setValue("5ff05f1fde578b7aa1774775");
-      } else {
-        this.service.form.get('patientId').setValue(83709);
-      }
+      this.service.form.get("patientId").setValue(this.currentPatientId);
 
       if (!this.service.form.get('id').value) {
         this.service.insertMenu(this.service.form.value).subscribe();

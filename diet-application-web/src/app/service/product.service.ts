@@ -98,6 +98,13 @@ export class ProductService {
     return this.productList;
   }
 
+  getProductsByDishId(dishId) {
+    this.productList = this.http.get(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE +
+      "products/dishlist/" + dishId, this.httpOptions);
+    return this.productList;
+  }
+
   getMenuProducts(menuId) {
     let productsMapData: any;
     productsMapData = this.http.get(GlobalVariable.SERVER_ADDRESS +

@@ -21,9 +21,9 @@ public class PsqlWeekMeal implements Serializable {
     }
 
     public PsqlWeekMeal(WeekMealType weekMealType) {
-        if (!weekMealType.getId().isEmpty())
+        if (weekMealType.getId() != null && !weekMealType.getId().isEmpty())
             this.id = Long.parseLong(weekMealType.getId());
-        if (!weekMealType.getMenuId().isEmpty())
+        if (weekMealType.getMenuId() != null && !weekMealType.getMenuId().isEmpty())
             this.menuId = Long.parseLong(weekMealType.getMenuId());
     }
 

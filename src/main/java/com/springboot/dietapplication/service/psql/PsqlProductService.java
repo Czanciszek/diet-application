@@ -1,11 +1,14 @@
 package com.springboot.dietapplication.service.psql;
 
+import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
 import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import com.springboot.dietapplication.model.psql.product.PsqlProduct;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.psql.PsqlCategoryRepository;
 import com.springboot.dietapplication.repository.psql.PsqlFoodPropertiesRepository;
+import com.springboot.dietapplication.repository.psql.PsqlProductDishRepository;
 import com.springboot.dietapplication.repository.psql.PsqlProductRepository;
+import org.apache.commons.math3.stat.descriptive.summary.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,9 @@ public class PsqlProductService {
 
     @Autowired
     PsqlFoodPropertiesRepository foodPropertiesRepository;
+
+    @Autowired
+    PsqlProductDishRepository productDishRepository;
 
     private final PsqlFoodPropertiesService foodPropertiesService;
     private final PsqlCategoryService categoryService;
@@ -44,11 +50,21 @@ public class PsqlProductService {
 
     public List<ProductType> getAll() {
         List<PsqlProduct> products = this.productRepository.findAll();
-        return convertPsqlProductListToProductTypes(products);
+        return convertLists(products);
     }
 
     public ProductType getProductById(Long productId) {
         return new ProductType();
+    }
+
+    public List<ProductType> getProductsByDishId(Long dishId) {
+        List<PsqlProduct> productList = new ArrayList<>();
+        List<PsqlProductDish> productDishTypeList = this.productDishRepository.findPsqlProductDishesByDishId(dishId);
+        for (PsqlProductDish productDish : productDishTypeList) {
+            productList.add(this.productRepository.getOne(productDish.getProductId()));
+        }
+
+        return convertLists(productList);
     }
 
     public List<ProductType> getFilteredProducts(String category, String subcategory) {
@@ -59,11 +75,11 @@ public class PsqlProductService {
         } else if (subcategory.equals(TAG_ANY)) {
             Set<Long> categoryIds = this.categoryService.findCategoryIdsByCategoryName(category);
             List<PsqlProduct> products = this.productRepository.findPsqlProductsByCategoryIdIn(categoryIds);
-            filteredMongoProducts.addAll(convertPsqlProductListToProductTypes(products));
+            filteredMongoProducts.addAll(convertLists(products));
         } else {
             PsqlCategory psqlCategory = this.categoryService.findCategoryBySubcategoryName(subcategory);
             List<PsqlProduct> products = this.productRepository.findPsqlProductsByCategoryId(psqlCategory.getId());
-            filteredMongoProducts.addAll(convertPsqlProductListToProductTypes(products));
+            filteredMongoProducts.addAll(convertLists(products));
         }
 
         return filteredMongoProducts;
@@ -87,7 +103,7 @@ public class PsqlProductService {
         }
 
         List<PsqlProduct> psqlProductList = this.productRepository.findProductsByIdIn(productIdList);
-        List<ProductType> productTypeList = convertPsqlProductListToProductTypes(psqlProductList);
+        List<ProductType> productTypeList = convertLists(psqlProductList);
         for (ProductType productType : productTypeList) {
             productMap.put(productType.getId(), productType);
         }
@@ -125,27 +141,29 @@ public class PsqlProductService {
         return ResponseEntity.ok().build();
     }
 
-    private List<ProductType> convertPsqlProductListToProductTypes(List<PsqlProduct> products) {
-        List<ProductType> productTypeList = new ArrayList<>();
+    private List<ProductType> convertLists(List<PsqlProduct> products) {
         List<PsqlCategory> categories = this.categoryRepository.findAll();
-
+        List<ProductType> productTypeList = new ArrayList<>();
         for (PsqlProduct product : products) {
-            ProductType productType = new ProductType(product);
+            productTypeList.add(convertPsqlProductToProductType(product, categories));
+        }
+        return productTypeList;
+    }
 
-            Optional<PsqlCategory> filtered = categories.stream()
-                    .filter(category -> category.getId() == product.getCategoryId())
-                    .findFirst();
-            if (filtered.isPresent() ) {
-                productType.setCategory(filtered.get().getCategory());
-                productType.setSubcategory(filtered.get().getSubcategory());
-            }
+    private ProductType convertPsqlProductToProductType(PsqlProduct psqlProduct, List<PsqlCategory> categories) {
+        ProductType productType = new ProductType(psqlProduct);
 
-            FoodPropertiesType foodPropertiesType = this.foodPropertiesService.findById(product.getFoodPropertiesId());
-            productType.setFoodProperties(foodPropertiesType);
-
-            productTypeList.add(productType);
+        Optional<PsqlCategory> filtered = categories.stream()
+                .filter(category -> category.getId() == psqlProduct.getCategoryId())
+                .findFirst();
+        if (filtered.isPresent() ) {
+            productType.setCategory(filtered.get().getCategory());
+            productType.setSubcategory(filtered.get().getSubcategory());
         }
 
-        return productTypeList;
+        FoodPropertiesType foodPropertiesType = this.foodPropertiesService.findById(psqlProduct.getFoodPropertiesId());
+        productType.setFoodProperties(foodPropertiesType);
+
+        return productType;
     }
 }

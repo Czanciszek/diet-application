@@ -134,6 +134,9 @@ export class MealAddComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe( result => {
       if (result != null) {
+        // Update value in HTML form
+        this.productService.menuProductMap[result.id] = result;
+
         (<FormArray>this.service.form.get('productList')).clear();
 
         // Update value in Form Group

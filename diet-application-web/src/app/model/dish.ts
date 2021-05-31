@@ -1,11 +1,8 @@
-export interface Meal {
+export interface Dish {
   id: string,
   name: string,
   dayMealId: string,
-  foodId: string,
-  isProduct: number,
-  productList: any[],
-  grams: number,
+  products: any[],
   portions: number,
   recipe: string,
   foodType: string

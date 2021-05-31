@@ -100,11 +100,9 @@
 
           <mat-grid-tile colspan="4">
             <div class="control-container">
-              <mat-form-field>
-                <div class="add-bottom-padding">
-                  <input matInput (click)="selectProductForDish(i)" [id]="'name'+i" placeholder="Produkt" readonly>
-                </div>
-              </mat-form-field>
+              <div class="add-bottom-padding">
+                <input matInput (click)="selectProductForDish(i)" [id]="'name'+i" placeholder="Produkt" readonly>
+              </div>
             </div>
           </mat-grid-tile>
 
@@ -157,9 +155,7 @@
 
           <mat-grid-tile colspan="5">
             <div class="control-container">
-              <mat-form-field>
-                <input matInput (click)="selectProduct()" [id]="'foodName'" formControlName="name" placeholder="Produkt" readonly>
-              </mat-form-field>
+              <input matInput (click)="selectProduct()" [id]="'foodName'" formControlName="name" placeholder="Produkt" readonly>
             </div>
           </mat-grid-tile>
 

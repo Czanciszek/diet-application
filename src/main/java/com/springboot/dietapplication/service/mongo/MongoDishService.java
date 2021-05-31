@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.service.mongo;
 
 import com.springboot.dietapplication.model.mongo.dish.MongoDish;
+import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.type.DishType;
 import com.springboot.dietapplication.repository.mongo.MongoDishRepository;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MongoDishService {
@@ -20,11 +22,12 @@ public class MongoDishService {
 
     public List<DishType> getAll() {
         List<MongoDish> dishes = this.dishRepository.findAll();
-        return convertMongoDishListToDishTypes(dishes);
+        return convertLists(dishes);
     }
 
     public DishType getDishById(String dishId) {
-        return new DishType();
+        Optional<MongoDish> dish = this.dishRepository.findById(dishId);
+        return dish.map(this::convertMongoDishToDishType).orElseGet(DishType::new);
     }
 
     public ResponseEntity<DishType> insert(DishType dish) {
@@ -39,15 +42,16 @@ public class MongoDishService {
         return ResponseEntity.ok().build();
     }
 
-    private List<DishType> convertMongoDishListToDishTypes(List<MongoDish> dishes) {
+    private List<DishType> convertLists(List<MongoDish> mongoDishes) {
         List<DishType> dishTypeList = new ArrayList<>();
-
-        for (MongoDish dish : dishes) {
-            DishType productType = new DishType(dish);
-            dishTypeList.add(productType);
+        for (MongoDish dish : mongoDishes) {
+            dishTypeList.add(convertMongoDishToDishType(dish));
         }
-
         return dishTypeList;
+    }
+
+    private DishType convertMongoDishToDishType(MongoDish dish) {
+        return new DishType(dish);
     }
 
 }

@@ -32,7 +32,7 @@ public class MongoMeasurementController {
         return this.measurementService.getMeasurementsByPatientId(patientId);
     }
 
-    @PostMapping(path = "/{patientId}", produces = "application/json")
+    @PostMapping(produces = "application/json")
     ResponseEntity<MeasurementType> insert(@RequestBody MeasurementType measurement) {
         return this.measurementService.insert(measurement);
     }

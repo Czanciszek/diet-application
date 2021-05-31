@@ -6,6 +6,9 @@ import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import com.springboot.dietapplication.model.mongo.menu.MongoWeekMeal;
 import com.springboot.dietapplication.model.mongo.product.MongoCategory;
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
+import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
+import com.springboot.dietapplication.model.psql.product.PsqlProduct;
+import com.springboot.dietapplication.model.type.DishType;
 import com.springboot.dietapplication.model.type.ProductDishType;
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.model.type.ProductType;
@@ -20,6 +23,7 @@ import java.util.*;
 public class MongoProductService {
 
     private final MongoFoodPropertiesService foodPropertiesService;
+    private final MongoDishService dishService;
     private final MongoCategoryService categoryService;
     private final MongoProductRepository productRepository;
     private final MongoMenuRepository menuRepository;
@@ -29,6 +33,7 @@ public class MongoProductService {
 
     @Autowired
     public MongoProductService(MongoFoodPropertiesService foodPropertiesService,
+                               MongoDishService dishService,
                                MongoCategoryService categoryService,
                                MongoProductRepository productRepository,
                                MongoMenuRepository menuRepository,
@@ -36,6 +41,7 @@ public class MongoProductService {
                                MongoDayMealRepository dayMealRepository,
                                MongoMealRepository mealRepository) {
         this.foodPropertiesService = foodPropertiesService;
+        this.dishService = dishService;
         this.categoryService = categoryService;
         this.productRepository = productRepository;
         this.menuRepository = menuRepository;
@@ -46,11 +52,23 @@ public class MongoProductService {
 
     public List<ProductType> getAll() {
         List<MongoProduct> mongoProductList = this.productRepository.findAll();
-        return convertMongoProductListToProductTypes(mongoProductList);
+        return convertLists(mongoProductList);
     }
 
     public ProductType getProductById(String productId) {
-        return new ProductType();
+        Optional<MongoProduct> product = this.productRepository.findById(productId);
+        List<MongoCategory> categories = this.categoryService.getAll();
+        return product.map(mongoProduct -> convertMongoProductToProductType(mongoProduct, categories)).orElseGet(ProductType::new);
+    }
+
+    public List<ProductType> getProductsByDishId(String dishId) {
+        List<ProductType> productList = new ArrayList<>();
+        DishType dishType = this.dishService.getDishById(dishId);
+        for (ProductDishType productDish : dishType.getProducts()) {
+            productList.add(getProductById(productDish.getProductId()));
+        }
+
+        return productList;
     }
 
     public List<ProductType> getFilteredProducts(String category, String subcategory) {
@@ -62,11 +80,11 @@ public class MongoProductService {
         } else if (subcategory.equals(TAG_ANY)) {
             Set<String> categoryIds = this.categoryService.findCategoryIdsByCategoryName(category);
             List<MongoProduct> products = this.productRepository.findMongoProductsByCategoryIdIn(categoryIds);
-            filteredMongoProducts.addAll(convertMongoProductListToProductTypes(products));
+            filteredMongoProducts.addAll(convertLists(products));
         } else {
             MongoCategory mongoCategory = this.categoryService.findCategoryBySubcategoryName(subcategory);
             List<MongoProduct> products = this.productRepository.findMongoProductsByCategoryId(mongoCategory.getId());
-            filteredMongoProducts.addAll(convertMongoProductListToProductTypes(products));
+            filteredMongoProducts.addAll(convertLists(products));
         }
 
         return filteredMongoProducts;
@@ -99,7 +117,7 @@ public class MongoProductService {
         }
 
         List<MongoProduct> mongoProductList = this.productRepository.findProductsByIdIn(productIdList);
-        List<ProductType> productTypeList = convertMongoProductListToProductTypes(mongoProductList);
+        List<ProductType> productTypeList = convertLists(mongoProductList);
         for (ProductType productType : productTypeList) {
             productMap.put(productType.getId(), productType);
         }
@@ -136,28 +154,30 @@ public class MongoProductService {
         return ResponseEntity.ok().build();
     }
 
-    private List<ProductType> convertMongoProductListToProductTypes(List<MongoProduct> products) {
+    private List<ProductType> convertLists(List<MongoProduct> mongoProductList) {
         List<ProductType> productTypeList = new ArrayList<>();
         List<MongoCategory> categories = this.categoryService.getAll();
+        for (MongoProduct product : mongoProductList) {
+            productTypeList.add(convertMongoProductToProductType(product, categories));
+        }
+        return productTypeList;
+    }
 
-        for (MongoProduct product : products) {
-            ProductType productType = new ProductType(product);
+    private ProductType convertMongoProductToProductType(MongoProduct product, List<MongoCategory> categories) {
+        ProductType productType = new ProductType(product);
 
-            Optional<MongoCategory> filtered = categories.stream()
-                    .filter(category -> category.getId().equals(product.getCategoryId()))
-                    .findFirst();
-            if (filtered.isPresent() ) {
-                productType.setCategory(filtered.get().getCategory());
-                productType.setSubcategory(filtered.get().getSubcategory());
-            }
-
-            FoodPropertiesType foodPropertiesType = this.foodPropertiesService.findById(product.getFoodPropertiesId());
-            productType.setFoodProperties(foodPropertiesType);
-
-            productTypeList.add(productType);
+        Optional<MongoCategory> filtered = categories.stream()
+                .filter(category -> category.getId().equals(product.getCategoryId()))
+                .findFirst();
+        if (filtered.isPresent() ) {
+            productType.setCategory(filtered.get().getCategory());
+            productType.setSubcategory(filtered.get().getSubcategory());
         }
 
-        return productTypeList;
+        FoodPropertiesType foodPropertiesType = this.foodPropertiesService.findById(product.getFoodPropertiesId());
+        productType.setFoodProperties(foodPropertiesType);
+
+        return productType;
     }
 
 }

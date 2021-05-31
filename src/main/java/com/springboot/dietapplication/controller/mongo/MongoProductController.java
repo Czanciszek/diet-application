@@ -28,6 +28,11 @@ public class MongoProductController {
         return this.productService.getProductById(productId);
     }
 
+    @GetMapping(path = "/dishlist/{dishId}")
+    public List<ProductType> getProductsByDishId(@PathVariable("dishId") String dishId) {
+        return this.productService.getProductsByDishId(dishId);
+    }
+
     @GetMapping(path = "/{category}/{subcategory}")
     public List<ProductType> getFilteredProducts(@PathVariable("category") String category,
                                                   @PathVariable("subcategory") String subcategory) {
