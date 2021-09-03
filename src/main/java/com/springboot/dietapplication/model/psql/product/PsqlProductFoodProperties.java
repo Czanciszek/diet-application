@@ -1,92 +1,151 @@
-package com.springboot.dietapplication.model.mongo.properties;
+package com.springboot.dietapplication.model.psql.product;
 
-import com.springboot.dietapplication.model.excel.ProductExcel;
-import com.springboot.dietapplication.model.type.FoodPropertiesType;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.*;
+import java.io.Serializable;
 
-@Document(collection = "FoodProperties")
-public class MongoFoodProperties {
+@Entity
+public class PsqlProductFoodProperties implements Serializable {
 
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "category")
+    private String category;
+
+    @Column(name = "subcategory")
+    private String subcategory;
+
+    @Column(name = "lactose")
+    private boolean lactose;
+
+    @Column(name = "starch")
+    private boolean starch;
+
+    @Column(name = "gluten")
+    private boolean gluten;
+
+    @Column(name = "energy_value")
     private int energyValue;
+
+    @Column(name = "proteins")
     private float proteins;
+
+    @Column(name = "fats")
     private float fats;
+
+    @Column(name = "saturated_fatty_acids")
     private float saturatedFattyAcids;
+
+    @Column(name = "mono_unsaturated_fatty_acids")
     private float monoUnsaturatedFattyAcids;
+
+    @Column(name = "poly_unsaturated_fatty_acids")
     private float polyUnsaturatedFattyAcids;
+
+    @Column(name = "cholesterol")
     private float cholesterol;
+
+    @Column(name = "carbohydrates")
     private float carbohydrates;
+
+    @Column(name = "sucrose")
     private float sucrose;
+
+    @Column(name = "dietary_fibres")
     private float dietaryFibres;
+
+    @Column(name = "sodium")
     private float sodium;
+
+    @Column(name = "potassium")
     private float potassium;
+
+    @Column(name = "calcium")
     private float calcium;
+
+    @Column(name = "phosphorus")
     private float phosphorus;
+
+    @Column(name = "magnesium")
     private float magnesium;
+
+    @Column(name = "iron")
     private float iron;
+
+    @Column(name = "selenium")
     private float selenium;
+
+    @Column(name = "beta_carotene")
     private float betaCarotene;
+
+    @Column(name = "vitamin_d")
     private float vitaminD;
+
+    @Column(name = "vitamin_c")
     private float vitaminC;
 
-    public MongoFoodProperties() {
+    public PsqlProductFoodProperties() {
 
     }
 
-    public MongoFoodProperties(ProductExcel productExcel) {
-        this.energyValue = productExcel.getEnergyValue();
-        this.proteins = productExcel.getProteins();
-        this.fats = productExcel.getFats();
-        this.saturatedFattyAcids = productExcel.getSaturatedFattyAcids();
-        this.monoUnsaturatedFattyAcids = productExcel.getMonoUnsaturatedFattyAcids();
-        this.polyUnsaturatedFattyAcids = productExcel.getPolyUnsaturatedFattyAcids();
-        this.cholesterol = productExcel.getCholesterol();
-        this.carbohydrates = productExcel.getCarbohydrates();
-        this.sucrose = productExcel.getSucrose();
-        this.dietaryFibres = productExcel.getDietaryFibres();
-        this.sodium = productExcel.getSodium();
-        this.potassium = productExcel.getPotassium();
-        this.calcium = productExcel.getCalcium();
-        this.phosphorus = productExcel.getPhosphorus();
-        this.magnesium = productExcel.getMagnesium();
-        this.iron = productExcel.getIron();
-        this.selenium = productExcel.getSelenium();
-        this.betaCarotene = productExcel.getBetaCarotene();
-        this.vitaminD = productExcel.getVitaminD();
-        this.vitaminC = productExcel.getVitaminC();
-    }
-
-    public MongoFoodProperties(FoodPropertiesType foodPropertiesType) {
-        if (foodPropertiesType.getId() != null && !foodPropertiesType.getId().isEmpty())
-            this.id = foodPropertiesType.getId();
-        this.energyValue = foodPropertiesType.getEnergyValue();
-        this.proteins = foodPropertiesType.getProteins();
-        this.fats = foodPropertiesType.getFats();
-        this.saturatedFattyAcids = foodPropertiesType.getSaturatedFattyAcids();
-        this.monoUnsaturatedFattyAcids = foodPropertiesType.getMonoUnsaturatedFattyAcids();
-        this.polyUnsaturatedFattyAcids = foodPropertiesType.getPolyUnsaturatedFattyAcids();
-        this.cholesterol = foodPropertiesType.getCholesterol();
-        this.carbohydrates = foodPropertiesType.getCarbohydrates();
-        this.sucrose = foodPropertiesType.getSucrose();
-        this.dietaryFibres = foodPropertiesType.getDietaryFibres();
-        this.sodium = foodPropertiesType.getSodium();
-        this.potassium = foodPropertiesType.getPotassium();
-        this.calcium = foodPropertiesType.getCalcium();
-        this.phosphorus = foodPropertiesType.getPhosphorus();
-        this.magnesium = foodPropertiesType.getMagnesium();
-        this.iron = foodPropertiesType.getIron();
-        this.selenium = foodPropertiesType.getSelenium();
-        this.betaCarotene = foodPropertiesType.getBetaCarotene();
-        this.vitaminD = foodPropertiesType.getVitaminD();
-        this.vitaminC = foodPropertiesType.getVitaminC();
-    }
-
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    public boolean isLactose() {
+        return lactose;
+    }
+
+    public void setLactose(boolean lactose) {
+        this.lactose = lactose;
+    }
+
+    public boolean isStarch() {
+        return starch;
+    }
+
+    public void setStarch(boolean starch) {
+        this.starch = starch;
+    }
+
+    public boolean isGluten() {
+        return gluten;
+    }
+
+    public void setGluten(boolean gluten) {
+        this.gluten = gluten;
     }
 
     public int getEnergyValue() {

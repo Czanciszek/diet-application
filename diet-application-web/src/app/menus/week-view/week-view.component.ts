@@ -35,10 +35,21 @@ export class WeekViewComponent implements OnInit {
   dataLoaded = false;
   weekIndex: number;
 
+  weekLoaded = false;
+  dayLoaded = false;
+  mealsLoaded = false;
+  productMapLoaded = false;
+
   ngOnInit(): void {
     let menuId = this.route.snapshot.paramMap.get("menu_id");
     this.weekIndex = 0;
     this.getMenuDetails(menuId);
+  }
+
+  checkDataLoaded() {
+    if (this.weekLoaded && this.dayLoaded && this.mealsLoaded && this.productMapLoaded) {
+      this.dataLoaded = true;
+    }
   }
 
   getMenuDetails(menuId) {
@@ -50,6 +61,9 @@ export class WeekViewComponent implements OnInit {
             let weekMealId = this.menuItemData.weekMealList[this.weekIndex];
             console.log("Menu", this.menuItemData);
             this.getWeekMealDetails(weekMealId);
+            this.getDayMealListDetails(weekMealId);
+            this.getMealListDetails(weekMealId);
+            this.getMenuProductMap();
           }
         }
       );
@@ -75,7 +89,8 @@ export class WeekViewComponent implements OnInit {
         (data: WeekMeal[]) => {
           this.weekMealItemData = {...data};
           console.log("Week", this.weekMealItemData);
-          this.getDayMealListDetails(this.weekMealItemData.id);
+          this.weekLoaded = true;
+          this.checkDataLoaded();
         });
   }
 
@@ -85,7 +100,8 @@ export class WeekViewComponent implements OnInit {
         (daysData: DayMeal[]) => {
           this.dayMealListItemData = [...daysData];
           console.log("Days", this.dayMealListItemData);
-          this.getMealListDetails(weekMealId);
+          this.dayLoaded = true;
+          this.checkDataLoaded();
         });
   }
 
@@ -95,7 +111,8 @@ export class WeekViewComponent implements OnInit {
         (mealsData: Meal[]) => {
           this.mealListItemData = [...mealsData];
           console.log("Meals", this.mealListItemData);
-          this.getMenuProductMap();
+          this.mealsLoaded = true;
+          this.checkDataLoaded();
         });
   }
 
@@ -105,7 +122,8 @@ export class WeekViewComponent implements OnInit {
         (data: {} ) => {
           this.productService.menuProductMap = {...data};
           console.log("Map Products", this.productService.menuProductMap);
-          this.dataLoaded = true;
+          this.productMapLoaded = true;
+          this.checkDataLoaded();
         });
   }
 
