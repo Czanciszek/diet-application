@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.model.mongo.product;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
+import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.model.type.ProductType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,7 +11,7 @@ public class MongoProduct {
     private String id;
     private String name;
     private String categoryId;
-    private String foodPropertiesId;
+    private FoodPropertiesType foodProperties;
 
     private boolean lactose;
     private boolean starch;
@@ -33,6 +34,7 @@ public class MongoProduct {
         this.lactose = productType.isLactose();
         this.starch = productType.isStarch();
         this.gluten = productType.isGluten();
+        this.foodProperties = productType.getFoodProperties();
     }
 
     public String getId() {
@@ -51,12 +53,12 @@ public class MongoProduct {
         this.categoryId = categoryId;
     }
 
-    public String getFoodPropertiesId() {
-        return foodPropertiesId;
+    public FoodPropertiesType getFoodProperties() {
+        return foodProperties;
     }
 
-    public void setFoodPropertiesId(String foodPropertiesId) {
-        this.foodPropertiesId = foodPropertiesId;
+    public void setFoodProperties(FoodPropertiesType foodProperties) {
+        this.foodProperties = foodProperties;
     }
 
     public boolean isLactose() {

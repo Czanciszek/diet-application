@@ -2,6 +2,7 @@ package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlProduct;
+import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -30,6 +31,7 @@ public class ProductType {
         this.lactose = mongoProduct.isLactose();
         this.starch = mongoProduct.isStarch();
         this.gluten = mongoProduct.isGluten();
+        this.foodProperties = mongoProduct.getFoodProperties();
     }
 
     public ProductType(PsqlProduct psqlProduct) {
@@ -38,6 +40,17 @@ public class ProductType {
         this.lactose = psqlProduct.isLactose();
         this.starch = psqlProduct.isStarch();
         this.gluten = psqlProduct.isGluten();
+    }
+
+    public ProductType(PsqlProductFoodProperties psqlProduct) {
+        this.id = String.valueOf(psqlProduct.getId());
+        this.name = psqlProduct.getName();
+        this.lactose = psqlProduct.isLactose();
+        this.starch = psqlProduct.isStarch();
+        this.gluten = psqlProduct.isGluten();
+        this.category = psqlProduct.getCategory();
+        this.subcategory = psqlProduct.getSubcategory();
+        this.foodProperties = new FoodPropertiesType(psqlProduct);
     }
 
     public String getId() {

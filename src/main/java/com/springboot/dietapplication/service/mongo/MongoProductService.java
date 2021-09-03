@@ -6,8 +6,6 @@ import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import com.springboot.dietapplication.model.mongo.menu.MongoWeekMeal;
 import com.springboot.dietapplication.model.mongo.product.MongoCategory;
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
-import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
-import com.springboot.dietapplication.model.psql.product.PsqlProduct;
 import com.springboot.dietapplication.model.type.DishType;
 import com.springboot.dietapplication.model.type.ProductDishType;
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
@@ -22,7 +20,6 @@ import java.util.*;
 @Service
 public class MongoProductService {
 
-    private final MongoFoodPropertiesService foodPropertiesService;
     private final MongoDishService dishService;
     private final MongoCategoryService categoryService;
     private final MongoProductRepository productRepository;
@@ -32,15 +29,13 @@ public class MongoProductService {
     private final MongoMealRepository mealRepository;
 
     @Autowired
-    public MongoProductService(MongoFoodPropertiesService foodPropertiesService,
-                               MongoDishService dishService,
+    public MongoProductService(MongoDishService dishService,
                                MongoCategoryService categoryService,
                                MongoProductRepository productRepository,
                                MongoMenuRepository menuRepository,
                                MongoWeekMealRepository weekMealRepository,
                                MongoDayMealRepository dayMealRepository,
                                MongoMealRepository mealRepository) {
-        this.foodPropertiesService = foodPropertiesService;
         this.dishService = dishService;
         this.categoryService = categoryService;
         this.productRepository = productRepository;
@@ -132,9 +127,6 @@ public class MongoProductService {
     public ProductType insert(ProductType productType) {
         MongoProduct product = new MongoProduct(productType);
 
-        this.foodPropertiesService.insertFoodProperties(productType.getFoodProperties());
-        product.setFoodPropertiesId(productType.getFoodProperties().getId());
-
         MongoCategory category = this.categoryService.findCategory(productType);
         product.setCategoryId(category.getId());
 
@@ -148,8 +140,6 @@ public class MongoProductService {
         Optional<MongoProduct> product = this.productRepository.findById(id);
 
         this.productRepository.deleteById(id);
-        product.ifPresent(mongoProduct ->
-                this.foodPropertiesService.delete(mongoProduct.getFoodPropertiesId()));
 
         return ResponseEntity.ok().build();
     }
@@ -173,9 +163,6 @@ public class MongoProductService {
             productType.setCategory(filtered.get().getCategory());
             productType.setSubcategory(filtered.get().getSubcategory());
         }
-
-        FoodPropertiesType foodPropertiesType = this.foodPropertiesService.findById(product.getFoodPropertiesId());
-        productType.setFoodProperties(foodPropertiesType);
 
         return productType;
     }
