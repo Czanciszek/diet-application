@@ -94,7 +94,7 @@ public class DbSeeder implements CommandLineRunner {
         List<String> prodFilePaths = new ArrayList<>(Arrays.asList("2", "5", "8"));
         List<String> testFilePaths = new ArrayList<>(Arrays.asList("1", "100", "1000", "10000", "50000", "100000"));
 
-        boolean isTesting = true;
+        boolean isTesting = false;
         int testTimes = 10;
 
         String path = isTesting ? "ProductData/StageTest" : "ProductData/Stage";
@@ -107,10 +107,11 @@ public class DbSeeder implements CommandLineRunner {
 
             String file = path + filePath + ".xlsx";
             checkTime("TESTING " + file);
+            System.out.println("-----------------------------------------------------------------------");
             List<ProductExcel> productExcelList = importProductsFromExcel(file, reader);
 
             for (int i = 0; i < times; i++)
-                manageProductsData(productExcelList);
+                //manageProductsData(productExcelList);
         }
 
     }
@@ -124,11 +125,11 @@ public class DbSeeder implements CommandLineRunner {
     }
 
     private void manageProductsData(List<ProductExcel> productExcelList) {
-        //insertData(productExcelList, true, true);
-        //createBackup(true, true);
+        insertData(productExcelList, true, true);
+        createBackup(true, true);
         clearData(true, true);
-        //restoreBackup(true, true);
-        //getData(true, true);
+        restoreBackup(true, true);
+        getData(true, true);
         System.out.println("--------------------------");
     }
 
@@ -378,7 +379,7 @@ public class DbSeeder implements CommandLineRunner {
 
             Process process = new ProcessBuilder(command).start();
             process.waitFor();
-            process.destroy();\
+            process.destroy();
         } catch (Exception e) {
             e.printStackTrace();
         }
