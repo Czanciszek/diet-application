@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.*;
@@ -89,42 +89,75 @@ public class DbSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-
-        this.mongoUserRepository.deleteAll();
-
-        User user1 = new User("aaa",
-                "$2y$12$xQyJdsoamI/19a4p3bgRcOj2KeLpxPWj3.whkTrjz2jzIbO9fnr6m", "imageId");
-        mongoUserRepository.save(user1);
-
-        Reader<ProductExcel> reader = Reader.create(ProductExcel.class);
+        setUser();
 
         List<String> prodFilePaths = new ArrayList<>(Arrays.asList("2", "5", "8"));
         List<String> testFilePaths = new ArrayList<>(Arrays.asList("1", "100", "1000", "10000", "50000", "100000"));
 
-        boolean isTesting = false;
+        boolean isTesting = true;
         int testTimes = 10;
 
         String path = isTesting ? "ProductData/StageTest" : "ProductData/Stage";
         List<String> filePaths = isTesting ? testFilePaths : prodFilePaths;
         int times = isTesting ? testTimes : 1;
 
+        Reader<ProductExcel> reader = Reader.create(ProductExcel.class);
         initTime();
         for (String filePath : filePaths) {
-            for (int i = 0; i < times; i++) {
-                String file = path + filePath + ".xlsx";
-                checkTime("TESTING" + file);
-                List<ProductExcel> productExcelList = importProductsFromExcel(file, reader);
-                //manageProductsData(productExcelList);
-                System.out.println("--------------------------");
-            }
+
+            String file = path + filePath + ".xlsx";
+            checkTime("TESTING " + file);
+            List<ProductExcel> productExcelList = importProductsFromExcel(file, reader);
+
+            for (int i = 0; i < times; i++)
+                manageProductsData(productExcelList);
         }
 
     }
 
+    private void setUser() {
+        mongoUserRepository.deleteAll();
+
+        User user1 = new User("aaa",
+                "$2y$12$xQyJdsoamI/19a4p3bgRcOj2KeLpxPWj3.whkTrjz2jzIbO9fnr6m", "imageId");
+        mongoUserRepository.save(user1);
+    }
+
     private void manageProductsData(List<ProductExcel> productExcelList) {
-        clearData(false, false);
-        insertData(productExcelList, false, false);
-        getData(false, false);
+        //insertData(productExcelList, true, true);
+        //createBackup(true, true);
+        clearData(true, true);
+        //restoreBackup(true, true);
+        //getData(true, true);
+        System.out.println("--------------------------");
+    }
+
+    private void createBackup(boolean mongo, boolean psql) {
+        if (mongo) {
+            checkTime("Create Mongo Backup - Start");
+            createMongoBackup();
+            checkTime("Create Mongo Backup - Finish");
+        }
+
+        if (psql) {
+            checkTime("Create Psql Backup - Start");
+            createPsqlBackup();
+            checkTime("Create Psql Backup - Finish");
+        }
+    }
+
+    private void restoreBackup(boolean mongo, boolean psql) {
+        if (mongo) {
+            checkTime("Restore Mongo Backup - Start");
+            restoreMongoBackup();
+            checkTime("Restore Mongo Backup - Finish");
+        }
+
+        if (psql) {
+            checkTime("Restore Psql Backup - Start");
+            restorePsqlBackup();
+            checkTime("Restore Psql Backup - Finish");
+        }
     }
 
     private void clearData(boolean mongo, boolean psql) {
@@ -154,6 +187,7 @@ public class DbSeeder implements CommandLineRunner {
             checkTime("Save to PSQL - Finish");
         }
     }
+
     private void getData(boolean mongo, boolean psql) {
         if (mongo) {
             checkTime("Get products Mongo - Start");
@@ -284,5 +318,69 @@ public class DbSeeder implements CommandLineRunner {
         this.PSQLProductRepository.truncate();
         this.PSQLFoodPropertiesRepository.truncate();
         this.PSQLCategoryRepository.truncate();
+    }
+
+    private void createMongoBackup() {
+        try {
+            List<String> command = Arrays.asList(
+                    "mongodump.exe",
+                    "--db", "DietAppDb");
+
+            Process process = new ProcessBuilder(command).start();
+            process.waitFor();
+            process.destroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void restoreMongoBackup() {
+        try {
+            List<String> command = Arrays.asList(
+                    "mongorestore.exe",
+                    "--db", "DietAppDb",
+                    "dump/DietAppDb/Products.bson");
+
+            Process process = new ProcessBuilder(command).start();
+            process.waitFor();
+            process.destroy();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createPsqlBackup() {
+        try {
+            List<String> command = Arrays.asList(
+                    "\"C:/Program Files/PostgreSQL/11/bin/pg_dump\"",
+                    "--dbname=postgresql://postgres:postgres@127.0.0.1:5432/DietApp",
+                    "--file", "\"dump/psqlDump.bak\""
+            );
+
+            Process process = new ProcessBuilder(command).start();
+            process.waitFor();
+            process.destroy();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void restorePsqlBackup() {
+        try {
+            List<String> command = Arrays.asList(
+                    "\"C:/Program Files/PostgreSQL/11/bin/psql\"",
+                    "-f", "\"dump/psqlDump.bak\"",
+                    "--verbose",
+                    "--dbname=postgresql://postgres:postgres@127.0.0.1:5432/DietApp"
+            );
+
+            Process process = new ProcessBuilder(command).start();
+            process.waitFor();
+            process.destroy();\
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
