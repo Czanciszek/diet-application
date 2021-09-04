@@ -110,8 +110,9 @@ public class DbSeeder implements CommandLineRunner {
             System.out.println("-----------------------------------------------------------------------");
             List<ProductExcel> productExcelList = importProductsFromExcel(file, reader);
 
-            for (int i = 0; i < times; i++)
+            for (int i = 0; i < times; i++) {
                 //manageProductsData(productExcelList);
+            }
         }
 
     }
