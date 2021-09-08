@@ -42,7 +42,20 @@
     </ng-container>
     <ng-container matColumnDef="alergens">
       <mat-header-cell *matHeaderCellDef>Alergeny</mat-header-cell>
-      <mat-cell *matCellDef="let element">"tmp"</mat-cell>
+      <mat-cell *matCellDef="let element">
+        <div *ngIf="element.starch">
+          <img src="../../../assets/allergens/starch.jpg"
+               width="25" height="25" alt="Products" style="width:100%">
+        </div>
+        <div *ngIf="element.gluten">
+          <img src="../../../assets/allergens/gluten.jpg"
+               width="25" height="25" alt="Products" style="width:100%">
+        </div>
+        <div *ngIf="element.lactose">
+          <img src="../../../assets/allergens/lactose.jpg"
+               width="25" height="25" alt="Products" style="width:100%">
+        </div>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>

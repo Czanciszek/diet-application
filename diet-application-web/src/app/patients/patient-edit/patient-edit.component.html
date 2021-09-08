@@ -140,8 +140,8 @@
         <div class="add-bottom-padding">
           <mat-select formControlName="unlikelyCategories" multiple>
             <div>
-              <mat-form-field>
-                <input class ="category-search-input" matInput placeholder="Szukaj..." (input)="filterOptions($event.target.value)" autocomplete="off"/>
+              <mat-form-field class="category-search-input">
+                <input matInput placeholder="Szukaj..." (input)="filterOptions($event.target.value)" autocomplete="off"/>
               </mat-form-field>
             </div>
             <mat-option *ngFor="let option of categories" [value]="option">
