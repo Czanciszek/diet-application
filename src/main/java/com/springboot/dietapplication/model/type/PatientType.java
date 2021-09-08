@@ -4,7 +4,9 @@ import com.springboot.dietapplication.model.mongo.patient.MongoMeasurement;
 import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PatientType {
 
@@ -24,11 +26,8 @@ public class PatientType {
 
     private List<MongoMeasurement> measurements;
 
-    //odpowiedzi na wywiad
-    //private InterviewAnswers answers;
-
-    //lista jadłospisów
-    //private List<Menu> menus;
+    private Set<AllergensType> allergens;
+    private Set<String> unlikelyCategories;
 
     public PatientType() {
 
@@ -45,6 +44,8 @@ public class PatientType {
         this.changedLifestyleNote = mongoPatient.getChangedLifestyleNote();
         this.currentLifestyleNote = mongoPatient.getCurrentLifestyleNote();
         this.dietaryPurpose = mongoPatient.getDietaryPurpose();
+        this.allergens = mongoPatient.getAllergens();
+        this.unlikelyCategories = mongoPatient.getUnlikelyCategories();
     }
 
     public PatientType(PsqlPatient psqlPatient) {
@@ -58,6 +59,12 @@ public class PatientType {
         this.changedLifestyleNote = psqlPatient.getChangedLifestyleNote();
         this.currentLifestyleNote = psqlPatient.getCurrentLifestyleNote();
         this.dietaryPurpose = psqlPatient.getDietaryPurpose();
+
+        Set<AllergensType> allergensTypes = new HashSet<>();
+        if (psqlPatient.isGlutenAllergy()) allergensTypes.add(AllergensType.GLUTEN);
+        if (psqlPatient.isLactoseAllergy()) allergensTypes.add(AllergensType.LACTOSE);
+        if (psqlPatient.isStarchAllergy()) allergensTypes.add(AllergensType.STARCH);
+        this.allergens = allergensTypes;
     }
 
     public String getId() {
@@ -156,4 +163,19 @@ public class PatientType {
         this.measurements = measurements;
     }
 
+    public Set<AllergensType> getAllergens() {
+        return allergens;
+    }
+
+    public void setAllergens(Set<AllergensType> allergens) {
+        this.allergens = allergens;
+    }
+
+    public Set<String> getUnlikelyCategories() {
+        return unlikelyCategories;
+    }
+
+    public void setUnlikelyCategories(Set<String> unlikelyCategories) {
+        this.unlikelyCategories = unlikelyCategories;
+    }
 }

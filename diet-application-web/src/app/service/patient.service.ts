@@ -33,8 +33,8 @@ export class PatientService {
     changedLifestyleNote: new FormControl(''),
     dietaryPurpose: new FormControl(''),
     measurements: new FormControl(null),
-    //interviewanswers
-    //diets
+    allergens: new FormControl(null),
+    unlikelyCategories: new FormControl(null)
   });
 
   initializeFormGroup() {
@@ -51,6 +51,8 @@ export class PatientService {
       changedLifestyleNote: '',
       dietaryPurpose: '',
       measurements: null,
+      allergens: null,
+      unlikelyCategories: null
     })
   }
 

@@ -19,6 +19,9 @@ import {MatSliderModule} from "@angular/material/slider";
 import {MatCardModule} from "@angular/material/card";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatListModule } from "@angular/material/list";
 
 @NgModule({
   declarations: [],
@@ -40,6 +43,9 @@ import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
     MatSliderModule,
     MatCardModule,
     MatDatepickerModule,
+    MatTabsModule,
+    MatTooltipModule,
+    MatListModule
   ],
   exports: [
     MatToolbarModule,
@@ -60,6 +66,9 @@ import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
     MatDatepickerModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTabsModule,
+    MatTooltipModule,
+    MatListModule
   ],
   providers: [
     MatSnackBar,

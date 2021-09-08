@@ -1,8 +1,10 @@
 package com.springboot.dietapplication.model.psql.patient;
 
+import com.springboot.dietapplication.model.type.AllergensType;
 import com.springboot.dietapplication.model.type.PatientType;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "patients")
@@ -39,6 +41,15 @@ public class PsqlPatient {
     @Column(name = "dietary_purpose")
     private String dietaryPurpose;
 
+    @Column(name = "lactose_allergy")
+    private boolean lactoseAllergy;
+
+    @Column(name = "starch_allergy")
+    private boolean starchAllergy;
+
+    @Column(name = "gluten_allergy")
+    private boolean glutenAllergy;
+
     public PsqlPatient() {
 
     }
@@ -55,6 +66,7 @@ public class PsqlPatient {
         this.changedLifestyleNote = patientType.getChangedLifestyleNote();
         this.currentLifestyleNote = patientType.getCurrentLifestyleNote();
         this.dietaryPurpose = patientType.getDietaryPurpose();
+        setAllergens(patientType.getAllergens());
     }
 
     public Long getId() {
@@ -135,5 +147,47 @@ public class PsqlPatient {
 
     public void setDietaryPurpose(String dietaryPurpose) {
         this.dietaryPurpose = dietaryPurpose;
+    }
+
+    public boolean isLactoseAllergy() {
+        return lactoseAllergy;
+    }
+
+    public void setLactoseAllergy(boolean lactoseAllergy) {
+        this.lactoseAllergy = lactoseAllergy;
+    }
+
+    public boolean isStarchAllergy() {
+        return starchAllergy;
+    }
+
+    public void setStarchAllergy(boolean starchAllergy) {
+        this.starchAllergy = starchAllergy;
+    }
+
+    public boolean isGlutenAllergy() {
+        return glutenAllergy;
+    }
+
+    public void setGlutenAllergy(boolean glutenAllergy) {
+        this.glutenAllergy = glutenAllergy;
+    }
+
+    private void setAllergens(Set<AllergensType> allergens) {
+        if (allergens == null) return;
+        for (AllergensType allergen : allergens) {
+            switch (allergen) {
+                case GLUTEN:
+                    this.glutenAllergy = true;
+                    break;
+                case STARCH:
+                    this.starchAllergy = true;
+                    break;
+                case LACTOSE:
+                    this.lactoseAllergy = true;
+                    break;
+            }
+        }
+
     }
 }

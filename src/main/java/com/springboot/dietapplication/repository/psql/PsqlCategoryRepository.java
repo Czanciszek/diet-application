@@ -14,9 +14,9 @@ public interface PsqlCategoryRepository extends JpaRepository<PsqlCategory, Long
 
     PsqlCategory getCategoryByCategoryAndSubcategory(String category, String subcategory);
 
-    List<PsqlCategory> findMongoCategoriesByCategory(String category);
+    List<PsqlCategory> findPsqlCategoriesByCategory(String category);
 
-    PsqlCategory findMongoCategoryBySubcategory(String subcategory);
+    PsqlCategory findPsqlCategoryBySubcategory(String subcategory);
 
     @Modifying
     @Transactional

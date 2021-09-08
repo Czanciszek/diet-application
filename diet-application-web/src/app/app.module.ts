@@ -36,9 +36,7 @@ import { DishAddComponent } from './menus/dish-add/dish-add.component';
 import { MenusComponent } from './menus/menus.component';
 import { MenuAddComponent } from './menus/menu-add/menu-add.component';
 import { MealAddComponent } from './menus/meal-add/meal-add.component';
-import {MatTabsModule} from "@angular/material/tabs";
 import { DishSelectComponent } from './dishes/dish-select/dish-select.component';
-import {MatTooltipModule} from "@angular/material/tooltip";
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -88,9 +86,7 @@ const routes: Routes = [
         ReactiveFormsModule,
         BrowserAnimationsModule,
         MaterialModule,
-        FlexLayoutModule,
-        MatTabsModule,
-        MatTooltipModule,
+        FlexLayoutModule
     ],
   providers: [
     RestapiService,

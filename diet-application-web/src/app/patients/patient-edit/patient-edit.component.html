@@ -85,7 +85,7 @@
       </div>
     </mat-grid-tile>
   </mat-grid-list>
-  <mat-grid-list cols="3" rowHeight="270px">
+  <mat-grid-list cols="3" rowHeight="240px">
     <mat-grid-tile>
       <div class="control-container">
         <mat-form-field>
@@ -117,6 +117,38 @@
               </textarea>
           </div>
         </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="3" rowHeight="80px">
+    <mat-grid-tile>
+      <div class="control-container">
+        <p>Alergeny:</p>
+        <div class="add-bottom-padding">
+          <mat-select formControlName="allergens" multiple>
+            <mat-option *ngFor="let option of allergenTypes" [value]="option.id">
+              {{option.value}}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <div class="control-container">
+        <p>Unikać:</p>
+        <div class="add-bottom-padding">
+          <mat-select formControlName="unlikelyCategories" multiple>
+            <div>
+              <mat-form-field>
+                <input class ="category-search-input" matInput placeholder="Szukaj..." (input)="filterOptions($event.target.value)" autocomplete="off"/>
+              </mat-form-field>
+            </div>
+            <mat-option *ngFor="let option of categories" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-select>
+        </div>
       </div>
     </mat-grid-tile>
   </mat-grid-list>

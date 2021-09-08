@@ -29,6 +29,10 @@ export class PatientListComponent implements OnInit {
   searchKey: string;
 
   ngOnInit(): void {
+    this.getPatients();
+  }
+
+  getPatients() {
     this.service.getPatients().subscribe(
       list => {
         let array = list.map(item => {
@@ -45,6 +49,8 @@ export class PatientListComponent implements OnInit {
             changedLifestyleNote: item.changedLifestyleNote,
             dietaryPurpose: item.dietaryPurpose,
             measurements: item.measurements,
+            allergens: item.allergens,
+            unlikelyCategories: item.unlikelyCategories
           };
         });
         this.listData = new MatTableDataSource(array);

@@ -1,22 +1,30 @@
 package com.springboot.dietapplication.service.psql;
 
+import com.springboot.dietapplication.model.psql.menu.PsqlPatientsUnlikelyCategories;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
+import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import com.springboot.dietapplication.model.type.PatientType;
+import com.springboot.dietapplication.repository.psql.PsqlCategoryRepository;
 import com.springboot.dietapplication.repository.psql.PsqlPatientRepository;
+import com.springboot.dietapplication.repository.psql.PsqlPatientsUnlikelyCategoriesRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PsqlPatientService {
 
     private final PsqlPatientRepository patientRepository;
+    private final PsqlCategoryRepository categoryRepository;
+    private final PsqlPatientsUnlikelyCategoriesRepository patientsUnlikelyCategoriesRepository;
 
-    public PsqlPatientService(PsqlPatientRepository patientRepository) {
+    public PsqlPatientService(PsqlPatientRepository patientRepository,
+                              PsqlCategoryRepository categoryRepository,
+                              PsqlPatientsUnlikelyCategoriesRepository patientsUnlikelyCategoriesRepository) {
         this.patientRepository = patientRepository;
+        this.categoryRepository = categoryRepository;
+        this.patientsUnlikelyCategoriesRepository = patientsUnlikelyCategoriesRepository;
     }
 
     public List<PatientType> getAll() {
@@ -25,6 +33,7 @@ public class PsqlPatientService {
         List<PsqlPatient> patients = this.patientRepository.findAll();
         for (PsqlPatient psqlPatient : patients) {
             PatientType patientType = new PatientType(psqlPatient);
+            patientType.setUnlikelyCategories(getPatientsUnlikelyCategories(psqlPatient));
             patientTypeList.add(patientType);
         }
 
@@ -37,10 +46,11 @@ public class PsqlPatientService {
     }
 
     public ResponseEntity<PatientType> insert(PatientType patient) {
-        PsqlPatient psqlDish = new PsqlPatient(patient);
+        PsqlPatient psqlPatient = new PsqlPatient(patient);
 
-        this.patientRepository.save(psqlDish);
-        patient.setId(String.valueOf(psqlDish.getId()));
+        this.patientRepository.save(psqlPatient);
+        patient.setId(String.valueOf(psqlPatient.getId()));
+        storePatientsUnlikelyCategories(patient);
 
         return ResponseEntity.ok().body(patient);
     }
@@ -48,5 +58,32 @@ public class PsqlPatientService {
     public ResponseEntity<Void> delete(Long id) {
         this.patientRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    private Set<String> getPatientsUnlikelyCategories(PsqlPatient psqlPatient) {
+        Set<PsqlPatientsUnlikelyCategories> unlikelyCategories =
+                this.patientsUnlikelyCategoriesRepository.findPsqlPatientsUnlikelyCategoriesByPatientId(psqlPatient.getId());
+
+        Set<String> categories = new HashSet<>();
+        for (PsqlPatientsUnlikelyCategories category : unlikelyCategories) {
+            Optional<PsqlCategory> psqlCategory = this.categoryRepository.findById(category.getCategoryId());
+            psqlCategory.ifPresent(value -> categories.add(value.getSubcategory()));
+        }
+
+        return categories;
+    }
+
+    private void storePatientsUnlikelyCategories(PatientType patientType) {
+        this.patientsUnlikelyCategoriesRepository.deleteAllByPatientId(Long.parseLong(patientType.getId()));
+        for (String category : patientType.getUnlikelyCategories()) {
+
+            PsqlCategory psqlCategory = this.categoryRepository.findPsqlCategoryBySubcategory(category);
+            if (psqlCategory == null) return;
+
+            PsqlPatientsUnlikelyCategories patientsUnlikelyCategories =
+                    new PsqlPatientsUnlikelyCategories(Long.parseLong(patientType.getId()), psqlCategory.getId());
+            this.patientsUnlikelyCategoriesRepository.save(patientsUnlikelyCategories);
+
+        }
     }
 }

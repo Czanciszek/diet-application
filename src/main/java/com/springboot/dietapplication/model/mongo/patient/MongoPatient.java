@@ -1,9 +1,11 @@
 package com.springboot.dietapplication.model.mongo.patient;
 
+import com.springboot.dietapplication.model.type.AllergensType;
 import com.springboot.dietapplication.model.type.PatientType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.Set;
 
 @Document(collection = "Patients")
 public class MongoPatient {
@@ -24,11 +26,8 @@ public class MongoPatient {
 
     private List<MongoMeasurement> measurements;
 
-    //odpowiedzi na wywiad
-    //private InterviewAnswers answers;
-
-    //lista jadłospisów
-    //private List<Menu> menus;
+    private Set<AllergensType> allergens;
+    private Set<String> unlikelyCategories;
 
     public MongoPatient() {
 
@@ -45,6 +44,8 @@ public class MongoPatient {
         this.changedLifestyleNote = patientType.getChangedLifestyleNote();
         this.currentLifestyleNote = patientType.getCurrentLifestyleNote();
         this.dietaryPurpose = patientType.getDietaryPurpose();
+        this.allergens = patientType.getAllergens();
+        this.unlikelyCategories = patientType.getUnlikelyCategories();
     }
 
     public String getId() {
@@ -141,5 +142,21 @@ public class MongoPatient {
 
     public void setMeasurements(List<MongoMeasurement> measurements) {
         this.measurements = measurements;
+    }
+
+    public Set<AllergensType> getAllergens() {
+        return allergens;
+    }
+
+    public void setAllergens(Set<AllergensType> allergens) {
+        this.allergens = allergens;
+    }
+
+    public Set<String> getUnlikelyCategories() {
+        return unlikelyCategories;
+    }
+
+    public void setUnlikelyCategories(Set<String> unlikelyCategories) {
+        this.unlikelyCategories = unlikelyCategories;
     }
 }

@@ -22,7 +22,7 @@ public class PsqlCategoryService {
 
     public Set<Long> findCategoryIdsByCategoryName(String categoryName) {
         Set<Long> categoryIdList = new HashSet<>();
-        List<PsqlCategory> categories = this.categoryRepository.findMongoCategoriesByCategory(categoryName);
+        List<PsqlCategory> categories = this.categoryRepository.findPsqlCategoriesByCategory(categoryName);
         for (PsqlCategory category : categories) {
             categoryIdList.add(category.getId());
         }
@@ -30,7 +30,7 @@ public class PsqlCategoryService {
     }
 
     public PsqlCategory findCategoryBySubcategoryName(String subcategory) {
-        return this.categoryRepository.findMongoCategoryBySubcategory(subcategory);
+        return this.categoryRepository.findPsqlCategoryBySubcategory(subcategory);
     }
 
     public PsqlCategory findCategory(ProductType productType) {
