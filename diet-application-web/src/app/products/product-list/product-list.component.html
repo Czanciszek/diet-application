@@ -8,6 +8,16 @@
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
+
+  <a href="../../../assets/Template.xlsx" download id="template_download" hidden></a>
+  <button mat-raised-button class="action-buttons" (click)="onDownloadTemplate()">
+    <mat-icon>download</mat-icon>Pobierz szablon
+  </button>
+
+  <input type="file" id="real_input" hidden="hidden" accept=".xlsx" />
+  <button id="button_upload" class="action-buttons" mat-raised-button (click)="onUploadFile()">
+    <mat-icon>upload_file</mat-icon>Importuj
+  </button>
 </div>
 
 <div class ="mat-elevation-z8">

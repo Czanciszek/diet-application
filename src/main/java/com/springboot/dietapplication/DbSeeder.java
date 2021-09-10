@@ -1,13 +1,7 @@
 package com.springboot.dietapplication;
 
-import com.springboot.dietapplication.model.mongo.product.MongoCategory;
-import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.excel.ProductExcel;
 import com.springboot.dietapplication.model.mongo.user.User;
-import com.springboot.dietapplication.model.psql.product.PsqlCategory;
-import com.springboot.dietapplication.model.psql.product.PsqlProduct;
-import com.springboot.dietapplication.model.psql.properties.PsqlFoodProperties;
-import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.repository.mongo.*;
 import com.springboot.dietapplication.repository.psql.*;
 import com.springboot.dietapplication.service.mongo.*;
@@ -29,6 +23,7 @@ public class DbSeeder implements CommandLineRunner {
     private final MongoProductRepository mongoProductRepository;
     private final MongoCategoryRepository categoryRepository;
 
+    private final MongoDataService mongoDataService;
     private final MongoMenuService mongoMenuService;
     private final MongoWeekMealService mongoWeekMealService;
     private final MongoDayMealService mongoDayMealService;
@@ -59,6 +54,8 @@ public class DbSeeder implements CommandLineRunner {
     PsqlMealRepository psqlMealRepository;
 
     @Autowired
+    PsqlDataService psqlDataService;
+    @Autowired
     PsqlMenuService psqlMenuService;
     @Autowired
     PsqlWeekMealService psqlWeekMealService;
@@ -72,6 +69,7 @@ public class DbSeeder implements CommandLineRunner {
     public DbSeeder(MongoUserRepository mongoUserRepository,
                     MongoProductRepository mongoProductRepository,
                     MongoCategoryRepository categoryRepository,
+                    MongoDataService mongoDataService,
                     MongoMenuService mongoMenuService,
                     MongoWeekMealService mongoWeekMealService,
                     MongoDayMealService mongoDayMealService,
@@ -80,6 +78,7 @@ public class DbSeeder implements CommandLineRunner {
         this.mongoUserRepository = mongoUserRepository;
         this.mongoProductRepository = mongoProductRepository;
         this.categoryRepository = categoryRepository;
+        this.mongoDataService = mongoDataService;
         this.mongoMenuService = mongoMenuService;
         this.mongoWeekMealService = mongoWeekMealService;
         this.mongoDayMealService = mongoDayMealService;
@@ -137,13 +136,13 @@ public class DbSeeder implements CommandLineRunner {
     private void createBackup(boolean mongo, boolean psql) {
         if (mongo) {
             checkTime("Create Mongo Backup - Start");
-            createMongoBackup();
+            mongoDataService.createBackup();
             checkTime("Create Mongo Backup - Finish");
         }
 
         if (psql) {
             checkTime("Create Psql Backup - Start");
-            createPsqlBackup();
+            psqlDataService.createBackup();
             checkTime("Create Psql Backup - Finish");
         }
     }
@@ -151,13 +150,13 @@ public class DbSeeder implements CommandLineRunner {
     private void restoreBackup(boolean mongo, boolean psql) {
         if (mongo) {
             checkTime("Restore Mongo Backup - Start");
-            restoreMongoBackup();
+            mongoDataService.restoreBackup();
             checkTime("Restore Mongo Backup - Finish");
         }
 
         if (psql) {
             checkTime("Restore Psql Backup - Start");
-            restorePsqlBackup();
+            psqlDataService.restoreBackup();
             checkTime("Restore Psql Backup - Finish");
         }
     }
@@ -165,13 +164,13 @@ public class DbSeeder implements CommandLineRunner {
     private void clearData(boolean mongo, boolean psql) {
         if (mongo) {
             checkTime("Clear Mongo - Start");
-            clearMongoDatabase();
+            mongoDataService.clearDatabase();
             checkTime("Clear Mongo - Finish");
         }
 
         if (psql) {
             checkTime("Clear PSQL - Start");
-            clearPsqlDatabase();
+            psqlDataService.clearDatabase();
             checkTime("Clear PSQL - Finish");
         }
     }
@@ -179,13 +178,13 @@ public class DbSeeder implements CommandLineRunner {
     private void insertData(List<ProductExcel> productExcelList, boolean mongo, boolean psql) {
         if (mongo) {
             checkTime("Save to Mongo - Start");
-            saveProductsToMongoDb(productExcelList);
+            mongoDataService.saveProducts(productExcelList);
             checkTime("Save to Mongo - Finish");
         }
 
         if (psql) {
             checkTime("Save to PSQL - Start");
-            saveProductsToPsqlDb(productExcelList);
+            psqlDataService.saveProducts(productExcelList);
             checkTime("Save to PSQL - Finish");
         }
     }
@@ -249,140 +248,4 @@ public class DbSeeder implements CommandLineRunner {
         return productExcelList;
     }
 
-    private void saveProductsToMongoDb(List<ProductExcel> importedProducts) {
-        List<MongoProduct> products = new ArrayList<>();
-        for (ProductExcel productExcel : importedProducts) {
-            MongoProduct product = new MongoProduct(productExcel);
-
-            FoodPropertiesType foodProperties = new FoodPropertiesType(productExcel);
-            product.setFoodProperties(foodProperties);
-
-            MongoCategory category = new MongoCategory(
-                    productExcel.getCategory(),
-                    productExcel.getSubcategory()
-            );
-
-            MongoCategory actualCategory =
-                    this.categoryRepository.getCategoryByCategoryAndSubcategory(
-                            category.getCategory(),
-                            category.getSubcategory());
-            if (actualCategory != null && actualCategory.getId() != null) {
-                category.setId(actualCategory.getId());
-            } else {
-                this.categoryRepository.save(category);
-            }
-
-            product.setCategoryId(category.getId());
-            products.add(product);
-        }
-
-        this.mongoProductRepository.saveAll(products);
-    }
-
-    private void saveProductsToPsqlDb(List<ProductExcel> importedProducts) {
-        List<PsqlProduct> products = new ArrayList<>();
-        for (ProductExcel productExcel : importedProducts) {
-            PsqlProduct psqlProduct = new PsqlProduct(productExcel);
-
-            PsqlFoodProperties foodProperties = new PsqlFoodProperties(productExcel);
-            PSQLFoodPropertiesRepository.save(foodProperties);
-
-            PsqlCategory category = new PsqlCategory(
-                    productExcel.getCategory(),
-                    productExcel.getSubcategory()
-            );
-
-            PsqlCategory actualCategory =
-                    this.PSQLCategoryRepository.getCategoryByCategoryAndSubcategory(
-                            category.getCategory(),
-                            category.getSubcategory());
-            if (actualCategory != null && actualCategory.getCategory() != null) {
-                category.setId(actualCategory.getId());
-            } else {
-                this.PSQLCategoryRepository.save(category);
-            }
-
-            psqlProduct.setCategoryId(category.getId());
-            psqlProduct.setFoodPropertiesId(foodProperties.getId());
-
-            products.add(psqlProduct);
-        }
-
-        PSQLProductRepository.saveAll(products);
-    }
-
-    private void clearMongoDatabase() {
-        this.categoryRepository.deleteAll();
-        this.mongoProductRepository.deleteAll();
-    }
-
-    private void clearPsqlDatabase() {
-        this.PSQLProductRepository.truncate();
-        this.PSQLFoodPropertiesRepository.truncate();
-        this.PSQLCategoryRepository.truncate();
-    }
-
-    private void createMongoBackup() {
-        try {
-            List<String> command = Arrays.asList(
-                    "mongodump.exe",
-                    "--db", "DietAppDb");
-
-            Process process = new ProcessBuilder(command).start();
-            process.waitFor();
-            process.destroy();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void restoreMongoBackup() {
-        try {
-            List<String> command = Arrays.asList(
-                    "mongorestore.exe",
-                    "--db", "DietAppDb",
-                    "dump/DietAppDb/Products.bson");
-
-            Process process = new ProcessBuilder(command).start();
-            process.waitFor();
-            process.destroy();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void createPsqlBackup() {
-        try {
-            List<String> command = Arrays.asList(
-                    "\"C:/Program Files/PostgreSQL/11/bin/pg_dump\"",
-                    "--dbname=postgresql://postgres:postgres@127.0.0.1:5432/DietApp",
-                    "--file", "\"dump/psqlDump.bak\""
-            );
-
-            Process process = new ProcessBuilder(command).start();
-            process.waitFor();
-            process.destroy();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void restorePsqlBackup() {
-        try {
-            List<String> command = Arrays.asList(
-                    "\"C:/Program Files/PostgreSQL/11/bin/psql\"",
-                    "-f", "\"dump/psqlDump.bak\"",
-                    "--verbose",
-                    "--dbname=postgresql://postgres:postgres@127.0.0.1:5432/DietApp"
-            );
-
-            Process process = new ProcessBuilder(command).start();
-            process.waitFor();
-            process.destroy();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

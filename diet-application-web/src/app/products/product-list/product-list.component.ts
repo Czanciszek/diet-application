@@ -6,6 +6,7 @@ import {ProductComponent} from "../product/product.component";
 import {NotificationService} from "../../service/notification.service";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
+import {FileService} from "../../service/file.service";
 
 @Component({
   selector: 'app-product-list',
@@ -16,6 +17,7 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private service: ProductService,
+    private fileService: FileService,
     private dialog: MatDialog,
     private notificationService: NotificationService
   ) { }
@@ -29,6 +31,8 @@ export class ProductListComponent implements OnInit {
   searchKey: string;
 
   ngOnInit(): void {
+    this.setUploadButton();
+
     this.service.getProducts().subscribe(
       list => {
         let array = list.map(item => {
@@ -84,4 +88,32 @@ export class ProductListComponent implements OnInit {
       this.notificationService.warn(":: Deleted succesfully! ::");
     }
   }
+
+  onDownloadTemplate() {
+    document.getElementById('template_download').click();
+  }
+
+  onUploadFile(file: File) {
+    if (file != null) {
+      this.fileService.uploadFile(file).subscribe();
+    }
+  }
+
+  setUploadButton() {
+    const realFileBtn =  (<HTMLInputElement>document.getElementById('real_input'));
+    const uploadBtn = document.getElementById('button_upload');
+
+    uploadBtn.addEventListener("click", function() {
+      realFileBtn.click();
+    });
+
+    realFileBtn.addEventListener('change', (event) => {
+      const files = (<HTMLInputElement>event.target).files;
+      if (files.length > 0) {
+        this.onUploadFile(files[0]);
+      }
+      realFileBtn.value = '';
+    });
+  }
+
 }

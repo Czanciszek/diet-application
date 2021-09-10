@@ -13,9 +13,13 @@ mat-footer-row mat-footer-cell {
   margin: 10px;
 }
 
+.action-buttons {
+  margin: 5px;
+}
+
 .search-form-field {
   width: 60%;
-  margin-left: 10px;
+  margin-left: 5px;
   padding: 5px 10px;
   background-color: #f5f5f5;
   border-radius: 5px;
