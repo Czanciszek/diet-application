@@ -16,7 +16,6 @@ public class PatientType {
     private String numberPhone;
     private String email;
     private boolean sex;
-    private float bodyWeight;
     private int bodyHeight;
 
     //Private notes about patient
@@ -113,14 +112,6 @@ public class PatientType {
 
     public void setSex(boolean sex) {
         this.sex = sex;
-    }
-
-    public float getBodyWeight() {
-        return bodyWeight;
-    }
-
-    public void setBodyWeight(float bodyWeight) {
-        this.bodyWeight = bodyWeight;
     }
 
     public int getBodyHeight() {

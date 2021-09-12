@@ -43,7 +43,6 @@ export class PatientListComponent implements OnInit {
             numberPhone: item.numberPhone,
             email: item.email,
             sex: item.sex,
-            bodyWeight: item.bodyWeight,
             bodyHeight: item.bodyHeight,
             currentLifestyleNote: item.currentLifestyleNote,
             changedLifestyleNote: item.changedLifestyleNote,

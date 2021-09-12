@@ -8,7 +8,7 @@
 </div>
 
 <form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
-  <mat-grid-list cols="4" rowHeight="70px">
+  <mat-grid-list cols="3" rowHeight="70px">
     <mat-grid-tile>
       <div class="control-container">
         <div class="add-bottom-padding">
@@ -39,11 +39,13 @@
         </div>
       </div>
     </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="3" rowHeight="70px">
     <mat-grid-tile>
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field class="example-full-width">
-            <mat-label>Rok urodzenia*</mat-label>
+            <mat-label>Data urodzenia*</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="birthDate">
             <mat-datepicker-toggle matSuffix [for]="picker">
               <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -54,8 +56,6 @@
         </div>
       </div>
     </mat-grid-tile>
-  </mat-grid-list>
-  <mat-grid-list cols="4" rowHeight="70px">
     <mat-grid-tile>
       <div class="control-container">
         <div class="add-bottom-padding">
@@ -66,15 +66,6 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <mat-form-field>
-            <input formControlName="bodyWeight" matInput placeholder="Waga (kg)">
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="2">
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-radio-group matInput formControlName="sex">
