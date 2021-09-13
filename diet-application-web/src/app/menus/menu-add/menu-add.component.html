@@ -13,13 +13,11 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field>
-            <mat-label>Początek diety*</mat-label>
-            <input matInput [matDatepickerFilter]="onlyMonday" [matDatepicker]="picker" formControlName="startDate" >
-            <mat-datepicker-toggle matSuffix [for]="picker" >
-              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #picker startView="month"></mat-datepicker>
-            <mat-error *ngIf="service.form.controls['startDate'].errors?.required">Wprowadź poprawny format daty</mat-error>
+              <mat-select matInput placeholder="Typy posiłków*" formControlName="foodTypes" multiple>
+                <ng-container *ngFor="let foodType of foodTypes">
+                  <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
+                </ng-container>
+              </mat-select>
           </mat-form-field>
         </div>
       </div>
@@ -28,11 +26,13 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field>
-              <mat-select matInput placeholder="Typy posiłków*" formControlName="foodTypes" multiple>
-                <ng-container *ngFor="let foodType of foodTypes">
-                  <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
-                </ng-container>
-              </mat-select>
+            <mat-label>Początek diety*</mat-label>
+            <input matInput [matDatepickerFilter]="onlyMonday" [matDatepicker]="picker" formControlName="startDate" >
+            <mat-datepicker-toggle matSuffix [for]="picker" >
+              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker startView="month"></mat-datepicker>
+            <mat-error *ngIf="service.form.controls['startDate'].errors?.required">Wprowadź poprawny format daty</mat-error>
           </mat-form-field>
         </div>
       </div>
