@@ -18,3 +18,8 @@
 .column {
   width: 25%;
 }
+
+.summary {
+  background-color: white;
+  margin: 10px;
+}

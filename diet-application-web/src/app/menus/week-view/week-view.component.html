@@ -33,7 +33,12 @@
 
   <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%">
     <div fxFlex="14%" *ngFor="let day of dayMealListItemData">
-      {{getFoodPropertiesDaySummary(day)}}
+      <div class ="summary">
+        <p>{{getFoodPropertiesDaySummary(day, "energyValue")}}</p>
+        <p>{{getFoodPropertiesDaySummary(day, "proteins")}}</p>
+        <p>{{getFoodPropertiesDaySummary(day, "fats")}}</p>
+        <p>{{getFoodPropertiesDaySummary(day, "carbohydrates")}}</p>
+      </div>
     </div>
   </div>
 </div>

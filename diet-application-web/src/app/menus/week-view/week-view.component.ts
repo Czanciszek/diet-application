@@ -135,64 +135,57 @@ export class WeekViewComponent implements OnInit {
     this.getWeekMealDetails(this.weekMealItemData.id);
   }
 
-  getFoodPropertiesDaySummary(day: DayMeal) {
+  getFoodPropertiesDaySummary(day: DayMeal, property: string) {
     if (day.mealList == null)
-      return "";
+      return this.setLimitStatus(0, property);
+
     let dayMeals = day.mealList;
     let meals = this.mealListItemData.filter( meal => {
       return dayMeals.includes(meal.id);
     });
 
-    return this.getFoodProperties(meals);
+    return this.getFoodProperties(meals, property);
   }
 
-  getFoodProperties(meals: Meal[]) {
-    let grams = 0;
-    let energy = 0;
-    let proteins = 0;
-    let fats = 0;
-    let carbohydrates = 0;
+  getFoodProperties(meals: Meal[], property: string) {
 
+    let value = 0;
     for (let meal of meals) {
       let isProduct = (meal.isProduct == 1);
 
       for (let product of meal.productList) {
-        grams = product.grams;
+        let grams = product.grams;
 
         if (this.productService.menuProductMap[product.productId] == null) {
           continue;
         }
         let foodProperties = this.productService.menuProductMap[product.productId].foodProperties;
-
-        let productEnergy = (foodProperties.energyValue * grams) / 100;
-        let productProteins = (foodProperties.proteins * grams) / 100;
-        let productFats = (foodProperties.fats * grams) / 100;
-        let productCarbohydrates = (foodProperties.carbohydrates * grams) / 100;
-
+        let productValue = (foodProperties[property] * grams) / 100;
         if (!isProduct) {
-          let portions = meal.portions;
-          productEnergy /= portions;
-          productProteins /= portions;
-          productFats /= portions;
-          productCarbohydrates /= portions;
+          productValue /= meal.portions;
         }
 
-        energy += productEnergy;
-        proteins += productProteins;
-        fats += productFats;
-        carbohydrates += productCarbohydrates;
+        value += productValue;
       }
     }
 
-    let energyLimit = this.menuItemData.foodPropertiesType.energyValue;
-    let proteinsLimit = this.menuItemData.foodPropertiesType.proteins;
-    let fatsLimit = this.menuItemData.foodPropertiesType.fats;
-    let carbohydratesLimit = this.menuItemData.foodPropertiesType.carbohydrates;
+    return this.setLimitStatus(value, property);
+  }
 
-    return "Kcal: " + energy.toFixed(2) + "/" + energyLimit.toFixed(2) +
-      "    B: " + proteins.toFixed(2) + "/" + proteinsLimit.toFixed(2) + "g" +
-      "    T: " + fats.toFixed(2) + "/" + fatsLimit.toFixed(2) + "g" +
-      "    W: " + carbohydrates.toFixed(2) + "/" + carbohydratesLimit.toFixed(2) + "g";
+  setLimitStatus(value: number, property: string) {
+    if (property == "energyValue") {
+      let energyLimit = this.menuItemData.foodPropertiesType.energyValue;
+      return "Kcal: " + value.toFixed(2) + "/" + energyLimit.toFixed(2);
+    } else if (property == "proteins") {
+      let proteinsLimit = this.menuItemData.foodPropertiesType.proteins;
+      return "B: " + value.toFixed(2) + "/" + proteinsLimit.toFixed(2);
+    } else if (property == "fats") {
+      let fatsLimit = this.menuItemData.foodPropertiesType.fats;
+      return "T: " + value.toFixed(2) + "/" + fatsLimit.toFixed(2);
+    } else if (property == "carbohydrates") {
+      let carbohydratesLimit = this.menuItemData.foodPropertiesType.carbohydrates;
+      return "W: " + value.toFixed(2) + "/" + carbohydratesLimit.toFixed(2);
+    }
   }
 
 }
