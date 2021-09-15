@@ -24,6 +24,16 @@ export class DishListComponent implements OnInit {
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'portions', 'foodType', 'actions'];
 
+  foodTypes = [
+    { id: "BREAKFEST", value: "Śniadanie" },
+    { id: "BRUNCH", value: "II śniadanie" },
+    { id: "DINNER", value: "Obiad" },
+    { id: "TEA", value: "Podwieczorek"},
+    { id: "SUPPER", value: "Kolacja" },
+    { id: "PRE_WORKOUT", value: "Przedtreningówka" },
+    { id: "POST_WORKOUT", value: "Potreningówka"},
+  ];
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey: string;
@@ -88,5 +98,10 @@ export class DishListComponent implements OnInit {
       this.notificationService.warn(":: Deleted succesfully! ::");
       this.ngOnInit();
     }
+  }
+
+  getFoodType(foodTypeId) {
+    let foodType = this.foodTypes.filter(x => x.id == foodTypeId);
+    return foodType[0].value;
   }
 }
