@@ -21,7 +21,6 @@ public class PsqlMenuService {
     private final PsqlFoodTypeRepository foodTypeRepository;
     private final PsqlFoodTypeMenuRepository foodTypeMenuRepository;
 
-    private final PsqlMeasurementService measurementService;
     private final PsqlPatientService patientService;
     private final PsqlFoodPropertiesService foodPropertiesService;
     private final PsqlWeekMealService weekMealService;
@@ -30,7 +29,6 @@ public class PsqlMenuService {
     public PsqlMenuService(PsqlMenuRepository menuRepository,
                            PsqlFoodTypeRepository foodTypeRepository,
                            PsqlFoodTypeMenuRepository foodTypeMenuRepository,
-                           PsqlMeasurementService measurementService,
                            PsqlPatientService patientService,
                            PsqlFoodPropertiesService foodPropertiesService,
                            PsqlWeekMealService weekMealService,
@@ -38,7 +36,6 @@ public class PsqlMenuService {
         this.menuRepository = menuRepository;
         this.foodTypeRepository = foodTypeRepository;
         this.foodTypeMenuRepository = foodTypeMenuRepository;
-        this.measurementService = measurementService;
         this.patientService = patientService;
         this.foodPropertiesService = foodPropertiesService;
         this.weekMealService = weekMealService;
@@ -67,12 +64,11 @@ public class PsqlMenuService {
         DateTime endDate = dateTime.plusWeeks(menuSendingType.getWeekCount()).minusDays(1);
         menu.setEndDate(endDate.toString());
 
-        MeasurementType measurement = this.measurementService.getMeasurementById(menu.getMeasurementId());
         PatientType patient = this.patientService.getPatientById(menu.getPatientId());
 
         FoodPropertiesType foodPropertiesType = FoodPropertiesHelper.calculateFoodPropertiesLimit(
                 patient,
-                measurement.getBodyWeight(),
+                menuSendingType.getPatientWeight(),
                 menu.getActivityLevel()
         );
 

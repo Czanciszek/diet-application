@@ -20,18 +20,15 @@ public class MongoMenuService {
 
     private final MongoWeekMealService weekMealService;
     private final MongoDayMealService dayMealService;
-    private final MongoMeasurementService measurementService;
     private final MongoPatientService patientService;
 
     public MongoMenuService(MongoMenuRepository menuRepository,
                             MongoWeekMealService weekMealService,
                             MongoDayMealService dayMealService,
-                            MongoMeasurementService measurementService,
                             MongoPatientService patientService) {
         this.menuRepository = menuRepository;
         this.weekMealService = weekMealService;
         this.dayMealService = dayMealService;
-        this.measurementService = measurementService;
         this.patientService = patientService;
     }
 
@@ -58,12 +55,11 @@ public class MongoMenuService {
         DateTime endDate = dateTime.plusWeeks(menuSendingType.getWeekCount()).minusDays(1);
         menu.setEndDate(endDate.toString());
 
-        MeasurementType measurement = this.measurementService.getMeasurementById(menu.getMeasurementId());
         PatientType patient = this.patientService.getPatientById(menuSendingType.getPatientId());
 
         FoodPropertiesType foodPropertiesType = FoodPropertiesHelper.calculateFoodPropertiesLimit(
                 patient,
-                measurement.getBodyWeight(),
+                menuSendingType.getPatientWeight(),
                 menu.getActivityLevel()
         );
 

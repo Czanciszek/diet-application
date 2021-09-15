@@ -14,7 +14,9 @@ public class MongoMenu {
 
     private String patientId; // Ref - Dane pacjenta
 
-    private String measurementId; // Ref - Dane pomiarowe
+    private String measurementDate; // Data pomiaru
+
+    private float patientWeight; // Waga pacjenta z pomiaru
 
     private List<String> weekMealList; // Lista odnośników do tygodniowych jadłospisów
 
@@ -36,7 +38,8 @@ public class MongoMenu {
         this.startDate = menuSendingType.getStartDate();
         this.foodTypes = menuSendingType.getFoodTypes();
         this.activityLevel = menuSendingType.getActivityLevel();
-        this.measurementId = menuSendingType.getMeasurementId();
+        this.measurementDate = menuSendingType.getMeasurementDate();
+        this.patientWeight = menuSendingType.getPatientWeight();
         this.patientId = menuSendingType.getPatientId();
     }
 
@@ -56,12 +59,20 @@ public class MongoMenu {
         this.patientId = patientId;
     }
 
-    public String getMeasurementId() {
-        return measurementId;
+    public String getMeasurementDate() {
+        return measurementDate;
     }
 
-    public void setMeasurementId(String measurementId) {
-        this.measurementId = measurementId;
+    public void setMeasurementDate(String measurementDate) {
+        this.measurementDate = measurementDate;
+    }
+
+    public float getPatientWeight() {
+        return patientWeight;
+    }
+
+    public void setPatientWeight(float patientWeight) {
+        this.patientWeight = patientWeight;
     }
 
     public List<String> getWeekMealList() {

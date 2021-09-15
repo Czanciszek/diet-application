@@ -76,14 +76,16 @@ export class MenuListComponent implements OnInit {
     this.measurements.push({measurementId: measurement.id, measurementDate: date});
   }
 
-  getMeasurementDate(measurement) {
-    if (measurement != null) {
-      let filtered = this.measurements.find(ms => ms.measurementId == measurement.id);
-      if (filtered != null) {
-        return filtered.measurementDate;
-      }
+  getMeasurementDate(element) {
+    let measurement = "";
+    if (element.measurementDate == null || element.measurementDate.isEmpty) {
+      return "Nie wybrano";
     }
-    return "Nie wybrano";
+    measurement = element.measurementDate;
+    if (element.patientWeight != null && !element.patientWeight.isEmpty) {
+      measurement += " - " + element.patientWeight + "kg";
+    }
+    return measurement;
   }
 
   dateTimeParser(menu) {

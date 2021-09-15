@@ -24,7 +24,8 @@ export class MenuService {
     id: new FormControl(null),
     weekCount: new FormControl('', [Validators.required, Validators.min(1), Validators.max(8)]),
     foodTypes: new FormControl(null),
-    measurementId: new FormControl(null),
+    measurementDate: new FormControl(null),
+    patientWeight: new FormControl(null),
     patientId: new FormControl(null),
     startDate: new FormControl('', [Validators.required]),
     activityLevel: new FormControl('', [Validators.required, Validators.min(1.1), Validators.max(2)]),
@@ -33,7 +34,8 @@ export class MenuService {
   initializeFormGroup() {
     this.form.setValue({
       id: null,
-      measurementId: null,
+      measurementDate: null,
+      patientWeight: null,
       patientId: null,
       weekCount: 1,
       foodTypes: null,

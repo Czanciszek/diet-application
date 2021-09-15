@@ -10,7 +10,9 @@ public class MenuSendingType {
 
     private List<FoodType> foodTypes;
 
-    private String measurementId;
+    private String measurementDate;
+
+    private float patientWeight;
 
     private String patientId;
 
@@ -25,14 +27,16 @@ public class MenuSendingType {
     public MenuSendingType(String id,
                            String startDate,
                            List<FoodType> foodTypes,
-                           String measurementId,
+                           String measurementDate,
+                           float patientWeight,
                            String patientId,
                            int weekCount,
                            float activityLevel) {
         this.id = id;
         this.startDate = startDate;
         this.foodTypes = foodTypes;
-        this.measurementId = measurementId;
+        this.measurementDate = measurementDate;
+        this.patientWeight = patientWeight;
         this.patientId = patientId;
         this.weekCount = weekCount;
         this.activityLevel = activityLevel;
@@ -62,12 +66,20 @@ public class MenuSendingType {
         this.foodTypes = foodTypes;
     }
 
-    public String getMeasurementId() {
-        return measurementId;
+    public String getMeasurementDate() {
+        return measurementDate;
     }
 
-    public void setMeasurementId(String measurementId) {
-        this.measurementId = measurementId;
+    public void setMeasurementDate(String measurementDate) {
+        this.measurementDate = measurementDate;
+    }
+
+    public float getPatientWeight() {
+        return patientWeight;
+    }
+
+    public void setPatientWeight(float patientWeight) {
+        this.patientWeight = patientWeight;
     }
 
     public String getPatientId() {

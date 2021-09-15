@@ -42,19 +42,21 @@
         && column != 'name' && column != 'patientId' && column != 'primaryImageId'
         ">
         <mat-grid-list cols="{{listData.data.length+3}}" rowHeight="65px">
-          <mat-grid-tile colspan="2">
-            <div class="control-container">
-              <div class="add-bottom-padding">
+          <div> <!-- Check whenever sex and measurement type pass together this.patientService.form.value.sex -->
+            <mat-grid-tile colspan="2">
+              <div class="control-container">
+                <div class="add-bottom-padding">
                   {{service.measurementKeywords.get(column)}}:
+                </div>
               </div>
-            </div>
-          </mat-grid-tile>
+            </mat-grid-tile>
             <div *ngFor="let user of listData.data; index as i;">
               <mat-grid-tile>
                 <div class="control-container">
                   <span>{{user[column]}}</span>
                 </div>
               </mat-grid-tile>
+            </div>
           </div>
 
           <mat-grid-tile>
@@ -74,7 +76,7 @@
                   </ng-template>
                   <ng-template #otherBlock>
                     <mat-form-field>
-                      <input matInput formControlName="{{column}}" matInput placeholder="{{service.measurementKeywords.get(column)}}">
+                      <input matInput formControlName="{{column}}" placeholder="{{service.measurementKeywords.get(column)}}">
                     </mat-form-field>
                   </ng-template>
 

@@ -67,9 +67,9 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field>
-              <mat-select matInput placeholder="Data pomiaru" formControlName="measurementId">
+              <mat-select matInput placeholder="Data pomiaru" formControlName="measurementDate">
                 <ng-container *ngFor="let date of getMeasurementDates()">
-                  <mat-option value="{{date.id}}">{{date.value}}</mat-option>
+                  <mat-option value="{{date.date}}&{{date.weight}}">{{date.date}} - {{date.weight}}kg</mat-option>
                 </ng-container>
               </mat-select>
           </mat-form-field>

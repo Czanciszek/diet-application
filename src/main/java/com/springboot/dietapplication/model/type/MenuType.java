@@ -13,7 +13,9 @@ public class MenuType {
 
     private String patientId; // Ref - Dane pacjenta
 
-    private String measurementId; // Ref - Dane pomiarowe
+    private String measurementDate; // Data pomiaru
+
+    private float patientWeight;
 
     private List<String> weekMealList; // Lista odnośników do tygodniowych jadłospisów
 
@@ -31,18 +33,11 @@ public class MenuType {
 
     }
 
-    public MenuType(MenuSendingType menuSendingType) {
-        this.startDate = menuSendingType.getStartDate();
-        this.foodTypes = menuSendingType.getFoodTypes();
-        this.activityLevel = menuSendingType.getActivityLevel();
-        this.measurementId = menuSendingType.getMeasurementId();
-        this.patientId = menuSendingType.getPatientId();
-    }
-
     public MenuType(MongoMenu menu) {
         this.id = menu.getId();
         this.patientId = menu.getPatientId();
-        this.measurementId = menu.getMeasurementId();
+        this.measurementDate = menu.getMeasurementDate();
+        this.patientWeight = menu.getPatientWeight();
         this.weekMealList = menu.getWeekMealList();
         this.foodTypes = menu.getFoodTypes();
         this.startDate = menu.getStartDate();
@@ -56,8 +51,8 @@ public class MenuType {
             this.id = String.valueOf(menu.getId());
         if (menu.getPatientId() > 0)
             this.patientId = String.valueOf(menu.getPatientId());
-        if (menu.getMeasurementId() > 0)
-            this.measurementId = String.valueOf(menu.getMeasurementId());
+        this.measurementDate = menu.getMeasurementDate();
+        this.patientWeight = menu.getPatientWeight();
         this.startDate = menu.getStartDate();
         this.endDate = menu.getEndDate();
         this.activityLevel = menu.getActivityLevel();
@@ -79,12 +74,20 @@ public class MenuType {
         this.patientId = patientId;
     }
 
-    public String getMeasurementId() {
-        return measurementId;
+    public String getMeasurementDate() {
+        return measurementDate;
     }
 
-    public void setMeasurementId(String measurementId) {
-        this.measurementId = measurementId;
+    public void setMeasurementDate(String measurementDate) {
+        this.measurementDate = measurementDate;
+    }
+
+    public float getPatientWeight() {
+        return patientWeight;
+    }
+
+    public void setPatientWeight(float patientWeight) {
+        this.patientWeight = patientWeight;
     }
 
     public List<String> getWeekMealList() {

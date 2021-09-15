@@ -1,10 +1,10 @@
 <div class="panel-div">
   <button mat-raised-button (click)="onCreate()">
-    <mat-icon>add</mat-icon>Nowy
+    <mat-icon>add</mat-icon>Nowy jadłospis
   </button>
 </div>
 
-<div class ="mat-elevation-z8">
+<div class ="mat-elevation-z8 menu-list">
   <mat-table [dataSource]="listData" matSort>
     <ng-container matColumnDef="dateRange">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Zakres dat</mat-header-cell>
@@ -15,8 +15,8 @@
       <mat-cell *matCellDef="let element">{{weekCount(element.weekMealList.length)}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="measurementDate">
-      <mat-header-cell *matHeaderCellDef  mat-sort-header>Data pomiaru</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{getMeasurementDate(element.measurementId)}}</mat-cell>
+      <mat-header-cell *matHeaderCellDef  mat-sort-header>Pomiar</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{getMeasurementDate(element)}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>

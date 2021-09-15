@@ -1,21 +1,15 @@
 
 
 <div class="container">
-  <mat-card class="example-card">
+  <mat-card class="patient-card">
     <mat-card-header>
-      <mat-card-title>{{service.form.controls['name'].value}}</mat-card-title>
-      <mat-card-subtitle>{{service.form.controls['email'].value}}</mat-card-subtitle>
-      <mat-card-subtitle>{{service.form.controls['numberPhone'].value}}</mat-card-subtitle>
-      <div *ngIf="service.form.controls['sex'].value; then womanBlock else manBlock"></div>
-      <ng-template #womanBlock>
-        <mat-card-subtitle>Kobieta</mat-card-subtitle>
-      </ng-template>
-      <ng-template #manBlock>
-        <mat-card-subtitle>Mężczyzna</mat-card-subtitle>
-      </ng-template>
+      <mat-card-title>Imię i nazwisko: {{service.form.controls['name'].value}}</mat-card-title>
+      <mat-card-subtitle>Adres e-mail: {{service.form.controls['email'].value}}</mat-card-subtitle>
+      <mat-card-subtitle>Nr kontaktowy: {{service.form.controls['numberPhone'].value}}</mat-card-subtitle>
 
     </mat-card-header>
     <mat-card-content>
+      <h3>Cel dietetyczny:</h3>
       <p>
         {{service.form.controls['dietaryPurpose'].value}}
       </p>

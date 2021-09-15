@@ -7,10 +7,15 @@ mat-footer-row mat-footer-cell {
   font-style: italic;
 }
 
-
-/* Filter controls */
 .panel-div {
-  margin: 10px auto;
+  margin-top: 20px;
+  margin-left: 10vh;
+  margin-bottom: 10px;
+}
+
+.menu-list {
+  width: 80%;
+  margin-left: 10vh;
 }
 
 .search-form-field {

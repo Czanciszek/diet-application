@@ -16,11 +16,14 @@ public class PsqlMenu implements Serializable {
     @Column(name = "patient_id")
     private long patientId;
 
-    @Column(name = "measurement_id")
-    private long measurementId;
-
     @Column(name = "food_properties_id")
     private long foodPropertiesId;
+
+    @Column(name = "measurement_date")
+    private String measurementDate;
+
+    @Column(name = "patient_weight")
+    private float patientWeight;
 
     @Column(name = "start_date")
     private String startDate;
@@ -38,7 +41,8 @@ public class PsqlMenu implements Serializable {
     public PsqlMenu(MenuSendingType menuSendingType) {
         this.startDate = menuSendingType.getStartDate();
         this.activityLevel = menuSendingType.getActivityLevel();
-        this.measurementId = Long.parseLong(menuSendingType.getMeasurementId());
+        this.measurementDate = menuSendingType.getMeasurementDate();
+        this.patientWeight = menuSendingType.getPatientWeight();
         this.patientId = Long.parseLong(menuSendingType.getPatientId());
     }
 
@@ -58,12 +62,20 @@ public class PsqlMenu implements Serializable {
         this.patientId = patientId;
     }
 
-    public long getMeasurementId() {
-        return measurementId;
+    public String getMeasurementDate() {
+        return measurementDate;
     }
 
-    public void setMeasurementId(long measurementId) {
-        this.measurementId = measurementId;
+    public void setMeasurementDate(String measurementDate) {
+        this.measurementDate = measurementDate;
+    }
+
+    public float getPatientWeight() {
+        return patientWeight;
+    }
+
+    public void setPatientWeight(float patientWeight) {
+        this.patientWeight = patientWeight;
     }
 
     public long getFoodPropertiesId() {

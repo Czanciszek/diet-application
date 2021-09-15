@@ -70,10 +70,11 @@ export class MenuAddComponent implements OnInit {
     if (measurementList != null) {
       for (let index in measurementList) {
         if (measurementList[index].measurementDate != null) {
+          const patientWeight = measurementList[index].bodyWeight;
           const dateFormat = new Date(measurementList[index].measurementDate);
           const dateString = dateFormat.getDate() + "/"
             + (dateFormat.getMonth() + 1) + "/" + dateFormat.getFullYear();
-          this.measurementDates.push({ id: measurementList[index].id, value: dateString });
+          this.measurementDates.push({ id: measurementList[index].id, date: dateString, weight: patientWeight });
         }
       }
     }
@@ -85,7 +86,16 @@ export class MenuAddComponent implements OnInit {
 
   onSubmit() {
     if (this.service.form.valid) {
+      let dateWeight = this.service.form.get("measurementDate").value.split("&");
+      let date = dateWeight[0];
+      let weight = dateWeight[1];
+
+
       this.service.form.get("patientId").setValue(this.currentPatientId);
+      this.service.form.get("measurementDate").setValue(date);
+      this.service.form.get("patientWeight").setValue(weight);
+
+      console.log("AAA", this.service.form.value);
 
       if (!this.service.form.get('id').value) {
         this.service.insertMenu(this.service.form.value).subscribe();
