@@ -6,6 +6,8 @@ import {FormArray} from "@angular/forms";
 import {ProductSelectComponent} from "../../products/product-select/product-select.component";
 import {ProductService} from "../../service/product.service";
 import {Dish} from "../../model/dish";
+import {FOOD_TYPES} from "../../model/helpers/foodTypes";
+import {AMOUNT_TYPES} from "../../model/helpers/amountTypes";
 
 @Component({
   selector: 'app-dish',
@@ -22,25 +24,8 @@ export class DishComponent implements OnInit {
     public dialogRef: MatDialogRef<DishComponent>
   ) { }
 
-  amountTypes = [
-    { id: "PIECE", value: "Sztuka" },
-    { id: "SPOON", value: "Łyżka" },
-    { id: "SCOOPS", value: "Miarka" },
-    { id: "HANDFUL", value: "Garść" },
-    { id: "SLICE", value: "Plaster" },
-    { id: "LEAVES", value: "Listek" },
-    { id: "GLASS", value: "Szklanka" },
-  ];
-
-  foodTypes = [
-    { id: "BREAKFEST", value: "Śniadanie" },
-    { id: "BRUNCH", value: "II śniadanie" },
-    { id: "DINNER", value: "Obiad" },
-    { id: "TEA", value: "Podwieczorek"},
-    { id: "SUPPER", value: "Kolacja" },
-    { id: "PRE_WORKOUT", value: "Przedtreningówka" },
-    { id: "POST_WORKOUT", value: "Potreningówka"},
-  ];
+  amountTypes = AMOUNT_TYPES;
+  foodTypes = FOOD_TYPES;
 
   ngOnInit(): void {
     if (this.service.form.get('id').value) {

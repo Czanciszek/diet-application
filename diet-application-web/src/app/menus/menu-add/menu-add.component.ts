@@ -4,8 +4,8 @@ import {MatDialogRef} from "@angular/material/dialog";
 import {MenuService} from "../../service/menu.service";
 import {MeasurementService} from "../../service/measurement.service";
 import {Measurement} from "../../model/measurement";
-import {GlobalVariable} from "../../global";
 import {PatientService} from "../../service/patient.service";
+import {FOOD_TYPES} from "../../model/helpers/foodTypes";
 
 @Component({
   selector: 'app-menu-add',
@@ -22,15 +22,7 @@ export class MenuAddComponent implements OnInit {
     public dialogRef: MatDialogRef<MenuAddComponent>
   ) { }
 
-  foodTypes = [
-    { id: "BREAKFEST", value: "Śniadanie" },
-    { id: "BRUNCH", value: "II śniadanie" },
-    { id: "DINNER", value: "Obiad" },
-    { id: "TEA", value: "Podwieczorek"},
-    { id: "SUPPER", value: "Kolacja" },
-    { id: "PRE_WORKOUT", value: "Przedtreningówka" },
-    { id: "POST_WORKOUT", value: "Potreningówka"},
-  ];
+  foodTypes = FOOD_TYPES;
 
   measurementDates = [];
 

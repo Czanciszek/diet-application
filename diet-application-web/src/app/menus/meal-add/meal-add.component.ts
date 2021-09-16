@@ -7,6 +7,8 @@ import {FormArray} from "@angular/forms";
 import {MenuService} from "../../service/menu.service";
 import {DishSelectComponent} from "../../dishes/dish-select/dish-select.component";
 import {ProductService} from "../../service/product.service";
+import {FOOD_TYPES} from "../../model/helpers/foodTypes";
+import {AMOUNT_TYPES} from "../../model/helpers/amountTypes";
 
 @Component({
   selector: 'app-meal-add',
@@ -24,25 +26,8 @@ export class MealAddComponent implements OnInit {
     public dialogRef: MatDialogRef<MealAddComponent>
   ) { }
 
-  amountTypes = [
-    { id: "PIECE", value: "Sztuka" },
-    { id: "SPOON", value: "Łyżka" },
-    { id: "SCOOPS", value: "Miarka" },
-    { id: "HANDFUL", value: "Garść" },
-    { id: "SLICE", value: "Plaster" },
-    { id: "LEAVES", value: "Listek" },
-    { id: "GLASS", value: "Szklanka" },
-  ];
-
-  foodTypes = [
-    { id: "BREAKFEST", value: "Śniadanie" },
-    { id: "BRUNCH", value: "II śniadanie" },
-    { id: "DINNER", value: "Obiad" },
-    { id: "TEA", value: "Podwieczorek"},
-    { id: "SUPPER", value: "Kolacja" },
-    { id: "PRE_WORKOUT", value: "Przedtreningówka" },
-    { id: "POST_WORKOUT", value: "Potreningówka"},
-  ];
+  amountTypes = AMOUNT_TYPES;
+  foodTypes = FOOD_TYPES;
 
   blockProduct = false;
   blockDish = false;

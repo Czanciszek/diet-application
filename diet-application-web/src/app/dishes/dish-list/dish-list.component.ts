@@ -7,6 +7,7 @@ import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {DishComponent} from "../dish/dish.component";
 import {FormArray} from "@angular/forms";
+import {FOOD_TYPES} from "../../model/helpers/foodTypes";
 
 @Component({
   selector: 'app-dish-list',
@@ -23,16 +24,6 @@ export class DishListComponent implements OnInit {
 
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'portions', 'foodType', 'actions'];
-
-  foodTypes = [
-    { id: "BREAKFEST", value: "Śniadanie" },
-    { id: "BRUNCH", value: "II śniadanie" },
-    { id: "DINNER", value: "Obiad" },
-    { id: "TEA", value: "Podwieczorek"},
-    { id: "SUPPER", value: "Kolacja" },
-    { id: "PRE_WORKOUT", value: "Przedtreningówka" },
-    { id: "POST_WORKOUT", value: "Potreningówka"},
-  ];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -101,7 +92,7 @@ export class DishListComponent implements OnInit {
   }
 
   getFoodType(foodTypeId) {
-    let foodType = this.foodTypes.filter(x => x.id == foodTypeId);
+    let foodType = FOOD_TYPES.filter(x => x.id == foodTypeId);
     return foodType[0].value;
   }
 }
