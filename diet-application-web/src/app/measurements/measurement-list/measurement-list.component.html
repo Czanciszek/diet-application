@@ -34,56 +34,56 @@
           </div>
         </mat-grid-tile>
       </mat-grid-list>
-
       <div *ngFor="let column of objectKeys; index as i;">
 
-        <div *ngIf="
-        column != 'id' && column != 'header' && column != 'type'
-        && column != 'name' && column != 'patientId' && column != 'primaryImageId'
-        ">
-        <mat-grid-list cols="{{listData.data.length+3}}" rowHeight="65px">
-          <div> <!-- Check whenever sex and measurement type pass together this.patientService.form.value.sex -->
-            <mat-grid-tile colspan="2">
-              <div class="control-container">
-                <div class="add-bottom-padding">
-                  {{service.measurementKeywords.get(column)}}:
+        <div *ngIf="column != 'id' && column != 'patientId'">
+          <div *ngIf="(patientService.form.value.sex == 1
+                          && column != 'chest' && column != 'arm') ||
+                      (patientService.form.value.sex == 0
+                        && column != 'breast' && column != 'underBreast' && column != 'hipBones' && column != 'thighNarrowest')">
+            <mat-grid-list cols="{{listData.data.length+3}}" rowHeight="65px">
+              <div> <!-- Check whenever sex and measurement type pass together this.patientService.form.value.sex -->
+                <mat-grid-tile colspan="2">
+                  <div class="control-container">
+                    <div class="add-bottom-padding">
+                      {{service.measurementKeywords.get(column)}}:
+                    </div>
+                  </div>
+                </mat-grid-tile>
+                <div *ngFor="let user of listData.data; index as i;">
+                  <mat-grid-tile>
+                    <div class="control-container">
+                      <span>{{user[column]}}</span>
+                    </div>
+                  </mat-grid-tile>
                 </div>
               </div>
-            </mat-grid-tile>
-            <div *ngFor="let user of listData.data; index as i;">
+
               <mat-grid-tile>
-                <div class="control-container">
-                  <span>{{user[column]}}</span>
+                <div class="control-container add-bottom-padding" *ngIf="showNewMeasurement">
+
+                    <div *ngIf="column === 'measurementDate' then measurementBlock else otherBlock"></div>
+                      <ng-template #measurementBlock>
+                        <mat-form-field class="example-full-width">
+                        <mat-label>Data pomiaru*</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="{{column}}">
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
+                          <mat-error *ngIf="service.form.controls['measurementDate'].errors?.required">Wprowadź poprawną datę</mat-error>
+                        </mat-form-field>
+                      </ng-template>
+                      <ng-template #otherBlock>
+                        <mat-form-field>
+                          <input matInput formControlName="{{column}}" placeholder="{{service.measurementKeywords.get(column)}}">
+                        </mat-form-field>
+                      </ng-template>
+
                 </div>
               </mat-grid-tile>
-            </div>
+            </mat-grid-list>
           </div>
-
-          <mat-grid-tile>
-            <div class="control-container add-bottom-padding" *ngIf="showNewMeasurement">
-
-                <div *ngIf="column === 'measurementDate' then measurementBlock else otherBlock"></div>
-                  <ng-template #measurementBlock>
-                    <mat-form-field class="example-full-width">
-                    <mat-label>Data pomiaru*</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="{{column}}">
-                    <mat-datepicker-toggle matSuffix [for]="picker">
-                      <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                    </mat-datepicker-toggle>
-                    <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
-                      <mat-error *ngIf="service.form.controls['measurementDate'].errors?.required">Wprowadź poprawną datę</mat-error>
-                    </mat-form-field>
-                  </ng-template>
-                  <ng-template #otherBlock>
-                    <mat-form-field>
-                      <input matInput formControlName="{{column}}" placeholder="{{service.measurementKeywords.get(column)}}">
-                    </mat-form-field>
-                  </ng-template>
-
-            </div>
-          </mat-grid-tile>
-        </mat-grid-list>
-
         </div>
       </div>
     </form>

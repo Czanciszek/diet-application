@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {MeasurementService} from "../../service/measurement.service";
 import {MatTableDataSource} from "@angular/material/table";
+import {PatientService} from "../../service/patient.service";
 
 @Component({
   selector: 'app-measurement-list',
@@ -12,6 +13,7 @@ export class MeasurementListComponent implements OnInit {
 
   constructor(
     private service: MeasurementService,
+    private patientService: PatientService,
     private dialogRef: MatDialogRef<MeasurementListComponent>
   ) { }
 
@@ -65,6 +67,7 @@ export class MeasurementListComponent implements OnInit {
 
           this.showTable = true;
           this.objectKeys = Object.keys(this.service.form.value);
+          console.log(this.objectKeys);
         });
   }
 
