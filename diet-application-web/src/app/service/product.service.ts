@@ -143,7 +143,7 @@ export class ProductService {
   deleteProduct(id: string) {
     return this.http.delete(GlobalVariable.SERVER_ADDRESS +
       GlobalVariable.DATABASE_SERVICE +
-      "products/" + id, this.httpOptions).subscribe();
+      "products/" + id, this.httpOptions);
   }
 
   populateForm(product) {

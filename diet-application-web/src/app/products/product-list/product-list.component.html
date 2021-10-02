@@ -15,8 +15,12 @@
   </button>
 
   <input type="file" id="real_input" hidden="hidden" accept=".xlsx" />
-  <button id="button_upload" class="action-buttons" mat-raised-button (click)="onUploadFile()">
+  <button id="button_upload" class="action-buttons" mat-raised-button>
     <mat-icon>upload_file</mat-icon>Importuj
+  </button>
+
+  <button id="button_refresh" class="action-buttons" mat-raised-button (click)="onRefresh()">
+    <mat-icon>autorenew</mat-icon>Odśwież
   </button>
 </div>
 
