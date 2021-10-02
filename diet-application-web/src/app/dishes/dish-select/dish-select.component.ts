@@ -15,8 +15,6 @@ export class DishSelectComponent implements OnInit {
 
   constructor(
     private service: DishService,
-    private dialog: MatDialog,
-    private notificationService: NotificationService,
     public dialogRef: MatDialogRef<DishSelectComponent>,
   ) { }
 
@@ -27,6 +25,10 @@ export class DishSelectComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
+   this.getDishList();
+  }
+
+  getDishList() {
     this.service.getDishes().subscribe(
       list => {
         let array = list.map(item => {
@@ -50,14 +52,6 @@ export class DishSelectComponent implements OnInit {
 
   onSelect(dish) {
     this.dialogRef.close(dish);
-  }
-
-  onDelete(dishId) {
-    if (confirm("Are you sure to delete this dish?")) {
-      this.service.deleteDish(dishId);
-      this.notificationService.warn(":: Deleted succesfully! ::");
-      this.ngOnInit();
-    }
   }
 
   onClose() {

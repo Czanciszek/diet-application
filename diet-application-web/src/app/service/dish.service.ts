@@ -74,7 +74,7 @@ export class DishService {
   }
 
   deleteDish(id: string) {
-    return this.http.delete(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes/" + id, this.httpOptions).subscribe();
+    return this.http.delete(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes/" + id, this.httpOptions);
   }
 
 }

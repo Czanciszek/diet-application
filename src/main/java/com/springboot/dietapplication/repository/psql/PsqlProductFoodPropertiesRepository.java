@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -28,6 +29,9 @@ public interface PsqlProductFoodPropertiesRepository extends JpaRepository<PsqlP
             "WHERE p.id IN :productIdList", nativeQuery = true)
     List<PsqlProductFoodProperties> findProductsByIdIn(@Param("productIdList") Set<Long> ids);
 
+    @Query(value = selectProductQuery +
+            "WHERE p.id = :productId", nativeQuery = true)
+    Optional<PsqlProductFoodProperties> findByProductId(@Param("productId") Long productId);
 
     @Query(value = selectProductQuery +
             "WHERE category_id = :categoryId", nativeQuery = true)

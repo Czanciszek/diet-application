@@ -62,7 +62,7 @@ public class PsqlProductService {
         List<PsqlProductDish> productDishTypeList = this.productDishRepository.findPsqlProductDishesByDishId(dishId);
         for (PsqlProductDish productDish : productDishTypeList) {
             Optional<PsqlProductFoodProperties> psqlProductFoodProperties =
-                    this.productFoodPropertiesRepostiory.findById(productDish.getProductId());
+                    this.productFoodPropertiesRepostiory.findByProductId(productDish.getProductId());
             psqlProductFoodProperties.ifPresent(productList::add);
         }
 

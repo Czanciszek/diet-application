@@ -30,6 +30,10 @@ export class DishListComponent implements OnInit {
   searchKey: string;
 
   ngOnInit(): void {
+    this.getDishList();
+  }
+
+  getDishList() {
     this.service.getDishes().subscribe(
       list => {
         let array = list.map(item => {
@@ -79,15 +83,24 @@ export class DishListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe( result => {
-      this.ngOnInit();
+      this.getDishList();
     });
   }
 
   onDelete(dishId) {
     if (confirm("Are you sure to delete this dish?")) {
-      this.service.deleteDish(dishId);
-      this.notificationService.warn(":: Deleted succesfully! ::");
-      this.ngOnInit();
+      this.service.deleteDish(dishId).subscribe( result => {
+
+        let listDataDish = this.listData.data.find( x => x.id == dishId);
+        let index = this.listData.data.indexOf(listDataDish);
+        this.listData.data.splice(index, 1);
+        this.listData.data = this.listData.data;
+
+        this.notificationService.warn(":: Deleted succesfully! ::");
+
+      });
+
+      this.getDishList();
     }
   }
 
