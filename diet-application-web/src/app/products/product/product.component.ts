@@ -42,18 +42,20 @@ export class ProductComponent implements OnInit {
   onSubmit() {
     if (this.service.form.valid) {
       if (!this.service.form.get('id').value) {
-        this.service.insertProduct(this.service.form.value).subscribe();
-        this.notificationService.success(":: Product created successfully! ::");
+        this.service.insertProduct(this.service.form.value).subscribe( result => {
+          this.notificationService.success(":: Product created successfully! ::");
+          this.onClose();
+        });
       } else {
-        this.service.updateProduct(this.service.form.value).subscribe();
-        this.notificationService.success(":: Product updated successfully! ::");
+        this.service.updateProduct(this.service.form.value).subscribe( result => {
+          this.notificationService.success(":: Product updated successfully! ::");
+          this.onClose();
+        });
       }
-      this.onClose();
     }
   }
 
   onClose() {
-    this.onClear();
     this.dialogRef.close();
   }
 }

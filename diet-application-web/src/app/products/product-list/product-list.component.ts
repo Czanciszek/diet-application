@@ -33,6 +33,11 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.setUploadButton();
 
+    this.getProductList();
+  }
+
+  getProductList() {
+    this.onSearchClear();
     this.service.getProducts().subscribe(
       list => {
         let array = list.map(item => {
@@ -59,33 +64,58 @@ export class ProductListComponent implements OnInit {
   }
 
   applyFilter() {
-    this.listData.filter = this.searchKey.trim().toLowerCase();
+    if (this.listData != null) {
+      this.listData.filter = this.searchKey.trim().toLowerCase();
+    }
   }
 
   onCreate() {
     this.service.initializeFormGroup();
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    dialogConfig.disableClose = true;
-    dialogConfig.width = "90%";
-
-    this.dialog.open(ProductComponent, dialogConfig);
+    this.showProductDialog(null);
   }
 
   onEdit(product) {
     this.service.populateForm(product);
+    this.showProductDialog(product);
+  }
+
+  showProductDialog(product) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.disableClose = true;
     dialogConfig.width = "90%";
 
-    this.dialog.open(ProductComponent, dialogConfig);
+    const dialogRef = this.dialog.open(ProductComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(() => {
+
+      if (product != null) {
+
+        let listDataProduct = this.listData.data.find( x => x.id == product.id);
+        let index = this.listData.data.indexOf(listDataProduct);
+        this.listData.data[index] = this.service.form.value;
+        this.listData.data = this.listData.data;
+
+      } else {
+        this.getProductList();
+      }
+
+      this.service.form.reset();
+      this.service.initializeFormGroup();
+    });
   }
 
   onDelete(productId) {
     if (confirm("Are you sure to delete this product?")) {
-      this.service.deleteProduct(productId);
-      this.notificationService.warn(":: Deleted succesfully! ::");
+      this.service.deleteProduct(productId).subscribe( result => {
+
+        let listDataProduct = this.listData.data.find( x => x.id == productId);
+        let index = this.listData.data.indexOf(listDataProduct);
+        this.listData.data.splice(index, 1);
+        this.listData.data = this.listData.data;
+
+        this.notificationService.warn(":: Deleted succesfully! ::");
+      });
     }
   }
 
@@ -95,7 +125,9 @@ export class ProductListComponent implements OnInit {
 
   onUploadFile(file: File) {
     if (file != null) {
-      this.fileService.uploadFile(file).subscribe();
+      this.fileService.uploadFile(file).subscribe(result => {
+        this.getProductList();
+      });
     }
   }
 
@@ -114,6 +146,10 @@ export class ProductListComponent implements OnInit {
       }
       realFileBtn.value = '';
     });
+  }
+
+  onRefresh() {
+    this.getProductList();
   }
 
 }
