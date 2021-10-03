@@ -18,6 +18,7 @@ export class ProductSelectComponent implements OnInit {
     public dialogRef: MatDialogRef<ProductSelectComponent>,
   ) { }
 
+  categoryList: any[] = [];
   categories: any = new Set();
   subcategories: any = new Set();
 
@@ -40,11 +41,34 @@ export class ProductSelectComponent implements OnInit {
   getCategories() {
     let response = this.service.getCategories();
     response.subscribe(data => {
-      for (const key of Object.values(data)) {
+      this.categoryList = Object.values(data);
+      for (const key of this.categoryList) {
         this.categories.add(key.category);
         this.subcategories.add(key.subcategory);
       }
     });
+  }
+
+  fillSubcategories(categories) {
+    for (const key of categories) {
+      this.subcategories.add(key.subcategory);
+    }
+  }
+
+  onCategoryChange(category) {
+    if (category == null) return;
+    this.subcategories.clear();
+    const filteredCategories = this.categoryList.filter( x => !!x.category && x.category.includes(category));
+    this.fillSubcategories(filteredCategories);
+    this.selectedSubcategory = null;
+  }
+
+  onSubcategoryChange(subcategory) {
+    if (subcategory == null) return;
+    const filteredCategory = this.categoryList.find( x => !!x.subcategory && x.subcategory.includes(subcategory));
+
+    this.onCategoryChange(filteredCategory.category);
+    this.selectedCategory = filteredCategory.category;
   }
 
   applyFilter() {

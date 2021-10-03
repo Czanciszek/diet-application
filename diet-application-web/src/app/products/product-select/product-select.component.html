@@ -12,7 +12,7 @@
     <div class="control-container">
       <div class="add-bottom-padding">
         <mat-form-field>
-          <mat-select [(ngModel)]="selectedCategory" placeholder="Kategoria">
+          <mat-select [(ngModel)]="selectedCategory" placeholder="Kategoria" (valueChange)="onCategoryChange($event)">
             <ng-container *ngFor="let category of categories">
               <mat-option value="{{category}}">{{category}}</mat-option>
             </ng-container>
@@ -25,7 +25,7 @@
     <div class="control-container">
       <div class="add-bottom-padding">
         <mat-form-field>
-          <mat-select [(ngModel)]="selectedSubcategory" placeholder="Podkategoria">
+          <mat-select [(ngModel)]="selectedSubcategory" placeholder="Podkategoria" (valueChange)="onSubcategoryChange($event)">
             <ng-container *ngFor="let subcategory of subcategories">
               <mat-option value="{{subcategory}}">{{subcategory}}</mat-option>
             </ng-container>
