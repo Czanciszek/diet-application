@@ -68,13 +68,16 @@ export class MealAddComponent implements OnInit {
   onSubmit() {
     if (this.service.form.valid) {
       if (!this.service.form.get('id').value) {
-        this.service.insertMeal(this.service.form.value).subscribe();
-        this.notificationService.success(":: Meal created successfully! ::");
+        this.service.insertMeal(this.service.form.value).subscribe( result => {
+          this.notificationService.success(":: Meal created successfully! ::");
+          this.onClose();
+        });
       } else {
-        this.service.updateMeal(this.service.form.value).subscribe();
-        this.notificationService.success(":: Meal updated successfully! ::");
+        this.service.updateMeal(this.service.form.value).subscribe( result => {
+          this.notificationService.success(":: Meal updated successfully! ::");
+          this.onClose();
+        });
       }
-      this.onClose();
     }
   }
 

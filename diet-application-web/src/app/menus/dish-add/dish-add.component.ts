@@ -26,8 +26,7 @@ export class DishAddComponent implements OnInit {
   @Output()
   refreshItems = new EventEmitter<boolean>();
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   openDialog() {
     this.mealSerivce.initializeFormGroup();

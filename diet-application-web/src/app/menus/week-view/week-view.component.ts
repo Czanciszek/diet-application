@@ -59,14 +59,17 @@ export class WeekViewComponent implements OnInit {
           this.menuItemData = { ...data};
           if (this.menuItemData.weekMealList.length > 0) {
             let weekMealId = this.menuItemData.weekMealList[this.weekIndex];
-            console.log("Menu", this.menuItemData);
-            this.getWeekMealDetails(weekMealId);
-            this.getDayMealListDetails(weekMealId);
-            this.getMealListDetails(weekMealId);
-            this.getMenuProductMap();
+            this.loadWeekData(weekMealId);
           }
         }
       );
+  }
+
+  loadWeekData(weekMealId) {
+    this.getWeekMealDetails(weekMealId);
+    this.getDayMealListDetails(weekMealId);
+    this.getMealListDetails(weekMealId);
+    this.getMenuProductMap();
   }
 
   swapWeek(next: Boolean) {
@@ -80,7 +83,7 @@ export class WeekViewComponent implements OnInit {
 
     this.mealListItemData = [];
     let weekMealId = this.menuItemData.weekMealList[this.weekIndex];
-    this.getWeekMealDetails(weekMealId);
+    this.loadWeekData(weekMealId);
   }
 
   getWeekMealDetails(weekMealId) {
@@ -88,7 +91,6 @@ export class WeekViewComponent implements OnInit {
       .subscribe(
         (data: WeekMeal[]) => {
           this.weekMealItemData = {...data};
-          console.log("Week", this.weekMealItemData);
           this.weekLoaded = true;
           this.checkDataLoaded();
         });
@@ -132,7 +134,7 @@ export class WeekViewComponent implements OnInit {
   }
 
   refreshMealList() {
-    this.getWeekMealDetails(this.weekMealItemData.id);
+    this.loadWeekData(this.weekMealItemData.id);
   }
 
   getFoodPropertiesDaySummary(day: DayMeal, property: string) {

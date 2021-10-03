@@ -95,9 +95,17 @@ export class PatientListComponent implements OnInit {
 
   onDelete(patientId) {
     if (confirm("Are you sure to delete this patient?")) {
-      this.service.deletePatient(patientId);
-      this.notificationService.warn(":: Deleted succesfully! ::");
-      this.ngOnInit();
+      this.service.deletePatient(patientId).subscribe( result => {
+
+        let listDataProduct = this.listData.data.find( x => x.id == patientId);
+        let index = this.listData.data.indexOf(listDataProduct);
+        this.listData.data.splice(index, 1);
+        this.listData.data = this.listData.data;
+
+        this.notificationService.warn(":: Deleted succesfully! ::");
+      });
+
+      this.getPatients();
     }
   }
 

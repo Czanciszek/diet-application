@@ -88,7 +88,7 @@ export class PatientService {
   deletePatient(id: string) {
     return this.http.delete(GlobalVariable.SERVER_ADDRESS +
       GlobalVariable.DATABASE_SERVICE +
-      "patients/" + id, this.httpOptions).subscribe();
+      "patients/" + id, this.httpOptions);
   }
 
   populateForm(patient) {

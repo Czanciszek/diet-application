@@ -56,6 +56,7 @@ public class PsqlPatientService {
     }
 
     public ResponseEntity<Void> delete(Long id) {
+        this.patientsUnlikelyCategoriesRepository.deleteAllByPatientId(id);
         this.patientRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
@@ -75,6 +76,7 @@ public class PsqlPatientService {
 
     private void storePatientsUnlikelyCategories(PatientType patientType) {
         this.patientsUnlikelyCategoriesRepository.deleteAllByPatientId(Long.parseLong(patientType.getId()));
+        if (patientType.getUnlikelyCategories() == null) return;
         for (String category : patientType.getUnlikelyCategories()) {
 
             PsqlCategory psqlCategory = this.categoryRepository.findPsqlCategoryBySubcategory(category);

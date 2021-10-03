@@ -26,6 +26,10 @@ export class MeasurementListComponent implements OnInit {
   showNewMeasurement = false;
 
   ngOnInit(): void {
+    this.getPatientsMeasurements();
+  }
+
+  getPatientsMeasurements() {
     this.service.getMeasurementsByPatientId(this.service.patientId)
       .subscribe(
         list => {
@@ -67,17 +71,17 @@ export class MeasurementListComponent implements OnInit {
 
           this.showTable = true;
           this.objectKeys = Object.keys(this.service.form.value);
-          console.log(this.objectKeys);
         });
   }
 
   onSubmit() {
     if (this.service.form.valid) {
       this.service.form.get("patientId").patchValue(this.service.patientId);
-      this.service.insertMeasurement(this.service.form.value).subscribe();
       this.showNewMeasurement = false;
-      this.onClear();
-      this.ngOnInit();
+      this.service.insertMeasurement(this.service.form.value).subscribe( result => {
+        this.getPatientsMeasurements();
+        this.onClear();
+      });
     }
   }
 
