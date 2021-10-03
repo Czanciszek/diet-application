@@ -34,6 +34,7 @@ export class ProductSelectComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCategories();
+    this.onSearchButtonClick();
   }
 
   getCategories() {
@@ -48,6 +49,11 @@ export class ProductSelectComponent implements OnInit {
 
   applyFilter() {
     this.listData.filter = this.searchKey.trim().toLowerCase();
+  }
+
+  onSearchClear() {
+    this.searchKey = "";
+    this.applyFilter();
   }
 
   onSearchButtonClick() {
