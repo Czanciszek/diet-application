@@ -101,7 +101,6 @@ export class WeekViewComponent implements OnInit {
       .subscribe(
         (daysData: DayMeal[]) => {
           this.dayMealListItemData = [...daysData];
-          console.log("Days", this.dayMealListItemData);
           this.dayLoaded = true;
           this.checkDataLoaded();
         });
@@ -112,7 +111,6 @@ export class WeekViewComponent implements OnInit {
       .subscribe(
         (mealsData: Meal[]) => {
           this.mealListItemData = [...mealsData];
-          console.log("Meals", this.mealListItemData);
           this.mealsLoaded = true;
           this.checkDataLoaded();
         });
@@ -123,7 +121,6 @@ export class WeekViewComponent implements OnInit {
       .subscribe(
         (data: {} ) => {
           this.productService.menuProductMap = {...data};
-          console.log("Map Products", this.productService.menuProductMap);
           this.productMapLoaded = true;
           this.checkDataLoaded();
         });

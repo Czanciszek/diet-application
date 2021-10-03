@@ -87,8 +87,6 @@ export class MenuAddComponent implements OnInit {
       this.service.form.get("measurementDate").setValue(date);
       this.service.form.get("patientWeight").setValue(weight);
 
-      console.log("AAA", this.service.form.value);
-
       if (!this.service.form.get('id').value) {
         this.service.insertMenu(this.service.form.value).subscribe();
         this.notificationService.success(":: Menu created successfully! ::");
