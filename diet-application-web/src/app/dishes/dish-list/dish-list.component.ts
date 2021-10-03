@@ -8,6 +8,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {DishComponent} from "../dish/dish.component";
 import {FormArray} from "@angular/forms";
 import {FOOD_TYPES} from "../../model/helpers/foodTypes";
+import {Dish} from "../../model/dish";
 
 @Component({
   selector: 'app-dish-list',
@@ -49,6 +50,12 @@ export class DishListComponent implements OnInit {
         this.listData = new MatTableDataSource(array);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listData.filterPredicate = (data: Dish, filter: string) => {
+          return data.name == null ||
+            data.name.includes(filter) ||
+            data.foodType.includes(filter);
+        };
       });
   }
 

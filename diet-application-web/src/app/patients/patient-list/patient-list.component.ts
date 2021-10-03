@@ -7,6 +7,7 @@ import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {Router} from "@angular/router";
 import {PatientEditComponent} from "../patient-edit/patient-edit.component";
+import {Patient} from "../../model/patient";
 
 @Component({
   selector: 'app-patient-list',
@@ -55,6 +56,12 @@ export class PatientListComponent implements OnInit {
         this.listData = new MatTableDataSource(array);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listData.filterPredicate = (data: Patient, filter: string) => {
+          return data.name.includes(filter) ||
+            data.email.includes(filter) ||
+            data.numberPhone.includes(filter);
+        };
       });
   }
 
