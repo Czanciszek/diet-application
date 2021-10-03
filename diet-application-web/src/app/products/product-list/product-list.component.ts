@@ -7,6 +7,7 @@ import {NotificationService} from "../../service/notification.service";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {FileService} from "../../service/file.service";
+import {Product} from "../../model/product";
 
 @Component({
   selector: 'app-product-list',
@@ -55,6 +56,13 @@ export class ProductListComponent implements OnInit {
         this.listData = new MatTableDataSource(array);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listData.filterPredicate = (data: Product, filter: string) => {
+          return data.name == null ||
+            data.name.includes(filter) ||
+            data.category.includes(filter) ||
+            data.subcategory.includes(filter);
+        };
       });
   }
 

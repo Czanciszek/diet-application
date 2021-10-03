@@ -64,6 +64,13 @@ export class ProductSelectComponent implements OnInit {
           this.listData = new MatTableDataSource(productList);
           this.listData.sort = this.sort;
           this.listData.paginator = this.paginator;
+
+          this.listData.filterPredicate = (data: Product, filter: string) => {
+            return data.name == null ||
+              data.name.includes(filter) ||
+              data.category.includes(filter) ||
+              data.subcategory.includes(filter);
+          };
         });
   }
 
