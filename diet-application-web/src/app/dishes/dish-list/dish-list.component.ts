@@ -53,8 +53,8 @@ export class DishListComponent implements OnInit {
 
         this.listData.filterPredicate = (data: Dish, filter: string) => {
           return data.name == null ||
-            data.name.includes(filter) ||
-            data.foodType.includes(filter);
+            data.name.toLowerCase().includes(filter) ||
+            data.foodType.toLowerCase().includes(filter);
         };
       });
   }

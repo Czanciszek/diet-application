@@ -58,9 +58,10 @@ export class PatientListComponent implements OnInit {
         this.listData.paginator = this.paginator;
 
         this.listData.filterPredicate = (data: Patient, filter: string) => {
-          return data.name.includes(filter) ||
-            data.email.includes(filter) ||
-            data.numberPhone.includes(filter);
+          return data == null ||
+            data.name.toLowerCase().includes(filter) ||
+            data.email.toLowerCase().includes(filter) ||
+            data.numberPhone.toLowerCase().includes(filter);
         };
       });
   }

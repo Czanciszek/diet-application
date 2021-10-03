@@ -67,9 +67,9 @@ export class ProductSelectComponent implements OnInit {
 
           this.listData.filterPredicate = (data: Product, filter: string) => {
             return data.name == null ||
-              data.name.includes(filter) ||
-              data.category.includes(filter) ||
-              data.subcategory.includes(filter);
+              data.name.toLowerCase().includes(filter) ||
+              data.category.toLowerCase().includes(filter) ||
+              data.subcategory.toLowerCase().includes(filter);
           };
         });
   }
