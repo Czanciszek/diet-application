@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
-import com.springboot.dietapplication.service.PsqlDataService;
+import com.springboot.dietapplication.service.DataService;
 import io.github.biezhi.excel.plus.Reader;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +19,10 @@ import java.util.List;
 @RequestMapping("api/")
 public class FileController {
 
-    private final PsqlDataService psqlDataService;
+    private final DataService dataService;
 
-    public FileController(PsqlDataService psqlDataService) {
-        this.psqlDataService = psqlDataService;
+    public FileController(DataService psqlDataService) {
+        this.dataService = psqlDataService;
     }
 
     @PostMapping("/psql/files/uploadProducts")
@@ -53,7 +53,7 @@ public class FileController {
             e.printStackTrace();
         }
 
-        psqlDataService.saveProducts(productExcelList);
+        dataService.saveProducts(productExcelList);
     }
 
 }

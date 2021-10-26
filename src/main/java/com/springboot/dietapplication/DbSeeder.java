@@ -1,7 +1,6 @@
 package com.springboot.dietapplication;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
-import com.springboot.dietapplication.repository.*;
 import com.springboot.dietapplication.service.*;
 import io.github.biezhi.excel.plus.Reader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,41 +15,8 @@ import java.util.*;
 @Component
 public class DbSeeder implements CommandLineRunner {
 
-    public static long timeMillis = 0;
-
     @Autowired
-    PsqlFoodPropertiesRepository PSQLFoodPropertiesRepository;
-    @Autowired
-    PsqlCategoryRepository PSQLCategoryRepository;
-    @Autowired
-    PsqlProductRepository PSQLProductRepository;
-    @Autowired
-    PsqlProductDishRepository psqlProductDishRepository;
-    @Autowired
-    PsqlProductMealRepository psqlProductMealRepository;
-    @Autowired
-    PsqlMenuRepository psqlMenuRepository;
-    @Autowired
-    PsqlFoodTypeMenuRepository psqlFoodTypeMenuRepository;
-    @Autowired
-    PsqlDayMealRepository psqlDayMealRepository;
-    @Autowired
-    PsqlWeekMealRepository psqlWeekMealRepository;
-    @Autowired
-    PsqlMealRepository psqlMealRepository;
-
-    @Autowired
-    PsqlDataService psqlDataService;
-    @Autowired
-    PsqlMenuService psqlMenuService;
-    @Autowired
-    PsqlWeekMealService psqlWeekMealService;
-    @Autowired
-    PsqlDayMealService psqlDayMealService;
-    @Autowired
-    PsqlMealService psqlMealService;
-    @Autowired
-    PsqlProductService psqlProductService;
+    DataService dataService;
 
     public DbSeeder() {
 
@@ -58,8 +24,7 @@ public class DbSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-//        setUser();
-//
+
 //        List<String> prodFilePaths = new ArrayList<>(Arrays.asList("2", "5", "8"));
 //        List<String> testFilePaths = new ArrayList<>(Arrays.asList("1", "100", "1000", "10000", "50000", "100000"));
 //
@@ -86,14 +51,6 @@ public class DbSeeder implements CommandLineRunner {
 
     }
 
-    private void setUser() {
-
-
-//        PsqlUser user1 = new PsqlUser("aaa",
-//                "$2y$12$xQyJdsoamI/19a4p3bgRcOj2KeLpxPWj3.whkTrjz2jzIbO9fnr6m", "imageId");
-
-    }
-
     private void manageProductsData(List<ProductExcel> productExcelList) {
         insertData(productExcelList);
         createBackup();
@@ -103,19 +60,19 @@ public class DbSeeder implements CommandLineRunner {
     }
 
     private void createBackup() {
-        psqlDataService.createBackup();
+        dataService.createBackup();
     }
 
     private void restoreBackup() {
-        psqlDataService.restoreBackup();
+        dataService.restoreBackup();
     }
 
     private void clearData() {
-        psqlDataService.clearDatabase();
+        dataService.clearDatabase();
     }
 
     private void insertData(List<ProductExcel> productExcelList) {
-        psqlDataService.saveProducts(productExcelList);
+        dataService.saveProducts(productExcelList);
     }
 
     private File importFile(String filePath) {
