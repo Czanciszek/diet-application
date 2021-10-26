@@ -2,20 +2,18 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.type.PatientType;
 import com.springboot.dietapplication.service.PatientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/psql/patients")
+@RequestMapping("api/v1/patients")
 public class PatientController {
 
-    private final PatientService patientService;
-
-    public PatientController(PatientService patientService) {
-        this.patientService = patientService;
-    }
+    @Autowired
+    PatientService patientService;
 
     @GetMapping
     public List<PatientType> getAll() {

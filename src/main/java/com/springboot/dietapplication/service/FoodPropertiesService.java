@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class FoodPropertiesService {
 
-    FoodPropertiesRepository foodPropertiesRepository;
+    @Autowired FoodPropertiesRepository foodPropertiesRepository;
 
     public FoodPropertiesType findById(Long foodPropertiesId) {
         Optional<PsqlFoodProperties> foodProperties = this.foodPropertiesRepository.findById(foodPropertiesId);

@@ -4,7 +4,7 @@ import com.springboot.dietapplication.model.psql.user.PsqlUser;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("auth")
 public class AuthController {
 
     @GetMapping("/login")

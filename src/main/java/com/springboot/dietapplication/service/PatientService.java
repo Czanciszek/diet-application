@@ -7,6 +7,7 @@ import com.springboot.dietapplication.model.type.PatientType;
 import com.springboot.dietapplication.repository.CategoryRepository;
 import com.springboot.dietapplication.repository.PatientRepository;
 import com.springboot.dietapplication.repository.PatientsUnlikelyCategoriesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +16,9 @@ import java.util.*;
 @Service
 public class PatientService {
 
-    private final PatientRepository patientRepository;
-    private final CategoryRepository categoryRepository;
-    private final PatientsUnlikelyCategoriesRepository patientsUnlikelyCategoriesRepository;
-
-    public PatientService(PatientRepository patientRepository,
-                          CategoryRepository categoryRepository,
-                          PatientsUnlikelyCategoriesRepository patientsUnlikelyCategoriesRepository) {
-        this.patientRepository = patientRepository;
-        this.categoryRepository = categoryRepository;
-        this.patientsUnlikelyCategoriesRepository = patientsUnlikelyCategoriesRepository;
-    }
+    @Autowired PatientRepository patientRepository;
+    @Autowired CategoryRepository categoryRepository;
+    @Autowired PatientsUnlikelyCategoriesRepository patientsUnlikelyCategoriesRepository;
 
     public List<PatientType> getAll() {
         List<PatientType> patientTypeList = new ArrayList<>();

@@ -2,20 +2,18 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.type.MeasurementType;
 import com.springboot.dietapplication.service.MeasurementService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/psql/measurements")
+@RequestMapping("api/v1/measurements")
 public class MeasurementController {
 
-    private final MeasurementService measurementService;
-
-    public MeasurementController(MeasurementService measurementService) {
-        this.measurementService = measurementService;
-    }
+    @Autowired
+    MeasurementService measurementService;
 
     @GetMapping
     public List<MeasurementType> getAll() {

@@ -17,9 +17,9 @@ import java.util.List;
 @Service
 public class DataService {
 
-    FoodPropertiesRepository foodPropertiesRepository;
-    CategoryRepository categoryRepository;
-    ProductRepository productRepository;
+    @Autowired FoodPropertiesRepository foodPropertiesRepository;
+    @Autowired CategoryRepository categoryRepository;
+    @Autowired ProductRepository productRepository;
 
     public void saveProducts(List<ProductExcel> importedProducts) {
         List<PsqlProduct> products = new ArrayList<>();

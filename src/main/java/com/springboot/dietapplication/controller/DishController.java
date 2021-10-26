@@ -2,20 +2,18 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.type.DishType;
 import com.springboot.dietapplication.service.DishService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/psql/dishes")
+@RequestMapping("api/v1/dishes")
 public class DishController {
 
-    private final DishService dishService;
-
-    public DishController(DishService dishService) {
-        this.dishService = dishService;
-    }
+    @Autowired
+    DishService dishService;
 
     @GetMapping
     public List<DishType> getAll() {

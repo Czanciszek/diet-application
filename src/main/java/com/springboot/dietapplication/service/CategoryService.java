@@ -13,7 +13,7 @@ import java.util.Set;
 @Service
 public class CategoryService {
 
-    CategoryRepository categoryRepository;
+    @Autowired CategoryRepository categoryRepository;
 
     public List<PsqlCategory> getAll() {
         return this.categoryRepository.findAll();

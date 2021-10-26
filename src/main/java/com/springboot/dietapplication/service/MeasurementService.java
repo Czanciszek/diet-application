@@ -3,6 +3,7 @@ package com.springboot.dietapplication.service;
 import com.springboot.dietapplication.model.psql.patient.PsqlMeasurement;
 import com.springboot.dietapplication.model.type.MeasurementType;
 import com.springboot.dietapplication.repository.MeasurementRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,7 @@ import java.util.Optional;
 @Service
 public class MeasurementService {
 
-    private final MeasurementRepository measurementRepository;
-
-    public MeasurementService(MeasurementRepository measurementRepository) {
-        this.measurementRepository = measurementRepository;
-    }
+   @Autowired MeasurementRepository measurementRepository;
 
     public List<MeasurementType> getAll() {
         List<MeasurementType> measurementTypeList = new ArrayList<>();

@@ -3,20 +3,18 @@ package com.springboot.dietapplication.controller;
 import com.springboot.dietapplication.model.type.MenuSendingType;
 import com.springboot.dietapplication.model.type.MenuType;
 import com.springboot.dietapplication.service.MenuService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/psql/menus")
+@RequestMapping("api/v1/menus")
 public class MenuController {
 
-    private final MenuService menuService;
-
-    public MenuController(MenuService menuService) {
-        this.menuService = menuService;
-    }
+    @Autowired
+    MenuService menuService;
 
     @GetMapping
     public List<MenuType> getAll() {

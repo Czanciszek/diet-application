@@ -7,6 +7,7 @@ import com.springboot.dietapplication.repository.FoodTypeMenuRepository;
 import com.springboot.dietapplication.repository.FoodTypeRepository;
 import com.springboot.dietapplication.repository.MenuRepository;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,30 +18,14 @@ import java.util.Optional;
 @Service
 public class MenuService {
 
-    private final MenuRepository menuRepository;
-    private final FoodTypeRepository foodTypeRepository;
-    private final FoodTypeMenuRepository foodTypeMenuRepository;
+    @Autowired MenuRepository menuRepository;
+    @Autowired FoodTypeRepository foodTypeRepository;
+    @Autowired FoodTypeMenuRepository foodTypeMenuRepository;
 
-    private final PatientService patientService;
-    private final FoodPropertiesService foodPropertiesService;
-    private final WeekMealService weekMealService;
-    private final DayMealService dayMealService;
-
-    public MenuService(MenuRepository menuRepository,
-                       FoodTypeRepository foodTypeRepository,
-                       FoodTypeMenuRepository foodTypeMenuRepository,
-                       PatientService patientService,
-                       FoodPropertiesService foodPropertiesService,
-                       WeekMealService weekMealService,
-                       DayMealService dayMealService) {
-        this.menuRepository = menuRepository;
-        this.foodTypeRepository = foodTypeRepository;
-        this.foodTypeMenuRepository = foodTypeMenuRepository;
-        this.patientService = patientService;
-        this.foodPropertiesService = foodPropertiesService;
-        this.weekMealService = weekMealService;
-        this.dayMealService = dayMealService;
-    }
+    @Autowired PatientService patientService;
+    @Autowired FoodPropertiesService foodPropertiesService;
+    @Autowired WeekMealService weekMealService;
+    @Autowired DayMealService dayMealService;
 
     public List<MenuType> getAll() {
         List<PsqlMenu> psqlMenuList = this.menuRepository.findAll();

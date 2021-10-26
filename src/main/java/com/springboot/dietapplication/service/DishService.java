@@ -12,6 +12,7 @@ import com.springboot.dietapplication.repository.AmountTypeRepository;
 import com.springboot.dietapplication.repository.DishRepository;
 import com.springboot.dietapplication.repository.FoodTypeRepository;
 import com.springboot.dietapplication.repository.ProductDishRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -22,20 +23,10 @@ import java.util.Optional;
 @Service
 public class DishService {
 
-    private final DishRepository dishRepository;
-    private final ProductDishRepository productDishRepository;
-    private final FoodTypeRepository foodTypeRepository;
-    private final AmountTypeRepository amountTypeRepository;
-
-    public DishService(DishRepository dishRepository,
-                       ProductDishRepository productDishRepository,
-                       FoodTypeRepository foodTypeRepository,
-                       AmountTypeRepository amountTypeRepository) {
-        this.dishRepository = dishRepository;
-        this.productDishRepository = productDishRepository;
-        this.foodTypeRepository = foodTypeRepository;
-        this.amountTypeRepository = amountTypeRepository;
-    }
+    @Autowired DishRepository dishRepository;
+    @Autowired ProductDishRepository productDishRepository;
+    @Autowired FoodTypeRepository foodTypeRepository;
+    @Autowired AmountTypeRepository amountTypeRepository;
 
     public List<DishType> getAll() {
         List<PsqlDish> dishes = this.dishRepository.findAll();

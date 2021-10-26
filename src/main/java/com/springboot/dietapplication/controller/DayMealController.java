@@ -2,20 +2,18 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.type.DayMealType;
 import com.springboot.dietapplication.service.DayMealService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/psql/daymeals")
+@RequestMapping("api/v1/daymeals")
 public class DayMealController {
 
-    private final DayMealService dayMealService;
-
-    public DayMealController(DayMealService dayMealService) {
-        this.dayMealService = dayMealService;
-    }
+    @Autowired
+    DayMealService dayMealService;
 
     @GetMapping(path = "/list/{weekMealId}")
     public List<DayMealType> getDayMealByWeekMealId(@PathVariable("weekMealId") String weekMealId) {

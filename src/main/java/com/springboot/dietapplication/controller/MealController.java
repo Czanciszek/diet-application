@@ -2,20 +2,18 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.type.MealType;
 import com.springboot.dietapplication.service.MealService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/psql/meals")
+@RequestMapping("api/v1/meals")
 public class MealController {
 
-    private final MealService mealService;
-
-    public MealController(MealService mealService) {
-        this.mealService = mealService;
-    }
+    @Autowired
+    MealService mealService;
 
     @GetMapping
     public List<MealType> getAll() {

@@ -3,6 +3,7 @@ package com.springboot.dietapplication.controller;
 import com.springboot.dietapplication.model.excel.ProductExcel;
 import com.springboot.dietapplication.service.DataService;
 import io.github.biezhi.excel.plus.Reader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,14 +17,11 @@ import java.io.OutputStream;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/")
+@RequestMapping("api")
 public class FileController {
 
-    private final DataService dataService;
-
-    public FileController(DataService psqlDataService) {
-        this.dataService = psqlDataService;
-    }
+    @Autowired
+    DataService dataService;
 
     @PostMapping("/psql/files/uploadProducts")
     public void handleFileUploadToPsql(@RequestParam("upload") MultipartFile multipartFile,

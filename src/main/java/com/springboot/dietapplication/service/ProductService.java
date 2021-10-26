@@ -15,32 +15,18 @@ import java.util.*;
 @Service
 public class ProductService {
 
-    ProductRepository productRepository;
-    ProductFoodPropertiesRepository productFoodPropertiesRepostiory;
-    CategoryRepository categoryRepository;
-    FoodPropertiesRepository foodPropertiesRepository;
-    ProductDishRepository productDishRepository;
+    @Autowired ProductRepository productRepository;
+    @Autowired ProductFoodPropertiesRepository productFoodPropertiesRepository;
+    @Autowired ProductDishRepository productDishRepository;
 
-    private final FoodPropertiesService foodPropertiesService;
-    private final CategoryService categoryService;
-    private final MenuService menuService;
-    private final WeekMealService weekMealService;
-    private final MealService mealService;
-
-    public ProductService(FoodPropertiesService foodPropertiesService,
-                          CategoryService categoryService,
-                          MenuService menuService,
-                          WeekMealService weekMealService,
-                          MealService mealService) {
-        this.foodPropertiesService = foodPropertiesService;
-        this.categoryService = categoryService;
-        this.menuService = menuService;
-        this.weekMealService = weekMealService;
-        this.mealService = mealService;
-    }
+    @Autowired FoodPropertiesService foodPropertiesService;
+    @Autowired CategoryService categoryService;
+    @Autowired MenuService menuService;
+    @Autowired WeekMealService weekMealService;
+    @Autowired MealService mealService;
 
     public List<ProductType> getAll() {
-        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepostiory.getAllProducts();
+        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllProducts();
         return convertLists(products);
     }
 
@@ -53,7 +39,7 @@ public class ProductService {
         List<PsqlProductDish> productDishTypeList = this.productDishRepository.findPsqlProductDishesByDishId(dishId);
         for (PsqlProductDish productDish : productDishTypeList) {
             Optional<PsqlProductFoodProperties> psqlProductFoodProperties =
-                    this.productFoodPropertiesRepostiory.findByProductId(productDish.getProductId());
+                    this.productFoodPropertiesRepository.findByProductId(productDish.getProductId());
             psqlProductFoodProperties.ifPresent(productList::add);
         }
 
@@ -67,11 +53,11 @@ public class ProductService {
             filteredPsqlProducts.addAll(getAll());
         } else if (subcategory.equals(TAG_ANY)) {
             Set<Long> categoryIds = this.categoryService.findCategoryIdsByCategoryName(category);
-            List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepostiory.findPsqlProductsByCategoryIdIn(categoryIds);
+            List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.findPsqlProductsByCategoryIdIn(categoryIds);
             filteredPsqlProducts.addAll(convertLists(products));
         } else {
             PsqlCategory psqlCategory = this.categoryService.findCategoryBySubcategoryName(subcategory);
-            List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepostiory.findPsqlProductsByCategoryId(psqlCategory.getId());
+            List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.findPsqlProductsByCategoryId(psqlCategory.getId());
             filteredPsqlProducts.addAll(convertLists(products));
         }
 
@@ -95,7 +81,7 @@ public class ProductService {
             }
         }
 
-        List<PsqlProductFoodProperties> psqlProductList = this.productFoodPropertiesRepostiory.findProductsByIdIn(productIdList);
+        List<PsqlProductFoodProperties> psqlProductList = this.productFoodPropertiesRepository.findProductsByIdIn(productIdList);
         List<ProductType> productTypeList = convertLists(psqlProductList);
         for (ProductType productType : productTypeList) {
             productMap.put(productType.getId(), productType);

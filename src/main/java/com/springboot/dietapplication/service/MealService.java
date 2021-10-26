@@ -19,23 +19,12 @@ import java.util.Optional;
 @Service
 public class MealService {
 
-    private final MealRepository mealRepository;
-    private final FoodTypeRepository foodTypeRepository;
-    private final ProductMealRepository productMealRepository;
-    private final AmountTypeRepository amountTypeRepository;
-    private final WeekMealService weekMealService;
+    @Autowired MealRepository mealRepository;
+    @Autowired FoodTypeRepository foodTypeRepository;
+    @Autowired ProductMealRepository productMealRepository;
+    @Autowired AmountTypeRepository amountTypeRepository;
 
-    public MealService(MealRepository mealRepository,
-                       FoodTypeRepository foodTypeRepository,
-                       ProductMealRepository productMealRepository,
-                       AmountTypeRepository amountTypeRepository,
-                       WeekMealService weekMealService) {
-        this.mealRepository = mealRepository;
-        this.foodTypeRepository = foodTypeRepository;
-        this.productMealRepository = productMealRepository;
-        this.amountTypeRepository = amountTypeRepository;
-        this.weekMealService = weekMealService;
-    }
+    @Autowired WeekMealService weekMealService;
 
     public List<MealType> getAll() {
         List<PsqlMeal> mealList = this.mealRepository.findAll();

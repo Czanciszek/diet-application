@@ -14,8 +14,8 @@ import java.util.Optional;
 @Service
 public class WeekMealService {
 
-    WeekMealRepository weekMealRepository;
-    DayMealService dayMealService;
+    @Autowired WeekMealRepository weekMealRepository;
+    @Autowired DayMealService dayMealService;
 
     public List<WeekMealType> getAll() {
         List<PsqlWeekMeal> weekMealList = this.weekMealRepository.findAll();
