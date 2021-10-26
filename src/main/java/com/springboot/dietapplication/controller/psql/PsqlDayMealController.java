@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.controller.psql;
 
 import com.springboot.dietapplication.model.type.DayMealType;
-import com.springboot.dietapplication.service.psql.PsqlDayMealService;
+import com.springboot.dietapplication.service.PsqlDayMealService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

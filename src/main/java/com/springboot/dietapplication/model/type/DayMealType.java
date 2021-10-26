@@ -1,12 +1,9 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.mongo.menu.MongoDayMeal;
 import com.springboot.dietapplication.model.psql.menu.PsqlDayMeal;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document(collection = "DayMeals")
 public class DayMealType {
 
     private String id;
@@ -30,14 +27,6 @@ public class DayMealType {
         this.mealList = mealList;
         this.dayType = dayType;
         this.date = date;
-    }
-
-    public DayMealType(MongoDayMeal dayMeal) {
-        this.id = dayMeal.getId();
-        this.weekMealId = dayMeal.getWeekMealId();
-        this.mealList = dayMeal.getMealList();
-        this.dayType = dayMeal.getDayType();
-        this.date = dayMeal.getDate();
     }
 
     public DayMealType(PsqlDayMeal dayMeal) {

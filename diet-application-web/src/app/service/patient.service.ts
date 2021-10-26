@@ -31,7 +31,6 @@ export class PatientService {
     currentLifestyleNote: new FormControl(''),
     changedLifestyleNote: new FormControl(''),
     dietaryPurpose: new FormControl(''),
-    measurements: new FormControl(null),
     allergens: new FormControl(null),
     unlikelyCategories: new FormControl(null)
   });
@@ -48,7 +47,6 @@ export class PatientService {
       currentLifestyleNote: '',
       changedLifestyleNote: '',
       dietaryPurpose: '',
-      measurements: null,
       allergens: null,
       unlikelyCategories: null
     })

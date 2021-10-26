@@ -1,6 +1,5 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.mongo.dish.MongoDish;
 import com.springboot.dietapplication.model.psql.dish.PsqlDish;
 
 import java.util.List;
@@ -16,15 +15,6 @@ public class DishType {
 
     public DishType() {
 
-    }
-
-    public DishType(MongoDish dish) {
-        this.id = dish.getId();
-        this.name = dish.getName();
-        this.products = dish.getProducts();
-        this.foodType = dish.getFoodType();
-        this.portions = dish.getPortions();
-        this.recipe = dish.getRecipe();
     }
 
     public DishType(PsqlDish dish) {

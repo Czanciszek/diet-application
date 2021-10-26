@@ -1,7 +1,5 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.mongo.patient.MongoMeasurement;
-import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 
 import java.util.HashSet;
@@ -23,28 +21,11 @@ public class PatientType {
     private String changedLifestyleNote;
     private String dietaryPurpose;
 
-    private List<MongoMeasurement> measurements;
-
     private Set<AllergensType> allergens;
     private Set<String> unlikelyCategories;
 
     public PatientType() {
 
-    }
-
-    public PatientType(MongoPatient mongoPatient) {
-        this.id = String.valueOf(mongoPatient.getId());
-        this.name = mongoPatient.getName();
-        this.email = mongoPatient.getEmail();
-        this.numberPhone = mongoPatient.getNumberPhone();
-        this.birthDate = mongoPatient.getBirthDate();
-        this.sex = mongoPatient.isSex();
-        this.bodyHeight = mongoPatient.getBodyHeight();
-        this.changedLifestyleNote = mongoPatient.getChangedLifestyleNote();
-        this.currentLifestyleNote = mongoPatient.getCurrentLifestyleNote();
-        this.dietaryPurpose = mongoPatient.getDietaryPurpose();
-        this.allergens = mongoPatient.getAllergens();
-        this.unlikelyCategories = mongoPatient.getUnlikelyCategories();
     }
 
     public PatientType(PsqlPatient psqlPatient) {
@@ -144,14 +125,6 @@ public class PatientType {
 
     public void setDietaryPurpose(String dietaryPurpose) {
         this.dietaryPurpose = dietaryPurpose;
-    }
-
-    public List<MongoMeasurement> getMeasurements() {
-        return measurements;
-    }
-
-    public void setMeasurements(List<MongoMeasurement> measurements) {
-        this.measurements = measurements;
     }
 
     public Set<AllergensType> getAllergens() {

@@ -2,7 +2,7 @@ package com.springboot.dietapplication.controller.psql;
 
 import com.springboot.dietapplication.model.type.MenuSendingType;
 import com.springboot.dietapplication.model.type.MenuType;
-import com.springboot.dietapplication.service.psql.PsqlMenuService;
+import com.springboot.dietapplication.service.PsqlMenuService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

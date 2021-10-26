@@ -1,6 +1,5 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.mongo.patient.MongoMeasurement;
 import com.springboot.dietapplication.model.psql.patient.PsqlMeasurement;
 
 public class MeasurementType {
@@ -22,60 +21,7 @@ public class MeasurementType {
     private float chest; //Klatka piersiowa - Only for men
     private float arm; //Ramię - Only for men
 
-    public MeasurementType() {
-    }
-
-    /**
-     * Constructor for women measurements
-     */
-    public MeasurementType(String patientId, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float breast, float underBreast, float hipBones, float thighNarrowest) {
-        this.patientId = patientId;
-        this.measurementDate = measurementDate;
-        this.bodyWeight = bodyWeight;
-        this.waist = waist;
-        this.abdominal = abdominal;
-        this.hips = hips;
-        this.thighWidest = thighWidest;
-        this.calf = calf;
-        this.breast = breast;
-        this.underBreast = underBreast;
-        this.hipBones = hipBones;
-        this.thighNarrowest = thighNarrowest;
-    }
-
-    /**
-     * Constructor for men measurements
-     */
-    public MeasurementType(String patientId, String measurementDate, float bodyWeight, float waist, float abdominal, float hips, float thighWidest, float calf, float chest, float arm) {
-        this.patientId = patientId;
-        this.measurementDate = measurementDate;
-        this.bodyWeight = bodyWeight;
-        this.waist = waist;
-        this.abdominal = abdominal;
-        this.hips = hips;
-        this.thighWidest = thighWidest;
-        this.calf = calf;
-        this.chest = chest;
-        this.arm = arm;
-    }
-
-    public MeasurementType(MongoMeasurement measurement) {
-        this.id = measurement.getId();
-        this.patientId = measurement.getPatientId();
-        this.measurementDate = measurement.getMeasurementDate();
-        this.bodyWeight = measurement.getBodyWeight();
-        this.breast = measurement.getBreast();
-        this.underBreast = measurement.getUnderBreast();
-        this.waist = measurement.getWaist();
-        this.abdominal = measurement.getAbdominal();
-        this.hipBones = measurement.getHipBones();
-        this.hips = measurement.getHips();
-        this.thighWidest = measurement.getThighWidest();
-        this.thighNarrowest = measurement.getThighNarrowest();
-        this.calf = measurement.getCalf();
-        this.chest = measurement.getChest();
-        this.arm = measurement.getArm();
-    }
+    public MeasurementType() {}
 
     public MeasurementType(PsqlMeasurement measurement) {
         this.id = String.valueOf(measurement.getId());

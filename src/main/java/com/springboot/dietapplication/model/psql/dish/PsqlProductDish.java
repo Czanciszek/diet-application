@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class PsqlProductDish {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "product_id")

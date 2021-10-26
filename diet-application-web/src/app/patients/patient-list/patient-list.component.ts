@@ -48,7 +48,6 @@ export class PatientListComponent implements OnInit {
             currentLifestyleNote: item.currentLifestyleNote,
             changedLifestyleNote: item.changedLifestyleNote,
             dietaryPurpose: item.dietaryPurpose,
-            measurements: item.measurements,
             allergens: item.allergens,
             unlikelyCategories: item.unlikelyCategories
           };

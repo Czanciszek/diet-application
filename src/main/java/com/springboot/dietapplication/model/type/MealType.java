@@ -1,6 +1,5 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
 import com.springboot.dietapplication.model.psql.menu.PsqlMeal;
 
 import java.util.List;
@@ -47,17 +46,6 @@ public class MealType {
         this.portions = portions;
         this.recipe = recipe;
         this.foodType = foodType;
-    }
-
-    public MealType(MongoMeal meal) {
-        this.id = meal.getId();
-        this.name = meal.getName();
-        this.dayMealId = meal.getDayMealId();
-        this.isProduct = meal.getIsProduct();
-        this.productList = meal.getProductList();
-        this.portions = meal.getPortions();
-        this.recipe = meal.getRecipe();
-        this.foodType = meal.getFoodType();
     }
 
     public MealType(PsqlMeal meal) {

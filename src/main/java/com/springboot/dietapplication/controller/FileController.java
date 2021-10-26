@@ -1,8 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
-import com.springboot.dietapplication.service.mongo.MongoDataService;
-import com.springboot.dietapplication.service.psql.PsqlDataService;
+import com.springboot.dietapplication.service.PsqlDataService;
 import io.github.biezhi.excel.plus.Reader;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,27 +19,19 @@ import java.util.List;
 @RequestMapping("api/")
 public class FileController {
 
-    private final MongoDataService mongoDataService;
     private final PsqlDataService psqlDataService;
 
-    public FileController(MongoDataService mongoDataService, PsqlDataService psqlDataService) {
-        this.mongoDataService = mongoDataService;
+    public FileController(PsqlDataService psqlDataService) {
         this.psqlDataService = psqlDataService;
-    }
-
-    @PostMapping("/mongo/files/uploadProducts")
-    public void handleFileUploadToMongo(@RequestParam("upload") MultipartFile multipartFile,
-                                 RedirectAttributes redirectAttributes) {
-        processFile(multipartFile, "mongo");
     }
 
     @PostMapping("/psql/files/uploadProducts")
     public void handleFileUploadToPsql(@RequestParam("upload") MultipartFile multipartFile,
                                    RedirectAttributes redirectAttributes) {
-        processFile(multipartFile, "psql");
+        processFile(multipartFile);
     }
 
-    void processFile(MultipartFile multipartFile, String type) {
+    void processFile(MultipartFile multipartFile) {
 
         File file = new File("src/main/resources/ProductData/tmpData.xlsx");
 
@@ -59,15 +50,10 @@ public class FileController {
         try {
             file.delete();
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
         }
 
-        if (type.equals("mongo")) {
-            mongoDataService.saveProducts(productExcelList);
-        } else if (type.equals("psql")) {
-            psqlDataService.saveProducts(productExcelList);
-        }
-
+        psqlDataService.saveProducts(productExcelList);
     }
 
 }

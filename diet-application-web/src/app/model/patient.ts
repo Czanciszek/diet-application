@@ -9,7 +9,6 @@ export interface Patient {
   currentLifestyleNote: string,
   changedLifestyleNote: string,
   dietaryPurpose: string,
-  measurements: any,
   allergens: string[],
   unlikelyCategories: string[]
 }

@@ -1,12 +1,9 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import com.springboot.dietapplication.model.psql.menu.PsqlMenu;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document(collection = "Menus")
 public class MenuType {
 
     private String id;
@@ -31,19 +28,6 @@ public class MenuType {
 
     public MenuType() {
 
-    }
-
-    public MenuType(MongoMenu menu) {
-        this.id = menu.getId();
-        this.patientId = menu.getPatientId();
-        this.measurementDate = menu.getMeasurementDate();
-        this.patientWeight = menu.getPatientWeight();
-        this.weekMealList = menu.getWeekMealList();
-        this.foodTypes = menu.getFoodTypes();
-        this.startDate = menu.getStartDate();
-        this.endDate = menu.getEndDate();
-        this.foodPropertiesType = menu.getFoodPropertiesType();
-        this.activityLevel = menu.getActivityLevel();
     }
 
     public MenuType(PsqlMenu menu) {

@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class PsqlFoodTypeMenu implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "food_type_id")

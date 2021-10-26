@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class PsqlDayMeal implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "week_meal_id")

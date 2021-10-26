@@ -1,6 +1,5 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 
@@ -23,15 +22,6 @@ public class ProductType {
     private boolean gluten;
 
     public ProductType() {
-    }
-
-    public ProductType(MongoProduct mongoProduct) {
-        this.id = mongoProduct.getId();
-        this.name = mongoProduct.getName();
-        this.lactose = mongoProduct.isLactose();
-        this.starch = mongoProduct.isStarch();
-        this.gluten = mongoProduct.isGluten();
-        this.foodProperties = mongoProduct.getFoodProperties();
     }
 
     public ProductType(PsqlProduct psqlProduct) {

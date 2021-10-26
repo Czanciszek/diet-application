@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class PsqlCategory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "category")

@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.controller;
 
-import com.springboot.dietapplication.model.mongo.user.User;
+import com.springboot.dietapplication.model.psql.user.PsqlUser;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,7 +13,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
+    public PsqlUser register(@RequestBody PsqlUser user) {
 
         return user;
     }

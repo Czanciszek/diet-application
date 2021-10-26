@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.controller.psql;
 
 import com.springboot.dietapplication.model.type.ProductType;
-import com.springboot.dietapplication.service.psql.PsqlProductService;
+import com.springboot.dietapplication.service.PsqlProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

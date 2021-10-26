@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.controller.psql;
 
 import com.springboot.dietapplication.model.type.PatientType;
-import com.springboot.dietapplication.service.psql.PsqlPatientService;
+import com.springboot.dietapplication.service.PsqlPatientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
