@@ -14,19 +14,20 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.3.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.5.5'
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.postgresql:postgresql'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.5'
+    implementation 'org.postgresql:postgresql:42.2.24.jre7'
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+    implementation 'io.github.biezhi:excel-plus:1.0.8'
+    implementation 'joda-time:joda-time:2.10.12'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test:2.5.5') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'io.projectreactor:reactor-test:3.4.11'
 
-    compile group: 'io.github.biezhi', name: 'excel-plus', version: '1.0.7'
-    compile group: 'joda-time', name: 'joda-time', version: '2.10.6'
 }
 
 test {
