@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MenuService} from "../../service/menu.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {FileService} from "../../service/file.service";
 import {MeasurementService} from "../../service/measurement.service";
 import {Menu} from "../../model/menu";
 import {MatSort} from "@angular/material/sort";
@@ -22,6 +23,7 @@ export class MenuListComponent implements OnInit {
     private service: MenuService,
     private dialog: MatDialog,
     private measurementService: MeasurementService,
+    private fileService: FileService
   ) { }
 
   displayedColumns: string[] = ['dateRange', 'weekCount', 'measurementDate', 'actions'];
@@ -108,6 +110,10 @@ export class MenuListComponent implements OnInit {
 
   onEnterMenuDetails(menuId) {
     this.router.navigate(["/menu/" + menuId]);
+  }
+
+  onGeneratePDFButtonClick() {
+    this.fileService.getPdfFile();
   }
 
   onCreate() {
