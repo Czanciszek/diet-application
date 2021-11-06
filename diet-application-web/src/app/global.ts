@@ -1,5 +1,5 @@
 export var GlobalVariable = Object({
-  SERVER_ADDRESS: 'http://192.168.0.199:8080/',
+  SERVER_ADDRESS: 'http://192.168.0.94:8080/',
   DATABASE_SERVICE: 'api/v1/',
 
   CURRENT_USER_LOGIN: 'aaa',
