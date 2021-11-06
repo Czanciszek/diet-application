@@ -112,8 +112,8 @@ export class MenuListComponent implements OnInit {
     this.router.navigate(["/menu/" + menuId]);
   }
 
-  onGeneratePDFButtonClick() {
-    this.fileService.getPdfFile();
+  onGeneratePDFButtonClick(menuId) {
+    this.fileService.getPdfFile(menuId);
   }
 
   onCreate() {

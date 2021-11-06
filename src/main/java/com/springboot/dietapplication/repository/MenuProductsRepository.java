@@ -11,33 +11,23 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface ProductFoodPropertiesRepository extends JpaRepository<PsqlProductFoodProperties, Long> {
+public interface MenuProductsRepository extends JpaRepository<PsqlProductFoodProperties, Long> {
 
-    String selectProductQuery = "SELECT " +
-            "p.id, category, subcategory, name, lactose, starch, gluten, energy_value, proteins, fats, " +
-            "saturated_fatty_acids, mono_unsaturated_fatty_acids, poly_unsaturated_fatty_acids, " +
-            "cholesterol, carbohydrates, sucrose, dietary_fibres, sodium, potassium, calcium, phosphorus, magnesium, " +
-            "iron, selenium, beta_carotene, vitamin_d, vitamin_c " +
+    String selectProductQuery =
+            "SELECT " +
+            "p.id product_id, p.name product_name, " +
+            "m.is_product, m.name meal_name, " +
+            "pm.grams, pm.amount, " + "at.name amount_type, " + "dm.day_type, dm.date " +
             "FROM products p " +
-            "JOIN food_properties fp ON p.food_properties_id = fp.id " +
-            "JOIN categories c ON p.category_id = c.id ";
-
-    @Query(value = selectProductQuery, nativeQuery = true)
-    List<PsqlProductFoodProperties> getAllProducts();
-
-    @Query(value = selectProductQuery +
-            "WHERE p.id IN :productIdList", nativeQuery = true)
-    List<PsqlProductFoodProperties> findProductsByIdIn(@Param("productIdList") Set<Long> ids);
+            "JOIN products_meals pm ON p.id = pm.product_id " +
+            "JOIN meals m ON m.id = pm.meal_id " +
+            "JOIN amount_types at ON pm.amount_type_id = at.id " +
+            "JOIN day_meals dm ON m.day_meal_id = dm.id " +
+            "JOIN week_meals wm ON dm.week_meal_id = wm.id " +
+            "JOIN menus me ON wm.menu_id = me.id  ";
 
     @Query(value = selectProductQuery +
-            "WHERE p.id = :productId", nativeQuery = true)
-    Optional<PsqlProductFoodProperties> findByProductId(@Param("productId") Long productId);
+            "WHERE me.id = :menuId ORDER BY dm.date, dm.day_type;", nativeQuery = true)
+    List<PsqlProductFoodProperties> findMenuProducts(@Param("menuId") Long menuId);
 
-    @Query(value = selectProductQuery +
-            "WHERE category_id = :categoryId", nativeQuery = true)
-    List<PsqlProductFoodProperties> findPsqlProductsByCategoryId(@Param("categoryId") Long categoryIdList);
-
-    @Query(value = selectProductQuery +
-            "WHERE category_id IN :categoryIdList", nativeQuery = true)
-    List<PsqlProductFoodProperties> findPsqlProductsByCategoryIdIn(@Param("categoryIdList") Set<Long> categoryIdList);
 }

@@ -15,26 +15,28 @@ import java.io.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/v1/files")
 public class FileController {
 
     @Autowired DataService dataService;
     @Autowired PDFService pdfService;
 
-    @PostMapping("/psql/files/uploadProducts")
-    public void handleFileUploadToPsql(@RequestParam("upload") MultipartFile multipartFile,
-                                   RedirectAttributes redirectAttributes) {
+    @PostMapping("/uploadProducts")
+    public void handleFileUploadToPsql(
+            @RequestParam("upload") MultipartFile multipartFile,
+            RedirectAttributes redirectAttributes) {
         processFile(multipartFile);
     }
 
-    @GetMapping(value = "/get-file", produces = MediaType.APPLICATION_PDF_VALUE)
-    public @ResponseBody byte[] getFile() throws IOException {
-        File file = pdfService.generate();
+    @GetMapping(value = "/menu/{menuId}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public @ResponseBody byte[] generateMenu(@PathVariable("menuId") Long menuId) throws IOException {
+
+        File file = pdfService.generateMenu(menuId);
         final InputStream targetStream = new DataInputStream(new FileInputStream(file));
         return IOUtils.toByteArray(targetStream);
     }
 
-    void processFile(MultipartFile multipartFile) {
+    private void processFile(MultipartFile multipartFile) {
 
         File file = new File("src/main/resources/ProductData/tmpData.xlsx");
 

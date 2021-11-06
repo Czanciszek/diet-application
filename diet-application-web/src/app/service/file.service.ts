@@ -42,8 +42,8 @@ export class FileService {
      }
   }
 
-  getPdfFile(): any {
-      this.http.get(GlobalVariable.SERVER_ADDRESS + "api/get-file",
+  getPdfFile(menuId: string): any {
+      this.http.get(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "files/menu/" + menuId,
       { responseType: 'arraybuffer', headers: this.headers}).subscribe(
           (response) => {
             this.downLoadFile(response, "application/pdf");

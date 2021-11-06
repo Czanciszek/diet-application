@@ -3,7 +3,9 @@ package com.springboot.dietapplication.service;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDSimpleFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -12,7 +14,10 @@ import java.io.IOException;
 @Service
 public class PDFService {
 
-    public File generate() {
+    @Autowired
+    MenuService menuService;
+
+    public File generateMenu(Long menuId) {
 
         try {
 
@@ -23,12 +28,7 @@ public class PDFService {
             document.addPage(page);
 
             PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND,true,true);
-
-            contentStream.setFont(PDType1Font.TIMES_BOLD, 24);
-            contentStream.beginText();
-            contentStream.newLineAtOffset(200,685);
-            contentStream.showText("Hello World");
-            contentStream.endText();
+            writeText(contentStream, PDType1Font.TIMES_BOLD, 24, "Hello world");
             contentStream.close();
 
             document.save(file);
@@ -40,5 +40,13 @@ public class PDFService {
             return new File("dummy.pdf");
         }
 
+    }
+
+    private void writeText(PDPageContentStream contentStream, PDSimpleFont font, int fontSize, String text) throws IOException {
+        contentStream.beginText();
+        contentStream.newLineAtOffset(200,685);
+        contentStream.setFont(font, fontSize);
+        contentStream.showText(text);
+        contentStream.endText();
     }
 }
