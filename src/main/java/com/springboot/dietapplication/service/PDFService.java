@@ -34,7 +34,8 @@ public class PDFService {
             document.addPage(page);
 
             PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND,true,true);
-            writeText(contentStream, PDType1Font.TIMES_BOLD, 24, "Hello world");
+            makeFooter(contentStream);
+            writeText(contentStream, new Point(200, 685), PDType1Font.TIMES_BOLD, 24, "Hello world");
             contentStream.close();
 
             document.save(file);
@@ -48,9 +49,14 @@ public class PDFService {
 
     }
 
-    private void writeText(PDPageContentStream contentStream, PDSimpleFont font, int fontSize, String text) throws IOException {
+    private void makeFooter(PDPageContentStream contentStream) throws IOException {
+        String footerText = "Agnieszka Kaszuba-Czana Dietetyk kliniczny, Trener personalny";
+        writeText(contentStream, new Point(50, 20), PDType1Font.TIMES_ROMAN, 12, footerText);
+    }
+
+    private void writeText(PDPageContentStream contentStream, Point offset, PDSimpleFont font, int fontSize, String text) throws IOException {
         contentStream.beginText();
-        contentStream.newLineAtOffset(200,685);
+        contentStream.newLineAtOffset(offset.x, offset.y);
         contentStream.setFont(font, fontSize);
         contentStream.showText(text);
         contentStream.endText();
