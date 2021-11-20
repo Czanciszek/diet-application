@@ -1,5 +1,6 @@
 package com.springboot.dietapplication.service;
 
+import com.springboot.dietapplication.model.psql.menu.PsqlMenuProductList;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -8,8 +9,10 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class PDFService {
@@ -21,7 +24,10 @@ public class PDFService {
 
         try {
 
-            File file = File.createTempFile("resources/PDF/hello-world", ".pdf");
+            File file = File.createTempFile("resources/PDF/menu_" + menuId, ".pdf");
+
+            List<PsqlMenuProductList> menuProductList = menuService.menuProductLists(menuId);
+
 
             PDDocument document = new PDDocument();
             PDPage page = new PDPage();

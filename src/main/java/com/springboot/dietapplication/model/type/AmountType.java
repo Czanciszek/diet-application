@@ -2,6 +2,7 @@ package com.springboot.dietapplication.model.type;
 
 public enum AmountType {
 
+    NONE, // Null
     PIECE, // Sztuka
     SPOON, // Łyżka
     SCOOPS, // Miarka

@@ -72,6 +72,8 @@ public class MealService {
             if (productDish.getAmountType() != null) {
                 PsqlAmountType amountType = this.amountTypeRepository.getPsqlAmountTypeByName(productDish.getAmountType().toString());
                 psqlProductMeal.setAmountTypeId(amountType.getId());
+            } else {
+                psqlProductMeal.setAmountTypeId(0L);
             }
 
             this.productMealRepository.save(psqlProductMeal);

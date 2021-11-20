@@ -5,6 +5,7 @@ import com.springboot.dietapplication.model.psql.menu.*;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.FoodTypeMenuRepository;
 import com.springboot.dietapplication.repository.FoodTypeRepository;
+import com.springboot.dietapplication.repository.MenuProductsRepository;
 import com.springboot.dietapplication.repository.MenuRepository;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class MenuService {
     @Autowired MenuRepository menuRepository;
     @Autowired FoodTypeRepository foodTypeRepository;
     @Autowired FoodTypeMenuRepository foodTypeMenuRepository;
+    @Autowired MenuProductsRepository menuProductsRepository;
 
     @Autowired PatientService patientService;
     @Autowired FoodPropertiesService foodPropertiesService;
@@ -113,5 +115,9 @@ public class MenuService {
         menuType.setFoodPropertiesType(foodPropertiesType);
 
         return menuType;
+    }
+
+    public List<PsqlMenuProductList> menuProductLists(long menuId) {
+        return menuProductsRepository.findMenuProducts(menuId);
     }
 }
