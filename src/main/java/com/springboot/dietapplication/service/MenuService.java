@@ -117,7 +117,7 @@ public class MenuService {
         return menuType;
     }
 
-    public List<PsqlMenuProductList> menuProductLists(long menuId) {
+    public List<PsqlMenuProduct> menuProductLists(long menuId) {
         return menuProductsRepository.findMenuProducts(menuId);
     }
 }

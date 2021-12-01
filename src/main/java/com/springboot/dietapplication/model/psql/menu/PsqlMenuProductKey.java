@@ -3,7 +3,7 @@ package com.springboot.dietapplication.model.psql.menu;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class PsqlMenuProductListKey implements Serializable {
+public class PsqlMenuProductKey implements Serializable {
 
     private long productId;
     private long mealId;
@@ -13,7 +13,7 @@ public class PsqlMenuProductListKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PsqlMenuProductListKey that = (PsqlMenuProductListKey) o;
+        PsqlMenuProductKey that = (PsqlMenuProductKey) o;
         return productId == that.productId && mealId == that.mealId && menuId == that.menuId;
     }
 

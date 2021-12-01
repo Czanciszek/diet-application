@@ -2,10 +2,11 @@ package com.springboot.dietapplication.model.psql.menu;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Comparator;
 
 @Entity
-@IdClass(PsqlMenuProductListKey.class)
-public class PsqlMenuProductList implements Serializable {
+@IdClass(PsqlMenuProductKey.class)
+public class PsqlMenuProduct implements Serializable, Comparator<Long> {
 
     @Id
     @Column(name = "product_id")
@@ -19,6 +20,9 @@ public class PsqlMenuProductList implements Serializable {
     @Column(name = "menu_id")
     private long menuId;
 
+    @Column(name = "week_meal_id")
+    private long weekMealId;
+
     @Column(name = "product_name")
     private String productName;
 
@@ -27,6 +31,12 @@ public class PsqlMenuProductList implements Serializable {
 
     @Column(name = "meal_name")
     private String mealName;
+
+    @Column(name = "food_type_id")
+    private long foodTypeId;
+
+    @Column(name = "food_type_name")
+    private String foodTypeName;
 
     @Column(name = "grams")
     private float grams;
@@ -43,7 +53,7 @@ public class PsqlMenuProductList implements Serializable {
     @Column(name = "date")
     private String date;
 
-    public PsqlMenuProductList() {
+    public PsqlMenuProduct() {
 
     }
 
@@ -59,6 +69,10 @@ public class PsqlMenuProductList implements Serializable {
         return menuId;
     }
 
+    public long getWeekMealId() {
+        return weekMealId;
+    }
+
     public String getProductName() {
         return productName;
     }
@@ -69,6 +83,14 @@ public class PsqlMenuProductList implements Serializable {
 
     public String getMealName() {
         return mealName;
+    }
+
+    public long getFoodTypeId() {
+        return foodTypeId;
+    }
+
+    public String getFoodTypeName() {
+        return foodTypeName;
     }
 
     public float getGrams() {
@@ -89,6 +111,11 @@ public class PsqlMenuProductList implements Serializable {
 
     public String getDate() {
         return date;
+    }
+
+    @Override
+    public int compare(Long o1, Long o2) {
+        return Long.compare(o2, o1);
     }
 }
 
