@@ -14,20 +14,20 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.5.5'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.6'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.5.6'
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.5'
-    implementation 'org.postgresql:postgresql:42.2.24.jre7'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.6'
+    implementation 'org.postgresql:postgresql:42.3.1'
 
     implementation 'io.github.biezhi:excel-plus:1.0.8'
-    implementation 'joda-time:joda-time:2.10.12'
-    implementation 'org.apache.pdfbox:pdfbox:2.0.1'
+    implementation 'joda-time:joda-time:2.10.13'
+    implementation 'org.apache.pdfbox:pdfbox:2.0.24'
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test:2.5.5') {
+    testImplementation('org.springframework.boot:spring-boot-starter-test:2.5.6') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    testImplementation 'io.projectreactor:reactor-test:3.4.11'
+    testImplementation 'io.projectreactor:reactor-test:3.4.12'
 
 }
 
