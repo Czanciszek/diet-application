@@ -91,9 +91,6 @@ public class PDFService {
 
                 if (pageOffset < 380) {
                     closeContentStream(contentStream);
-                    if (contentStream != null) {
-                        contentStream.close();
-                    }
                     contentStream = setNewPage(document, true);
                 } else {
                     contentStream = setNewLine(document, contentStream, new Point(0, -20), false);
