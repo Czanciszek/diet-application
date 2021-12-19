@@ -7,6 +7,8 @@ export interface Meal {
   productList: any[],
   grams: number,
   portions: number,
+  grams: number,
+  dishPortions: number,
   recipe: string,
   foodType: string
 }

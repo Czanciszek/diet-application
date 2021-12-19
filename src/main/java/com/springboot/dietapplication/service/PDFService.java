@@ -121,7 +121,16 @@ public class PDFService {
                     writeText(contentStream, new Point(40, pageOffset), timesBold, 12, text);
                 }
 
-                String text = product.isProduct() ? product.getProductName() + " " + Math.round(product.getGrams()) + "g" : product.getMealName() + " - X porcji";
+                String text;
+                if (product.isProduct()) {
+                    text = product.getProductName() + " " + Math.round(product.getGrams()) + "g";
+                } else {
+                    if (product.getMealGrams() > 0) {
+                        text = product.getMealName() + " - " + Math.round(product.getMealGrams()) + "g";
+                    } else {
+                        text = product.getMealName() + " - " + setPortionLabel(Math.round(product.getMealPortions()));
+                    }
+                }
                 writeText(contentStream, new Point(150, pageOffset), timesNormal, 12, text);
 
                 dayMealIds.add(product.getMealId());
@@ -131,6 +140,15 @@ public class PDFService {
         }
 
         closeContentStream(contentStream);
+    }
+
+    private String setPortionLabel(int portions) {
+        if (portions == 1) {
+            return portions + " porcja";
+        } else if (portions < 5) {
+            return portions + " porcje";
+        }
+        return portions + " porcji";
     }
 
     private Map<DateTime, List<PsqlMenuProduct>> mapMenuMeals(List<PsqlMenuProduct> menuProductList) {

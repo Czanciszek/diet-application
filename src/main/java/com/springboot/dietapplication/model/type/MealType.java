@@ -12,11 +12,17 @@ public class MealType {
 
     private String dayMealId; // Reference to day
 
+    private String dishIdReference; // Reference to dish that meal is basing on
+
     private int isProduct; // true - for Product; false - for Dish
 
     private List<ProductDishType> productList; // Product list for dish type
 
-    private float portions; // Portions for dish meal (For now should be always 1)
+    private float portions; // Portions of dish on meal
+
+    private float grams; // Portions of dish on meal
+
+    private float dishPortions; // Portions for full dish recipe (portions from DishType)
 
     private String recipe; // Recipe for dish meal
 
@@ -32,20 +38,10 @@ public class MealType {
         this.isProduct = meal.isProduct;
         this.productList = meal.productList;
         this.portions = meal.portions;
+        this.grams = meal.grams;
+        this.dishPortions = meal.dishPortions;
         this.recipe = meal.recipe;
         this.foodType = meal.foodType;
-    }
-
-    public MealType(String dayMealId, String name, int isProduct,
-                    List<ProductDishType> productList, float portions,
-                    String recipe, FoodType foodType) {
-        this.name = name;
-        this.dayMealId = dayMealId;
-        this.isProduct = isProduct;
-        this.productList = productList;
-        this.portions = portions;
-        this.recipe = recipe;
-        this.foodType = foodType;
     }
 
     public MealType(PsqlMeal meal) {
@@ -56,6 +52,8 @@ public class MealType {
         this.name = meal.getName();
         this.isProduct = (meal.isProduct() ? 1 : 0);
         this.portions = meal.getPortions();
+        this.grams = meal.getGrams();
+        this.dishPortions = meal.getDishPortions();
         this.recipe = meal.getRecipe();
     }
 
@@ -105,6 +103,22 @@ public class MealType {
 
     public void setPortions(float portions) {
         this.portions = portions;
+    }
+
+    public float getGrams() {
+        return grams;
+    }
+
+    public void setGrams(float grams) {
+        this.grams = grams;
+    }
+
+    public float getDishPortions() {
+        return dishPortions;
+    }
+
+    public void setDishPortions(float dishPortions) {
+        this.dishPortions = dishPortions;
     }
 
     public String getRecipe() {

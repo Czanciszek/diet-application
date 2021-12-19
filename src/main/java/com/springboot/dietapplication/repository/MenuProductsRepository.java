@@ -14,7 +14,7 @@ public interface MenuProductsRepository extends JpaRepository<PsqlMenuProduct, L
     String selectProductQuery =
             "SELECT " +
             "p.id product_id, p.name product_name, " +
-            "m.is_product, m.name meal_name, m.id meal_id, " +
+            "m.is_product, m.name meal_name, m.id meal_id, m.grams meal_grams, m.portions meal_portions, " +
             "ft.id food_type_id, ft.name food_type_name, " +
             "pm.grams, pm.amount, " +
             "at.name amount_type, " +

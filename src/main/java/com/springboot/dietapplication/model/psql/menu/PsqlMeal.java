@@ -28,6 +28,12 @@ public class PsqlMeal implements Serializable {
     @Column(name = "portions")
     private float portions;
 
+    @Column(name = "grams")
+    private float grams;
+
+    @Column(name = "dish_portions")
+    private float dishPortions;
+
     @Column(name = "recipe")
     private String recipe;
 
@@ -44,6 +50,8 @@ public class PsqlMeal implements Serializable {
         this.name = mealType.getName();
         this.isProduct = (mealType.getIsProduct() == 1);
         this.portions = mealType.getPortions();
+        this.grams = mealType.getGrams();
+        this.dishPortions = mealType.getDishPortions();
         this.recipe = mealType.getRecipe();
     }
 
@@ -93,6 +101,22 @@ public class PsqlMeal implements Serializable {
 
     public void setPortions(float portions) {
         this.portions = portions;
+    }
+
+    public float getGrams() {
+        return grams;
+    }
+
+    public void setGrams(float grams) {
+        this.grams = grams;
+    }
+
+    public float getDishPortions() {
+        return dishPortions;
+    }
+
+    public void setDishPortions(float dishPortions) {
+        this.dishPortions = dishPortions;
     }
 
     public String getRecipe() {

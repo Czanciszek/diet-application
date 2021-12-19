@@ -25,6 +25,8 @@ export class MealService {
     productList: new FormArray([]),
     isProduct: new FormControl(null),
     portions: new FormControl(null),
+    grams: new FormControl(null),
+    dishPortions: new FormControl(null),
     recipe: new FormControl(null),
     foodType: new FormControl('')
   });
@@ -46,6 +48,8 @@ export class MealService {
       dayMealId: '',
       isProduct: 0,
       portions: 1,
+      grams: 100,
+      dishPortions: 1,
       recipe: '',
       foodType: ''
     })

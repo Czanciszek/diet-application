@@ -29,6 +29,12 @@ public class PsqlMenuProduct implements Serializable, Comparator<Long> {
     @Column(name = "is_product")
     private boolean isProduct;
 
+    @Column(name = "meal_grams")
+    private float mealGrams;
+
+    @Column(name = "meal_portions")
+    private float mealPortions;
+
     @Column(name = "meal_name")
     private String mealName;
 
@@ -79,6 +85,14 @@ public class PsqlMenuProduct implements Serializable, Comparator<Long> {
 
     public boolean isProduct() {
         return isProduct;
+    }
+
+    public float getMealGrams() {
+        return mealGrams;
+    }
+
+    public float getMealPortions() {
+        return mealPortions;
     }
 
     public String getMealName() {

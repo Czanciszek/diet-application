@@ -29,12 +29,14 @@ export class MealAddComponent implements OnInit {
   amountTypes = AMOUNT_TYPES;
   foodTypes = FOOD_TYPES;
 
+  withPortions = true;
   blockProduct = false;
   blockDish = false;
   tabIndex = 0;
 
   ngOnInit(): void {
     if (this.service.form.get('id').value != null) {
+      this.checkPortionOption();
       this.tabIndex = this.service.form.get('isProduct').value;
       let products = (<FormArray>this.service.form.get('productList'));
       if (this.tabIndex == 1) {
@@ -79,6 +81,10 @@ export class MealAddComponent implements OnInit {
         });
       }
     }
+  }
+
+  checkPortionOption() {
+   this.withPortions = this.service.form.get('grams').value == 0;
   }
 
   addProductButtonClick() {
@@ -161,6 +167,7 @@ export class MealAddComponent implements OnInit {
         // Update value in Form Group
         this.service.form.get('name').patchValue(result.name);
         this.service.form.get('recipe').patchValue(result.recipe);
+        this.service.form.get('dishPortions').patchValue(result.portions);
         this.service.form.get('isProduct').patchValue(0);
 
         for (let product of result.products) {
@@ -191,12 +198,15 @@ export class MealAddComponent implements OnInit {
     let fats = (foodProperties.fats * grams) / 100;
     let carbohydrates = (foodProperties.carbohydrates * grams) / 100;
 
-    if (isProduct) {
+    if (!isProduct) {
+      let dishPortions = this.service.form.get('dishPortions').value;
       let portions = this.service.form.get('portions').value;
-      energy /= portions;
-      proteins /= portions;
-      fats /= portions;
-      carbohydrates /= portions;
+      let proportions = dishPortions / portions;
+
+      energy /= proportions;
+      proteins /= proportions;
+      fats /= proportions;
+      carbohydrates /= proportions;
     }
 
     return "Kcal: " + energy.toFixed(2) +
@@ -207,5 +217,12 @@ export class MealAddComponent implements OnInit {
 
   gramsChanged(grams) {
     this.service.form.get('productList').get('0').get('grams').patchValue(grams);
+  }
+
+  portionOptionChanged(event: MatCheckboxChange) {
+    if (event.source.checked) {
+      this.service.form.get('grams').patchValue(0);
+    }
+    this.withPortions = event.source.checked
   }
 }
