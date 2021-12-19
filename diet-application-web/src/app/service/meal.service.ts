@@ -48,7 +48,7 @@ export class MealService {
       dayMealId: '',
       isProduct: 0,
       portions: 1,
-      grams: 100,
+      grams: 0,
       dishPortions: 1,
       recipe: '',
       foodType: ''

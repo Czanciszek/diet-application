@@ -219,7 +219,7 @@ export class MealAddComponent implements OnInit {
     this.service.form.get('productList').get('0').get('grams').patchValue(grams);
   }
 
-  portionOptionChanged(event: MatCheckboxChange) {
+  portionOptionChanged(event) {
     if (event.source.checked) {
       this.service.form.get('grams').patchValue(0);
     }
