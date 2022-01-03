@@ -8,6 +8,7 @@ import {FormArray} from "@angular/forms";
 import {MenuService} from "../../service/menu.service";
 import {DishSelectComponent} from "../../dishes/dish-select/dish-select.component";
 import {ProductService} from "../../service/product.service";
+import {Meal} from "../../model/meal";
 import {FOOD_TYPES} from "../../model/helpers/foodTypes";
 import {AMOUNT_TYPES} from "../../model/helpers/amountTypes";
 
@@ -101,7 +102,8 @@ export class MealAddComponent implements OnInit {
     this.dishService.populateFormFromMeal(this.service.form.value);
     this.dishService.insertDish(this.dishService.form.value).subscribe(
       result => {
-        this.service.form.get('dishIdReference').patchValue(result.id);
+        let meal = result as Meal;
+        this.service.form.get('dishIdReference').patchValue(meal.id);
       },
       error => {
         this.notificationService.error(":: Wystąpił błąd podczas zapisu! ::");
@@ -231,7 +233,7 @@ export class MealAddComponent implements OnInit {
   }
 
   gramsChanged(grams) {
-    mealDetailsChanged();
+    this.mealDetailsChanged();
     this.service.form.get('productList').get('0').get('grams').patchValue(grams);
   }
 
