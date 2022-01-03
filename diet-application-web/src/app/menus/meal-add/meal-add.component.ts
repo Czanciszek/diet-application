@@ -98,12 +98,15 @@ export class MealAddComponent implements OnInit {
   }
 
   onSaveDishTemplateButtonClick() {
-    if (this.service.form.get('dishIdReference') != null) {
-       this.notificationService.error(":: Wystąpił błąd! ::");
-       return
-    }
-
-    //this.service.insertDish(this.service.form.value).subscribe();
+    this.dishService.populateFormFromMeal(this.service.form.value);
+    this.dishService.insertDish(this.dishService.form.value).subscribe(
+      result => {
+        this.service.form.get('dishIdReference').patchValue(result.id);
+      },
+      error => {
+        this.notificationService.error(":: Wystąpił błąd podczas zapisu! ::");
+      }
+    );
   }
 
   selectProductForDish(index) {

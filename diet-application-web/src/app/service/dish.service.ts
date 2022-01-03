@@ -60,6 +60,23 @@ export class DishService {
     this.form.setValue(dish);
   }
 
+  populateFormFromMeal(meal) {
+    this.form.get('name').patchValue(meal.name);
+    this.form.get('foodType').patchValue(meal.foodType);
+    this.form.get('portions').patchValue(meal.portions);
+    this.form.get('recipe').patchValue(meal.recipe);
+
+    (<FormArray>this.form.get('products')).clear();
+    for (let product of meal.productList) {
+      let productForm = this.addProductFormGroup();
+      productForm.get('productId').patchValue(product.productId);
+      productForm.get('grams').patchValue(product.grams);
+      productForm.get('amount').patchValue(product.amount);
+      productForm.get('amountType').patchValue(product.amountType);
+      (<FormArray>this.form.get('products')).push(productForm);
+    }
+  }
+
   getDishes() {
     this.dishList = this.http.get(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes", this.httpOptions);
     return this.dishList;
