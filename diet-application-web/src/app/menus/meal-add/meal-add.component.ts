@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MealService} from "../../service/meal.service";
+import {DishService} from "../../service/dish.service";
 import {NotificationService} from "../../service/notification.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ProductSelectComponent} from "../../products/product-select/product-select.component";
@@ -21,6 +22,7 @@ export class MealAddComponent implements OnInit {
     private service: MealService,
     private menuService: MenuService,
     private productService: ProductService,
+    private dishService: DishService,
     private notificationService: NotificationService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<MealAddComponent>
@@ -95,6 +97,15 @@ export class MealAddComponent implements OnInit {
     (<FormArray>this.service.form.get('productList')).removeAt(productIndex);
   }
 
+  onSaveDishTemplateButtonClick() {
+    if (this.service.form.get('dishIdReference') != null) {
+       this.notificationService.error(":: Wystąpił błąd! ::");
+       return
+    }
+
+    //this.service.insertDish(this.service.form.value).subscribe();
+  }
+
   selectProductForDish(index) {
 
     let dialogRef = this.dialog.open(ProductSelectComponent, {
@@ -165,6 +176,7 @@ export class MealAddComponent implements OnInit {
         (<FormArray>this.service.form.get('productList')).clear();
 
         // Update value in Form Group
+        this.service.form.get('dishIdReference').patchValue(result.id);
         this.service.form.get('name').patchValue(result.name);
         this.service.form.get('recipe').patchValue(result.recipe);
         this.service.form.get('dishPortions').patchValue(result.portions);
@@ -216,6 +228,7 @@ export class MealAddComponent implements OnInit {
   }
 
   gramsChanged(grams) {
+    mealDetailsChanged();
     this.service.form.get('productList').get('0').get('grams').patchValue(grams);
   }
 
@@ -224,5 +237,9 @@ export class MealAddComponent implements OnInit {
       this.service.form.get('grams').patchValue(0);
     }
     this.withPortions = event.source.checked
+  }
+
+  mealDetailsChanged() {
+    this.service.form.get('dishIdReference').patchValue(null);
   }
 }

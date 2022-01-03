@@ -24,12 +24,17 @@
         <mat-grid-tile colspan="4">
           <div class="control-container">
             <mat-form-field>
-              <input matInput placeholder="Potrawa" formControlName="name" autocomplete="off">
+              <input matInput placeholder="Potrawa" formControlName="name" autocomplete="off" (input)="mealDetailsChanged()">
             </mat-form-field>
           </div>
         </mat-grid-tile>
 
         <mat-grid-tile colspan="2">
+          <div *ngIf="service.form.value.dishIdReference == null && service.form.value.name != ''">
+            <button mat-raised-button type="button" (click)="onSaveDishTemplateButtonClick()">
+              <mat-icon>save</mat-icon>Zapisz szablon
+            </button>
+          </div>
         </mat-grid-tile>
 
         <mat-grid-tile colspan="2">
@@ -89,7 +94,7 @@
           <div class="control-container">
             <mat-form-field>
               <div class="add-bottom-padding">
-                  <textarea rows="5" formControlName="recipe" matInput  style="resize: none;" placeholder="Przepis" autocomplete="off">
+                  <textarea rows="5" formControlName="recipe" matInput  style="resize: none;" placeholder="Przepis" autocomplete="off" (input)="mealDetailsChanged()">
                   </textarea>
               </div>
             </mat-form-field>
@@ -104,7 +109,7 @@
               <div class="control-container">
                 <mat-form-field>
                   <div class="add-bottom-padding">
-                    <input type="number" matInput placeholder="Gram" formControlName="grams" autocomplete="off">
+                    <input type="number" matInput placeholder="Gram" formControlName="grams" autocomplete="off" (input)="mealDetailsChanged()">
                   </div>
                 </mat-form-field>
               </div>
@@ -114,7 +119,7 @@
               <div class="control-container">
                 <mat-form-field>
                   <div class="add-bottom-padding">
-                    <input type="number" matInput placeholder="Ilość" formControlName="amount" autocomplete="off">
+                    <input type="number" matInput placeholder="Ilość" formControlName="amount" autocomplete="off" (input)="mealDetailsChanged()">
                   </div>
                 </mat-form-field>
               </div>
