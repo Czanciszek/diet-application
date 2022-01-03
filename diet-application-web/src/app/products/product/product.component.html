@@ -42,7 +42,7 @@
         <div class="add-bottom-padding">
           <input type="hidden" formControlName="id">
           <mat-form-field>
-            <input formControlName="name" matInput placeholder="Nazwa produktu*">
+            <input formControlName="name" matInput placeholder="Nazwa produktu*" autocomplete="off">
             <mat-error *ngIf="service.form.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
             <mat-error *ngIf="service.form.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
           </mat-form-field>
@@ -57,31 +57,31 @@
         <form formGroupName="foodProperties">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input type="number" formControlName="energyValue" matInput placeholder="Wartość energetyczna (kcal)">
+              <input type="number" formControlName="energyValue" matInput placeholder="Wartość energetyczna (kcal)" autocomplete="off">
             </mat-form-field>
           </div>
 
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="proteins" matInput placeholder="Białko (g)">
+              <input formControlName="proteins" matInput placeholder="Białko (g)" autocomplete="off">
             </mat-form-field>
           </div>
 
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="carbohydrates" matInput placeholder="Węglowodany (g)">
+              <input formControlName="carbohydrates" matInput placeholder="Węglowodany (g)" autocomplete="off">
             </mat-form-field>
           </div>
 
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="sucrose" matInput placeholder="Sacharoza (g)">
+              <input formControlName="sucrose" matInput placeholder="Sacharoza (g)" autocomplete="off">
             </mat-form-field>
           </div>
 
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="dietaryFibres" matInput placeholder="Błonnik pokarmowy (g)">
+              <input formControlName="dietaryFibres" matInput placeholder="Błonnik pokarmowy (g)" autocomplete="off">
             </mat-form-field>
           </div>
         </form>
@@ -92,63 +92,27 @@
         <form formGroupName="foodProperties">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="fats" matInput placeholder="Tłuszcz (g)">
+              <input formControlName="fats" matInput placeholder="Tłuszcz (g)" autocomplete="off">
             </mat-form-field>
           </div>
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="saturatedFattyAcids" matInput placeholder="Kw. tł. nasycone (g)">
+              <input formControlName="saturatedFattyAcids" matInput placeholder="Kw. tł. nasycone (g)" autocomplete="off">
             </mat-form-field>
           </div>
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="monoUnsaturatedFattyAcids" matInput placeholder="Kw. tł. jednonienasycone (g)">
+              <input formControlName="monoUnsaturatedFattyAcids" matInput placeholder="Kw. tł. jednonienasycone (g)" autocomplete="off">
             </mat-form-field>
           </div>
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="polyUnsaturatedFattyAcids" matInput placeholder="Kw. tł. wielonienasycone (g)">
+              <input formControlName="polyUnsaturatedFattyAcids" matInput placeholder="Kw. tł. wielonienasycone (g)" autocomplete="off">
             </mat-form-field>
           </div>
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="cholesterol" matInput placeholder="Cholesterol (g)">
-            </mat-form-field>
-          </div>
-        </form>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <form formGroupName="foodProperties">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input formControlName="sodium" matInput placeholder="Sód (mg)">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input formControlName="potassium" matInput placeholder="Potas (mg)">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input formControlName="calcium" matInput placeholder="Wapń (mg)">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input formControlName="phosphorus" matInput placeholder="Fosfor (mg)">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input formControlName="magnesium" matInput placeholder="Magnes (mg)">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input formControlName="selenium" matInput placeholder="Selen (mg)">
+              <input formControlName="cholesterol" matInput placeholder="Cholesterol (g)" autocomplete="off">
             </mat-form-field>
           </div>
         </form>
@@ -159,22 +123,58 @@
         <form formGroupName="foodProperties">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="iron" matInput placeholder="Żelazo (mg)">
+              <input formControlName="sodium" matInput placeholder="Sód (mg)" autocomplete="off">
             </mat-form-field>
           </div>
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="betaCarotene" matInput placeholder="Beta-karoten (µg)">
+              <input formControlName="potassium" matInput placeholder="Potas (mg)" autocomplete="off">
             </mat-form-field>
           </div>
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="vitaminD" matInput placeholder="Witamina D (µg)">
+              <input formControlName="calcium" matInput placeholder="Wapń (mg)" autocomplete="off">
             </mat-form-field>
           </div>
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="vitaminC" matInput placeholder="Witamina C (mg)">
+              <input formControlName="phosphorus" matInput placeholder="Fosfor (mg)" autocomplete="off">
+            </mat-form-field>
+          </div>
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <input formControlName="magnesium" matInput placeholder="Magnes (mg)" autocomplete="off">
+            </mat-form-field>
+          </div>
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <input formControlName="selenium" matInput placeholder="Selen (mg)" autocomplete="off">
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="control-container">
+        <form formGroupName="foodProperties">
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <input formControlName="iron" matInput placeholder="Żelazo (mg)" autocomplete="off">
+            </mat-form-field>
+          </div>
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <input formControlName="betaCarotene" matInput placeholder="Beta-karoten (µg)" autocomplete="off">
+            </mat-form-field>
+          </div>
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <input formControlName="vitaminD" matInput placeholder="Witamina D (µg)" autocomplete="off">
+            </mat-form-field>
+          </div>
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <input formControlName="vitaminC" matInput placeholder="Witamina C (mg)" autocomplete="off">
             </mat-form-field>
           </div>
         </form>

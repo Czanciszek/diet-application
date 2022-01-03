@@ -24,7 +24,7 @@
         <mat-grid-tile colspan="4">
           <div class="control-container">
             <mat-form-field>
-              <input matInput placeholder="Potrawa" formControlName="name">
+              <input matInput placeholder="Potrawa" formControlName="name" autocomplete="off">
             </mat-form-field>
           </div>
         </mat-grid-tile>
@@ -75,7 +75,7 @@
             <div class="control-container">
               <mat-form-field>
                 <div class="add-bottom-padding">
-                  <input matInput placeholder="Gram" formControlName="grams">
+                  <input matInput placeholder="Gram" formControlName="grams" autocomplete="off">
                 </div>
               </mat-form-field>
             </div>
@@ -89,7 +89,7 @@
           <div class="control-container">
             <mat-form-field>
               <div class="add-bottom-padding">
-                  <textarea rows="5" formControlName="recipe" matInput  style="resize: none;" placeholder="Przepis">
+                  <textarea rows="5" formControlName="recipe" matInput  style="resize: none;" placeholder="Przepis" autocomplete="off">
                   </textarea>
               </div>
             </mat-form-field>
@@ -104,7 +104,7 @@
               <div class="control-container">
                 <mat-form-field>
                   <div class="add-bottom-padding">
-                    <input matInput placeholder="Gram" formControlName="grams">
+                    <input matInput placeholder="Gram" formControlName="grams" autocomplete="off">
                   </div>
                 </mat-form-field>
               </div>
@@ -114,7 +114,7 @@
               <div class="control-container">
                 <mat-form-field>
                   <div class="add-bottom-padding">
-                    <input matInput placeholder="Ilość" formControlName="amount">
+                    <input matInput placeholder="Ilość" formControlName="amount" autocomplete="off">
                   </div>
                 </mat-form-field>
               </div>
@@ -183,7 +183,7 @@
               <div class="control-container">
                 <mat-form-field>
                   <div class="add-bottom-padding">
-                    <input id="product_grams" matInput placeholder="Gram" (input)="gramsChanged($event.target.value)">
+                    <input id="product_grams" matInput placeholder="Gram" (input)="gramsChanged($event.target.value)" autocomplete="off">
                   </div>
                 </mat-form-field>
               </div>

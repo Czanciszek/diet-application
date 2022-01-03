@@ -27,7 +27,7 @@
         <div class="add-bottom-padding">
           <mat-form-field>
             <mat-label>Początek diety*</mat-label>
-            <input matInput [matDatepickerFilter]="onlyMonday" [matDatepicker]="picker" formControlName="startDate" >
+            <input matInput [matDatepickerFilter]="onlyMonday" [matDatepicker]="picker" formControlName="startDate" autocomplete="off">
             <mat-datepicker-toggle matSuffix [for]="picker" >
               <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
             </mat-datepicker-toggle>
@@ -41,7 +41,7 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field >
-            <input type="number" min="1" max="8" step="1" formControlName="weekCount" matInput placeholder="Ilość tygodni*">
+            <input type="number" min="1" max="8" step="1" formControlName="weekCount" matInput placeholder="Ilość tygodni*" autocomplete="off">
             <mat-error *ngIf="service.form.controls['weekCount'].errors?.required">Uzupełnij ilość</mat-error>
             <mat-error *ngIf="service.form.controls['weekCount'].errors?.min">Wartość zbyt mała</mat-error>
             <mat-error *ngIf="service.form.controls['weekCount'].errors?.max">Wartość zbyt duża</mat-error>
@@ -55,7 +55,7 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field>
-            <input type="number" min="1.1" max="2" step="0.01" formControlName="activityLevel" matInput placeholder="Poziom aktywności*">
+            <input type="number" min="1.1" max="2" step="0.01" formControlName="activityLevel" matInput placeholder="Poziom aktywności*" autocomplete="off">
             <mat-error *ngIf="service.form.controls['activityLevel'].errors?.required">Uzupełnij ilość</mat-error>
             <mat-error *ngIf="service.form.controls['activityLevel'].errors?.min">Wartość zbyt mała</mat-error>
             <mat-error *ngIf="service.form.controls['activityLevel'].errors?.max">Wartość zbyt duża</mat-error>

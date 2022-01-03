@@ -15,7 +15,7 @@
           <input type="hidden" formControlName="id">
           <mat-form-field>
             <div class="add-bottom-padding">
-              <input formControlName="name" matInput placeholder="Nazwa potrawy*">
+              <input formControlName="name" matInput placeholder="Nazwa potrawy*" autocomplete="off">
             </div>
             <mat-error *ngIf="service.form.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
             <mat-error *ngIf="service.form.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
@@ -53,7 +53,7 @@
           <div class="control-container">
             <mat-form-field>
               <div class="add-bottom-padding">
-                <textarea rows="5" formControlName="recipe" matInput  style="resize: none;" placeholder="Przepis">
+                <textarea rows="5" formControlName="recipe" matInput  style="resize: none;" placeholder="Przepis" autocomplete="off">
 
                 </textarea>
               </div>
@@ -70,7 +70,7 @@
             <div class="control-container">
               <mat-form-field>
                 <div class="add-bottom-padding">
-                  <input matInput placeholder="Gram" formControlName="grams">
+                  <input matInput placeholder="Gram" formControlName="grams" autocomplete="off">
                 </div>
               </mat-form-field>
             </div>
@@ -80,7 +80,7 @@
             <div class="control-container">
               <mat-form-field>
                 <div class="add-bottom-padding">
-                  <input matInput placeholder="Ilość" formControlName="amount">
+                  <input matInput placeholder="Ilość" formControlName="amount" autocomplete="off">
                 </div>
               </mat-form-field>
             </div>
