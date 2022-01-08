@@ -72,14 +72,8 @@ export class WeekViewComponent implements OnInit {
     this.getMenuProductMap();
   }
 
-  swapWeek(next: Boolean) {
-    if (next && (this.menuItemData.weekMealList.length > (this.weekIndex + 1))) {
-      this.weekIndex += 1;
-    } else if (!next && (this.weekIndex > 0)) {
-      this.weekIndex -= 1;
-    } else {
-      return;
-    }
+  swapWeek(newIndex: number) {
+    this.weekIndex = newIndex;
 
     this.mealListItemData = [];
     let weekMealId = this.menuItemData.weekMealList[this.weekIndex];

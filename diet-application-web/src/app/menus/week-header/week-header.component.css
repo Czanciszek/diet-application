@@ -1,0 +1,9 @@
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.container {
+  width: 100%;
+  min-width: 100%;
+  margin-bottom: 20px;
+}

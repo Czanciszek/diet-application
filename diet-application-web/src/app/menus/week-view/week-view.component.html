@@ -1,12 +1,4 @@
-<div class="container">
-  <mat-toolbar>
-    <button mat-stroked-button tabindex="-1" (click)="swapWeek(false)"><mat-icon>arrow_back</mat-icon></button>
-    <span class="fill-remaining-space"></span>
-    <span>Tydzień {{weekIndex+1}}</span>
-    <span class="fill-remaining-space"></span>
-    <button mat-stroked-button tabindex="-1" (click)="swapWeek(true)"><mat-icon>arrow_forward</mat-icon></button>
-  </mat-toolbar>
-</div>
+<app-week-header [weekIndex]="weekIndex" [maxWeekIndex]="menuItemData.weekMealList.length" (weekIndexChanged)="swapWeek($event)"></app-week-header>
 
 <div *ngIf="dataLoaded">
   <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
