@@ -1,7 +1,7 @@
 export interface Dish {
   id: string,
   name: string,
-  dayMealId: string,
+  menuId: string,
   products: any[],
   portions: number,
   recipe: string,

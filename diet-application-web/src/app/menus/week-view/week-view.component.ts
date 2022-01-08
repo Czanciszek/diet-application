@@ -28,6 +28,8 @@ export class WeekViewComponent implements OnInit {
     private productService: ProductService
   ) {};
 
+  menuId: number;
+
   menuItemData: any;
   weekMealItemData: any;
   dayMealListItemData: any;
@@ -41,9 +43,9 @@ export class WeekViewComponent implements OnInit {
   productMapLoaded = false;
 
   ngOnInit(): void {
-    let menuId = this.route.snapshot.paramMap.get("menu_id");
+    this.menuId = this.route.snapshot.paramMap.get("menu_id");
     this.weekIndex = 0;
-    this.getMenuDetails(menuId);
+    this.getMenuDetails(this.menuId);
   }
 
   checkDataLoaded() {

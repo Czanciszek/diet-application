@@ -36,18 +36,9 @@ export class DishListComponent implements OnInit {
 
   getDishList() {
     this.service.getDishes().subscribe(
-      list => {
-        let array = list.map(item => {
-          return {
-            id: item.id,
-            name: item.name,
-            products: item.products,
-            foodType: item.foodType,
-            portions: item.portions,
-            recipe: item.recipe
-          };
-        });
-        this.listData = new MatTableDataSource(array);
+      (data: Dish[]) => {
+
+        this.listData = new MatTableDataSource( [ ...data]);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
 

@@ -1,6 +1,9 @@
-<app-week-header [weekIndex]="weekIndex" [maxWeekIndex]="menuItemData.weekMealList.length" (weekIndexChanged)="swapWeek($event)"></app-week-header>
-
 <div *ngIf="dataLoaded">
+
+  <app-dish-selector [menuId]="menuId"></app-dish-selector>
+
+  <app-week-header [weekIndex]="weekIndex" [maxWeekIndex]="menuItemData.weekMealList.length" (weekIndexChanged)="swapWeek($event)"></app-week-header>
+
   <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
     <div fxFlex="14%" *ngFor="let day of dayMealListItemData">
 

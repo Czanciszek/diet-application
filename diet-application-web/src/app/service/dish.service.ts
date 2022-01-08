@@ -26,7 +26,8 @@ export class DishService {
     products: new FormArray([]),
     foodType: new FormControl(null),
     portions: new FormControl(null),
-    recipe: new FormControl('')
+    recipe: new FormControl(''),
+    menuId: new FormControl(null)
   });
 
   addProductFormGroup(): FormGroup {
@@ -52,7 +53,8 @@ export class DishService {
       ],
       foodType: '',
       portions: 1,
-      recipe: ''
+      recipe: '',
+      menuId: null,
     })
   }
 
