@@ -12,8 +12,6 @@ public class MealType {
 
     private String dayMealId; // Reference to day
 
-    private Long dishIdReference; // Reference to dish that meal is basing on
-
     private int isProduct; // true - for Product; false - for Dish
 
     private List<ProductDishType> productList; // Product list for dish type
@@ -35,7 +33,6 @@ public class MealType {
     public MealType(MealType meal) {
         this.name = meal.name;
         this.dayMealId = meal.dayMealId;
-        this.dishIdReference = meal.dishIdReference;
         this.isProduct = meal.isProduct;
         this.productList = meal.productList;
         this.portions = meal.portions;
@@ -50,7 +47,6 @@ public class MealType {
             this.id = String.valueOf(meal.getId());
         if (meal.getDayMealId() > 0)
             this.dayMealId = String.valueOf(meal.getDayMealId());
-        this.dishIdReference = meal.getDishIdReference();
         this.name = meal.getName();
         this.isProduct = (meal.isProduct() ? 1 : 0);
         this.portions = meal.getPortions();
@@ -81,14 +77,6 @@ public class MealType {
 
     public void setDayMealId(String dayMealId) {
         this.dayMealId = dayMealId;
-    }
-
-    public Long getDishIdReference() {
-        return dishIdReference;
-    }
-
-    public void setDishIdReference(Long dishIdReference) {
-        this.dishIdReference = dishIdReference;
     }
 
     public int getIsProduct() {

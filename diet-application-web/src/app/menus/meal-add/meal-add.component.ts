@@ -98,19 +98,6 @@ export class MealAddComponent implements OnInit {
     (<FormArray>this.service.form.get('productList')).removeAt(productIndex);
   }
 
-  onSaveDishTemplateButtonClick() {
-    this.dishService.populateFormFromMeal(this.service.form.value);
-    this.dishService.insertDish(this.dishService.form.value).subscribe(
-      result => {
-        let meal = result as Meal;
-        this.service.form.get('dishIdReference').patchValue(meal.id);
-      },
-      error => {
-        this.notificationService.error(":: Wystąpił błąd podczas zapisu! ::");
-      }
-    );
-  }
-
   selectProductForDish(index) {
 
     let dialogRef = this.dialog.open(ProductSelectComponent, {
@@ -181,7 +168,6 @@ export class MealAddComponent implements OnInit {
         (<FormArray>this.service.form.get('productList')).clear();
 
         // Update value in Form Group
-        this.service.form.get('dishIdReference').patchValue(result.id);
         this.service.form.get('name').patchValue(result.name);
         this.service.form.get('recipe').patchValue(result.recipe);
         this.service.form.get('dishPortions').patchValue(result.portions);
@@ -233,7 +219,6 @@ export class MealAddComponent implements OnInit {
   }
 
   gramsChanged(grams) {
-    this.mealDetailsChanged();
     this.service.form.get('productList').get('0').get('grams').patchValue(grams);
   }
 
@@ -244,7 +229,4 @@ export class MealAddComponent implements OnInit {
     this.withPortions = event.source.checked
   }
 
-  mealDetailsChanged() {
-    this.service.form.get('dishIdReference').patchValue(null);
-  }
 }

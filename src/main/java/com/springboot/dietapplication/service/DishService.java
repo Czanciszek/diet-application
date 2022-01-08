@@ -13,8 +13,11 @@ import com.springboot.dietapplication.repository.DishRepository;
 import com.springboot.dietapplication.repository.FoodTypeRepository;
 import com.springboot.dietapplication.repository.ProductDishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +40,14 @@ public class DishService {
         return new DishType();
     }
 
-    public ResponseEntity<DishType> insert(DishType dish) {
+    public DishType insert(DishType dish) {
         PsqlDish psqlDish = new PsqlDish(dish);
-        this.dishRepository.save(psqlDish);
+        try {
+            this.dishRepository.save(psqlDish);
+        } catch (DataIntegrityViolationException e) {
+            //TODO: Check the reason of exception
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "unique conflict", e);
+        }
 
         if (psqlDish.getId() > 0)
             this.productDishRepository.deletePsqlProductDishesByDishId(psqlDish.getId());
@@ -60,7 +68,7 @@ public class DishService {
 
         dish.setId(String.valueOf(psqlDish.getId()));
 
-        return ResponseEntity.ok().body(dish);
+        return dish;
     }
 
     public ResponseEntity<Void> delete(Long id) {
