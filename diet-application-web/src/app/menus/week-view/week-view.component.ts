@@ -43,7 +43,7 @@ export class WeekViewComponent implements OnInit {
   productMapLoaded = false;
 
   ngOnInit(): void {
-    this.menuId = this.route.snapshot.paramMap.get("menu_id");
+    this.menuId = this.route.snapshot.paramMap.get("menu_id") as number;
     this.weekIndex = 0;
     this.getMenuDetails(this.menuId);
   }
