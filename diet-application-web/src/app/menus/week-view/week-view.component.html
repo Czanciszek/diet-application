@@ -17,11 +17,11 @@
 
         <div *ngFor="let meal of mealListItemData">
           <div *ngIf="meal.foodType === dishType && meal.dayMealId === day.id">
-            <app-dish-summary [mealItem]="meal" [daysList]="dayMealListItemData" (refreshItems)="refreshMealList()"></app-dish-summary>
+            <app-dish-summary [menuId]="menuId" [mealItem]="meal" [daysList]="dayMealListItemData" (refreshItems)="refreshMealList()"></app-dish-summary>
           </div>
         </div>
 
-        <app-dish-add [dayId]="day.id" [menuItem]="menuItemData" [dishType]="dishType" (refreshItems)="refreshMealList()"></app-dish-add>
+        <app-dish-add [menuId]="menuId" [dayId]="day.id" [menuItem]="menuItemData" [dishType]="dishType" (refreshItems)="refreshMealList()"></app-dish-add>
       </div>
     </div>
   </div>

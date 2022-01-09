@@ -29,6 +29,8 @@ export class MealAddComponent implements OnInit {
     public dialogRef: MatDialogRef<MealAddComponent>
   ) { }
 
+  public menuId: any;
+
   amountTypes = AMOUNT_TYPES;
   foodTypes = FOOD_TYPES;
 
@@ -162,6 +164,8 @@ export class MealAddComponent implements OnInit {
       autoFocus: true,
       width: "90%"
     });
+
+    dialogRef.componentInstance.menuId = this.menuId;
 
     dialogRef.afterClosed().subscribe( result => {
       if (result != null) {

@@ -18,6 +18,8 @@ export class DishAddComponent implements OnInit {
   ) { }
 
   @Input()
+  menuId: any;
+  @Input()
   dayId: string;
   @Input()
   dishType: string;
@@ -26,7 +28,8 @@ export class DishAddComponent implements OnInit {
   @Output()
   refreshItems = new EventEmitter<boolean>();
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 
   openDialog() {
     this.mealSerivce.initializeFormGroup();
@@ -40,7 +43,9 @@ export class DishAddComponent implements OnInit {
       width: "90%"
     });
 
-    dialogRef.afterClosed().subscribe( result => {
+    dialogRef.componentInstance.menuId = this.menuId;
+
+    dialogRef.afterClosed().subscribe(result => {
       this.refreshItems.emit();
     });
   }

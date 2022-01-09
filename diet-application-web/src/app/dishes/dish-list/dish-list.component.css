@@ -7,6 +7,9 @@ mat-footer-row mat-footer-cell {
   font-style: italic;
 }
 
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
 
 /* Filter controls */
 .search-div {

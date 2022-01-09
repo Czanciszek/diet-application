@@ -1,4 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {DishListComponent} from "../../dishes/dish-list/dish-list.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-dish-selector',
@@ -7,7 +9,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class DishSelectorComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
   }
@@ -15,8 +19,18 @@ export class DishSelectorComponent implements OnInit {
   @Input()
   menuId: number;
 
-  onSelectDishesButtonClick() {
-    console.log("aaa", this.menuId);
+  onEditMenuDishesButtonClick() {
+    this.openDialog();
+  }
+
+  openDialog() {
+    let dialogRef = this.dialog.open(DishListComponent, {
+      disableClose: true,
+      autoFocus: true,
+      width: "90%"
+    });
+
+    dialogRef.componentInstance.menuId = this.menuId;
   }
 
 }

@@ -32,12 +32,17 @@ public class DishService {
     @Autowired AmountTypeRepository amountTypeRepository;
 
     public List<DishType> getAll() {
-        List<PsqlDish> dishes = this.dishRepository.findAll();
+        List<PsqlDish> dishes = this.dishRepository.findByMenuIdIsNull();
         return convertLists(dishes);
     }
 
     public DishType getDishById(Long dishId) {
         return new DishType();
+    }
+
+    public List<DishType> getAllByMenuId(Long menuId) {
+        List<PsqlDish> dishes = this.dishRepository.findByMenuId(menuId);
+        return convertLists(dishes);
     }
 
     public DishType insert(DishType dish) {
@@ -69,6 +74,12 @@ public class DishService {
         dish.setId(String.valueOf(psqlDish.getId()));
 
         return dish;
+    }
+
+    public DishType copy(DishType dish) {
+        DishType newDish = new DishType(dish);
+        insert(newDish);
+        return newDish;
     }
 
     public ResponseEntity<Void> delete(Long id) {

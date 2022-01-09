@@ -26,6 +26,15 @@ public class DishType {
         this.menuId = dish.getMenuId();
     }
 
+    public DishType(DishType dish) {
+        this.name = dish.getName();
+        this.products = dish.getProducts();
+        this.foodType = dish.getFoodType();
+        this.portions = dish.getPortions();
+        this.recipe = dish.getRecipe();
+        this.menuId = dish.getMenuId();
+    }
+
     public DishType(List<ProductDishType> products) {
         this.products = products;
     }

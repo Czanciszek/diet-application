@@ -15,6 +15,8 @@ import {ProductService} from "../../service/product.service";
 export class DishSummaryComponent implements OnInit {
 
   @Input()
+  menuId: any;
+  @Input()
   mealItem: Meal;
   @Input()
   daysList: DayMeal[];
@@ -48,22 +50,24 @@ export class DishSummaryComponent implements OnInit {
       width: "90%"
     });
 
-    dialogRef.afterClosed().subscribe( result => {
+    dialogRef.componentInstance.menuId = this.menuId;
+
+    dialogRef.afterClosed().subscribe(result => {
       this.refreshItems.emit();
     });
   }
 
   onDeleteMealButtonClick(mealId) {
-    this.service.deleteMeal(mealId).subscribe( () => {
+    this.service.deleteMeal(mealId).subscribe(() => {
       this.refreshItems.emit();
     });
   }
 
   copyMeal(meal, value) {
-    let dayIndex = Object.keys(this.daysList).find( key => this.daysList[key].dayType === value);
+    let dayIndex = Object.keys(this.daysList).find(key => this.daysList[key].dayType === value);
     const copyMeal = Object.assign({}, meal);
     copyMeal.dayMealId = this.daysList[dayIndex].id;
-    this.service.copyMeal(copyMeal).subscribe( () => {
+    this.service.copyMeal(copyMeal).subscribe(() => {
       this.refreshItems.emit();
     });
   }
@@ -101,9 +105,9 @@ export class DishSummaryComponent implements OnInit {
       carbohydrates /= proportions;
     }
 
-      this.foodPropertiesSummary = "Kcal: " + energy.toFixed(2) +
-        "    B: " + proteins.toFixed(2) +
-        "    T: " + fats.toFixed(2) +
-        "    W: " + carbohydrates.toFixed(2);
+    this.foodPropertiesSummary = "Kcal: " + energy.toFixed(2) +
+      "    B: " + proteins.toFixed(2) +
+      "    T: " + fats.toFixed(2) +
+      "    W: " + carbohydrates.toFixed(2);
   }
 }

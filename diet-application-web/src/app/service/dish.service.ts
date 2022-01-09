@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GlobalVariable} from "../global";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -10,8 +10,9 @@ export class DishService {
 
   httpOptions = {
     headers: new HttpHeaders({
-      Authorization: 'Basic '+
-        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)})
+      Authorization: 'Basic ' +
+        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)
+    })
   };
 
   constructor(
@@ -82,6 +83,16 @@ export class DishService {
   getDishes() {
     this.dishList = this.http.get(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes", this.httpOptions);
     return this.dishList;
+  }
+
+  getDishesByMenuId(menuId) {
+    let dishList = this.http.get(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes/menu/" + menuId, this.httpOptions);
+    return dishList;
+  }
+
+  copyDishToMenu(dish) {
+    return this.http.post(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE + "dishes/copyToMenu", dish, this.httpOptions);
   }
 
   insertDish(dish) {

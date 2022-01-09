@@ -5,6 +5,7 @@ import {NotificationService} from "../../service/notification.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
+import {Dish} from "../../model/dish";
 
 @Component({
   selector: 'app-dish-select',
@@ -18,6 +19,8 @@ export class DishSelectComponent implements OnInit {
     public dialogRef: MatDialogRef<DishSelectComponent>,
   ) { }
 
+  public menuId: any;
+
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'portions', 'foodType', 'actions'];
 
@@ -25,29 +28,35 @@ export class DishSelectComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-   this.getDishList();
+    this.fetchData();
+  }
+
+  fetchData() {
+    if (this.menuId != null) {
+      this.getDishesByMenuId();
+    } else {
+      this.getDishList();
+    }
   }
 
   getDishList() {
     this.service.getDishes().subscribe(
-      list => {
-        let array = list.map(item => {
-          return {
-            id: item.id,
-            header: item.header,
-            primaryImageId: item.primaryImageId,
-            type: item.type,
-            name: item.name,
-            products: item.products,
-            foodType: item.foodType,
-            portions: item.portions,
-            recipe: item.recipe
-          };
-        });
-        this.listData = new MatTableDataSource(array);
-        this.listData.sort = this.sort;
-        this.listData.paginator = this.paginator;
+      (data: Dish[]) => {
+        this.fetchResults(data);
       });
+  }
+
+  getDishesByMenuId() {
+    this.service.getDishesByMenuId(this.menuId).subscribe(
+      (data: Dish[]) => {
+        this.fetchResults(data);
+      });
+  }
+
+  fetchResults(data: Dish[]) {
+    this.listData = new MatTableDataSource([...data]);
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator;
   }
 
   onSelect(dish) {

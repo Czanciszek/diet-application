@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.type.DishType;
+import com.springboot.dietapplication.model.type.MealType;
 import com.springboot.dietapplication.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,21 @@ public class DishController {
         return this.dishService.getDishById(dishId);
     }
 
+    @GetMapping(path = "/menu/{menuId}")
+    public List<DishType> getAllByMenuId(@PathVariable("menuId") Long menuId) {
+        return this.dishService.getAllByMenuId(menuId);
+    }
+
     @PostMapping(produces = "application/json")
     ResponseEntity<DishType> insert(@RequestBody DishType dish) {
         this.dishService.insert(dish);
         return ResponseEntity.ok().body(dish);
+    }
+
+    @PostMapping(path="/copyToMenu", produces = "application/json")
+    ResponseEntity<DishType> copy(@RequestBody DishType dish) {
+        DishType newDish = this.dishService.copy(dish);
+        return ResponseEntity.ok().body(newDish);
     }
 
     @PutMapping(path = "/{dishId}", produces = "application/json")
