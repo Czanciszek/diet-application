@@ -138,7 +138,7 @@ export class DishListComponent implements OnInit {
   }
 
   onDelete(dishId) {
-    if (confirm("Are you sure to delete this dish?")) {
+    if (confirm("Na pewno chcesz usunąć potrawę?")) {
       this.service.deleteDish(dishId).subscribe( result => {
 
         let listDataDish = this.listData.data.find( x => x.id == dishId);
@@ -146,11 +146,13 @@ export class DishListComponent implements OnInit {
         this.listData.data.splice(index, 1);
         this.listData.data = this.listData.data;
 
-        this.notificationService.warn(":: Deleted succesfully! ::");
-
+        this.notificationService.warn(":: Usunięto pomyślnie! ::");
+      }, error => {
+        this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
+      }, () => {
+        this.fetchDishData();
       });
 
-      this.getDishList();
     }
   }
 
