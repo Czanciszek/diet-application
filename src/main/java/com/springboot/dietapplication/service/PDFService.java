@@ -2,7 +2,10 @@ package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.helper.RomanianNumber;
 import com.springboot.dietapplication.model.psql.menu.PsqlMenuProduct;
+import com.springboot.dietapplication.model.type.DishType;
 import com.springboot.dietapplication.model.type.MenuType;
+import com.springboot.dietapplication.model.type.ProductDishType;
+import com.springboot.dietapplication.model.type.ProductType;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -27,6 +30,12 @@ public class PDFService {
     @Autowired
     MenuService menuService;
 
+    @Autowired
+    DishService dishService;
+
+    @Autowired
+    ProductService productService;
+
     int pageOffset = 680;
     MenuType menu;
 
@@ -39,8 +48,13 @@ public class PDFService {
             PDDocument document = new PDDocument();
 
             menu = menuService.getMenuById(menuId);
+
             List<PsqlMenuProduct> menuProductList = menuService.menuProductLists(menuId);
             makeMenuDetails(document, menuProductList);
+
+            List<DishType> dishList = dishService.getAllByMenuId(menuId);
+            Map<String, ProductType> menuProducts = productService.getMenuProducts(menuId);
+            makeMenuDishRecipes(document, dishList, menuProducts);
 
             document.save(file);
             document.close();
@@ -136,6 +150,59 @@ public class PDFService {
                 dayMealIds.add(product.getMealId());
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false);
             }
+
+        }
+
+        closeContentStream(contentStream);
+    }
+
+    private void makeMenuDishRecipes(PDDocument document, List<DishType> dishList, Map<String, ProductType> menuProducts) throws IOException {
+        PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
+        PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
+
+        PDPageContentStream contentStream = null;
+        pageOffset = 0;
+
+        for (DishType dish : dishList) {
+            if (pageOffset < 380) {
+                closeContentStream(contentStream);
+                contentStream = setNewPage(document, false);
+            } else {
+                contentStream = setNewLine(document, contentStream, new Point(0, -20), false);
+            }
+
+            writeText(contentStream, new Point(40, pageOffset), timesBold, 20, dish.getName());
+            contentStream = setNewLine(document, contentStream, new Point(0, -20), false);
+
+            String portions = setPortionLabel(Math.round(dish.getPortions()));
+            writeText(contentStream, new Point(40, pageOffset), timesBold, 14, "(" + portions + ")");
+            contentStream = setNewLine(document, contentStream, new Point(0, -40), false);
+
+            if (dish.getProducts().size() > 0) {
+                writeText(contentStream, new Point(40, pageOffset), timesBold, 14,"Składniki:");
+                contentStream = setNewLine(document, contentStream, new Point(0, -20), false);
+            }
+
+            for (ProductDishType product : dish.getProducts()) {
+                float grams = Math.round(product.getGrams());
+                ProductType productType = menuProducts.get(product.getProductId());
+                String name = (productType != null) ? productType.getName() : product.getProductId() + "!!!!";
+                String productPart = "\u2022 " + grams + "g " + name;
+                writeText(contentStream, new Point(60, pageOffset), timesNormal, 14,productPart);
+                contentStream = setNewLine(document, contentStream, new Point(0, -20), false);
+            }
+            contentStream = setNewLine(document, contentStream, new Point(0, -20), false);
+
+            writeText(contentStream, new Point(40, pageOffset), timesBold, 14, "Sposób przygotowania:");
+            contentStream = setNewLine(document, contentStream, new Point(0, -30), false);
+
+            String[] recipeLines = dish.getRecipe().split("\n");
+            for (String line : recipeLines) {
+                writeText(contentStream, new Point(60, pageOffset), timesNormal, 12, line);
+                contentStream = setNewLine(document, contentStream, new Point(0, -20), false);
+            }
+
+            contentStream = setNewLine(document, contentStream, new Point(0, -20), true);
 
         }
 
