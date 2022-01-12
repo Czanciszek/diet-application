@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MatToolbarModule}  from "@angular/material/toolbar";
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from "@angular/material/button";
 import {MatGridListModule} from "@angular/material/grid-list";
@@ -75,7 +75,8 @@ import { MatListModule } from "@angular/material/list";
     MatDatepickerModule,
     MatNativeDateModule,
     { provide: MatPaginatorIntl, useValue: getPolishPaginatorIntl() },
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB'}
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    { provide: MatDialogRef, useValue: {} },
   ]
 })
 export class MaterialModule { }
