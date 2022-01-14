@@ -56,6 +56,7 @@ export class ProductComponent implements OnInit {
 
     this.onCategoryChange(filteredCategory.category);
     this.service.form.controls['category'].setValue(filteredCategory.category);
+    this.service.form.controls['subcategory'].setValue(subcategory);
   }
 
   onClear() {

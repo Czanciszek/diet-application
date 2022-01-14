@@ -42,3 +42,7 @@ div mat-checkbox {
   height: 35px;
   padding: 0px !important;
 }
+
+.long-form-field {
+  display: inline;
+}
