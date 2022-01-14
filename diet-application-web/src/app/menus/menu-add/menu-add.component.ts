@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {NotificationService} from "../../service/notification.service";
 import {MatDialogRef} from "@angular/material/dialog";
 import {MenuService} from "../../service/menu.service";
@@ -21,6 +21,8 @@ export class MenuAddComponent implements OnInit {
     private notificationService: NotificationService,
     public dialogRef: MatDialogRef<MenuAddComponent>
   ) { }
+
+  customLimits = false;
 
   foodTypes = FOOD_TYPES;
 
@@ -82,7 +84,6 @@ export class MenuAddComponent implements OnInit {
       let date = dateWeight[0];
       let weight = dateWeight[1];
 
-
       this.service.form.get("patientId").setValue(this.currentPatientId);
       this.service.form.get("measurementDate").setValue(date);
       this.service.form.get("patientWeight").setValue(weight);
@@ -98,4 +99,82 @@ export class MenuAddComponent implements OnInit {
     }
   }
 
+  @ViewChild('limits') limits: ElementRef;
+
+  @ViewChild('proteinsPercentage') proteinsPercentage: ElementRef;
+  @ViewChild('fatsPercentage') fatsPercentage: ElementRef;
+  @ViewChild('carbohydratesPercentage') carbohydratesPercentage: ElementRef;
+
+  @ViewChild('proteinsValue') proteinsValue: ElementRef;
+  @ViewChild('fatsValue') fatsValue: ElementRef;
+  @ViewChild('carbohydratesValue') carbohydratesValue: ElementRef;
+
+  customLimitsOptionChanged(event) {
+    this.customLimits = event.source.checked;
+  }
+
+  limitsChanged(newLimitValue, initial) {
+
+  }
+
+  fatsPercentageChanged(newValue: number, initial: boolean) {
+    newValue = this.checkPercentage(newValue);
+    this.fatsPercentage.nativeElement.value = newValue;
+
+    let limit = Number(this.limits.nativeElement.value);
+    if (initial && limit > 0) {
+      let grams =  Number((limit * newValue / 100 / 9).toFixed(1));
+      this.fatsValueChanged(grams, false);
+    }
+  }
+
+  fatsValueChanged(newValue: number, initial: boolean) {
+    newValue = this.checkValue(newValue);
+    this.fatsValue.nativeElement.value = newValue;
+
+    let limit = Number(this.limits.nativeElement.value);
+    if (initial && limit > 0) {
+      let percentage = Number((newValue / limit * 100 * 9).toFixed(2));
+      this.fatsPercentageChanged(percentage, false);
+    } else {
+      // Check if both other fields are filled
+    }
+  }
+
+  proteinsValueChanged(newValue, initial) {
+    console.log("proteinsValueChanged " + newValue);
+  }
+
+  proteinsPercentageChanged(newValue, initial) {
+    console.log("proteinsPercentageChanged " + newValue);
+  }
+
+  carbohydratesValueChanged(newValue, initial) {
+    console.log("carbohydratesValueChanged " + newValue);
+  }
+
+  carbohydratesPercentageChanged(newValue, initial) {
+    console.log("carbohydratesPercentageChanged " + newValue);
+  }
+
+  checkPercentage(percentage: number) {
+    if (percentage > 100) {
+      percentage = 100;
+    } else if (percentage < 0) {
+      percentage = 0;
+    }
+    return percentage;
+  }
+
+  checkValue(value: number) {
+    let limit = Number(this.limits.nativeElement.value);
+
+    if (value > limit) {
+      value = limit;
+    } else if (value < 0) {
+      value = 0;
+    }
+
+    return value;
+  }
 }

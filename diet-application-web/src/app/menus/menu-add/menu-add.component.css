@@ -42,3 +42,7 @@ div mat-checkbox {
   height: 35px;
   padding: 0px !important;
 }
+
+.text-align-right {
+  text-align: right;
+}
