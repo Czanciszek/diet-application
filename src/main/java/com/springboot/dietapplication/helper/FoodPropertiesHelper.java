@@ -10,8 +10,8 @@ public class FoodPropertiesHelper {
             float weight,
             float activityLevel) {
 
-        int PPM = PatientHelper.calculatePPM(patientType, weight, activityLevel);
-        return calculateBasicFoodProperties(PPM);
+        int CPM = PatientHelper.calculateCPM(patientType, weight, activityLevel);
+        return calculateBasicFoodProperties(CPM);
     }
 
     private static FoodPropertiesType calculateBasicFoodProperties(int kcal) {
