@@ -5,7 +5,11 @@ import org.joda.time.DateTime;
 
 public class PatientHelper {
 
-    public static int calculatePPM(PatientType patient, float weight, float activityLevel) {
+    public static int calculateCPM(PatientType patient, float weight, float activityLevel) {
+        return (int) (calculatePPM(patient, weight) * activityLevel);
+    }
+
+    private static int calculatePPM(PatientType patient, float weight) {
         float ppmBase = (patient.isSex()) ? 655.1f : 66.5f;
         float weightFactor = (patient.isSex()) ? 9.563f : 13.75f;
         float heightFactor = (patient.isSex()) ? 1.85f : 5.003f;
@@ -21,6 +25,6 @@ public class PatientHelper {
                 heightFactor * height +
                 ageFactor * age;
 
-        return (int) (ppm * activityLevel);
+        return (int) (ppm);
     }
 }

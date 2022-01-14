@@ -3,7 +3,6 @@ package com.springboot.dietapplication.model.type;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class PatientType {
@@ -13,8 +12,14 @@ public class PatientType {
     private String birthDate;
     private String numberPhone;
     private String email;
-    private boolean sex;
     private int bodyHeight;
+
+    /**
+     * Boolean indicates the sex of the patient in the meaning of:
+     * True - Female
+     * False - Male
+     */
+    private boolean sex;
 
     //Private notes about patient
     private String currentLifestyleNote;
