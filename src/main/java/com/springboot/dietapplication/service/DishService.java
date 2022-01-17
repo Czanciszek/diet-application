@@ -61,14 +61,19 @@ public class DishService {
             PsqlProductDish psqlProductDish = new PsqlProductDish(productDish);
             psqlProductDish.setDishId(psqlDish.getId());
 
-            PsqlAmountType amountType = this.amountTypeRepository.getPsqlAmountTypeByName(productDish.getAmountType().toString());
-            psqlProductDish.setAmountTypeId(amountType.getId());
+            if (productDish.getAmountType() != null) {
+                PsqlAmountType amountType = this.amountTypeRepository.getPsqlAmountTypeByName(productDish.getAmountType().toString());
+                psqlProductDish.setAmountTypeId(amountType.getId());
+            }
 
             this.productDishRepository.save(psqlProductDish);
         }
 
-        PsqlFoodType foodType = this.foodTypeRepository.getPsqlFoodTypeByName(dish.getFoodType().toString());
-        psqlDish.setFoodTypeId(foodType.getId());
+        if (dish.getFoodType() != null) {
+            PsqlFoodType foodType = this.foodTypeRepository.getPsqlFoodTypeByName(dish.getFoodType().toString());
+            psqlDish.setFoodTypeId(foodType.getId());
+        }
+
         this.dishRepository.save(psqlDish);
 
         dish.setId(String.valueOf(psqlDish.getId()));
@@ -108,17 +113,21 @@ public class DishService {
         for (PsqlProductDish productDish : productDishList) {
             ProductDishType productDishType = new ProductDishType(productDish);
 
-            Optional<PsqlAmountType> amountTypeOptional = this.amountTypeRepository.findById(productDish.getAmountTypeId());
-            if (amountTypeOptional.isPresent()) {
-                AmountType amountType = AmountType.valueOf(amountTypeOptional.get().getName());
-                productDishType.setAmountType(amountType);
+            if (productDish.getAmountTypeId() != null) {
+                Optional<PsqlAmountType> amountTypeOptional = this.amountTypeRepository.findById(productDish.getAmountTypeId());
+                if (amountTypeOptional.isPresent()) {
+                    AmountType amountType = AmountType.valueOf(amountTypeOptional.get().getName());
+                    productDishType.setAmountType(amountType);
+                }
             }
 
             productList.add(productDishType);
         }
 
-        Optional<PsqlFoodType> foodType = this.foodTypeRepository.findById(psqlDish.getFoodTypeId());
-        foodType.ifPresent(psqlFoodType -> dishType.setFoodType(FoodType.valueOf(psqlFoodType.getName())));
+        if (psqlDish.getFoodTypeId() != null) {
+            Optional<PsqlFoodType> foodType = this.foodTypeRepository.findById(psqlDish.getFoodTypeId());
+            foodType.ifPresent(psqlFoodType -> dishType.setFoodType(FoodType.valueOf(psqlFoodType.getName())));
+        }
 
         dishType.setProducts(productList);
 

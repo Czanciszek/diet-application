@@ -25,7 +25,7 @@ export class DishService {
     id: new FormControl(null),
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     products: new FormArray([]),
-    foodType: new FormControl(null),
+    foodType: new FormControl(null, [Validators.required]),
     portions: new FormControl(null),
     recipe: new FormControl(''),
     menuId: new FormControl(null)
@@ -33,10 +33,10 @@ export class DishService {
 
   addProductFormGroup(): FormGroup {
     return new FormGroup( {
-      grams: new FormControl(null),
+      grams: new FormControl(null, [Validators.required]),
       amount: new FormControl(null),
       amountType: new FormControl(null),
-      productId: new FormControl(null)
+      productId: new FormControl(null, [Validators.required])
     });
   }
 
