@@ -157,6 +157,10 @@ export class DishListComponent implements OnInit {
   }
 
   getFoodType(foodTypeId) {
+    if (foodTypeId == null) {
+      return;
+    }
+
     let foodType = FOOD_TYPES.filter(x => x.id == foodTypeId);
     return foodType[0].value;
   }

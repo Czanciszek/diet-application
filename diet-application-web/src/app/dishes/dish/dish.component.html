@@ -26,7 +26,7 @@
         <div class="control-container">
           <mat-form-field>
             <div class="add-bottom-padding">
-              <mat-select matInput placeholder="Typ" formControlName="foodType">
+              <mat-select matInput placeholder="Typ*" formControlName="foodType">
                 <ng-container *ngFor="let foodType of foodTypes">
                   <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
                 </ng-container>

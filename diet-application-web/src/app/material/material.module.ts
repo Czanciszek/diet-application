@@ -64,7 +64,6 @@ import { MatListModule } from "@angular/material/list";
     MatSliderModule,
     MatCardModule,
     MatDatepickerModule,
-    MatDatepickerModule,
     MatNativeDateModule,
     MatTabsModule,
     MatTooltipModule,
