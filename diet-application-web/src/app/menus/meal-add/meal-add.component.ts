@@ -38,6 +38,7 @@ export class MealAddComponent implements OnInit {
   blockProduct = false;
   blockDish = false;
   tabIndex = 0;
+  portionCurrentValue = 0;
 
   ngOnInit(): void {
     let products = (<FormArray>this.service.form.get('productList'));
@@ -52,6 +53,7 @@ export class MealAddComponent implements OnInit {
         });
       } else {
         this.blockProduct = true;
+        this.portionCurrentValue = this.service.form.get("portions").value;
         for (let i = 0; i < products.length; i++) {
           let productId = products.at(i).get('productId').value;
           setTimeout( () => {
@@ -188,7 +190,14 @@ export class MealAddComponent implements OnInit {
         for (let product of result.products) {
           let productForm = this.service.addProductFormGroup();
           productForm.get('productId').patchValue(product.productId);
-          productForm.get('grams').patchValue(product.grams);
+
+          let portions = this.service.form.get('portions').value;
+          this.portionCurrentValue = portions;
+          let dishPortions = this.service.form.get('dishPortions').value;
+          let proportions = portions / dishPortions;
+          let grams = (product.grams * proportions).toFixed(2);
+
+          productForm.get('grams').patchValue(grams);
           productForm.get('amount').patchValue(product.amount);
           productForm.get('amountType').patchValue(product.amountType);
           (<FormArray>this.service.form.get('productList')).push(productForm);
@@ -220,17 +229,6 @@ export class MealAddComponent implements OnInit {
     let fats = (foodProperties.fats * grams) / 100;
     let carbohydrates = (foodProperties.carbohydrates * grams) / 100;
 
-    if (!isProduct) {
-      let dishPortions = this.service.form.get('dishPortions').value;
-      let portions = this.service.form.get('portions').value;
-      let proportions = dishPortions / portions;
-
-      energy /= proportions;
-      proteins /= proportions;
-      fats /= proportions;
-      carbohydrates /= proportions;
-    }
-
     return "Kcal: " + energy.toFixed(2) +
       "    B: " + proteins.toFixed(2) +
       "    T: " + fats.toFixed(2) +
@@ -245,7 +243,23 @@ export class MealAddComponent implements OnInit {
     if (event.source.checked) {
       this.service.form.get('grams').patchValue(0);
     }
-    this.withPortions = event.source.checked
+    this.withPortions = event.source.checked;
+  }
+
+  portionCountChanged(event) {
+    let newPortionValue = event.value;
+    let proportions = newPortionValue / this.portionCurrentValue;
+
+    let productList = this.service.form.get('productList').value;
+    let productIndex = 0;
+    for (let product of productList) {
+      if (product.grams == null) continue;
+      let grams = product.grams * proportions;
+      this.service.form.get('productList').get(productIndex + "").get('grams').patchValue(grams);
+      productIndex += 1;
+    }
+
+    this.portionCurrentValue = newPortionValue;
   }
 
 }

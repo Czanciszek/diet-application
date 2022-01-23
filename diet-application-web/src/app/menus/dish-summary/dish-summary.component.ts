@@ -94,17 +94,6 @@ export class DishSummaryComponent implements OnInit {
       }
     }
 
-    if (!isProduct) {
-      let dishPortions = this.mealItem.dishPortions;
-      let portions = this.mealItem.portions;
-      let proportions = portions / dishPortions;
-
-      energy *= proportions;
-      proteins *= proportions;
-      fats *= proportions;
-      carbohydrates *= proportions;
-    }
-
     this.foodPropertiesSummary = "Kcal: " + energy.toFixed(2) +
       "    B: " + proteins.toFixed(2) +
       "    T: " + fats.toFixed(2) +

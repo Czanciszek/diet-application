@@ -156,10 +156,6 @@ export class WeekViewComponent implements OnInit {
         }
         let foodProperties = this.productService.menuProductMap[product.productId].foodProperties;
         let productValue = (foodProperties[property] * grams) / 100;
-        if (!isProduct) {
-          let factor = meal.portions / meal.dishPortions;
-          productValue *= factor;
-        }
 
         value += productValue;
       }
