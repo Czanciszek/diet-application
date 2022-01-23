@@ -24,23 +24,25 @@ export class MenuService {
     id: new FormControl(null),
     weekCount: new FormControl('', [Validators.required, Validators.min(1), Validators.max(8)]),
     foodTypes: new FormControl(null),
-    measurementDate: new FormControl(null),
-    patientWeight: new FormControl(null),
     patientId: new FormControl(null),
     startDate: new FormControl('', [Validators.required]),
-    activityLevel: new FormControl('', [Validators.required, Validators.min(1.1), Validators.max(2)]),
+    energyLimit: new FormControl(null, [Validators.required]),
+    proteinsLimit: new FormControl(null),
+    fatsLimit: new FormControl(null),
+    carbohydratesLimit: new FormControl(null)
   });
 
   initializeFormGroup() {
     this.form.setValue({
       id: null,
-      measurementDate: null,
-      patientWeight: null,
-      patientId: null,
       weekCount: 1,
       foodTypes: null,
+      patientId: null,
       startDate: null,
-      activityLevel: 1.1
+      energyLimit: 0,
+      proteinsLimit: 0,
+      fatsLimit: 0,
+      carbohydratesLimit: 0
     })
   }
 

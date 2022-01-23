@@ -1,6 +1,5 @@
 package com.springboot.dietapplication.service;
 
-import com.springboot.dietapplication.helper.FoodPropertiesHelper;
 import com.springboot.dietapplication.model.psql.menu.*;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.FoodTypeMenuRepository;
@@ -24,8 +23,6 @@ public class MenuService {
     @Autowired FoodTypeMenuRepository foodTypeMenuRepository;
     @Autowired MenuProductsRepository menuProductsRepository;
 
-    @Autowired PatientService patientService;
-    @Autowired FoodPropertiesService foodPropertiesService;
     @Autowired WeekMealService weekMealService;
     @Autowired DayMealService dayMealService;
 
@@ -44,23 +41,16 @@ public class MenuService {
         return convertLists(psqlMenuList);
     }
 
+    public List<PsqlMenuProduct> menuProductLists(long menuId) {
+        return menuProductsRepository.findMenuProducts(menuId);
+    }
+
     public ResponseEntity<MenuType> insert(MenuSendingType menuSendingType) {
         PsqlMenu menu = new PsqlMenu(menuSendingType);
 
         DateTime dateTime = new DateTime(menu.getStartDate());
         DateTime endDate = dateTime.plusWeeks(menuSendingType.getWeekCount()).minusDays(1);
         menu.setEndDate(endDate.toString());
-
-        PatientType patient = this.patientService.getPatientById(menu.getPatientId());
-
-        FoodPropertiesType foodPropertiesType = FoodPropertiesHelper.calculateFoodPropertiesLimit(
-                patient,
-                menuSendingType.getPatientWeight(),
-                menu.getActivityLevel()
-        );
-
-        this.foodPropertiesService.insert(foodPropertiesType);
-        menu.setFoodPropertiesId(Long.parseLong(foodPropertiesType.getId()));
 
         this.menuRepository.save(menu);
 
@@ -97,7 +87,7 @@ public class MenuService {
         return menuList;
     }
 
-    private MenuType convertPsqlMenuToMenuType(PsqlMenu psqlMenu) {
+    private MenuType  convertPsqlMenuToMenuType(PsqlMenu psqlMenu) {
         MenuType menuType = new MenuType(psqlMenu);
 
         List<FoodType> foodTypeList = new ArrayList<>();
@@ -111,13 +101,7 @@ public class MenuService {
         List<String> weekMealIdList = this.weekMealService.getWeekMealIdList(psqlMenu.getId());
         menuType.setWeekMealList(weekMealIdList);
 
-        FoodPropertiesType foodPropertiesType = this.foodPropertiesService.findById(psqlMenu.getFoodPropertiesId());
-        menuType.setFoodPropertiesType(foodPropertiesType);
-
         return menuType;
     }
 
-    public List<PsqlMenuProduct> menuProductLists(long menuId) {
-        return menuProductsRepository.findMenuProducts(menuId);
-    }
 }

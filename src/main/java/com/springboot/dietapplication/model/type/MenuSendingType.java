@@ -10,36 +10,42 @@ public class MenuSendingType {
 
     private List<FoodType> foodTypes;
 
-    private String measurementDate;
-
-    private float patientWeight;
-
     private String patientId;
 
     private int weekCount;
 
-    private float activityLevel;
+    private float energyLimit;
+
+    private float proteinsLimit;
+
+    private float fatsLimit;
+
+    private float carbohydratesLimit;
 
     public MenuSendingType() {
 
     }
 
-    public MenuSendingType(String id,
-                           String startDate,
-                           List<FoodType> foodTypes,
-                           String measurementDate,
-                           float patientWeight,
-                           String patientId,
-                           int weekCount,
-                           float activityLevel) {
+    public MenuSendingType(
+            String id,
+            String startDate,
+            List<FoodType> foodTypes,
+            String patientId,
+            int weekCount,
+            float energyLimit,
+            float proteinsLimit,
+            float fatsLimit,
+            float carbohydratesLimit) {
+
         this.id = id;
         this.startDate = startDate;
         this.foodTypes = foodTypes;
-        this.measurementDate = measurementDate;
-        this.patientWeight = patientWeight;
         this.patientId = patientId;
         this.weekCount = weekCount;
-        this.activityLevel = activityLevel;
+        this.energyLimit = energyLimit;
+        this.proteinsLimit = proteinsLimit;
+        this.fatsLimit = fatsLimit;
+        this.carbohydratesLimit = carbohydratesLimit;
     }
 
     public String getId() {
@@ -66,22 +72,6 @@ public class MenuSendingType {
         this.foodTypes = foodTypes;
     }
 
-    public String getMeasurementDate() {
-        return measurementDate;
-    }
-
-    public void setMeasurementDate(String measurementDate) {
-        this.measurementDate = measurementDate;
-    }
-
-    public float getPatientWeight() {
-        return patientWeight;
-    }
-
-    public void setPatientWeight(float patientWeight) {
-        this.patientWeight = patientWeight;
-    }
-
     public String getPatientId() {
         return patientId;
     }
@@ -98,11 +88,35 @@ public class MenuSendingType {
         this.weekCount = weekCount;
     }
 
-    public float getActivityLevel() {
-        return activityLevel;
+    public float getEnergyLimit() {
+        return energyLimit;
     }
 
-    public void setActivityLevel(float activityLevel) {
-        this.activityLevel = activityLevel;
+    public void setEnergyLimit(float energyLimit) {
+        this.energyLimit = energyLimit;
+    }
+
+    public float getProteinsLimit() {
+        return proteinsLimit;
+    }
+
+    public void setProteinsLimit(float proteinsLimit) {
+        this.proteinsLimit = proteinsLimit;
+    }
+
+    public float getFatsLimit() {
+        return fatsLimit;
+    }
+
+    public void setFatsLimit(float fatsLimit) {
+        this.fatsLimit = fatsLimit;
+    }
+
+    public float getCarbohydratesLimit() {
+        return carbohydratesLimit;
+    }
+
+    public void setCarbohydratesLimit(float carbohydratesLimit) {
+        this.carbohydratesLimit = carbohydratesLimit;
     }
 }

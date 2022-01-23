@@ -14,10 +14,6 @@
       <mat-header-cell *matHeaderCellDef  mat-sort-header>Długość trwania diety</mat-header-cell>
       <mat-cell *matCellDef="let element">{{weekCount(element.weekMealList.length)}}</mat-cell>
     </ng-container>
-    <ng-container matColumnDef="measurementDate">
-      <mat-header-cell *matHeaderCellDef  mat-sort-header>Pomiar</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{getMeasurementDate(element)}}</mat-cell>
-    </ng-container>
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
       <mat-cell *matCellDef="let element">

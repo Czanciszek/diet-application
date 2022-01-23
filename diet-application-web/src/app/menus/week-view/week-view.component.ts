@@ -165,17 +165,18 @@ export class WeekViewComponent implements OnInit {
   }
 
   setLimitStatus(value: number, property: string) {
+    if (this.menuItemData.id == null) return;
     if (property == "energyValue") {
-      let energyLimit = this.menuItemData.foodPropertiesType.energyValue;
+      let energyLimit = this.menuItemData.energyLimit;
       return "Kcal: " + value.toFixed(2) + "/" + energyLimit.toFixed(2);
     } else if (property == "proteins") {
-      let proteinsLimit = this.menuItemData.foodPropertiesType.proteins;
+      let proteinsLimit = this.menuItemData.proteinsLimit;
       return "B: " + value.toFixed(2) + "/" + proteinsLimit.toFixed(2);
     } else if (property == "fats") {
-      let fatsLimit = this.menuItemData.foodPropertiesType.fats;
+      let fatsLimit = this.menuItemData.fatsLimit;
       return "T: " + value.toFixed(2) + "/" + fatsLimit.toFixed(2);
     } else if (property == "carbohydrates") {
-      let carbohydratesLimit = this.menuItemData.foodPropertiesType.carbohydrates;
+      let carbohydratesLimit = this.menuItemData.carbohydratesLimit;
       return "W: " + value.toFixed(2) + "/" + carbohydratesLimit.toFixed(2);
     }
   }

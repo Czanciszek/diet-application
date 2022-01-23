@@ -10,10 +10,6 @@ public class MenuType {
 
     private String patientId; // Ref - Dane pacjenta
 
-    private String measurementDate; // Data pomiaru
-
-    private float patientWeight;
-
     private List<String> weekMealList; // Lista odnośników do tygodniowych jadłospisów
 
     private List<FoodType> foodTypes; // Rodzaje posiłków do menu
@@ -22,9 +18,13 @@ public class MenuType {
 
     private String endDate; // Najpóźniejsza data z listy DayMeals
 
-    private FoodPropertiesType foodPropertiesType;
+    private float energyLimit;
 
-    private Float activityLevel;
+    private float proteinsLimit;
+
+    private float fatsLimit;
+
+    private float carbohydratesLimit;
 
     public MenuType() {
 
@@ -35,11 +35,12 @@ public class MenuType {
             this.id = String.valueOf(menu.getId());
         if (menu.getPatientId() > 0)
             this.patientId = String.valueOf(menu.getPatientId());
-        this.measurementDate = menu.getMeasurementDate();
-        this.patientWeight = menu.getPatientWeight();
         this.startDate = menu.getStartDate();
         this.endDate = menu.getEndDate();
-        this.activityLevel = menu.getActivityLevel();
+        this.energyLimit = menu.getEnergyLimit();
+        this.proteinsLimit = menu.getProteinsLimit();
+        this.fatsLimit = menu.getFatsLimit();
+        this.carbohydratesLimit = menu.getCarbohydratesLimit();
     }
 
     public String getId() {
@@ -56,22 +57,6 @@ public class MenuType {
 
     public void setPatientId(String patientId) {
         this.patientId = patientId;
-    }
-
-    public String getMeasurementDate() {
-        return measurementDate;
-    }
-
-    public void setMeasurementDate(String measurementDate) {
-        this.measurementDate = measurementDate;
-    }
-
-    public float getPatientWeight() {
-        return patientWeight;
-    }
-
-    public void setPatientWeight(float patientWeight) {
-        this.patientWeight = patientWeight;
     }
 
     public List<String> getWeekMealList() {
@@ -106,19 +91,35 @@ public class MenuType {
         this.endDate = endDate;
     }
 
-    public FoodPropertiesType getFoodPropertiesType() {
-        return foodPropertiesType;
+    public float getEnergyLimit() {
+        return energyLimit;
     }
 
-    public void setFoodPropertiesType(FoodPropertiesType foodPropertiesType) {
-        this.foodPropertiesType = foodPropertiesType;
+    public void setEnergyLimit(float energyLimit) {
+        this.energyLimit = energyLimit;
     }
 
-    public Float getActivityLevel() {
-        return activityLevel;
+    public float getProteinsLimit() {
+        return proteinsLimit;
     }
 
-    public void setActivityLevel(Float activityLevel) {
-        this.activityLevel = activityLevel;
+    public void setProteinsLimit(float proteinsLimit) {
+        this.proteinsLimit = proteinsLimit;
+    }
+
+    public float getFatsLimit() {
+        return fatsLimit;
+    }
+
+    public void setFatsLimit(float fatsLimit) {
+        this.fatsLimit = fatsLimit;
+    }
+
+    public float getCarbohydratesLimit() {
+        return carbohydratesLimit;
+    }
+
+    public void setCarbohydratesLimit(float carbohydratesLimit) {
+        this.carbohydratesLimit = carbohydratesLimit;
     }
 }

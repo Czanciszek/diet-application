@@ -26,7 +26,7 @@ export class MenuListComponent implements OnInit {
     private fileService: FileService
   ) { }
 
-  displayedColumns: string[] = ['dateRange', 'weekCount', 'measurementDate', 'actions'];
+  displayedColumns: string[] = ['dateRange', 'weekCount', 'actions'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey: string;
@@ -76,18 +76,6 @@ export class MenuListComponent implements OnInit {
     const measurement = <Measurement> await this.measurementService.getMeasurementsById(measurementId).toPromise();
     const date = new Date(measurement.measurementDate).toDateString();
     this.measurements.push({measurementId: measurement.id, measurementDate: date});
-  }
-
-  getMeasurementDate(element) {
-    let measurement = "";
-    if (element.measurementDate == null || element.measurementDate.isEmpty) {
-      return "Nie wybrano";
-    }
-    measurement = element.measurementDate;
-    if (element.patientWeight != null && !element.patientWeight.isEmpty) {
-      measurement += " - " + element.patientWeight + "kg";
-    }
-    return measurement;
   }
 
   dateTimeParser(menu) {

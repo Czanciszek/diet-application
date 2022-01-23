@@ -63,10 +63,7 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input type="number" min="1.1" max="2" step="0.01" formControlName="activityLevel" matInput placeholder="Poziom aktywności*" autocomplete="off">
-              <mat-error *ngIf="service.form.controls['activityLevel'].errors?.required">Uzupełnij ilość</mat-error>
-              <mat-error *ngIf="service.form.controls['activityLevel'].errors?.min">Wartość zbyt mała</mat-error>
-              <mat-error *ngIf="service.form.controls['activityLevel'].errors?.max">Wartość zbyt duża</mat-error>
+              <input #activityLevel type="number" min="0.9" max="2" step="0.01" matInput placeholder="Poziom aktywności*" autocomplete="off" value="1.1" (input)="limitPropertyChanged(measurement.value, activityLevel.value)">
             </mat-form-field>
           </div>
         </div>
@@ -75,7 +72,7 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <mat-select matInput placeholder="Data pomiaru" formControlName="measurementDate">
+              <mat-select #measurement matInput placeholder="Data pomiaru" (valueChange)="limitPropertyChanged(measurement.value, activityLevel.value)">
                 <ng-container *ngFor="let date of getMeasurementDates()">
                   <mat-option value="{{date.date}}&{{date.weight}}">{{date.date}} - {{date.weight}}kg</mat-option>
                 </ng-container>
@@ -84,12 +81,15 @@
           </div>
         </div>
       </mat-grid-tile>
-
-      <mat-grid-tile colspan="3">
-      </mat-grid-tile>
     </div>
 
-    <div *ngIf="customLimits">
+  </mat-grid-list>
+
+  <mat-grid-list cols="8" rowHeight="70px">
+
+      <mat-grid-tile>
+      </mat-grid-tile>
+
       <mat-grid-tile>
         <div class="control-container add-slider-padding text-align-right">
           <mat-label>Limit:</mat-label>
@@ -99,15 +99,12 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #limits type="number" matInput placeholder="kcal" autocomplete="off" (input)="limitsChanged($event.target.value, true)">
+              <input formControlName="energyLimit" type="number" matInput placeholder="kcal*" autocomplete="off" (input)="limitsChanged()" [readonly]="!customLimits">
             </mat-form-field>
           </div>
         </div>
       </mat-grid-tile>
-    </div>
   </mat-grid-list>
-
-  <div *ngIf="customLimits">
 
     <mat-grid-list cols="8" rowHeight="70px">
       <mat-grid-tile>
@@ -121,7 +118,7 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #proteinsPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="proteinsPercentageChanged($event.target.value, true)">
+              <input #proteinsPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'proteins')">
             </mat-form-field>
           </div>
         </div>
@@ -130,7 +127,7 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #proteinsValu type="number" matInput placeholder="gram" autocomplete="off" (input)="proteinsValueChanged($event.target.value, true)">
+              <input formControlName="proteinsLimit" type="number" matInput placeholder="gram" autocomplete="off" (input)="valueChanged($event.target.value, true, 'proteins')">
             </mat-form-field>
           </div>
         </div>
@@ -149,7 +146,7 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #fatsPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="fatsPercentageChanged($event.target.value, true)">
+              <input #fatsPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'fats')">
             </mat-form-field>
           </div>
         </div>
@@ -158,7 +155,7 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #fatsValue type="number" matInput placeholder="gram" autocomplete="off" (input)="fatsValueChanged($event.target.value, true)">
+              <input formControlName="fatsLimit" type="number" matInput placeholder="gram" autocomplete="off" (input)="valueChanged($event.target.value, true, 'fats')">
             </mat-form-field>
           </div>
         </div>
@@ -177,7 +174,7 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #carbohydatesPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="carbohydratesPercentageChanged($event.target.value, true)">
+              <input #carbohydratesPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'carbohydrates')">
             </mat-form-field>
           </div>
         </div>
@@ -186,13 +183,12 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #carbohydatesValue type="number" matInput placeholder="gram" autocomplete="off" (input)="carbohydratesValueChanged($event.target.value, true)">
+              <input formControlName="carbohydratesLimit" type="number" matInput placeholder="gram" autocomplete="off" (input)="valueChanged($event.target.value, true, 'carbohydrates')">
             </mat-form-field>
           </div>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-  </div>
 
   <mat-grid-list cols="1" rowHeight="50px">
     <mat-grid-tile>
