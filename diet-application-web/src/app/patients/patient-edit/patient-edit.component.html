@@ -7,151 +7,153 @@
   </mat-toolbar>
 </div>
 
-<form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
-  <mat-grid-list cols="3" rowHeight="70px">
-    <mat-grid-tile>
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <mat-form-field>
-            <input formControlName="name" matInput placeholder="Imię i nazwisko*" autocomplete="off">
-            <mat-error *ngIf="service.form.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
-            <mat-error *ngIf="service.form.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <mat-form-field>
-            <input formControlName="email" matInput placeholder="Adres e-mail*" autocomplete="off">
-            <mat-error *ngIf="service.form.controls['email'].errors?.email">Niepoprawny adres e-mail</mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <mat-form-field>
-            <input formControlName="numberPhone" matInput placeholder="Numer telefonu" autocomplete="off">
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-  <mat-grid-list cols="3" rowHeight="70px">
-    <mat-grid-tile>
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <mat-form-field class="example-full-width">
-            <mat-label>Data urodzenia*</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="birthDate" autocomplete="off">
-            <mat-datepicker-toggle matSuffix [for]="picker">
-              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #picker startView="multi-year" [startAt]="startDate"></mat-datepicker>
-            <mat-error *ngIf="service.form.controls['birthDate'].errors?.required">Wprowadź poprawną datę</mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <mat-form-field>
-            <input type="number" formControlName="bodyHeight" matInput placeholder="Wzrost (cm)" autocomplete="off">
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <mat-radio-group matInput formControlName="sex">
-            <mat-radio-button [value]="true">Kobieta</mat-radio-button>
-            <mat-radio-button [value]="false">Mężczyzna</mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-  <mat-grid-list cols="3" rowHeight="240px">
-    <mat-grid-tile>
-      <div class="control-container">
-        <mat-form-field>
+<mat-dialog-content>
+  <form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
+    <mat-grid-list cols="3" rowHeight="70px">
+      <mat-grid-tile>
+        <div class="control-container">
           <div class="add-bottom-padding">
-              <textarea rows="5" formControlName="currentLifestyleNote" matInput  style="resize: none;"
-                        placeholder="Aktualny styl życia" autocomplete="off">
-              </textarea>
+            <mat-form-field>
+              <input formControlName="name" matInput placeholder="Imię i nazwisko*" autocomplete="off">
+              <mat-error *ngIf="service.form.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
+              <mat-error *ngIf="service.form.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
+            </mat-form-field>
           </div>
-        </mat-form-field>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <mat-form-field>
-          <div class="add-bottom-padding">
-              <textarea rows="5" formControlName="changedLifestyleNote" matInput  style="resize: none;"
-                        placeholder="Zmieniony styl życia" autocomplete="off">
-              </textarea>
-          </div>
-        </mat-form-field>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <mat-form-field>
-          <div class="add-bottom-padding">
-              <textarea rows="5" formControlName="dietaryPurpose" matInput  style="resize: none;"
-                        placeholder="Cel dietetyczny" autocomplete="off">
-              </textarea>
-          </div>
-        </mat-form-field>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-
-  <mat-grid-list cols="3" rowHeight="80px">
-    <mat-grid-tile>
-      <div class="control-container">
-        <p>Alergeny:</p>
-        <div class="add-bottom-padding">
-          <mat-select formControlName="allergens" multiple>
-            <mat-option *ngFor="let option of allergenTypes" [value]="option.id">
-              {{option.value}}
-            </mat-option>
-          </mat-select>
         </div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="2">
-      <div class="control-container">
-        <p>Odrzucone produkty</p>
-        <div class="add-bottom-padding">
-          <mat-select formControlName="unlikelyCategories" multiple>
-            <div>
-              <mat-form-field class="category-search-input">
-                <input matInput placeholder="Szukaj..." (input)="filterOptions($event.target.value)" autocomplete="off"/>
-              </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="control-container">
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <input formControlName="email" matInput placeholder="Adres e-mail*" autocomplete="off">
+              <mat-error *ngIf="service.form.controls['email'].errors?.email">Niepoprawny adres e-mail</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="control-container">
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <input formControlName="numberPhone" matInput placeholder="Numer telefonu" autocomplete="off">
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="3" rowHeight="70px">
+      <mat-grid-tile>
+        <div class="control-container">
+          <div class="add-bottom-padding">
+            <mat-form-field class="example-full-width">
+              <mat-label>Data urodzenia*</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="birthDate" autocomplete="off">
+              <mat-datepicker-toggle matSuffix [for]="picker">
+                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker startView="multi-year" [startAt]="startDate"></mat-datepicker>
+              <mat-error *ngIf="service.form.controls['birthDate'].errors?.required">Wprowadź poprawną datę</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="control-container">
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <input type="number" formControlName="bodyHeight" matInput placeholder="Wzrost (cm)" autocomplete="off">
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="control-container">
+          <div class="add-bottom-padding">
+            <mat-radio-group matInput formControlName="sex">
+              <mat-radio-button [value]="true">Kobieta</mat-radio-button>
+              <mat-radio-button [value]="false">Mężczyzna</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="3" rowHeight="240px">
+      <mat-grid-tile>
+        <div class="control-container">
+          <mat-form-field>
+            <div class="add-bottom-padding">
+                <textarea rows="5" formControlName="currentLifestyleNote" matInput  style="resize: none;"
+                          placeholder="Aktualny styl życia" autocomplete="off">
+                </textarea>
             </div>
-            <mat-option *ngFor="let option of categories" [value]="option">
-              {{option}}
-            </mat-option>
-          </mat-select>
+          </mat-form-field>
         </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="control-container">
+          <mat-form-field>
+            <div class="add-bottom-padding">
+                <textarea rows="5" formControlName="changedLifestyleNote" matInput  style="resize: none;"
+                          placeholder="Zmieniony styl życia" autocomplete="off">
+                </textarea>
+            </div>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="control-container">
+          <mat-form-field>
+            <div class="add-bottom-padding">
+                <textarea rows="5" formControlName="dietaryPurpose" matInput  style="resize: none;"
+                          placeholder="Cel dietetyczny" autocomplete="off">
+                </textarea>
+            </div>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
 
-  <mat-grid-list cols="1" rowHeight="50px">
-    <mat-grid-tile>
-      <div class="control-container">
-        <div class="button-row">
-          <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Zapisz</button>
-          <button mat-raised-button color="warn" type="button" (click)="onClear()">Wyczyść</button>
+    <mat-grid-list cols="3" rowHeight="80px">
+      <mat-grid-tile>
+        <div class="control-container">
+          <p>Alergeny:</p>
+          <div class="add-bottom-padding">
+            <mat-select formControlName="allergens" multiple>
+              <mat-option *ngFor="let option of allergenTypes" [value]="option.id">
+                {{option.value}}
+              </mat-option>
+            </mat-select>
+          </div>
         </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-</form>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="2">
+        <div class="control-container">
+          <p>Odrzucone produkty</p>
+          <div class="add-bottom-padding">
+            <mat-select formControlName="unlikelyCategories" multiple>
+              <div>
+                <mat-form-field class="category-search-input">
+                  <input matInput placeholder="Szukaj..." (input)="filterOptions($event.target.value)" autocomplete="off"/>
+                </mat-form-field>
+              </div>
+              <mat-option *ngFor="let option of categories" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="1" rowHeight="50px">
+      <mat-grid-tile>
+        <div class="control-container">
+          <div class="button-row">
+            <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Zapisz</button>
+            <button mat-raised-button color="warn" type="button" (click)="onClear()">Wyczyść</button>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</mat-dialog-content>
