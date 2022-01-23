@@ -40,10 +40,10 @@ export class MealAddComponent implements OnInit {
   tabIndex = 0;
 
   ngOnInit(): void {
+    let products = (<FormArray>this.service.form.get('productList'));
     if (this.service.form.get('id').value != null) {
       this.checkPortionOption();
       this.tabIndex = this.service.form.get('isProduct').value;
-      let products = (<FormArray>this.service.form.get('productList'));
       if (this.tabIndex == 1) {
         this.blockDish = true;
         let productGrams = products.at(0).get('grams').value;
@@ -59,6 +59,14 @@ export class MealAddComponent implements OnInit {
           });
         }
       }
+    }
+
+    for (let i = 0; i < products.length; i++) {
+      let productId = products.at(i).get('productId').value;
+      if (productId == null) return;
+      setTimeout( () => {
+        (<HTMLInputElement>document.getElementById("name"+i)).value = this.productService.menuProductMap[productId].name;
+      });
     }
   }
 
@@ -186,6 +194,13 @@ export class MealAddComponent implements OnInit {
           (<FormArray>this.service.form.get('productList')).push(productForm);
         }
       }
+
+      this.productService.getMenuProducts(this.menuId)
+        .subscribe(
+          (data: {} ) => {
+          this.productService.menuProductMap = {...data};
+          this.ngOnInit();
+        });
     });
   }
 
