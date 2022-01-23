@@ -254,7 +254,7 @@ export class MealAddComponent implements OnInit {
     let productIndex = 0;
     for (let product of productList) {
       if (product.grams == null) continue;
-      let grams = product.grams * proportions;
+      let grams = (product.grams * proportions).toFixed(2);
       this.service.form.get('productList').get(productIndex + "").get('grams').patchValue(grams);
       productIndex += 1;
     }
