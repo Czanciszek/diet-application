@@ -16,6 +16,9 @@ public class PsqlMeal implements Serializable {
     @Column(name = "day_meal_id")
     private long dayMealId;
 
+    @Column(name = "origin_meal_id")
+    private long originMealId;
+
     @Column(name = "food_type_id")
     private long foodTypeId;
 
@@ -47,6 +50,7 @@ public class PsqlMeal implements Serializable {
             this.id = Long.parseLong(mealType.getId());
         if (mealType.getDayMealId() != null && !mealType.getDayMealId().isEmpty())
             this.dayMealId = Long.parseLong(mealType.getDayMealId());
+        this.originMealId = mealType.getOriginMealId();
         this.name = mealType.getName();
         this.isProduct = (mealType.getIsProduct() == 1);
         this.portions = mealType.getPortions();
@@ -69,6 +73,14 @@ public class PsqlMeal implements Serializable {
 
     public void setDayMealId(long dayMealId) {
         this.dayMealId = dayMealId;
+    }
+
+    public long getOriginMealId() {
+        return originMealId;
+    }
+
+    public void setOriginMealId(long originMealId) {
+        this.originMealId = originMealId;
     }
 
     public long getFoodTypeId() {

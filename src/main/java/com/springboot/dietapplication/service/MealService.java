@@ -54,7 +54,7 @@ public class MealService {
         return mealList;
     }
 
-    public MealType insert(MealType meal) {
+    public MealType insert(MealType meal, boolean isMealCopied) {
         PsqlMeal psqlMeal = new PsqlMeal(meal);
 
         PsqlFoodType psqlFoodType = this.foodTypeRepository.getPsqlFoodTypeByName(meal.getFoodType().toString());
@@ -78,6 +78,12 @@ public class MealService {
 
             this.productMealRepository.save(psqlProductMeal);
         }
+
+        if (!isMealCopied) {
+            psqlMeal.setOriginMealId(psqlMeal.getId());
+        }
+
+        this.mealRepository.save(psqlMeal);
 
         meal.setId(String.valueOf(psqlMeal.getId()));
         return meal;
