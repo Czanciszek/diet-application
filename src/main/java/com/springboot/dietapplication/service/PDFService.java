@@ -53,8 +53,8 @@ public class PDFService {
             makeMenuDetails(document, menuProductList);
 
             List<DishType> dishList = dishService.getAllByMenuId(menuId);
-            Map<String, ProductType> menuProducts = productService.getMenuProducts(menuId);
-            makeMenuDishRecipes(document, dishList, menuProducts);
+            List<ProductType> productTypeList = productService.getAll();
+            makeMenuDishRecipes(document, dishList, productTypeList);
 
             document.save(file);
             document.close();
@@ -156,7 +156,7 @@ public class PDFService {
         closeContentStream(contentStream);
     }
 
-    private void makeMenuDishRecipes(PDDocument document, List<DishType> dishList, Map<String, ProductType> menuProducts) throws IOException {
+    private void makeMenuDishRecipes(PDDocument document, List<DishType> dishList, List<ProductType> productTypeList) throws IOException {
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
 
@@ -185,8 +185,13 @@ public class PDFService {
 
             for (ProductDishType product : dish.getProducts()) {
                 int grams = (int) product.getGrams();
-                ProductType productType = menuProducts.get(product.getProductId());
-                String name = (productType != null) ? productType.getName() : product.getProductId() + "!!!!";
+                Optional<ProductType> productType = productTypeList.stream().filter( x -> x.getId().equals(product.getProductId())).findFirst();
+                String name;
+                if (productType.isPresent()) {
+                    name = productType.get().getName();
+                } else {
+                    name = product.getProductId() + "!!!!";
+                }
                 String productPart = "\u2022 " + grams + "g " + name;
                 writeText(contentStream, new Point(60, pageOffset), timesNormal, 14,productPart);
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
