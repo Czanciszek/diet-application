@@ -33,8 +33,12 @@ public class PDFService {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    PatientService patientService;
+
     int pageOffset = 680;
     MenuType menu;
+    PatientType patient;
 
     public File generateMenu(Long menuId) {
 
@@ -45,6 +49,7 @@ public class PDFService {
             PDDocument document = new PDDocument();
 
             menu = menuService.getMenuById(menuId);
+            patient = patientService.getPatientByMenuId(menuId);
 
             List<PsqlMenuProduct> menuProductList = menuService.menuProductLists(menuId);
             makeMenuDetails(document, menuProductList);
@@ -64,6 +69,14 @@ public class PDFService {
 
     }
 
+    private void makeHeader(PDDocument document, PDPageContentStream contentStream) throws IOException {
+        PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
+        String header = "Dieta dla ";
+        header += patient.isSex() ? "Pani " : "Pana ";
+        header += patient.getName();
+        writeText(contentStream, new Point(40, 740), timesBold, 24, header);
+    }
+
     private void makeFooter(PDPageContentStream contentStream) throws IOException {
         String footerText = "Agnieszka Kaszuba-Czana Dietetyk kliniczny, Psychodietetyk, Trener personalny";
         writeText(contentStream, new Point(40, 20), PDType1Font.TIMES_ROMAN, 12, footerText);
@@ -71,7 +84,7 @@ public class PDFService {
 
     private void makeDateRange(PDPageContentStream contentStream, MenuType menu) throws IOException {
         String dateRange = getDateRange(menu);
-        writeText(contentStream, new Point(40, 720), PDType1Font.TIMES_BOLD, 14, dateRange);
+        writeText(contentStream, new Point(40, 710), PDType1Font.TIMES_BOLD, 14, dateRange);
     }
 
     private void makeMenuDetails(PDDocument document, List<PsqlMenuProduct> menuProductList) throws IOException {
@@ -89,6 +102,8 @@ public class PDFService {
         int weekMealCount = 0;
         pageOffset = 0;
 
+        // TODO: !!!!!
+        boolean flag = true;
         Set<Long> dayMealIds = new HashSet<>();
         for (Map.Entry<DateTime, List<PsqlMenuProduct>> dayEntry : menuProductsMap.entrySet()) {
 
@@ -105,6 +120,12 @@ public class PDFService {
                     contentStream = setNewPage(document, true);
                 } else {
                     contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
+                }
+
+                if (flag) {
+                    flag = false;
+                    makeHeader(document, contentStream);
+                    contentStream = setNewLine(document, contentStream, new Point(0, -40), false, true);
                 }
 
                 writeText(contentStream, new Point(40, pageOffset), timesBold, 14, RomanianNumber.getRomanianValue(weekMealCount));
@@ -146,6 +167,7 @@ public class PDFService {
 
                 dayMealIds.add(product.getMealId());
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
+                contentStream = checkPageOffset(document, contentStream);
             }
 
         }

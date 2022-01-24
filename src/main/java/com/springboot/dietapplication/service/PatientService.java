@@ -3,6 +3,7 @@ package com.springboot.dietapplication.service;
 import com.springboot.dietapplication.model.psql.menu.PsqlPatientsUnlikelyCategories;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 import com.springboot.dietapplication.model.psql.product.PsqlCategory;
+import com.springboot.dietapplication.model.type.MenuType;
 import com.springboot.dietapplication.model.type.PatientType;
 import com.springboot.dietapplication.repository.CategoryRepository;
 import com.springboot.dietapplication.repository.PatientRepository;
@@ -15,6 +16,8 @@ import java.util.*;
 
 @Service
 public class PatientService {
+
+    @Autowired MenuService menuService;
 
     @Autowired PatientRepository patientRepository;
     @Autowired CategoryRepository categoryRepository;
@@ -35,6 +38,12 @@ public class PatientService {
 
     public PatientType getPatientById(Long patientId) {
         Optional<PsqlPatient> patient = this.patientRepository.findById(patientId);
+        return patient.map(PatientType::new).orElseGet(PatientType::new);
+    }
+
+    public PatientType getPatientByMenuId(Long menuId) {
+        MenuType menu = this.menuService.getMenuById(menuId);
+        Optional<PsqlPatient> patient = this.patientRepository.findById(Long.parseLong(menu.getPatientId()));
         return patient.map(PatientType::new).orElseGet(PatientType::new);
     }
 
