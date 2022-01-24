@@ -2,10 +2,7 @@ package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.helper.RomanianNumber;
 import com.springboot.dietapplication.model.psql.menu.PsqlMenuProduct;
-import com.springboot.dietapplication.model.type.DishType;
-import com.springboot.dietapplication.model.type.MenuType;
-import com.springboot.dietapplication.model.type.ProductDishType;
-import com.springboot.dietapplication.model.type.ProductType;
+import com.springboot.dietapplication.model.type.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -156,6 +153,35 @@ public class PDFService {
         closeContentStream(contentStream);
     }
 
+    private void writeFoodType(PDDocument document, PDPageContentStream contentStream, FoodType foodType) throws IOException {
+        PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
+        int fontSize = 24;
+
+        switch (foodType) {
+            case BREAKFAST:
+                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Śniadania");
+                break;
+            case BRUNCH:
+                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "II Śniadania");
+                break;
+            case DINNER:
+                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Obiady");
+                break;
+            case TEA:
+                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Podwieczorki");
+                break;
+            case SUPPER:
+                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Kolacje");
+                break;
+            case PRE_WORKOUT:
+                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Przedtreningówki");
+                break;
+            case POST_WORKOUT:
+                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Potreningówki");
+                break;
+        }
+    }
+
     private void makeMenuDishRecipes(PDDocument document, List<DishType> dishList, List<ProductType> productTypeList) throws IOException {
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
@@ -163,26 +189,47 @@ public class PDFService {
         PDPageContentStream contentStream = null;
         pageOffset = 0;
 
+        if (dishList.size() == 0) return;
+        dishList.sort(Comparator.comparing(DishType::getFoodType));
+
+        FoodType foodType = null;
+
         for (DishType dish : dishList) {
-            if (pageOffset < 380) {
+
+            if (!dish.getFoodType().equals(foodType)) {
+                // If new food type, make new page and display name type
                 closeContentStream(contentStream);
                 contentStream = setNewPage(document, false);
+
+                foodType = dish.getFoodType();
+                writeFoodType(document, contentStream, foodType);
+                contentStream = setNewLine(document, contentStream, new Point(0, -40), false, false);
             } else {
-                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+                // If same as previous, check if should add new page or just set new line
+                if (pageOffset < 380) {
+                    closeContentStream(contentStream);
+                    contentStream = setNewPage(document, false);
+                } else {
+                    contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+                }
             }
 
-            writeText(contentStream, new Point(40, pageOffset), timesBold, 20, dish.getName());
+            // Display dish name
+            writeText(contentStream, new Point(40, pageOffset), timesBold, 18, dish.getName());
             contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
 
+            // Display dish portions
             String portions = setPortionLabel(Math.round(dish.getPortions()));
             writeText(contentStream, new Point(40, pageOffset), timesBold, 14, "(" + portions + ")");
-            contentStream = setNewLine(document, contentStream, new Point(0, -40), false, false);
+            contentStream = setNewLine(document, contentStream, new Point(0, -30), false, false);
 
+            // Display ingredient word
             if (dish.getProducts().size() > 0) {
                 writeText(contentStream, new Point(40, pageOffset), timesBold, 14,"Składniki:");
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
             }
 
+            // Display dish ingredients
             for (ProductDishType product : dish.getProducts()) {
                 int grams = (int) product.getGrams();
                 Optional<ProductType> productType = productTypeList.stream().filter( x -> x.getId().equals(product.getProductId())).findFirst();
@@ -190,17 +237,23 @@ public class PDFService {
                 if (productType.isPresent()) {
                     name = productType.get().getName();
                 } else {
+                    // Shouldn't happen, whenever useful to find the source of missing product
                     name = product.getProductId() + "!!!!";
                 }
                 String productPart = "\u2022 " + grams + "g " + name;
                 writeText(contentStream, new Point(60, pageOffset), timesNormal, 14,productPart);
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
-            }
-            contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
 
+                //Check whenever pageOffset is too close margin
+                contentStream = checkPageOffset(document, contentStream);
+            }
+            contentStream = setNewLine(document, contentStream, new Point(0, -10), false, false);
+
+            // Display recipe word
             writeText(contentStream, new Point(40, pageOffset), timesBold, 14, "Sposób przygotowania:");
             contentStream = setNewLine(document, contentStream, new Point(0, -30), false, false);
 
+            // Display recipe
             String[] recipeLines = dish.getRecipe().split("\n");
             for (String line : recipeLines) {
                 if (line.length() == 0) {
@@ -220,10 +273,12 @@ public class PDFService {
                     writeText(contentStream, new Point(60, pageOffset), timesNormal, 12, subLine);
                     contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
                     index += (newIndex > 0 && (index + margin) < line.length()) ? newIndex : margin;
+
+                    //Check whenever pageOffset is too close margin
+                    contentStream = checkPageOffset(document, contentStream);
                 } while (index < line.length());
             }
 
-            contentStream = setNewLine(document, contentStream, new Point(0, -20), true, false);
         }
 
         closeContentStream(contentStream);
@@ -253,6 +308,13 @@ public class PDFService {
         }
 
         return menuProductsMap;
+    }
+
+    private PDPageContentStream checkPageOffset(PDDocument document, PDPageContentStream contentStream) throws IOException {
+        if (pageOffset <= 120) {
+            return setNewLine(document, contentStream, new Point(0, -20), true, false);
+        }
+        return contentStream;
     }
 
     private PDPageContentStream setNewLine(PDDocument document, PDPageContentStream contentStream, Point offset, boolean createNewPageIfNeeded, boolean withDateRange) throws IOException {
