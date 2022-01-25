@@ -39,11 +39,7 @@ export class DishListComponent implements OnInit {
   }
 
   fetchDishData() {
-    if (this.menuId == null) {
-      this.getDishList();
-    } else {
-      this.getDishListByMenuId();
-    }
+    this.getDishList();
   }
 
   getDishList() {
