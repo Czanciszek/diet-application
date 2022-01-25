@@ -12,7 +12,6 @@ public class DishType {
     private FoodType foodType;
     private float portions;
     private String recipe;
-    private Long menuId;
 
     public DishType() {
 
@@ -23,7 +22,6 @@ public class DishType {
         this.name = dish.getName();
         this.portions = dish.getPortions();
         this.recipe = dish.getRecipe();
-        this.menuId = dish.getMenuId();
     }
 
     public DishType(DishType dish) {
@@ -32,7 +30,6 @@ public class DishType {
         this.foodType = dish.getFoodType();
         this.portions = dish.getPortions();
         this.recipe = dish.getRecipe();
-        this.menuId = dish.getMenuId();
     }
 
     public DishType(List<ProductDishType> products) {
@@ -87,11 +84,4 @@ public class DishType {
         this.recipe = recipe;
     }
 
-    public Long getMenuId() {
-        return menuId;
-    }
-
-    public void setMenuId(Long menuId) {
-        this.menuId = menuId;
-    }
 }

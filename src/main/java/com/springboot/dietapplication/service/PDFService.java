@@ -20,6 +20,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PDFService {
@@ -28,7 +29,7 @@ public class PDFService {
     MenuService menuService;
 
     @Autowired
-    DishService dishService;
+    MealService mealService;
 
     @Autowired
     ProductService productService;
@@ -49,9 +50,14 @@ public class PDFService {
             List<PsqlMenuProduct> menuProductList = menuService.menuProductLists(menuId);
             makeMenuDetails(document, menuProductList);
 
-            List<DishType> dishList = dishService.getAllByMenuId(menuId);
+            List<MealType> mealList = mealService
+                    .getMealsByMenuId(menuId)
+                    .stream()
+                    .filter(meal -> meal.getOriginMealId() != null && meal.getOriginMealId().equals(meal.getId()))
+                    .collect(Collectors.toList());
+
             List<ProductType> productTypeList = productService.getAll();
-            makeMenuDishRecipes(document, dishList, productTypeList);
+            makeMenuDishRecipes(document, mealList, productTypeList);
 
             document.save(file);
             document.close();
@@ -148,6 +154,9 @@ public class PDFService {
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
             }
 
+            //Check whenever pageOffset is too close margin
+            contentStream = checkPageOffset(document, contentStream);
+
         }
 
         closeContentStream(contentStream);
@@ -182,26 +191,26 @@ public class PDFService {
         }
     }
 
-    private void makeMenuDishRecipes(PDDocument document, List<DishType> dishList, List<ProductType> productTypeList) throws IOException {
+    private void makeMenuDishRecipes(PDDocument document, List<MealType> mealList, List<ProductType> productTypeList) throws IOException {
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
 
         PDPageContentStream contentStream = null;
         pageOffset = 0;
 
-        if (dishList.size() == 0) return;
-        dishList.sort(Comparator.comparing(DishType::getFoodType));
+        if (mealList.size() == 0) return;
+        mealList.sort(Comparator.comparing(MealType::getFoodType));
 
         FoodType foodType = null;
 
-        for (DishType dish : dishList) {
+        for (MealType meal : mealList) {
 
-            if (!dish.getFoodType().equals(foodType)) {
+            if (!meal.getFoodType().equals(foodType)) {
                 // If new food type, make new page and display name type
                 closeContentStream(contentStream);
                 contentStream = setNewPage(document, false);
 
-                foodType = dish.getFoodType();
+                foodType = meal.getFoodType();
                 writeFoodType(document, contentStream, foodType);
                 contentStream = setNewLine(document, contentStream, new Point(0, -40), false, false);
             } else {
@@ -215,22 +224,22 @@ public class PDFService {
             }
 
             // Display dish name
-            writeText(contentStream, new Point(40, pageOffset), timesBold, 18, dish.getName());
+            writeText(contentStream, new Point(40, pageOffset), timesBold, 18, meal.getName());
             contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
 
             // Display dish portions
-            String portions = setPortionLabel(Math.round(dish.getPortions()));
+            String portions = setPortionLabel(Math.round(meal.getDishPortions()));
             writeText(contentStream, new Point(40, pageOffset), timesBold, 14, "(" + portions + ")");
             contentStream = setNewLine(document, contentStream, new Point(0, -30), false, false);
 
             // Display ingredient word
-            if (dish.getProducts().size() > 0) {
+            if (meal.getProductList().size() > 0) {
                 writeText(contentStream, new Point(40, pageOffset), timesBold, 14,"Składniki:");
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
             }
 
             // Display dish ingredients
-            for (ProductDishType product : dish.getProducts()) {
+            for (ProductDishType product : meal.getProductList()) {
                 int grams = (int) product.getGrams();
                 Optional<ProductType> productType = productTypeList.stream().filter( x -> x.getId().equals(product.getProductId())).findFirst();
                 String name;
@@ -254,7 +263,7 @@ public class PDFService {
             contentStream = setNewLine(document, contentStream, new Point(0, -30), false, false);
 
             // Display recipe
-            String[] recipeLines = dish.getRecipe().split("\n");
+            String[] recipeLines = meal.getRecipe().split("\n");
             for (String line : recipeLines) {
                 if (line.length() == 0) {
                     contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);

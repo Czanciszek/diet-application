@@ -53,13 +53,6 @@ export class DishListComponent implements OnInit {
       });
   }
 
-  getDishListByMenuId() {
-    this.service.getDishesByMenuId(this.menuId).subscribe(
-      (data: Dish[]) => {
-        this.fetchResults(data);
-      });
-  }
-
   fetchResults(data: Dish[]) {
     this.listData = new MatTableDataSource([...data]);
     this.listData.sort = this.sort;

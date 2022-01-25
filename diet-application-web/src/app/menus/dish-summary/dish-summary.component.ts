@@ -35,11 +35,11 @@ export class DishSummaryComponent implements OnInit {
     this.getFoodProperties();
   }
 
-  onEdit(meal) {
-    for (const product of meal.productList) {
+  onEdit() {
+    for (const product of this.mealItem.productList) {
       (<FormArray>this.service.form.get('productList')).push(this.service.addProductFormGroup());
     }
-    this.service.populateForm(meal);
+    this.service.populateForm(this.mealItem);
     this.openDialog();
   }
 
@@ -49,8 +49,6 @@ export class DishSummaryComponent implements OnInit {
       autoFocus: true,
       width: "90%"
     });
-
-    dialogRef.componentInstance.menuId = this.menuId;
 
     dialogRef.afterClosed().subscribe(result => {
       this.refreshItems.emit();

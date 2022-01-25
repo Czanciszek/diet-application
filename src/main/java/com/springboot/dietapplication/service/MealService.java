@@ -25,6 +25,7 @@ public class MealService {
     @Autowired AmountTypeRepository amountTypeRepository;
 
     @Autowired WeekMealService weekMealService;
+    @Autowired MenuService menuService;
 
     public List<MealType> getAll() {
         List<PsqlMeal> mealList = this.mealRepository.findAll();
@@ -46,6 +47,19 @@ public class MealService {
         return getMealsByDayMealList(weekMealType.getDayMealList());
     }
 
+    public List<MealType> getMealsByMenuId(long menuId) {
+        MenuType menuType = this.menuService.getMenuById(menuId);
+        return getMealsByWeekMealList(menuType.getWeekMealList());
+    }
+
+    public List<MealType> getMealsByWeekMealList(List<String> weekMealList) {
+        List<MealType> mealList = new ArrayList<>();
+        for (String weekMealId: weekMealList) {
+            mealList.addAll(getMealsByWeekMealId(weekMealId));
+        }
+        return mealList;
+    }
+
     public List<MealType> getMealsByDayMealList(List<String> dayMealList) {
         List<MealType> mealList = new ArrayList<>();
         for (String dayMealId: dayMealList) {
@@ -60,7 +74,7 @@ public class MealService {
         PsqlFoodType psqlFoodType = this.foodTypeRepository.getPsqlFoodTypeByName(meal.getFoodType().toString());
         psqlMeal.setFoodTypeId(psqlFoodType.getId());
 
-        if (psqlMeal.getId() > 0)
+        if (psqlMeal.getId() != null)
             this.productMealRepository.deletePsqlProductMealsByMealId(psqlMeal.getId());
 
         this.mealRepository.save(psqlMeal);
@@ -85,7 +99,7 @@ public class MealService {
 
         this.mealRepository.save(psqlMeal);
 
-        meal.setId(String.valueOf(psqlMeal.getId()));
+        meal.setId(psqlMeal.getId());
         return meal;
     }
 
@@ -106,7 +120,7 @@ public class MealService {
         MealType mealType = new MealType(meal);
 
         List<ProductDishType> productDishTypeList = new ArrayList<>();
-        List<PsqlProductMeal> productMeals = this.productMealRepository.findPsqlProductMealsByMealId(Long.parseLong(mealType.getId()));
+        List<PsqlProductMeal> productMeals = this.productMealRepository.findPsqlProductMealsByMealId(mealType.getId());
         for (PsqlProductMeal productMeal : productMeals) {
             ProductDishType productDishType = new ProductDishType(productMeal);
 

@@ -32,17 +32,12 @@ public class DishService {
     @Autowired AmountTypeRepository amountTypeRepository;
 
     public List<DishType> getAll() {
-        List<PsqlDish> dishes = this.dishRepository.findByMenuIdIsNull();
+        List<PsqlDish> dishes = this.dishRepository.findAll();
         return convertLists(dishes);
     }
 
     public DishType getDishById(Long dishId) {
         return new DishType();
-    }
-
-    public List<DishType> getAllByMenuId(Long menuId) {
-        List<PsqlDish> dishes = this.dishRepository.findByMenuId(menuId);
-        return convertLists(dishes);
     }
 
     public DishType insert(DishType dish) {

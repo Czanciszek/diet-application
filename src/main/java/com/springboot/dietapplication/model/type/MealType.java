@@ -6,7 +6,7 @@ import java.util.List;
 
 public class MealType {
 
-    private String id;
+    private Long id;
 
     private String name;
 
@@ -46,8 +46,7 @@ public class MealType {
     }
 
     public MealType(PsqlMeal meal) {
-        if (meal.getId() > 0)
-            this.id = String.valueOf(meal.getId());
+        this.id = meal.getId();
         if (meal.getDayMealId() > 0)
             this.dayMealId = String.valueOf(meal.getDayMealId());
         this.originMealId = meal.getOriginMealId();
@@ -59,11 +58,11 @@ public class MealType {
         this.recipe = meal.getRecipe();
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

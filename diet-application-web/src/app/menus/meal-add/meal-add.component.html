@@ -29,7 +29,16 @@
           </div>
         </mat-grid-tile>
 
-        <mat-grid-tile colspan="2">
+        <mat-grid-tile>
+          <div class="control-container add-slider-padding">
+            <mat-label>Ilość porcji potrawy: {{service.form.controls['dishPortions'].value}}</mat-label>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container add-slider-padding">
+            <mat-slider min="1" max="20" thumbLabel formControlName="dishPortions">
+            </mat-slider>
+          </div>
         </mat-grid-tile>
 
         <mat-grid-tile colspan="2">

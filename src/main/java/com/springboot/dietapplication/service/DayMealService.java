@@ -78,7 +78,7 @@ public class DayMealService {
         DayMealType dayMealType = new DayMealType(dayMeal);
 
         List<MealType> mealList =  this.mealService.getMealsByDayMealId(dayMeal.getId());
-        List<String> mealIdList = new ArrayList<>();
+        List<Long> mealIdList = new ArrayList<>();
         for (MealType meal : mealList) {
             mealIdList.add(meal.getId());
         }
