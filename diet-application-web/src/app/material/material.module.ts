@@ -17,11 +17,13 @@ import {MatSortModule} from "@angular/material/sort";
 import {getPolishPaginatorIntl} from "./helper/polish-paginator-ingtl";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatCardModule} from "@angular/material/card";
-import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatListModule } from "@angular/material/list";
+
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MAT_DATE_LOCALE, MatNativeDateModule, DateAdapter} from "@angular/material/core";
+import { CustomDateAdapter } from "./helper/custom-date-adapter";
 
 @NgModule({
   declarations: [],
@@ -74,8 +76,10 @@ import { MatListModule } from "@angular/material/list";
     MatDatepickerModule,
     MatNativeDateModule,
     { provide: MatPaginatorIntl, useValue: getPolishPaginatorIntl() },
-    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL'},
     { provide: MatDialogRef, useValue: {} },
+
+    { provide: MAT_DATE_LOCALE, useValue: 'pl-PL'},
+    { provide: DateAdapter, useClass: CustomDateAdapter },
   ]
 })
 export class MaterialModule { }
