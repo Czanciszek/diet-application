@@ -146,7 +146,7 @@
             <mat-grid-tile colspan="4">
               <div class="control-container">
                 <div class="add-bottom-padding">
-                  <input matInput (click)="selectProductForDish(i)" [id]="'name'+i" placeholder="Produkt" readonly>
+                  <input matInput (click)="selectProductForDish(i)" formControlName="productName" placeholder="Produkt" readonly>
                 </div>
               </div>
             </mat-grid-tile>

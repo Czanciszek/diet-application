@@ -58,11 +58,10 @@ public class PDFService {
             List<MealType> mealList = mealService
                     .getMealsByMenuId(menuId)
                     .stream()
-                    .filter(meal -> meal.getOriginMealId() != null && meal.getOriginMealId().equals(meal.getId()))
+                    .filter(meal -> (meal.getIsProduct() == 0) && meal.getOriginMealId() != null && meal.getOriginMealId().equals(meal.getId()))
                     .collect(Collectors.toList());
 
-            List<ProductType> productTypeList = productService.getAll();
-            makeMenuDishRecipes(document, mealList, productTypeList);
+            makeMenuDishRecipes(document, mealList);
 
             document.save(file);
             document.close();
@@ -213,7 +212,7 @@ public class PDFService {
         }
     }
 
-    private void makeMenuDishRecipes(PDDocument document, List<MealType> mealList, List<ProductType> productTypeList) throws IOException {
+    private void makeMenuDishRecipes(PDDocument document, List<MealType> mealList) throws IOException {
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
 
@@ -263,14 +262,8 @@ public class PDFService {
             // Display dish ingredients
             for (ProductDishType product : meal.getProductList()) {
                 int grams = (int) product.getGrams();
-                Optional<ProductType> productType = productTypeList.stream().filter( x -> x.getId().equals(product.getProductId())).findFirst();
-                String name;
-                if (productType.isPresent()) {
-                    name = productType.get().getName();
-                } else {
-                    // Shouldn't happen, whenever useful to find the source of missing product
-                    name = product.getProductId() + "!!!!";
-                }
+                String name = (product.getProductName() == null || product.getProductName().isEmpty()) ?
+                        (product.getProductId() + "!!!!") : product.getProductName();
                 String productPart = "\u2022 " + grams + "g " + name;
                 writeText(contentStream, new Point(60, pageOffset), timesNormal, 14,productPart);
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);

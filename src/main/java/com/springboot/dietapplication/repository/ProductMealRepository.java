@@ -12,6 +12,8 @@ public interface ProductMealRepository extends JpaRepository<PsqlProductMeal, Lo
 
     List<PsqlProductMeal> findPsqlProductMealsByMealId(Long mealId);
 
+    List<PsqlProductMeal> findPsqlProductDishesByProductId(Long productId);
+
     @Transactional
     void deletePsqlProductMealsByMealId(Long mealId);
 }

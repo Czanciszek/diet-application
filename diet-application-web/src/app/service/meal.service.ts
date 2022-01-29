@@ -35,6 +35,7 @@ export class MealService {
   addProductFormGroup(): FormGroup {
     return new FormGroup( {
       productId: new FormControl(null),
+      productName: new FormControl(null),
       grams: new FormControl(null),
       amount: new FormControl(null),
       amountType: new FormControl(null)

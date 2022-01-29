@@ -54,22 +54,9 @@ export class MealAddComponent implements OnInit {
       } else {
         this.blockProduct = true;
         this.portionCurrentValue = this.service.form.get("portions").value;
-        for (let i = 0; i < products.length; i++) {
-          let productId = products.at(i).get('productId').value;
-          setTimeout( () => {
-            (<HTMLInputElement>document.getElementById("name"+i)).value = this.productService.menuProductMap[productId].name;
-          });
-        }
       }
     }
 
-    for (let i = 0; i < products.length; i++) {
-      let productId = products.at(i).get('productId').value;
-      if (productId == null) return;
-      setTimeout( () => {
-        (<HTMLInputElement>document.getElementById("name"+i)).value = this.productService.menuProductMap[productId].name;
-      });
-    }
   }
 
   onClear() {
@@ -122,11 +109,10 @@ export class MealAddComponent implements OnInit {
         // Update value in HTML form
         this.productService.menuProductMap[result.id] = result;
 
-        (<HTMLInputElement>document.getElementById("name"+index)).value = this.productService.menuProductMap[result.id].name;
-
         // Update value in Form Group
         let products = (<FormArray>this.service.form.get('productList'));
         products.at(index).get('productId').patchValue(result.id);
+        products.at(index).get('productName').patchValue(result.name);
         this.service.form.patchValue({
           products: [products]
         });
@@ -196,6 +182,7 @@ export class MealAddComponent implements OnInit {
           let grams = (product.grams * proportions).toFixed(2);
 
           productForm.get('grams').patchValue(grams);
+          productForm.get('productName').patchValue(product.productName);
           productForm.get('amount').patchValue(product.amount);
           productForm.get('amountType').patchValue(product.amountType);
           (<FormArray>this.service.form.get('productList')).push(productForm);

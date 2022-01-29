@@ -6,6 +6,7 @@ import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 public class ProductDishType {
 
     private String productId;
+    private String productName;
     private float grams;
     private float amount;
     private AmountType amountType;
@@ -14,8 +15,9 @@ public class ProductDishType {
 
     }
 
-    public ProductDishType(String productId, float grams, float amount, AmountType amountType) {
+    public ProductDishType(String productId, String productName, float grams, float amount, AmountType amountType) {
         this.productId = productId;
+        this.productName = productName;
         this.grams = grams;
         this.amount = amount;
         this.amountType = amountType;
@@ -23,12 +25,14 @@ public class ProductDishType {
 
     public ProductDishType(PsqlProductDish psqlProductDish) {
         this.productId = String.valueOf(psqlProductDish.getProductId());
+        this.productName = psqlProductDish.getProductName();
         this.grams = psqlProductDish.getGrams();
         this.amount = psqlProductDish.getAmount();
     }
 
     public ProductDishType(PsqlProductMeal psqlProductMeal) {
         this.productId = String.valueOf(psqlProductMeal.getProductId());
+        this.productName = psqlProductMeal.getProductName();
         this.grams = psqlProductMeal.getGrams();
         this.amount = psqlProductMeal.getAmount();
     }
@@ -39,6 +43,14 @@ public class ProductDishType {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public float getGrams() {

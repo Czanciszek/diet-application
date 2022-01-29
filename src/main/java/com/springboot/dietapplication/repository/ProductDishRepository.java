@@ -12,6 +12,8 @@ public interface ProductDishRepository extends JpaRepository<PsqlProductDish, Lo
 
     List<PsqlProductDish> findPsqlProductDishesByDishId(Long dishId);
 
+    List<PsqlProductDish> findPsqlProductDishesByProductId(Long productId);
+
     @Transactional
     void deletePsqlProductDishesByDishId(Long dishId);
 }

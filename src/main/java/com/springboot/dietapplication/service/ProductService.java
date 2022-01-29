@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
+import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import com.springboot.dietapplication.model.psql.product.PsqlProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
@@ -18,6 +19,7 @@ public class ProductService {
     @Autowired ProductRepository productRepository;
     @Autowired ProductFoodPropertiesRepository productFoodPropertiesRepository;
     @Autowired ProductDishRepository productDishRepository;
+    @Autowired ProductMealRepository productMealRepository;
 
     @Autowired FoodPropertiesService foodPropertiesService;
     @Autowired CategoryService categoryService;
@@ -103,6 +105,20 @@ public class ProductService {
 
         PsqlCategory category = this.categoryService.findCategory(productType);
         product.setCategoryId(category.getId());
+
+        if (product.getId() > 0) {
+            List<PsqlProductDish> productDishList = this.productDishRepository.findPsqlProductDishesByProductId(product.getId());
+            if (productDishList.size() > 0) {
+                productDishList.forEach( productDish -> productDish.setProductName(product.getName()));
+                this.productDishRepository.saveAll(productDishList);
+            }
+
+            List<PsqlProductMeal> productMealList = this.productMealRepository.findPsqlProductDishesByProductId(product.getId());
+            if (productMealList.size() > 0) {
+                productMealList.forEach( productMeal -> productMeal.setProductName(product.getName()));
+                this.productMealRepository.saveAll(productMealList);
+            }
+        }
 
         this.productRepository.save(product);
         productType.setId(String.valueOf(product.getId()));

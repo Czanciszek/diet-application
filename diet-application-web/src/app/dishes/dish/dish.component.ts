@@ -96,6 +96,7 @@ export class DishComponent implements OnInit {
         // Update value in Form Group
         let products = (<FormArray>this.service.form.get('products'));
         products.at(productIndex).get('productId').patchValue(result.id);
+        products.at(productIndex).get('productName').patchValue(result.name);
         this.service.form.patchValue({
           products: [products]
         });

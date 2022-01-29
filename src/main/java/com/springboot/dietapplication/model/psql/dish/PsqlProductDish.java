@@ -21,6 +21,9 @@ public class PsqlProductDish {
     @Column(name = "amount_type_id")
     private Long amountTypeId;
 
+    @Column(name = "product_name")
+    private String productName;
+
     @Column(name = "amount")
     private float amount;
 
@@ -33,6 +36,7 @@ public class PsqlProductDish {
 
     public PsqlProductDish(ProductDishType productDish) {
         this.productId = Long.parseLong(productDish.getProductId());
+        this.productName = productDish.getProductName();
         this.amount = productDish.getAmount();
         this.grams = productDish.getGrams();
     }
@@ -67,6 +71,14 @@ public class PsqlProductDish {
 
     public void setAmountTypeId(Long amountTypeId) {
         this.amountTypeId = amountTypeId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public float getAmount() {
