@@ -136,6 +136,7 @@ export class MealAddComponent implements OnInit {
 
         // Update value in Form Group
         this.service.form.get('name').patchValue(result.name);
+        this.service.form.get('productName').patchValue(result.name);
         this.service.form.get('isProduct').patchValue(1);
 
         let productForm = this.service.addProductFormGroup();
@@ -200,19 +201,34 @@ export class MealAddComponent implements OnInit {
 
   getProductSummary(index) {
     let product = this.service.form.get('productList').value[index];
-    if (product == null || this.productService.menuProductMap[product.productId] == null) {
-      return "";
+    return this.calculateProperties([product]);
+  }
+
+  getMealSummary() {
+    return this.calculateProperties(this.service.form.get('productList').value);
+  }
+
+  calculateProperties(products) {
+    let energy = 0;
+    let proteins = 0;
+    let fats = 0;
+    let carbohydrates = 0;
+
+    for (let product of products) {
+      if (product == null || this.productService.menuProductMap[product.productId] == null) {
+        continue;
+      }
+
+      let isProduct = (this.service.form.get('isProduct').value == 1);
+      let grams = product.grams;
+
+       let foodProperties = this.productService.menuProductMap[product.productId].foodProperties;
+
+       energy += (foodProperties.energyValue * grams) / 100;
+       proteins += (foodProperties.proteins * grams) / 100;
+       fats += (foodProperties.fats * grams) / 100;
+       carbohydrates += (foodProperties.carbohydrates * grams) / 100;
     }
-
-    let isProduct = (this.service.form.get('isProduct').value == 1);
-    let grams = product.grams;
-
-    let foodProperties = this.productService.menuProductMap[product.productId].foodProperties;
-
-    let energy = (foodProperties.energyValue * grams) / 100;
-    let proteins = (foodProperties.proteins * grams) / 100;
-    let fats = (foodProperties.fats * grams) / 100;
-    let carbohydrates = (foodProperties.carbohydrates * grams) / 100;
 
     return "Kcal: " + energy.toFixed(2) +
       "    B: " + proteins.toFixed(2) +

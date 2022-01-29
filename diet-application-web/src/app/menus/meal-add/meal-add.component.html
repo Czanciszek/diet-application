@@ -173,6 +173,29 @@
         </div>
       </div>
 
+      <mat-grid-list cols="12" rowHeight="80px">
+        <mat-grid-tile colspan="7"></mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <div *ngIf="service.form.get('productList').value.length > 0">
+                <b>Suma:</b>
+              </div>
+            </div>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="3">
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <div *ngIf="service.form.get('productList').value.length > 0">
+                <b>{{getMealSummary()}}</b>
+              </div>
+            </div>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile></mat-grid-tile>
+      </mat-grid-list>
+
       <mat-grid-list cols="1" rowHeight="30px">
         <mat-grid-tile>
           <div class="control-container">
