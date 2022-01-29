@@ -15,7 +15,7 @@
 
         <div *ngFor="let meal of mealListItemData">
           <div *ngIf="meal.foodType === dishType && meal.dayMealId === day.id">
-            <app-dish-summary [menuId]="menuId" [mealItem]="meal" [daysList]="dayMealListItemData" (refreshItems)="refreshMealList()"></app-dish-summary>
+            <app-dish-summary [menuItemData]="menuItemData" [dayItem]="day" [mealItem]="meal" [daysList]="dayMealListItemData" (refreshItems)="refreshMealList()"></app-dish-summary>
           </div>
         </div>
 

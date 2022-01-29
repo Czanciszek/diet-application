@@ -28,28 +28,24 @@ export class WeekViewComponent implements OnInit {
     private productService: ProductService
   ) {};
 
-  menuId: any;
+  menuId: any = this.route.snapshot.paramMap.get("menu_id");
 
   menuItemData: any;
-  weekMealItemData: any;
   dayMealListItemData: any;
   mealListItemData: any;
   dataLoaded = false;
-  weekIndex: number;
+  weekIndex: number = 0;
 
-  weekLoaded = false;
   dayLoaded = false;
   mealsLoaded = false;
   productMapLoaded = false;
 
   ngOnInit(): void {
-    this.menuId = this.route.snapshot.paramMap.get("menu_id");
-    this.weekIndex = 0;
     this.getMenuDetails(this.menuId);
   }
 
   checkDataLoaded() {
-    if (this.weekLoaded && this.dayLoaded && this.mealsLoaded && this.productMapLoaded) {
+    if (this.dayLoaded && this.mealsLoaded && this.productMapLoaded) {
       this.dataLoaded = true;
     }
   }
@@ -68,7 +64,6 @@ export class WeekViewComponent implements OnInit {
   }
 
   loadWeekData(weekMealId) {
-    this.getWeekMealDetails(weekMealId);
     this.getDayMealListDetails(weekMealId);
     this.getMealListDetails(weekMealId);
     this.getMenuProductMap();
@@ -76,20 +71,13 @@ export class WeekViewComponent implements OnInit {
 
   swapWeek(newIndex: number) {
     this.weekIndex = newIndex;
-
     this.mealListItemData = [];
-    let weekMealId = this.menuItemData.weekMealList[this.weekIndex];
-    this.loadWeekData(weekMealId);
+    this.refreshMealList();
   }
 
-  getWeekMealDetails(weekMealId) {
-    this.weekMealService.getWeekMealById(weekMealId)
-      .subscribe(
-        (data: WeekMeal[]) => {
-          this.weekMealItemData = {...data};
-          this.weekLoaded = true;
-          this.checkDataLoaded();
-        });
+  refreshMealList() {
+    let weekMealId = this.menuItemData.weekMealList[this.weekIndex];
+    this.loadWeekData(weekMealId);
   }
 
   getDayMealListDetails(weekMealId) {
@@ -124,10 +112,6 @@ export class WeekViewComponent implements OnInit {
 
   translateDayType(name) {
     return translateDayType(name);
-  }
-
-  refreshMealList() {
-    this.loadWeekData(this.weekMealItemData.id);
   }
 
   getFoodPropertiesDaySummary(day: DayMeal, property: string) {

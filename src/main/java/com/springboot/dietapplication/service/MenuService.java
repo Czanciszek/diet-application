@@ -101,6 +101,12 @@ public class MenuService {
         List<String> weekMealIdList = this.weekMealService.getWeekMealIdList(psqlMenu.getId());
         menuType.setWeekMealList(weekMealIdList);
 
+        List<DayMealType> dayMealTypeList = new ArrayList<>();
+        for (String weekMealId: weekMealIdList)
+            dayMealTypeList.addAll(this.dayMealService.getDayMealByWeekMealId(weekMealId));
+
+        menuType.setDayMealTypeList(dayMealTypeList);
+
         return menuType;
     }
 
