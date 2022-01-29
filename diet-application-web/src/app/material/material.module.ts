@@ -73,11 +73,11 @@ import { CustomDateAdapter } from "./helper/custom-date-adapter";
   ],
   providers: [
     MatSnackBar,
-    MatDatepickerModule,
-    MatNativeDateModule,
     { provide: MatPaginatorIntl, useValue: getPolishPaginatorIntl() },
     { provide: MatDialogRef, useValue: {} },
 
+    MatDatepickerModule,
+    MatNativeDateModule,
     { provide: MAT_DATE_LOCALE, useValue: 'pl-PL'},
     { provide: DateAdapter, useClass: CustomDateAdapter },
   ]
