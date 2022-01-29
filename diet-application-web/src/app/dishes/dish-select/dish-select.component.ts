@@ -19,35 +19,32 @@ export class DishSelectComponent implements OnInit {
     public dialogRef: MatDialogRef<DishSelectComponent>,
   ) { }
 
-  public menuId: any;
-
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'portions', 'foodType', 'actions'];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  searchKey: string;
 
   ngOnInit(): void {
     this.fetchData();
   }
 
+  onSearchClear() {
+    this.searchKey = "";
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    this.listData.filter = this.searchKey.trim().toLowerCase();
+  }
+
   fetchData() {
-    if (this.menuId != null) {
-      this.getDishesByMenuId();
-    } else {
-      this.getDishList();
-    }
+    this.getDishList();
   }
 
   getDishList() {
     this.service.getDishes().subscribe(
-      (data: Dish[]) => {
-        this.fetchResults(data);
-      });
-  }
-
-  getDishesByMenuId() {
-    this.service.getDishesByMenuId(this.menuId).subscribe(
       (data: Dish[]) => {
         this.fetchResults(data);
       });

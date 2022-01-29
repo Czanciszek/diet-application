@@ -10,7 +10,7 @@ public class DayMealType {
 
     private String weekMealId;
 
-    private List<String> mealList; // Lista odnośników do posiłków
+    private List<Long> mealList; // Lista odnośników do posiłków
 
     private DayType dayType; //Day name
 
@@ -22,7 +22,7 @@ public class DayMealType {
 
     }
 
-    public DayMealType(String weekMealId, List<String> mealList, DayType dayType, String date) {
+    public DayMealType(String weekMealId, List<Long> mealList, DayType dayType, String date) {
         this.weekMealId = weekMealId;
         this.mealList = mealList;
         this.dayType = dayType;
@@ -53,11 +53,11 @@ public class DayMealType {
         this.weekMealId = weekMealId;
     }
 
-    public List<String> getMealList() {
+    public List<Long> getMealList() {
         return mealList;
     }
 
-    public void setMealList(List<String> mealList) {
+    public void setMealList(List<Long> mealList) {
         this.mealList = mealList;
     }
 

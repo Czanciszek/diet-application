@@ -26,11 +26,6 @@ public class DishController {
         return this.dishService.getDishById(dishId);
     }
 
-    @GetMapping(path = "/menu/{menuId}")
-    public List<DishType> getAllByMenuId(@PathVariable("menuId") Long menuId) {
-        return this.dishService.getAllByMenuId(menuId);
-    }
-
     @PostMapping(produces = "application/json")
     ResponseEntity<DishType> insert(@RequestBody DishType dish) {
         this.dishService.insert(dish);

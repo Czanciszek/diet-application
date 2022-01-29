@@ -39,22 +39,11 @@ export class DishListComponent implements OnInit {
   }
 
   fetchDishData() {
-    if (this.menuId == null) {
-      this.getDishList();
-    } else {
-      this.getDishListByMenuId();
-    }
+    this.getDishList();
   }
 
   getDishList() {
     this.service.getDishes().subscribe(
-      (data: Dish[]) => {
-        this.fetchResults(data);
-      });
-  }
-
-  getDishListByMenuId() {
-    this.service.getDishesByMenuId(this.menuId).subscribe(
       (data: Dish[]) => {
         this.fetchResults(data);
       });

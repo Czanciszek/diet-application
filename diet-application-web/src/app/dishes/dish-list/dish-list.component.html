@@ -19,41 +19,43 @@
   </mat-form-field>
 </div>
 
-<div class ="mat-elevation-z8">
-  <mat-table [dataSource]="listData" matSort>
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa potrawy</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="portions">
-      <mat-header-cell *matHeaderCellDef  mat-sort-header>Ilość porcji</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.portions}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="foodType" >
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Typ potrawy</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{getFoodType(element.foodType)}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="onEdit(element)"><mat-icon>launch</mat-icon></button>
-        <button mat-icon-button (click)="onDelete(element.id)"><mat-icon>delete</mat-icon></button>
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="loading">
-      <mat-footer-cell *matFooterCellDef colspan="6">
-        Ładowanie danych...
-      </mat-footer-cell>
-    </ng-container>
-    <ng-container matColumnDef="noData">
-      <mat-footer-cell *matFooterCellDef colspan="6">
-        Brak danych.
-      </mat-footer-cell>
-    </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>
-    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
-  </mat-table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
-</div>
+<mat-dialog-content>
+  <div class ="mat-elevation-z8">
+    <mat-table [dataSource]="listData" matSort>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa potrawy</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="portions">
+        <mat-header-cell *matHeaderCellDef  mat-sort-header>Ilość porcji</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.portions}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="foodType" >
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Typ potrawy</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{getFoodType(element.foodType)}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="onEdit(element)"><mat-icon>launch</mat-icon></button>
+          <button mat-icon-button (click)="onDelete(element.id)"><mat-icon>delete</mat-icon></button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="loading">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          Ładowanie danych...
+        </mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          Brak danych.
+        </mat-footer-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>
+      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+  </div>
+</mat-dialog-content>

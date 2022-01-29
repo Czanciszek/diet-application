@@ -19,9 +19,6 @@ public class PsqlDish implements Serializable {
     @Column(name = "food_type_id")
     private Long foodTypeId;
 
-    @Column(name = "menu_id")
-    private Long menuId;
-
     @Column(name = "portions")
     private float portions;
 
@@ -35,7 +32,6 @@ public class PsqlDish implements Serializable {
     public PsqlDish(DishType dishType) {
         if (dishType.getId() != null && !dishType.getId().isEmpty())
             this.id = Long.parseLong(dishType.getId());
-        this.menuId = dishType.getMenuId();
         this.name = dishType.getName();
         this.portions = dishType.getPortions();
         this.recipe = dishType.getRecipe();
@@ -63,14 +59,6 @@ public class PsqlDish implements Serializable {
 
     public void setFoodTypeId(Long foodTypeId) {
         this.foodTypeId = foodTypeId;
-    }
-
-    public Long getMenuId() {
-        return menuId;
-    }
-
-    public void setMenuId(Long menuId) {
-        this.menuId = menuId;
     }
 
     public float getPortions() {

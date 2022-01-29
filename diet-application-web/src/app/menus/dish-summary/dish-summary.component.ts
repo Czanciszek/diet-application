@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
 import {MealService} from "../../service/meal.service";
 import {Meal} from "../../model/meal";
 import {DayMeal} from "../../model/day-meal";
@@ -15,13 +15,17 @@ import {ProductService} from "../../service/product.service";
 export class DishSummaryComponent implements OnInit {
 
   @Input()
-  menuId: any;
+  menuItemData: any;
+  @Input()
+  dayItem: any;
   @Input()
   mealItem: Meal;
   @Input()
   daysList: DayMeal[];
   @Output()
   refreshItems = new EventEmitter<boolean>();
+
+  @ViewChild('elementToFocus') _input: ElementRef;
 
   foodPropertiesSummary = "";
 
@@ -35,11 +39,11 @@ export class DishSummaryComponent implements OnInit {
     this.getFoodProperties();
   }
 
-  onEdit(meal) {
-    for (const product of meal.productList) {
+  onEdit() {
+    for (const product of this.mealItem.productList) {
       (<FormArray>this.service.form.get('productList')).push(this.service.addProductFormGroup());
     }
-    this.service.populateForm(meal);
+    this.service.populateForm(this.mealItem);
     this.openDialog();
   }
 
@@ -49,8 +53,6 @@ export class DishSummaryComponent implements OnInit {
       autoFocus: true,
       width: "90%"
     });
-
-    dialogRef.componentInstance.menuId = this.menuId;
 
     dialogRef.afterClosed().subscribe(result => {
       this.refreshItems.emit();
@@ -63,10 +65,9 @@ export class DishSummaryComponent implements OnInit {
     });
   }
 
-  copyMeal(meal, value) {
-    let dayIndex = Object.keys(this.daysList).find(key => this.daysList[key].dayType === value);
-    const copyMeal = Object.assign({}, meal);
-    copyMeal.dayMealId = this.daysList[dayIndex].id;
+  copyMeal(dayMeal) {
+    const copyMeal = Object.assign({}, this.mealItem);
+    copyMeal.dayMealId = dayMeal.id;
     this.service.copyMeal(copyMeal).subscribe(() => {
       this.refreshItems.emit();
     });
@@ -99,4 +100,27 @@ export class DishSummaryComponent implements OnInit {
       "    T: " + fats.toFixed(2) +
       "    W: " + carbohydrates.toFixed(2);
   }
+
+  _openCalendar(picker) {
+      picker.open();
+      setTimeout(
+        () => this._input.nativeElement.focus()
+      );
+    }
+
+  dateChanged(event) {
+    let selectedDate = new Date(event.value);
+    selectedDate.setHours(0,0,0);
+
+    let dayMeal = this.menuItemData.dayMealTypeList.find(key => {
+      let keyValue = new Date(key.date);
+      keyValue.setHours(0,0,0);
+      return selectedDate.toDateString() === keyValue.toDateString();
+    });
+
+    if (dayMeal != null && dayMeal.id != null) {
+      this.copyMeal(dayMeal);
+    }
+  }
+
 }

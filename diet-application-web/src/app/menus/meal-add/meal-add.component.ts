@@ -175,8 +175,6 @@ export class MealAddComponent implements OnInit {
       width: "90%"
     });
 
-    dialogRef.componentInstance.menuId = this.menuId;
-
     dialogRef.afterClosed().subscribe( result => {
       if (result != null) {
         (<FormArray>this.service.form.get('productList')).clear();

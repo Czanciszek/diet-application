@@ -38,7 +38,6 @@ import { MenuAddComponent } from './menus/menu-add/menu-add.component';
 import { MealAddComponent } from './menus/meal-add/meal-add.component';
 import { DishSelectComponent } from './dishes/dish-select/dish-select.component';
 import { WeekHeaderComponent } from './menus/week-header/week-header.component';
-import { DishSelectorComponent } from './menus/dish-selector/dish-selector.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -79,7 +78,6 @@ const routes: Routes = [
     MealAddComponent,
     DishSelectComponent,
     WeekHeaderComponent,
-    DishSelectorComponent,
   ],
     imports: [
         BrowserModule,

@@ -85,11 +85,6 @@ export class DishService {
     return this.dishList;
   }
 
-  getDishesByMenuId(menuId) {
-    let dishList = this.http.get(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes/menu/" + menuId, this.httpOptions);
-    return dishList;
-  }
-
   copyDishToMenu(dish) {
     return this.http.post(GlobalVariable.SERVER_ADDRESS +
       GlobalVariable.DATABASE_SERVICE + "dishes/copyToMenu", dish, this.httpOptions);

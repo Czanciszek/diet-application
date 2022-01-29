@@ -12,6 +12,8 @@ public class MenuType {
 
     private List<String> weekMealList; // Lista odnośników do tygodniowych jadłospisów
 
+    private List<DayMealType> dayMealTypeList; //Lista odnośników do dni w jadłospisie
+
     private List<FoodType> foodTypes; // Rodzaje posiłków do menu
 
     private String startDate; // Najwcześniejsza data z listy DayMeals
@@ -65,6 +67,14 @@ public class MenuType {
 
     public void setWeekMealList(List<String> weekMealList) {
         this.weekMealList = weekMealList;
+    }
+
+    public List<DayMealType> getDayMealTypeList() {
+        return dayMealTypeList;
+    }
+
+    public void setDayMealTypeList(List<DayMealType> dayMealTypeList) {
+        this.dayMealTypeList = dayMealTypeList;
     }
 
     public List<FoodType> getFoodTypes() {
