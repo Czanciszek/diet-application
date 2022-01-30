@@ -9,6 +9,7 @@ import {DayMeal} from "../../model/day-meal";
 import {translateDayType} from "../../material/helper/polish-translate";
 import {MealService} from "../../service/meal.service";
 import {Meal} from "../../model/meal";
+import {Product} from "../../model/product";
 import {ProductService} from "../../service/product.service";
 
 @Component({

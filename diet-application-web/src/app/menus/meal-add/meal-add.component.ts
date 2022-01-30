@@ -9,6 +9,7 @@ import {MenuService} from "../../service/menu.service";
 import {DishSelectComponent} from "../../dishes/dish-select/dish-select.component";
 import {ProductService} from "../../service/product.service";
 import {Meal} from "../../model/meal";
+import {Product} from "../../model/product";
 import {FOOD_TYPES} from "../../model/helpers/foodTypes";
 import {AMOUNT_TYPES} from "../../model/helpers/amountTypes";
 
