@@ -47,9 +47,13 @@ public class DayMealService {
     }
 
     public void generateDaysForWeek(DateTime date, Long weekMealId) {
-        for (DayType dayType : DayType.values()) {
+        for (int i = 0; i < 7; i++) {
+            int dayTypeValue = (date.getDayOfWeek()%7) + 1;
+            Optional<DayType> dayType = DayType.valueOf(dayTypeValue);
+            if (!dayType.isPresent()) continue;
+
             DayMealType dayMeal = new DayMealType();
-            dayMeal.setDayType(dayType);
+            dayMeal.setDayType(dayType.get());
             dayMeal.setDate(date.toString());
             dayMeal.setWeekMealId(String.valueOf(weekMealId));
             insert(dayMeal);

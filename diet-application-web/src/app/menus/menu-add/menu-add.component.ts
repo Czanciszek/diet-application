@@ -45,10 +45,6 @@ export class MenuAddComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onlyMonday = (day: Date): boolean => {
-    return day.getDay() == 1;
-  }
-
   getMeasurementList(patientId) {
     this.measurementService.getMeasurementsByPatientId(patientId)
       .subscribe(
