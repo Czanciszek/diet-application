@@ -39,30 +39,21 @@ export class ProductListComponent implements OnInit {
 
   getProductList() {
     this.onSearchClear();
-    this.service.getProducts().subscribe(
-      list => {
-        let array = list.map(item => {
-          return {
-            id: item.id,
-            name: item.name,
-            category: item.category,
-            subcategory: item.subcategory,
-            foodProperties: item.foodProperties,
-            lactose: item.lactose,
-            starch: item.starch,
-            gluten: item.gluten,
-          };
-        });
-        this.listData = new MatTableDataSource(array);
-        this.listData.sort = this.sort;
-        this.listData.paginator = this.paginator;
+    this.service.getProducts()
+      .subscribe(
+        (data: Product[] ) => {
 
-        this.listData.filterPredicate = (data: Product, filter: string) => {
+          this.service.productList = [...data];
+          this.listData = new MatTableDataSource(this.service.productList);
+          this.listData.sort = this.sort;
+          this.listData.paginator = this.paginator;
+
+          this.listData.filterPredicate = (data: Product, filter: string) => {
           return data.name == null ||
             data.name.toLowerCase().includes(filter) ||
             data.category.toLowerCase().includes(filter) ||
             data.subcategory.toLowerCase().includes(filter);
-        };
+          };
       });
   }
 

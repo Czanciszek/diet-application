@@ -38,14 +38,14 @@ export class WeekViewComponent implements OnInit {
 
   dayLoaded = false;
   mealsLoaded = false;
-  productMapLoaded = false;
+  productsLoaded = false;
 
   ngOnInit(): void {
     this.getMenuDetails(this.menuId);
   }
 
   checkDataLoaded() {
-    if (this.dayLoaded && this.mealsLoaded && this.productMapLoaded) {
+    if (this.dayLoaded && this.mealsLoaded && this.productsLoaded) {
       this.dataLoaded = true;
     }
   }
@@ -66,7 +66,7 @@ export class WeekViewComponent implements OnInit {
   loadWeekData(weekMealId) {
     this.getDayMealListDetails(weekMealId);
     this.getMealListDetails(weekMealId);
-    this.getMenuProductMap();
+    this.getProducts();
   }
 
   swapWeek(newIndex: number) {
@@ -100,12 +100,12 @@ export class WeekViewComponent implements OnInit {
         });
   }
 
-  getMenuProductMap() {
-    this.productService.getMenuProducts(this.menuItemData.id)
+  getProducts() {
+    this.productService.getProducts()
       .subscribe(
-        (data: {} ) => {
-          this.productService.menuProductMap = {...data};
-          this.productMapLoaded = true;
+        (data: Product[] ) => {
+          this.productService.productList = [...data];
+          this.productsLoaded = true;
           this.checkDataLoaded();
         });
   }
@@ -135,10 +135,13 @@ export class WeekViewComponent implements OnInit {
       for (let product of meal.productList) {
         let grams = product.grams;
 
-        if (this.productService.menuProductMap[product.productId] == null) {
-          continue;
-        }
-        let foodProperties = this.productService.menuProductMap[product.productId].foodProperties;
+        let originProduct = this.productService.productList.find(p => {
+        return p.id == product.productId;
+        });
+        if (originProduct == null) continue;
+
+        let foodProperties = originProduct.foodProperties;
+
         let productValue = (foodProperties[property] * grams) / 100;
 
         value += productValue;

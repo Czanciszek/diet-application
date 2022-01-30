@@ -23,9 +23,6 @@ public class ProductService {
 
     @Autowired FoodPropertiesService foodPropertiesService;
     @Autowired CategoryService categoryService;
-    @Autowired MenuService menuService;
-    @Autowired WeekMealService weekMealService;
-    @Autowired MealService mealService;
 
     public List<ProductType> getAll() {
         List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllProducts();
@@ -64,32 +61,6 @@ public class ProductService {
         }
 
         return filteredPsqlProducts;
-    }
-
-    public Map<String, ProductType> getMenuProducts(Long menuId) {
-        Map<String, ProductType> productMap = new HashMap<>();
-        Set<Long> productIdList = new HashSet<>();
-
-        MenuType menu = this.menuService.getMenuById(menuId);
-        for (String weekMealId : menu.getWeekMealList()) {
-            WeekMealType weekMealType = this.weekMealService.getWeekMealById(Long.parseLong(weekMealId));
-            List<MealType> mealTypeList = this.mealService.getMealsByDayMealList(weekMealType.getDayMealList());
-            for (MealType mealType : mealTypeList) {
-                for (ProductDishType productDishType : mealType.getProductList()) {
-                    String productId = productDishType.getProductId();
-                    productIdList.add(Long.parseLong(productId));
-                }
-
-            }
-        }
-
-        List<PsqlProductFoodProperties> psqlProductList = this.productFoodPropertiesRepository.findProductsByIdIn(productIdList);
-        List<ProductType> productTypeList = convertLists(psqlProductList);
-        for (ProductType productType : productTypeList) {
-            productMap.put(productType.getId(), productType);
-        }
-
-        return productMap;
     }
 
     public List<ProductType> getFilteredProducts(String name) {

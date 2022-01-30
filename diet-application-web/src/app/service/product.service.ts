@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GlobalVariable} from "../global";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Product} from '../model/product';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,7 @@ export class ProductService {
   ) {
   }
 
-  productList: any;
-  menuProductMap: any;
+  productList: Product[];
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
@@ -92,25 +92,15 @@ export class ProductService {
   }
 
   getProducts() {
-    this.productList = this.http.get(GlobalVariable.SERVER_ADDRESS +
+    return this.http.get(GlobalVariable.SERVER_ADDRESS +
       GlobalVariable.DATABASE_SERVICE +
       "products", this.httpOptions);
-    return this.productList;
   }
 
   getProductsByDishId(dishId) {
-    this.productList = this.http.get(GlobalVariable.SERVER_ADDRESS +
+    return this.http.get(GlobalVariable.SERVER_ADDRESS +
       GlobalVariable.DATABASE_SERVICE +
       "products/dishlist/" + dishId, this.httpOptions);
-    return this.productList;
-  }
-
-  getMenuProducts(menuId) {
-    let productsMapData: any;
-    productsMapData = this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "products/menu/" + menuId, this.httpOptions);
-    return productsMapData;
   }
 
   getCategories() {
@@ -122,10 +112,9 @@ export class ProductService {
   getFilteredProducts(category: string, subcategory: string) {
     let categoryName = (category != null) ? category : "*ANY*";
     let subcategoryName = (subcategory != null) ? subcategory : "*ANY*";
-    this.productList = this.http.get(GlobalVariable.SERVER_ADDRESS +
+    return this.http.get(GlobalVariable.SERVER_ADDRESS +
       GlobalVariable.DATABASE_SERVICE +
       "products/" + categoryName + "/" + subcategoryName, this.httpOptions);
-    return this.productList;
   }
 
   insertProduct(product) {

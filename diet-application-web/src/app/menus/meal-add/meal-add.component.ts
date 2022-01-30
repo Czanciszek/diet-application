@@ -106,8 +106,6 @@ export class MealAddComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe( result => {
       if (result != null) {
-        // Update value in HTML form
-        this.productService.menuProductMap[result.id] = result;
 
         // Update value in Form Group
         let products = (<FormArray>this.service.form.get('productList'));
@@ -129,8 +127,6 @@ export class MealAddComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe( result => {
       if (result != null) {
-        // Update value in HTML form
-        this.productService.menuProductMap[result.id] = result;
 
         (<FormArray>this.service.form.get('productList')).clear();
 
@@ -190,10 +186,10 @@ export class MealAddComponent implements OnInit {
         }
       }
 
-      this.productService.getMenuProducts(this.menuId)
+      this.productService.getProducts()
         .subscribe(
-          (data: {} ) => {
-          this.productService.menuProductMap = {...data};
+          (data: Product[] ) => {
+          this.productService.productList = [...data];
           this.ngOnInit();
         });
     });
@@ -215,14 +211,19 @@ export class MealAddComponent implements OnInit {
     let carbohydrates = 0;
 
     for (let product of products) {
-      if (product == null || this.productService.menuProductMap[product.productId] == null) {
+      if (product == null || this.productService.productList == null) {
         continue;
       }
 
       let isProduct = (this.service.form.get('isProduct').value == 1);
       let grams = product.grams;
 
-       let foodProperties = this.productService.menuProductMap[product.productId].foodProperties;
+      let originProduct = this.productService.productList.find(p => {
+        return p.id == product.productId;
+      });
+
+      if (originProduct == null) continue;
+      let foodProperties = originProduct.foodProperties;
 
        energy += (foodProperties.energyValue * grams) / 100;
        proteins += (foodProperties.proteins * grams) / 100;

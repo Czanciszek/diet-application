@@ -85,14 +85,17 @@ export class DishSummaryComponent implements OnInit {
     for (let product of products) {
       grams = product.grams;
 
-      if (this.productService.menuProductMap[product.productId] != null) {
-        let foodProperties = this.productService.menuProductMap[product.productId].foodProperties;
+      let originProduct = this.productService.productList.find(p => {
+        return p.id == product.productId;
+      });
+      if (originProduct == null) continue;
 
-        energy += (foodProperties.energyValue * grams) / 100;
-        proteins += (foodProperties.proteins * grams) / 100;
-        fats += (foodProperties.fats * grams) / 100;
-        carbohydrates += (foodProperties.carbohydrates * grams) / 100;
-      }
+      let foodProperties = originProduct.foodProperties;
+
+      energy += (foodProperties.energyValue * grams) / 100;
+      proteins += (foodProperties.proteins * grams) / 100;
+      fats += (foodProperties.fats * grams) / 100;
+      carbohydrates += (foodProperties.carbohydrates * grams) / 100;
     }
 
     this.foodPropertiesSummary = "Kcal: " + energy.toFixed(2) +

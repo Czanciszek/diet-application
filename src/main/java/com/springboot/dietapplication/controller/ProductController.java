@@ -36,11 +36,6 @@ public class ProductController {
         return this.productService.getFilteredProducts(category, subcategory);
     }
 
-    @GetMapping(path = "/menu/{menuId}")
-    public Map<String, ProductType> getMenuProducts(@PathVariable("menuId") Long menuId) {
-        return this.productService.getMenuProducts(menuId);
-    }
-
     @GetMapping(path = "/name/{name}")
     public List<ProductType> getFilteredProducts(@PathVariable("name") String name) {
         return this.productService.getFilteredProducts(name);
