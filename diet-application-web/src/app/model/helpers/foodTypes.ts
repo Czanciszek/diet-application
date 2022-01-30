@@ -6,4 +6,5 @@ export var FOOD_TYPES = [
   { id: "SUPPER", value: "Kolacja" },
   { id: "PRE_WORKOUT", value: "Przedtreningówka" },
   { id: "POST_WORKOUT", value: "Potreningówka"},
+  { id: "OVERNIGHT", value: "Posiłek nocny"},
 ];

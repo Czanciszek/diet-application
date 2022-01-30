@@ -14,6 +14,8 @@ export function translateDishType(name) {
       return "Przedtreningówka";
     case "POST_WORKOUT":
       return "Potreningówka";
+    case "OVERNIGHT":
+      return "Posiłek nocny";
     default:
       return name;
   }

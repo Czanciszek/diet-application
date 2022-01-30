@@ -208,6 +208,8 @@ public class PDFService {
                 break;
             case POST_WORKOUT:
                 writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Potreningówki");
+            case OVERNIGHT:
+                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Posiłki nocne");
                 break;
         }
     }

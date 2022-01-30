@@ -9,5 +9,6 @@ public enum FoodType {
     SUPPER,
     PRE_WORKOUT,
     POST_WORKOUT,
+    OVERNIGHT,
 
 }
