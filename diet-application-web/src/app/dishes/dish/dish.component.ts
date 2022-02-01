@@ -6,6 +6,7 @@ import {FormArray} from "@angular/forms";
 import {ProductSelectComponent} from "../../products/product-select/product-select.component";
 import {ProductService} from "../../service/product.service";
 import {Dish} from "../../model/dish";
+import {Product} from "../../model/product";
 import {FOOD_TYPES} from "../../model/helpers/foodTypes";
 import {AMOUNT_TYPES} from "../../model/helpers/amountTypes";
 
@@ -31,6 +32,12 @@ export class DishComponent implements OnInit {
     if (this.service.form.get('id').value) {
       let dishId = this.service.form.get('id').value;
       this.getProductsDetails(dishId);
+
+      this.productService.getProducts()
+        .subscribe(
+        (data: Product[] ) => {
+          this.productService.productList = [...data];
+      });
     }
   }
 
@@ -103,5 +110,42 @@ export class DishComponent implements OnInit {
       }
     });
   }
+
+  getProductSummary(index) {
+    let product = this.service.form.get('products').value[index];
+    return this.calculateProperties([product]);
+  }
+
+  calculateProperties(products) {
+      let energy = 0;
+      let proteins = 0;
+      let fats = 0;
+      let carbohydrates = 0;
+
+      for (let product of products) {
+        if (product == null || this.productService.productList == null) {
+          continue;
+        }
+
+        let grams = product.grams;
+
+        let originProduct = this.productService.productList.find(p => {
+          return p.id == product.productId;
+        });
+
+        if (originProduct == null) continue;
+        let foodProperties = originProduct.foodProperties;
+
+         energy += (foodProperties.energyValue * grams) / 100;
+         proteins += (foodProperties.proteins * grams) / 100;
+         fats += (foodProperties.fats * grams) / 100;
+         carbohydrates += (foodProperties.carbohydrates * grams) / 100;
+      }
+
+      return "Kcal: " + energy.toFixed(2) +
+        "    B: " + proteins.toFixed(2) +
+        "    T: " + fats.toFixed(2) +
+        "    W: " + carbohydrates.toFixed(2);
+    }
 
 }

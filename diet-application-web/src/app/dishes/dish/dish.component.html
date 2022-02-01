@@ -65,7 +65,7 @@
 
     <div formArrayName="products" *ngFor="let product of service.form.get('products').controls; let i = index">
       <div [formGroupName]="i">
-        <mat-grid-list cols="8" rowHeight="60px">
+        <mat-grid-list cols="12" rowHeight="60px">
           <mat-grid-tile>
             <div class="control-container">
               <mat-form-field>
@@ -100,11 +100,21 @@
             </div>
           </mat-grid-tile>
 
-          <mat-grid-tile colspan="4">
+          <mat-grid-tile colspan="5">
             <div class="control-container">
                 <div class="add-bottom-padding">
                   <input matInput (click)="selectProduct(i)" [id]="'name'+i" placeholder="Produkt" readonly>
                 </div>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile colspan="3">
+            <div class="control-container">
+              <div class="add-bottom-padding">
+                <div *ngIf="service.form.get('products').value.length > 0">
+                  {{getProductSummary(i)}}
+                </div>
+              </div>
             </div>
           </mat-grid-tile>
 

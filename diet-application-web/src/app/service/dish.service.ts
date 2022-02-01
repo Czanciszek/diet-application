@@ -50,12 +50,12 @@ export class DishService {
           amount: null,
           amountType: null,
           productId: null,
+          productName: null,
         }
       ],
       foodType: '',
       portions: 1,
       recipe: '',
-      menuId: null,
     })
   }
 
