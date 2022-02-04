@@ -19,10 +19,15 @@ import java.util.Optional;
 @Service
 public class DayMealService {
 
-    @Autowired DayMealRepository dayMealRepository;
+    @Autowired
+    DayMealRepository dayMealRepository;
 
-    @Autowired @Lazy MealService mealService;
-    @Autowired @Lazy WeekMealService weekMealService;
+    @Autowired
+    @Lazy
+    MealService mealService;
+    @Autowired
+    @Lazy
+    WeekMealService weekMealService;
 
     public List<Long> getDayMealIdList(Long weekMealId) {
         List<Long> dayMealIdList = new ArrayList<>();

@@ -16,6 +16,7 @@ public class WeekMealService {
 
     @Autowired
     WeekMealRepository weekMealRepository;
+
     @Autowired
     DayMealService dayMealService;
 

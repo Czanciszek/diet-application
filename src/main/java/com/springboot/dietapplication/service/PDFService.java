@@ -27,13 +27,10 @@ public class PDFService {
 
     @Autowired
     MenuService menuService;
-
     @Autowired
     MealService mealService;
-
     @Autowired
     ProductService productService;
-
     @Autowired
     PatientService patientService;
 

@@ -18,13 +18,19 @@ import java.util.Optional;
 @Service
 public class MenuService {
 
-    @Autowired MenuRepository menuRepository;
-    @Autowired FoodTypeRepository foodTypeRepository;
-    @Autowired FoodTypeMenuRepository foodTypeMenuRepository;
-    @Autowired MenuProductsRepository menuProductsRepository;
+    @Autowired
+    MenuRepository menuRepository;
+    @Autowired
+    FoodTypeRepository foodTypeRepository;
+    @Autowired
+    FoodTypeMenuRepository foodTypeMenuRepository;
+    @Autowired
+    MenuProductsRepository menuProductsRepository;
 
-    @Autowired WeekMealService weekMealService;
-    @Autowired DayMealService dayMealService;
+    @Autowired
+    WeekMealService weekMealService;
+    @Autowired
+    DayMealService dayMealService;
 
     public List<MenuType> getAll() {
         List<PsqlMenu> psqlMenuList = this.menuRepository.findAll();
