@@ -263,10 +263,10 @@ public class PDFService {
 
             // Display dish ingredients
             for (ProductDishType product : meal.getProductList()) {
-                int grams = (int) product.getGrams();
+                int grams = ((int) meal.getDishPortions() / (int) meal.getPortions()) * (int) product.getGrams();
                 String name = (product.getProductName() == null || product.getProductName().isEmpty()) ?
                         (product.getProductId() + "!!!!") : product.getProductName();
-                String productPart = "\u2022 " + grams + "g " + name;
+                String productPart = (grams > 0) ? ("\u2022 " + grams + "g " + name) : ("\u2022 " + name);
                 writeText(contentStream, new Point(60, pageOffset), timesNormal, 14,productPart);
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
 
