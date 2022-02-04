@@ -22,12 +22,12 @@ public class MenuController {
     }
 
     @GetMapping(path = "/{menuId}")
-    public MenuType getMenuById(@PathVariable("menuId") long menuId) {
+    public MenuType getMenuById(@PathVariable("menuId") Long menuId) {
         return this.menuService.getMenuById(menuId);
     }
 
     @GetMapping(path = "/patient/{patientId}")
-    public List<MenuType> getMenusByPatientId(@PathVariable("patientId") long patientId) {
+    public List<MenuType> getMenusByPatientId(@PathVariable("patientId") Long patientId) {
         return this.menuService.getMenusByPatientId(patientId);
     }
 
@@ -37,7 +37,7 @@ public class MenuController {
     }
 
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<MenuType> deleteMenu(@PathVariable long id) {
+    ResponseEntity<MenuType> deleteMenu(@PathVariable Long id) {
         return this.menuService.delete(id);
     }
 

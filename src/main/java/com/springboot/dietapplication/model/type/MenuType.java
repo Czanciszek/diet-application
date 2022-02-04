@@ -6,11 +6,11 @@ import java.util.List;
 
 public class MenuType {
 
-    private String id;
+    private Long id;
 
-    private String patientId; // Ref - Dane pacjenta
+    private Long patientId; // Ref - Dane pacjenta
 
-    private List<String> weekMealList; // Lista odnośników do tygodniowych jadłospisów
+    private List<Long> weekMealList; // Lista odnośników do tygodniowych jadłospisów
 
     private List<DayMealType> dayMealTypeList; //Lista odnośników do dni w jadłospisie
 
@@ -33,10 +33,8 @@ public class MenuType {
     }
 
     public MenuType(PsqlMenu menu) {
-        if (menu.getId() > 0)
-            this.id = String.valueOf(menu.getId());
-        if (menu.getPatientId() > 0)
-            this.patientId = String.valueOf(menu.getPatientId());
+        this.id = menu.getId();
+        this.patientId = menu.getPatientId();
         this.startDate = menu.getStartDate();
         this.endDate = menu.getEndDate();
         this.energyLimit = menu.getEnergyLimit();
@@ -45,27 +43,27 @@ public class MenuType {
         this.carbohydratesLimit = menu.getCarbohydratesLimit();
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getPatientId() {
+    public Long getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(String patientId) {
+    public void setPatientId(Long patientId) {
         this.patientId = patientId;
     }
 
-    public List<String> getWeekMealList() {
+    public List<Long> getWeekMealList() {
         return weekMealList;
     }
 
-    public void setWeekMealList(List<String> weekMealList) {
+    public void setWeekMealList(List<Long> weekMealList) {
         this.weekMealList = weekMealList;
     }
 

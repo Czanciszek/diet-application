@@ -19,13 +19,19 @@ import java.util.Optional;
 @Service
 public class MealService {
 
-    @Autowired MealRepository mealRepository;
-    @Autowired FoodTypeRepository foodTypeRepository;
-    @Autowired ProductMealRepository productMealRepository;
-    @Autowired AmountTypeRepository amountTypeRepository;
+    @Autowired
+    MealRepository mealRepository;
+    @Autowired
+    FoodTypeRepository foodTypeRepository;
+    @Autowired
+    ProductMealRepository productMealRepository;
+    @Autowired
+    AmountTypeRepository amountTypeRepository;
 
-    @Autowired WeekMealService weekMealService;
-    @Autowired MenuService menuService;
+    @Autowired
+    WeekMealService weekMealService;
+    @Autowired
+    MenuService menuService;
 
     public List<MealType> getAll() {
         List<PsqlMeal> mealList = this.mealRepository.findAll();
@@ -42,28 +48,28 @@ public class MealService {
         return convertLists(mealList);
     }
 
-    public List<MealType> getMealsByWeekMealId(String weekMealId) {
-        WeekMealType weekMealType = this.weekMealService.getWeekMealById(Long.parseLong(weekMealId));
+    public List<MealType> getMealsByWeekMealId(Long weekMealId) {
+        WeekMealType weekMealType = this.weekMealService.getWeekMealById(weekMealId);
         return getMealsByDayMealList(weekMealType.getDayMealList());
     }
 
-    public List<MealType> getMealsByMenuId(long menuId) {
+    public List<MealType> getMealsByMenuId(Long menuId) {
         MenuType menuType = this.menuService.getMenuById(menuId);
         return getMealsByWeekMealList(menuType.getWeekMealList());
     }
 
-    public List<MealType> getMealsByWeekMealList(List<String> weekMealList) {
+    public List<MealType> getMealsByWeekMealList(List<Long> weekMealList) {
         List<MealType> mealList = new ArrayList<>();
-        for (String weekMealId: weekMealList) {
+        for (Long weekMealId: weekMealList) {
             mealList.addAll(getMealsByWeekMealId(weekMealId));
         }
         return mealList;
     }
 
-    public List<MealType> getMealsByDayMealList(List<String> dayMealList) {
+    public List<MealType> getMealsByDayMealList(List<Long> dayMealIdList) {
         List<MealType> mealList = new ArrayList<>();
-        for (String dayMealId: dayMealList) {
-            mealList.addAll(getMealsByDayMealId(Long.parseLong(dayMealId)));
+        for (Long dayMealId: dayMealIdList) {
+            mealList.addAll(getMealsByDayMealId(dayMealId));
         }
         return mealList;
     }

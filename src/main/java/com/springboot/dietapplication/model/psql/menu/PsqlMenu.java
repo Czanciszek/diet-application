@@ -11,10 +11,10 @@ public class PsqlMenu implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "patient_id")
-    private long patientId;
+    private Long patientId;
 
     @Column(name = "start_date")
     private String startDate;
@@ -40,26 +40,26 @@ public class PsqlMenu implements Serializable {
 
     public PsqlMenu(MenuSendingType menuSendingType) {
         this.startDate = menuSendingType.getStartDate();
-        this.patientId = Long.parseLong(menuSendingType.getPatientId());
+        this.patientId = menuSendingType.getPatientId();
         this.energyLimit = menuSendingType.getEnergyLimit();
         this.proteinsLimit = menuSendingType.getProteinsLimit();
         this.fatsLimit = menuSendingType.getFatsLimit();
         this.carbohydratesLimit = menuSendingType.getCarbohydratesLimit();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getPatientId() {
+    public Long getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(long patientId) {
+    public void setPatientId(Long patientId) {
         this.patientId = patientId;
     }
 

@@ -10,18 +10,18 @@ public class PsqlMenuProduct implements Serializable, Comparator<Long> {
 
     @Id
     @Column(name = "product_id")
-    private long productId;
+    private Long productId;
 
     @Id
     @Column(name = "meal_id")
-    private long mealId;
+    private Long mealId;
 
     @Id
     @Column(name = "menu_id")
-    private long menuId;
+    private Long menuId;
 
     @Column(name = "week_meal_id")
-    private long weekMealId;
+    private Long weekMealId;
 
     @Column(name = "product_name")
     private String productName;
@@ -39,7 +39,7 @@ public class PsqlMenuProduct implements Serializable, Comparator<Long> {
     private String mealName;
 
     @Column(name = "food_type_id")
-    private long foodTypeId;
+    private Long foodTypeId;
 
     @Column(name = "food_type_name")
     private String foodTypeName;
@@ -63,19 +63,19 @@ public class PsqlMenuProduct implements Serializable, Comparator<Long> {
 
     }
 
-    public long getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public long getMealId() {
+    public Long getMealId() {
         return mealId;
     }
 
-    public long getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public long getWeekMealId() {
+    public Long getWeekMealId() {
         return weekMealId;
     }
 
@@ -99,7 +99,7 @@ public class PsqlMenuProduct implements Serializable, Comparator<Long> {
         return mealName;
     }
 
-    public long getFoodTypeId() {
+    public Long getFoodTypeId() {
         return foodTypeId;
     }
 

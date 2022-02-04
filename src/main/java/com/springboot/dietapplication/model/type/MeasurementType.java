@@ -4,8 +4,8 @@ import com.springboot.dietapplication.model.psql.patient.PsqlMeasurement;
 
 public class MeasurementType {
 
-    private String id;
-    private String patientId;
+    private Long id;
+    private Long patientId;
     private String measurementDate; //Data pomiaru
 
     private float bodyWeight; //Masa ciała
@@ -24,8 +24,8 @@ public class MeasurementType {
     public MeasurementType() {}
 
     public MeasurementType(PsqlMeasurement measurement) {
-        this.id = String.valueOf(measurement.getId());
-        this.patientId = String.valueOf(measurement.getPatientId());
+        this.id = measurement.getId();
+        this.patientId = measurement.getPatientId();
         this.measurementDate = measurement.getMeasurementDate();
         this.bodyWeight = measurement.getBodyWeight();
         this.breast = measurement.getBreast();
@@ -41,19 +41,19 @@ public class MeasurementType {
         this.arm = measurement.getArm();
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getPatientId() {
+    public Long getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(String patientId) {
+    public void setPatientId(Long patientId) {
         this.patientId = patientId;
     }
 

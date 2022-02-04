@@ -9,44 +9,44 @@ public class PsqlFoodTypeMenu implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "food_type_id")
-    private long foodTypeId;
+    private Long foodTypeId;
 
     @Column(name = "menu_id")
-    private long menuId;
+    private Long menuId;
 
     public PsqlFoodTypeMenu() {
 
     }
 
-    public PsqlFoodTypeMenu(long foodTypeId, long menuId) {
+    public PsqlFoodTypeMenu(Long foodTypeId, Long menuId) {
         this.foodTypeId = foodTypeId;
         this.menuId = menuId;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getFoodTypeId() {
+    public Long getFoodTypeId() {
         return foodTypeId;
     }
 
-    public void setFoodTypeId(long foodTypeId) {
+    public void setFoodTypeId(Long foodTypeId) {
         this.foodTypeId = foodTypeId;
     }
 
-    public long getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(long menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 }

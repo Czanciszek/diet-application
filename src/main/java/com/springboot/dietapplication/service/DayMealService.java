@@ -24,23 +24,23 @@ public class DayMealService {
     @Autowired @Lazy MealService mealService;
     @Autowired @Lazy WeekMealService weekMealService;
 
-    public List<String> getDayMealIdList(Long weekMealId) {
-        List<String> dayMealIdList = new ArrayList<>();
+    public List<Long> getDayMealIdList(Long weekMealId) {
+        List<Long> dayMealIdList = new ArrayList<>();
 
         List<PsqlDayMeal> dayMeals = this.dayMealRepository.getPsqlDayMealsByWeekMealId(weekMealId);
         for (PsqlDayMeal dayMeal : dayMeals) {
-            dayMealIdList.add(String.valueOf(dayMeal.getId()));
+            dayMealIdList.add(dayMeal.getId());
         }
 
         return dayMealIdList;
     }
 
-    public List<DayMealType> getDayMealByWeekMealId(String weekMealId) {
+    public List<DayMealType> getDayMealByWeekMealId(Long weekMealId) {
         List<DayMealType> dayMealTypeList = new ArrayList<>();
 
-        WeekMealType weekMealType = this.weekMealService.getWeekMealById(Long.parseLong(weekMealId));
-        for (String dayMealId : weekMealType.getDayMealList()) {
-            dayMealTypeList.add(this.getDayMealById(Long.parseLong(dayMealId)));
+        WeekMealType weekMealType = this.weekMealService.getWeekMealById(weekMealId);
+        for (Long dayMealId : weekMealType.getDayMealList()) {
+            dayMealTypeList.add(this.getDayMealById(dayMealId));
         }
 
         return dayMealTypeList;
@@ -55,7 +55,7 @@ public class DayMealService {
             DayMealType dayMeal = new DayMealType();
             dayMeal.setDayType(dayType.get());
             dayMeal.setDate(date.toString());
-            dayMeal.setWeekMealId(String.valueOf(weekMealId));
+            dayMeal.setWeekMealId(weekMealId);
             insert(dayMeal);
             date = date.plusDays(1);
         }
@@ -64,7 +64,7 @@ public class DayMealService {
     public ResponseEntity<DayMealType> insert(DayMealType dayMeal) {
         PsqlDayMeal dayMealType = new PsqlDayMeal(dayMeal);
         dayMealRepository.save(dayMealType);
-        dayMeal.setId(String.valueOf(dayMealType.getId()));
+        dayMeal.setId(dayMealType.getId());
         return ResponseEntity.ok().body(dayMeal);
     }
 

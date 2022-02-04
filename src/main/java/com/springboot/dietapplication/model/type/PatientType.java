@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class PatientType {
 
-    private String id;
+    private Long id;
     private String name;
     private String birthDate;
     private String numberPhone;
@@ -34,7 +34,7 @@ public class PatientType {
     }
 
     public PatientType(PsqlPatient psqlPatient) {
-        this.id = String.valueOf(psqlPatient.getId());
+        this.id = psqlPatient.getId();
         this.name = psqlPatient.getName();
         this.email = psqlPatient.getEmail();
         this.numberPhone = psqlPatient.getNumberPhone();
@@ -52,11 +52,11 @@ public class PatientType {
         this.allergens = allergensTypes;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DishType {
 
-    private String id;
+    private Long id;
     private String name;
     private List<ProductDishType> products;
     private FoodType foodType;
@@ -18,7 +18,7 @@ public class DishType {
     }
 
     public DishType(PsqlDish dish) {
-        this.id = String.valueOf(dish.getId());
+        this.id = dish.getId();
         this.name = dish.getName();
         this.portions = dish.getPortions();
         this.recipe = dish.getRecipe();
@@ -36,11 +36,11 @@ public class DishType {
         this.products = products;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

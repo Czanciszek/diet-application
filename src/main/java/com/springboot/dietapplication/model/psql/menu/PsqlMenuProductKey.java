@@ -5,16 +5,16 @@ import java.util.Objects;
 
 public class PsqlMenuProductKey implements Serializable {
 
-    private long productId;
-    private long mealId;
-    private long menuId;
+    private Long productId;
+    private Long mealId;
+    private Long menuId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PsqlMenuProductKey that = (PsqlMenuProductKey) o;
-        return productId == that.productId && mealId == that.mealId && menuId == that.menuId;
+        return productId.equals(that.productId) && mealId.equals(that.mealId) && menuId.equals(that.menuId);
     }
 
     @Override

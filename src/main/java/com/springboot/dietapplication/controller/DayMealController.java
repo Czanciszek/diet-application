@@ -16,7 +16,7 @@ public class DayMealController {
     DayMealService dayMealService;
 
     @GetMapping(path = "/list/{weekMealId}")
-    public List<DayMealType> getDayMealByWeekMealId(@PathVariable("weekMealId") String weekMealId) {
+    public List<DayMealType> getDayMealByWeekMealId(@PathVariable("weekMealId") Long weekMealId) {
         return this.dayMealService.getDayMealByWeekMealId(weekMealId);
     }
 

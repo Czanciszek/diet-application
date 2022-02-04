@@ -6,9 +6,9 @@ import java.util.List;
 
 public class DayMealType {
 
-    private String id;
+    private Long id;
 
-    private String weekMealId;
+    private Long weekMealId;
 
     private List<Long> mealList; // Lista odnośników do posiłków
 
@@ -16,13 +16,11 @@ public class DayMealType {
 
     private String date;
 
-    //private Map<String, Float> limits; // Limity kaloryczności
-
     public DayMealType() {
 
     }
 
-    public DayMealType(String weekMealId, List<Long> mealList, DayType dayType, String date) {
+    public DayMealType(Long weekMealId, List<Long> mealList, DayType dayType, String date) {
         this.weekMealId = weekMealId;
         this.mealList = mealList;
         this.dayType = dayType;
@@ -30,26 +28,24 @@ public class DayMealType {
     }
 
     public DayMealType(PsqlDayMeal dayMeal) {
-        if (dayMeal.getId() > 0)
-            this.id = String.valueOf(dayMeal.getId());
-        if (dayMeal.getWeekMealId() > 0)
-            this.weekMealId = String.valueOf(dayMeal.getWeekMealId());
+        this.id = dayMeal.getId();
+        this.weekMealId = dayMeal.getWeekMealId();
         this.date = dayMeal.getDate();
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getWeekMealId() {
+    public Long getWeekMealId() {
         return weekMealId;
     }
 
-    public void setWeekMealId(String weekMealId) {
+    public void setWeekMealId(Long weekMealId) {
         this.weekMealId = weekMealId;
     }
 

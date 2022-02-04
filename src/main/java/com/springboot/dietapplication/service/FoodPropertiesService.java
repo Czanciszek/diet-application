@@ -11,7 +11,8 @@ import java.util.Optional;
 @Service
 public class FoodPropertiesService {
 
-    @Autowired FoodPropertiesRepository foodPropertiesRepository;
+    @Autowired
+    FoodPropertiesRepository foodPropertiesRepository;
 
     public FoodPropertiesType findById(Long foodPropertiesId) {
         Optional<PsqlFoodProperties> foodProperties = this.foodPropertiesRepository.findById(foodPropertiesId);
@@ -21,7 +22,7 @@ public class FoodPropertiesService {
     public void insert(FoodPropertiesType foodPropertiesType) {
         PsqlFoodProperties foodProperties = new PsqlFoodProperties(foodPropertiesType);
         this.foodPropertiesRepository.save(foodProperties);
-        foodPropertiesType.setId(String.valueOf(foodProperties.getId()));
+        foodPropertiesType.setId(foodProperties.getId());
     }
 
     public void delete(Long id) {

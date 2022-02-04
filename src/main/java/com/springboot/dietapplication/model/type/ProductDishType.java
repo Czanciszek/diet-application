@@ -5,7 +5,7 @@ import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 
 public class ProductDishType {
 
-    private String productId;
+    private Long productId;
     private String productName;
     private float grams;
     private float amount;
@@ -15,7 +15,7 @@ public class ProductDishType {
 
     }
 
-    public ProductDishType(String productId, String productName, float grams, float amount, AmountType amountType) {
+    public ProductDishType(Long productId, String productName, float grams, float amount, AmountType amountType) {
         this.productId = productId;
         this.productName = productName;
         this.grams = grams;
@@ -24,24 +24,24 @@ public class ProductDishType {
     }
 
     public ProductDishType(PsqlProductDish psqlProductDish) {
-        this.productId = String.valueOf(psqlProductDish.getProductId());
+        this.productId = psqlProductDish.getProductId();
         this.productName = psqlProductDish.getProductName();
         this.grams = psqlProductDish.getGrams();
         this.amount = psqlProductDish.getAmount();
     }
 
     public ProductDishType(PsqlProductMeal psqlProductMeal) {
-        this.productId = String.valueOf(psqlProductMeal.getProductId());
+        this.productId = psqlProductMeal.getProductId();
         this.productName = psqlProductMeal.getProductName();
         this.grams = psqlProductMeal.getGrams();
         this.amount = psqlProductMeal.getAmount();
     }
 
-    public String getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 

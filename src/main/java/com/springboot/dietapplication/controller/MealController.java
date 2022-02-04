@@ -26,7 +26,7 @@ public class MealController {
     }
 
     @GetMapping(path = "/list/{weekMealId}")
-    public List<MealType> getMealsByWeekMealId(@PathVariable("weekMealId") String weekMealId) {
+    public List<MealType> getMealsByWeekMealId(@PathVariable("weekMealId") Long weekMealId) {
         return this.mealService.getMealsByWeekMealId(weekMealId);
     }
 

@@ -14,7 +14,8 @@ import java.util.Optional;
 @Service
 public class MeasurementService {
 
-   @Autowired MeasurementRepository measurementRepository;
+    @Autowired
+    MeasurementRepository measurementRepository;
 
     public List<MeasurementType> getAll() {
         List<MeasurementType> measurementTypeList = new ArrayList<>();
@@ -47,7 +48,7 @@ public class MeasurementService {
         PsqlMeasurement psqlMeasurement = new PsqlMeasurement(measurement);
 
         this.measurementRepository.save(psqlMeasurement);
-        measurement.setId(String.valueOf(psqlMeasurement.getId()));
+        measurement.setId(psqlMeasurement.getId());
 
         return ResponseEntity.ok().body(measurement);
     }

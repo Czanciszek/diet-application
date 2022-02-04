@@ -12,16 +12,16 @@ public class PsqlProduct implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "category_id")
-    private long categoryId;
+    private Long categoryId;
 
     @Column(name = "food_properties_id")
-    private long foodPropertiesId;
+    private Long foodPropertiesId;
 
     @Column(name = "lactose")
     private boolean lactose;
@@ -43,35 +43,34 @@ public class PsqlProduct implements Serializable {
     }
 
     public PsqlProduct(ProductType productType) {
-        if (productType.getId() != null && !productType.getId().isEmpty())
-            this.id = Long.parseLong(productType.getId());
+        this.id = productType.getId();
         this.name = productType.getName();
         this.lactose = productType.isLactose();
         this.starch = productType.isStarch();
         this.gluten = productType.isGluten();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(long categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
-    public long getFoodPropertiesId() {
+    public Long getFoodPropertiesId() {
         return foodPropertiesId;
     }
 
-    public void setFoodPropertiesId(long foodPropertiesId) {
+    public void setFoodPropertiesId(Long foodPropertiesId) {
         this.foodPropertiesId = foodPropertiesId;
     }
 

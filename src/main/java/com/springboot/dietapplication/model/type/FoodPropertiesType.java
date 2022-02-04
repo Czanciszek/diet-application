@@ -11,7 +11,7 @@ import javax.persistence.Id;
 public class FoodPropertiesType {
 
     @Id
-    private String id;
+    private Long id;
     private int energyValue;
     private float proteins;
     private float fats;
@@ -38,7 +38,7 @@ public class FoodPropertiesType {
     }
 
     public FoodPropertiesType(PsqlFoodProperties foodProperties) {
-        this.id = String.valueOf(foodProperties.getId());
+        this.id = foodProperties.getId();
         this.energyValue = foodProperties.getEnergyValue();
         this.proteins = foodProperties.getProteins();
         this.fats = foodProperties.getFats();
@@ -107,11 +107,11 @@ public class FoodPropertiesType {
         this.vitaminC = productExcel.getVitaminC();
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

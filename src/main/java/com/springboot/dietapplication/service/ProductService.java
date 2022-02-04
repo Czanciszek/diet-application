@@ -16,13 +16,19 @@ import java.util.*;
 @Service
 public class ProductService {
 
-    @Autowired ProductRepository productRepository;
-    @Autowired ProductFoodPropertiesRepository productFoodPropertiesRepository;
-    @Autowired ProductDishRepository productDishRepository;
-    @Autowired ProductMealRepository productMealRepository;
+    @Autowired
+    ProductRepository productRepository;
+    @Autowired
+    ProductFoodPropertiesRepository productFoodPropertiesRepository;
+    @Autowired
+    ProductDishRepository productDishRepository;
+    @Autowired
+    ProductMealRepository productMealRepository;
 
-    @Autowired FoodPropertiesService foodPropertiesService;
-    @Autowired CategoryService categoryService;
+    @Autowired
+    FoodPropertiesService foodPropertiesService;
+    @Autowired
+    CategoryService categoryService;
 
     public List<ProductType> getAll() {
         List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllProducts();
@@ -71,13 +77,13 @@ public class ProductService {
         PsqlProduct product = new PsqlProduct(productType);
 
         this.foodPropertiesService.insert(productType.getFoodProperties());
-        long foodPropertiesId = Long.parseLong(productType.getFoodProperties().getId());
+        Long foodPropertiesId = productType.getFoodProperties().getId();
         product.setFoodPropertiesId(foodPropertiesId);
 
         PsqlCategory category = this.categoryService.findCategory(productType);
         product.setCategoryId(category.getId());
 
-        if (product.getId() > 0) {
+        if (product.getId() != null) {
             List<PsqlProductDish> productDishList = this.productDishRepository.findPsqlProductDishesByProductId(product.getId());
             if (productDishList.size() > 0) {
                 productDishList.forEach( productDish -> productDish.setProductName(product.getName()));
@@ -92,7 +98,7 @@ public class ProductService {
         }
 
         this.productRepository.save(product);
-        productType.setId(String.valueOf(product.getId()));
+        productType.setId(product.getId());
 
         return ResponseEntity.ok().body(productType);
     }

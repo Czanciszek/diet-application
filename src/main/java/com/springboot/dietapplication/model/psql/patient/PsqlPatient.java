@@ -55,8 +55,7 @@ public class PsqlPatient {
     }
 
     public PsqlPatient(PatientType patientType) {
-        if (patientType.getId() != null && !patientType.getId().isEmpty())
-            this.id = Long.parseLong(patientType.getId());
+        this.id = patientType.getId();
         this.name = patientType.getName();
         this.email = patientType.getEmail();
         this.numberPhone = patientType.getNumberPhone();

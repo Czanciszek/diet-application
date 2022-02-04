@@ -14,13 +14,13 @@ public class PsqlMeal implements Serializable {
     private Long id;
 
     @Column(name = "day_meal_id")
-    private long dayMealId;
+    private Long dayMealId;
 
     @Column(name = "origin_meal_id")
     private Long originMealId;
 
     @Column(name = "food_type_id")
-    private long foodTypeId;
+    private Long foodTypeId;
 
     @Column(name = "name")
     private String name;
@@ -47,8 +47,7 @@ public class PsqlMeal implements Serializable {
 
     public PsqlMeal(MealType mealType) {
         this.id = mealType.getId();
-        if (mealType.getDayMealId() != null && !mealType.getDayMealId().isEmpty())
-            this.dayMealId = Long.parseLong(mealType.getDayMealId());
+        this.dayMealId = mealType.getDayMealId();
         this.originMealId = mealType.getOriginMealId();
         this.name = mealType.getName();
         this.isProduct = (mealType.getIsProduct() == 1);

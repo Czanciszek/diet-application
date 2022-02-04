@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 public class ProductType {
 
     @Id
-    private String id;
+    private Long id;
     private String name;
     private String category;
     private String subcategory;
@@ -25,7 +25,7 @@ public class ProductType {
     }
 
     public ProductType(PsqlProduct psqlProduct) {
-        this.id = String.valueOf(psqlProduct.getId());
+        this.id = psqlProduct.getId();
         this.name = psqlProduct.getName();
         this.lactose = psqlProduct.isLactose();
         this.starch = psqlProduct.isStarch();
@@ -33,7 +33,7 @@ public class ProductType {
     }
 
     public ProductType(PsqlProductFoodProperties psqlProduct) {
-        this.id = String.valueOf(psqlProduct.getId());
+        this.id = psqlProduct.getId();
         this.name = psqlProduct.getName();
         this.lactose = psqlProduct.isLactose();
         this.starch = psqlProduct.isStarch();
@@ -43,11 +43,11 @@ public class ProductType {
         this.foodProperties = new FoodPropertiesType(psqlProduct);
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

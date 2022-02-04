@@ -59,10 +59,8 @@ public class PsqlMeasurement {
     }
 
     public PsqlMeasurement(MeasurementType measurementType) {
-        if (measurementType.getId() != null && !measurementType.getId().isEmpty())
-            this.id = Long.parseLong(measurementType.getId());
-        if (measurementType.getPatientId() != null && !measurementType.getPatientId().isEmpty())
-            this.patientId = Long.parseLong(measurementType.getPatientId());
+        this.id = measurementType.getId();
+        this.patientId = measurementType.getPatientId();
         this.measurementDate = measurementType.getMeasurementDate();
         this.bodyWeight = measurementType.getBodyWeight();
         this.breast = measurementType.getBreast();

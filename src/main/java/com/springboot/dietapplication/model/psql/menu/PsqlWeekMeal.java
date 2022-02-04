@@ -11,35 +11,33 @@ public class PsqlWeekMeal implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "menu_id")
-    private long menuId;
+    private Long menuId;
 
     public PsqlWeekMeal() {
 
     }
 
     public PsqlWeekMeal(WeekMealType weekMealType) {
-        if (weekMealType.getId() != null && !weekMealType.getId().isEmpty())
-            this.id = Long.parseLong(weekMealType.getId());
-        if (weekMealType.getMenuId() != null && !weekMealType.getMenuId().isEmpty())
-            this.menuId = Long.parseLong(weekMealType.getMenuId());
+        this.id = weekMealType.getId();
+        this.menuId = weekMealType.getMenuId();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(long menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 }

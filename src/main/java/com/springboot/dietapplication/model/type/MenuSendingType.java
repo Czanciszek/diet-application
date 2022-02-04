@@ -4,13 +4,13 @@ import java.util.List;
 
 public class MenuSendingType {
 
-    private String id;
+    private Long id;
 
     private String startDate;
 
     private List<FoodType> foodTypes;
 
-    private String patientId;
+    private Long patientId;
 
     private int weekCount;
 
@@ -27,10 +27,10 @@ public class MenuSendingType {
     }
 
     public MenuSendingType(
-            String id,
+            Long id,
             String startDate,
             List<FoodType> foodTypes,
-            String patientId,
+            Long patientId,
             int weekCount,
             float energyLimit,
             float proteinsLimit,
@@ -48,11 +48,11 @@ public class MenuSendingType {
         this.carbohydratesLimit = carbohydratesLimit;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,11 +72,11 @@ public class MenuSendingType {
         this.foodTypes = foodTypes;
     }
 
-    public String getPatientId() {
+    public Long getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(String patientId) {
+    public void setPatientId(Long patientId) {
         this.patientId = patientId;
     }
 

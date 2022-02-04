@@ -14,8 +14,10 @@ import java.util.Optional;
 @Service
 public class WeekMealService {
 
-    @Autowired WeekMealRepository weekMealRepository;
-    @Autowired DayMealService dayMealService;
+    @Autowired
+    WeekMealRepository weekMealRepository;
+    @Autowired
+    DayMealService dayMealService;
 
     public List<WeekMealType> getAll() {
         List<PsqlWeekMeal> weekMealList = this.weekMealRepository.findAll();
@@ -29,12 +31,12 @@ public class WeekMealService {
                 .orElseGet(WeekMealType::new);
     }
 
-    public List<String> getWeekMealIdList(Long menuId) {
-        List<String> weekMealIdList = new ArrayList<>();
+    public List<Long> getWeekMealIdList(Long menuId) {
+        List<Long> weekMealIdList = new ArrayList<>();
 
         List<PsqlWeekMeal> weekMeals = this.weekMealRepository.getPsqlWeekMealsByMenuId(menuId);
         for (PsqlWeekMeal weekMeal : weekMeals) {
-            weekMealIdList.add(String.valueOf(weekMeal.getId()));
+            weekMealIdList.add(weekMeal.getId());
         }
 
         return weekMealIdList;
@@ -43,7 +45,7 @@ public class WeekMealService {
     public ResponseEntity<WeekMealType> insert(WeekMealType weekMeal) {
         PsqlWeekMeal psqlWeekMeal = new PsqlWeekMeal(weekMeal);
         weekMealRepository.save(psqlWeekMeal);
-        weekMeal.setId(String.valueOf(psqlWeekMeal.getId()));
+        weekMeal.setId(psqlWeekMeal.getId());
         return ResponseEntity.ok().body(weekMeal);
     }
 
@@ -63,7 +65,7 @@ public class WeekMealService {
     private WeekMealType convertPsqlWeekMealToWeekMealType(PsqlWeekMeal weekMeal) {
         WeekMealType weekMealType = new WeekMealType(weekMeal);
 
-        List<String> dayMealIdList = this.dayMealService.getDayMealIdList(weekMeal.getId());
+        List<Long> dayMealIdList = this.dayMealService.getDayMealIdList(weekMeal.getId());
         weekMealType.setDayMealList(dayMealIdList);
 
         return weekMealType;

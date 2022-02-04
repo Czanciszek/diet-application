@@ -26,10 +26,14 @@ import java.util.Optional;
 @Service
 public class DishService {
 
-    @Autowired DishRepository dishRepository;
-    @Autowired ProductDishRepository productDishRepository;
-    @Autowired FoodTypeRepository foodTypeRepository;
-    @Autowired AmountTypeRepository amountTypeRepository;
+    @Autowired
+    DishRepository dishRepository;
+    @Autowired
+    ProductDishRepository productDishRepository;
+    @Autowired
+    FoodTypeRepository foodTypeRepository;
+    @Autowired
+    AmountTypeRepository amountTypeRepository;
 
     public List<DishType> getAll() {
         List<PsqlDish> dishes = this.dishRepository.findAll();
@@ -49,7 +53,7 @@ public class DishService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "unique conflict", e);
         }
 
-        if (psqlDish.getId() > 0)
+        if (psqlDish.getId() != null)
             this.productDishRepository.deletePsqlProductDishesByDishId(psqlDish.getId());
 
         for (ProductDishType productDish : dish.getProducts()) {
@@ -71,7 +75,7 @@ public class DishService {
 
         this.dishRepository.save(psqlDish);
 
-        dish.setId(String.valueOf(psqlDish.getId()));
+        dish.setId(psqlDish.getId());
 
         return dish;
     }

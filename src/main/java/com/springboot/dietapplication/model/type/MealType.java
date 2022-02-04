@@ -10,7 +10,7 @@ public class MealType {
 
     private String name;
 
-    private String dayMealId; // Reference to day
+    private Long dayMealId; // Reference to day
 
     private Long originMealId; // Reference to origin meal day
 
@@ -47,8 +47,7 @@ public class MealType {
 
     public MealType(PsqlMeal meal) {
         this.id = meal.getId();
-        if (meal.getDayMealId() > 0)
-            this.dayMealId = String.valueOf(meal.getDayMealId());
+        this.dayMealId =meal.getDayMealId();
         this.originMealId = meal.getOriginMealId();
         this.name = meal.getName();
         this.isProduct = (meal.isProduct() ? 1 : 0);
@@ -74,11 +73,11 @@ public class MealType {
         this.name = name;
     }
 
-    public String getDayMealId() {
+    public Long getDayMealId() {
         return dayMealId;
     }
 
-    public void setDayMealId(String dayMealId) {
+    public void setDayMealId(Long dayMealId) {
         this.dayMealId = dayMealId;
     }
 

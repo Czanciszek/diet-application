@@ -17,11 +17,15 @@ import java.util.*;
 @Service
 public class PatientService {
 
-    @Autowired MenuService menuService;
+    @Autowired
+    MenuService menuService;
 
-    @Autowired PatientRepository patientRepository;
-    @Autowired CategoryRepository categoryRepository;
-    @Autowired PatientsUnlikelyCategoriesRepository patientsUnlikelyCategoriesRepository;
+    @Autowired
+    PatientRepository patientRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
+    @Autowired
+    PatientsUnlikelyCategoriesRepository patientsUnlikelyCategoriesRepository;
 
     public List<PatientType> getAll() {
         List<PatientType> patientTypeList = new ArrayList<>();
@@ -43,7 +47,7 @@ public class PatientService {
 
     public PatientType getPatientByMenuId(Long menuId) {
         MenuType menu = this.menuService.getMenuById(menuId);
-        Optional<PsqlPatient> patient = this.patientRepository.findById(Long.parseLong(menu.getPatientId()));
+        Optional<PsqlPatient> patient = this.patientRepository.findById(menu.getPatientId());
         return patient.map(PatientType::new).orElseGet(PatientType::new);
     }
 
@@ -51,7 +55,7 @@ public class PatientService {
         PsqlPatient psqlPatient = new PsqlPatient(patient);
 
         this.patientRepository.save(psqlPatient);
-        patient.setId(String.valueOf(psqlPatient.getId()));
+        patient.setId(psqlPatient.getId());
         storePatientsUnlikelyCategories(patient);
 
         return ResponseEntity.ok().body(patient);
@@ -77,7 +81,7 @@ public class PatientService {
     }
 
     private void storePatientsUnlikelyCategories(PatientType patientType) {
-        this.patientsUnlikelyCategoriesRepository.deleteAllByPatientId(Long.parseLong(patientType.getId()));
+        this.patientsUnlikelyCategoriesRepository.deleteAllByPatientId(patientType.getId());
         if (patientType.getUnlikelyCategories() == null) return;
         for (String category : patientType.getUnlikelyCategories()) {
 
@@ -85,7 +89,7 @@ public class PatientService {
             if (psqlCategory == null) return;
 
             PsqlPatientsUnlikelyCategories patientsUnlikelyCategories =
-                    new PsqlPatientsUnlikelyCategories(Long.parseLong(patientType.getId()), psqlCategory.getId());
+                    new PsqlPatientsUnlikelyCategories(patientType.getId(), psqlCategory.getId());
             this.patientsUnlikelyCategoriesRepository.save(patientsUnlikelyCategories);
 
         }

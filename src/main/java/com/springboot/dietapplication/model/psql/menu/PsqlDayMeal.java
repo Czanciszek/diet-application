@@ -11,10 +11,10 @@ public class PsqlDayMeal implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "week_meal_id")
-    private long weekMealId;
+    private Long weekMealId;
 
     @Column(name = "day_type")
     private String dayType;
@@ -27,27 +27,25 @@ public class PsqlDayMeal implements Serializable {
     }
 
     public PsqlDayMeal(DayMealType dayMealType) {
-        if (dayMealType.getId() != null && !dayMealType.getId().isEmpty())
-            this.id = Long.parseLong(dayMealType.getId());
-        if (dayMealType.getWeekMealId() != null && !dayMealType.getWeekMealId().isEmpty())
-        this.weekMealId = Long.parseLong(dayMealType.getWeekMealId());
+        this.id = dayMealType.getId();
+        this.weekMealId = dayMealType.getWeekMealId();
         this.dayType = dayMealType.getDayType().toString();
         this.date = dayMealType.getDate();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getWeekMealId() {
+    public Long getWeekMealId() {
         return weekMealId;
     }
 
-    public void setWeekMealId(long weekMealId) {
+    public void setWeekMealId(Long weekMealId) {
         this.weekMealId = weekMealId;
     }
 

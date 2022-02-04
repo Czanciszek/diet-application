@@ -14,7 +14,8 @@ import java.util.List;
 @Component
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    @Autowired UserRepository psqlUserRepository;
+    @Autowired
+    UserRepository psqlUserRepository;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {

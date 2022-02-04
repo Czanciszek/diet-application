@@ -14,7 +14,7 @@ public class PsqlUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "name", table = "user_types")
     private String userType;
@@ -28,11 +28,11 @@ public class PsqlUser implements Serializable {
     @Column(name = "image_id")
     private String imageId;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

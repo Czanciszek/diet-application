@@ -12,7 +12,7 @@ public class PsqlFoodProperties implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "energy_value")
     private int energyValue;
@@ -101,8 +101,7 @@ public class PsqlFoodProperties implements Serializable {
     }
 
     public PsqlFoodProperties(FoodPropertiesType foodPropertiesType) {
-        if (foodPropertiesType.getId() != null && !foodPropertiesType.getId().isEmpty())
-            this.id = Long.parseLong(foodPropertiesType.getId());
+        this.id = foodPropertiesType.getId();
         this.energyValue = foodPropertiesType.getEnergyValue();
         this.proteins = foodPropertiesType.getProteins();
         this.fats = foodPropertiesType.getFats();
@@ -125,11 +124,11 @@ public class PsqlFoodProperties implements Serializable {
         this.vitaminC = foodPropertiesType.getVitaminC();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

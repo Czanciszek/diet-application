@@ -11,7 +11,7 @@ public class PsqlDish implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -30,18 +30,17 @@ public class PsqlDish implements Serializable {
     }
 
     public PsqlDish(DishType dishType) {
-        if (dishType.getId() != null && !dishType.getId().isEmpty())
-            this.id = Long.parseLong(dishType.getId());
+        this.id = dishType.getId();
         this.name = dishType.getName();
         this.portions = dishType.getPortions();
         this.recipe = dishType.getRecipe();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

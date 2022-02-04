@@ -62,9 +62,9 @@ public class MenuService {
 
         for (int i = 0; i < menuSendingType.getWeekCount(); i++) {
             WeekMealType weekMeal = new WeekMealType();
-            weekMeal.setMenuId(String.valueOf(menu.getId()));
+            weekMeal.setMenuId(menu.getId());
             this.weekMealService.insert(weekMeal);
-            this.dayMealService.generateDaysForWeek(dateTime, Long.parseLong(weekMeal.getId()));
+            this.dayMealService.generateDaysForWeek(dateTime, weekMeal.getId());
             dateTime = dateTime.plusWeeks(1);
         }
 
@@ -98,11 +98,11 @@ public class MenuService {
         }
         menuType.setFoodTypes(foodTypeList);
 
-        List<String> weekMealIdList = this.weekMealService.getWeekMealIdList(psqlMenu.getId());
+        List<Long> weekMealIdList = this.weekMealService.getWeekMealIdList(psqlMenu.getId());
         menuType.setWeekMealList(weekMealIdList);
 
         List<DayMealType> dayMealTypeList = new ArrayList<>();
-        for (String weekMealId: weekMealIdList)
+        for (Long weekMealId: weekMealIdList)
             dayMealTypeList.addAll(this.dayMealService.getDayMealByWeekMealId(weekMealId));
 
         menuType.setDayMealTypeList(dayMealTypeList);

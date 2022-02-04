@@ -9,13 +9,13 @@ public class PsqlPatientsUnlikelyCategories implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "patient_id")
-    private long patientId;
+    private Long patientId;
 
     @Column(name = "category_id")
-    private long categoryId;
+    private Long categoryId;
 
     public PsqlPatientsUnlikelyCategories() {
 
@@ -26,27 +26,27 @@ public class PsqlPatientsUnlikelyCategories implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getPatientId() {
+    public Long getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(long patientId) {
+    public void setPatientId(Long patientId) {
         this.patientId = patientId;
     }
 
-    public long getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(long categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 }
