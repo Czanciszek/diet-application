@@ -133,11 +133,11 @@ export class MealAddComponent implements OnInit {
 
         // Update value in Form Group
         this.service.form.get('name').patchValue(result.name);
+        this.service.form.get('productName').patchValue(result.name);
         this.service.form.get('isProduct').patchValue(1);
 
         let productForm = this.service.addProductFormGroup();
         productForm.get('productId').patchValue(result.id);
-        productForm.get('productName').patchValue(result.name);
         (<FormArray>this.service.form.get('productList')).push(productForm);
 
         let grams = (<HTMLInputElement>document.getElementById("product_grams")).value;
