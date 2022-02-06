@@ -32,13 +32,13 @@ export class DishComponent implements OnInit {
     if (this.service.form.get('id').value) {
       let dishId = this.service.form.get('id').value;
       this.getProductsDetails(dishId);
+    }
 
-      this.productService.getProducts()
-        .subscribe(
+    this.productService.getProducts()
+      .subscribe(
         (data: Product[] ) => {
           this.productService.productList = [...data];
       });
-    }
   }
 
   onClear() {
