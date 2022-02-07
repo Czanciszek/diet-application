@@ -99,13 +99,13 @@ public class PDFService {
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
 
-        PDPageContentStream contentStream = null;
+        pageOffset = 0;
+        PDPageContentStream contentStream = setNewPage(document, true);
         long currentWeekMealId = -1;
         int weekMealCount = 0;
-        pageOffset = 0;
 
-        // TODO: !!!!!
-        boolean flag = true;
+        makeHeader(document, contentStream);
+
         Set<Long> dayMealIds = new HashSet<>();
         for (Map.Entry<DateTime, List<PsqlMenuProduct>> dayEntry : menuProductsMap.entrySet()) {
 
@@ -122,12 +122,6 @@ public class PDFService {
                     contentStream = setNewPage(document, true);
                 } else {
                     contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
-                }
-
-                if (flag) {
-                    flag = false;
-                    makeHeader(document, contentStream);
-                    contentStream = setNewLine(document, contentStream, new Point(0, -40), false, true);
                 }
 
                 writeText(contentStream, new Point(40, pageOffset), timesBold, 14, RomanianNumber.getRomanianValue(weekMealCount));
