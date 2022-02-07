@@ -30,8 +30,6 @@ public class PDFService {
     @Autowired
     MealService mealService;
     @Autowired
-    ProductService productService;
-    @Autowired
     PatientService patientService;
 
     int pageOffset = 680;
