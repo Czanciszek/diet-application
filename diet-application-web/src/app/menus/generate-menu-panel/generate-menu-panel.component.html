@@ -1,0 +1,47 @@
+<div class="container">
+  <mat-toolbar>
+    <span class="fill-remaining-space"></span>
+    <span>Generowanie PDF</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+  </mat-toolbar>
+</div>
+
+<mat-dialog-content>
+  <form [formGroup]="fileService.form" class="normal-form" (ngSubmit)="onSubmit()">
+
+    <mat-grid-list cols="1" class="recipe-grid-list-height" rowHeight="fit">
+      <mat-dialog-content>
+        <mat-grid-tile>
+          <div class="control-container">
+            <mat-form-field>
+              <div class="add-bottom-padding">
+                <textarea rows="5" formControlName="recommendations" matInput  style="resize: none;" placeholder="Zalecenia do jadłospisu" autocomplete="off">
+
+                </textarea>
+              </div>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+      </mat-dialog-content>
+    </mat-grid-list>
+
+    <mat-grid-list cols="12" rowHeight="30px">
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <div class="control-container">
+          <div class="button-row">
+            <button mat-raised-button color="accent" type="button" (click)="onGeneratePDFButtonClick()">Generuj PDF</button>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="2">
+      <div class="control-container">
+        <mat-checkbox formControlName="showDates">Pokaż daty</mat-checkbox>
+      </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+  </form>
+</mat-dialog-content>

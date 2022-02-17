@@ -9,6 +9,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {Measurement} from "../../model/measurement";
 import {MatDialog} from "@angular/material/dialog";
 import {MenuAddComponent} from "../menu-add/menu-add.component";
+import {GenerateMenuPanelComponent} from "../generate-menu-panel/generate-menu-panel.component";
 
 @Component({
   selector: 'app-menu-list',
@@ -100,10 +101,6 @@ export class MenuListComponent implements OnInit {
     this.router.navigate(["/menu/" + menuId]);
   }
 
-  onGeneratePDFButtonClick(menuId) {
-    this.fileService.getPdfFile(menuId);
-  }
-
   onCreate() {
     this.service.initializeFormGroup();
     this.openDialog();
@@ -119,6 +116,17 @@ export class MenuListComponent implements OnInit {
     dialogRef.afterClosed().subscribe( result => {
       this.ngOnInit();
     });
+  }
+
+  openGeneratingMenuDialog(menuId) {
+    this.fileService.initializeFormGroup();
+    let dialogRef = this.dialog.open(GenerateMenuPanelComponent, {
+      disableClose: true,
+      autoFocus: true,
+      width: "90%"
+    });
+
+    dialogRef.componentInstance.menuId = menuId;
   }
 
 }

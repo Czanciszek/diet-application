@@ -36,11 +36,15 @@ public class PDFService {
     MenuType menu;
     PatientType patient;
 
-    public File generateMenu(Long menuId) {
+    GenerateMenuType generateMenuType;
+
+    public File generateMenu(GenerateMenuType generateMenuType) {
 
         try {
+            this.generateMenuType = generateMenuType;
+            Long menuId = generateMenuType.getMenuId();
 
-            File file = File.createTempFile("resources/PDF/menu_" + menuId, ".pdf");
+            File file = File.createTempFile("resources/PDF/menu_" + generateMenuType.getMenuId(), ".pdf");
 
             PDDocument document = new PDDocument();
 
@@ -75,6 +79,7 @@ public class PDFService {
         header += patient.isSex() ? "Pani " : "Pana ";
         header += patient.getName();
         writeText(contentStream, new Point(40, 740), timesBold, 24, header);
+        setNewLine(document, contentStream, new Point(0, -20), false, true);
     }
 
     private void makeFooter(PDPageContentStream contentStream) throws IOException {
@@ -104,6 +109,10 @@ public class PDFService {
 
         makeHeader(document, contentStream);
 
+        if (generateMenuType.getRecommendations() != null && !generateMenuType.getRecommendations().isEmpty()) {
+            showRecommendations(document, contentStream);
+        }
+
         Set<Long> dayMealIds = new HashSet<>();
         for (Map.Entry<DateTime, List<PsqlMenuProduct>> dayEntry : menuProductsMap.entrySet()) {
 
@@ -128,10 +137,14 @@ public class PDFService {
 
             contentStream = setNewLine(document, contentStream, new Point(0, -20), true, true);
 
-            String date = parseDateToString(dayEntry.getKey());
             String dayType = dayEntry.getValue().get(0).getDayType();
+            String dateLine = bundle.getString(dayType);
+            if (generateMenuType.isShowDates()) {
+                String date = parseDateToString(dayEntry.getKey());
+                dateLine += " - " + date;
+            }
 
-            writeText(contentStream, new Point(40, pageOffset), timesBold, 12, bundle.getString(dayType) + " - " + date);
+            writeText(contentStream, new Point(40, pageOffset), timesBold, 12, dateLine);
             contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
 
             dayEntry.getValue().sort(Comparator.comparingLong(PsqlMenuProduct::getFoodTypeId));
@@ -201,6 +214,43 @@ public class PDFService {
                 writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Posiłki nocne");
                 break;
         }
+    }
+
+    private void showRecommendations(PDDocument document, PDPageContentStream contentStream) throws IOException {
+        PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
+        PDType0Font timesBoldItalic = PDType0Font.load(document, getFont("timesbi.ttf"));
+
+        String recommendations = "Zalecenia:";
+        writeText(contentStream, new Point(40, pageOffset), timesBoldItalic, 20, recommendations);
+        contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
+
+        // Display recommendations
+        String[] textLines = generateMenuType.getRecommendations().split("\n");
+        for (String line : textLines) {
+            if (line.length() == 0) {
+                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+                continue;
+            }
+
+            int index = 0;
+            int margin = 100;
+            do {
+                String subLine = (line.length() > index + margin) ? line.substring(index, index + margin) : line.substring(index);
+
+                int newIndex = subLine.lastIndexOf(" ");
+                if (newIndex > 0 && (index + margin) < line.length())
+                    subLine = subLine.substring(0, newIndex);
+
+                writeText(contentStream, new Point(60, pageOffset), timesNormal, 12, subLine);
+                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+                index += (newIndex > 0 && (index + margin) < line.length()) ? newIndex : margin;
+
+                //Check whenever pageOffset is too close margin
+                contentStream = checkPageOffset(document, contentStream);
+            } while (index < line.length());
+        }
+
+        setNewLine(document, contentStream, new Point(0, -20), false, true);
     }
 
     private void makeMenuDishRecipes(PDDocument document, List<MealType> mealList) throws IOException {
@@ -327,7 +377,7 @@ public class PDFService {
 
     private PDPageContentStream checkPageOffset(PDDocument document, PDPageContentStream contentStream) throws IOException {
         if (pageOffset <= 120) {
-            return setNewLine(document, contentStream, new Point(0, -20), true, false);
+            return setNewLine(document, contentStream, new Point(0, -20), true, true);
         }
         return contentStream;
     }
@@ -346,11 +396,13 @@ public class PDFService {
     private PDPageContentStream setNewPage(PDDocument document, boolean withDateRange) throws IOException {
         PDPage page = new PDPage();
         document.addPage(page);
-        pageOffset = withDateRange ? 680 : 720;
+
+        boolean shouldAddDates = withDateRange && generateMenuType.isShowDates();
+        pageOffset = shouldAddDates ? 680 : 720;
 
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
-        if (withDateRange) {
+        if (shouldAddDates) {
             makeDateRange(contentStream, menu);
         }
 

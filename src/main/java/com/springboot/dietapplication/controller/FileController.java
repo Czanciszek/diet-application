@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
+import com.springboot.dietapplication.model.type.GenerateMenuType;
 import com.springboot.dietapplication.service.DataService;
 import com.springboot.dietapplication.service.PDFService;
 import io.github.biezhi.excel.plus.Reader;
@@ -28,10 +29,9 @@ public class FileController {
         processFile(multipartFile);
     }
 
-    @GetMapping(value = "/menu/{menuId}", produces = MediaType.APPLICATION_PDF_VALUE)
-    public @ResponseBody byte[] generateMenu(@PathVariable("menuId") Long menuId) throws IOException {
-
-        File file = pdfService.generateMenu(menuId);
+    @PostMapping(value = "/menu", produces = MediaType.APPLICATION_PDF_VALUE)
+    public @ResponseBody byte[] generateMenu(@RequestBody GenerateMenuType generateMenuType) throws IOException {
+        File file = pdfService.generateMenu(generateMenuType);
         final InputStream targetStream = new DataInputStream(new FileInputStream(file));
         return IOUtils.toByteArray(targetStream);
     }

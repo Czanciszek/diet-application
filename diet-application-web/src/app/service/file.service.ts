@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest} from "@angular/common/http";
+import { FormControl, FormGroup, Validators} from "@angular/forms";
 import {GlobalVariable} from "../global";
 import {Observable} from "rxjs";
 
@@ -20,6 +21,20 @@ export class FileService {
     private http: HttpClient
   ) { }
 
+  form: FormGroup = new FormGroup({
+    menuId: new FormControl(null),
+    showDates: new FormControl(null),
+    recommendations: new FormControl(null)
+  });
+
+  initializeFormGroup() {
+    this.form.setValue({
+      menuId: null,
+      showDates: true,
+      recommendations: null
+    })
+  }
+
   uploadFile(file: File): Observable<HttpEvent<any>> {
 
     let formData = new FormData();
@@ -33,7 +48,7 @@ export class FileService {
 
   }
 
-  downLoadFile(data: any, type: string) {
+  downloadFile(data: any, type: string) {
      let blob = new Blob([data], { type: type});
      let url = window.URL.createObjectURL(blob);
      let pwa = window.open(url);
@@ -42,11 +57,11 @@ export class FileService {
      }
   }
 
-  getPdfFile(menuId: string): any {
-      this.http.get(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "files/menu/" + menuId,
+  getPdfFile(): any {
+      this.http.post(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "files/menu/", this.form.value,
       { responseType: 'arraybuffer', headers: this.headers}).subscribe(
           (response) => {
-            this.downLoadFile(response, "application/pdf");
+            this.downloadFile(response, "application/pdf");
       });
   }
 
