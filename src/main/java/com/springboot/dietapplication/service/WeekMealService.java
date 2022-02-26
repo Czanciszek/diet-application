@@ -1,5 +1,6 @@
 package com.springboot.dietapplication.service;
 
+import com.springboot.dietapplication.model.psql.menu.PsqlMenu;
 import com.springboot.dietapplication.model.psql.menu.PsqlWeekMeal;
 import com.springboot.dietapplication.model.type.WeekMealType;
 import com.springboot.dietapplication.repository.WeekMealRepository;
@@ -50,9 +51,28 @@ public class WeekMealService {
         return ResponseEntity.ok().body(weekMeal);
     }
 
+    public void copy(long originMenuId, long newMenuId, float factor) {
+        List<PsqlWeekMeal> weekMeals = weekMealRepository.getPsqlWeekMealsByMenuId(originMenuId);
+        for (PsqlWeekMeal currentWeekMeal : weekMeals) {
+            PsqlWeekMeal newWeekMeal = new PsqlWeekMeal();
+            newWeekMeal.setMenuId(newMenuId);
+            weekMealRepository.save(newWeekMeal);
+
+            dayMealService.copy(currentWeekMeal.getId(), newWeekMeal.getId(), factor);
+        }
+    }
+
     public ResponseEntity<WeekMealType> delete(Long id) {
         weekMealRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    public void deleteByMenuId(Long id) {
+        List<PsqlWeekMeal> weekMeals = weekMealRepository.getPsqlWeekMealsByMenuId(id);
+        for (PsqlWeekMeal weekMeal : weekMeals) {
+            dayMealService.deleteByWeekMealId(weekMeal.getId());
+            weekMealRepository.deleteById(weekMeal.getId());
+        }
     }
 
     private List<WeekMealType> convertLists(List<PsqlWeekMeal> weekMealList) {

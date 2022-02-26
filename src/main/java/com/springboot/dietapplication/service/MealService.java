@@ -1,9 +1,6 @@
 package com.springboot.dietapplication.service;
 
-import com.springboot.dietapplication.model.psql.menu.PsqlAmountType;
-import com.springboot.dietapplication.model.psql.menu.PsqlFoodType;
-import com.springboot.dietapplication.model.psql.menu.PsqlMeal;
-import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
+import com.springboot.dietapplication.model.psql.menu.*;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.AmountTypeRepository;
 import com.springboot.dietapplication.repository.FoodTypeRepository;
@@ -109,9 +106,39 @@ public class MealService {
         return meal;
     }
 
+    public void copy(long originDayMealId, long newDayMealId, float factor) {
+        List<PsqlMeal> mealList = this.mealRepository.findByDayMealId(originDayMealId);
+        for (PsqlMeal originMeal : mealList) {
+            PsqlMeal newMeal = new PsqlMeal(originMeal);
+            newMeal.setDayMealId(newDayMealId);
+            newMeal.setGrams(originMeal.getGrams() * factor);
+            mealRepository.save(newMeal);
+
+            if (originMeal.getId().equals(originMeal.getOriginMealId())) {
+                newMeal.setOriginMealId(newMeal.getId());
+                mealRepository.save(newMeal);
+            }
+
+            List<PsqlProductMeal> productMealList = this.productMealRepository.findPsqlProductMealsByMealId(originMeal.getId());
+            for (PsqlProductMeal productMeal : productMealList) {
+                PsqlProductMeal newProductMeal = new PsqlProductMeal(productMeal);
+                newProductMeal.setMealId(newMeal.getId());
+                newProductMeal.setGrams(productMeal.getGrams() * factor);
+                productMealRepository.save(newProductMeal);
+            }
+        }
+    }
+
     public void delete(Long mealId) {
         this.productMealRepository.deletePsqlProductMealsByMealId(mealId);
         this.mealRepository.deleteById(mealId);
+    }
+
+    public void deleteByDayMealId(Long id) {
+        List<PsqlMeal> meals = mealRepository.findByDayMealId(id);
+        for (PsqlMeal meal : meals) {
+            delete(meal.getId());
+        }
     }
 
     private List<MealType> convertLists(List<PsqlMeal> mealList) {

@@ -1,0 +1,100 @@
+<div class="container">
+  <mat-toolbar>
+    <span class="fill-remaining-space"></span>
+    <span>Kopiowanie jadłospisu</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+  </mat-toolbar>
+</div>
+
+<mat-dialog-content>
+
+    <mat-grid-list cols="1" class="recipe-grid-list-height" rowHeight="fit">
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field class="long-form-field">
+                <mat-select placeholder="Pacjent" value="{{copyItem.patientId}}" (valueChange)="onPatientChange($event)">
+                  <ng-container *ngFor="let patient of patientList">
+                    <mat-option value="{{patient.id}}">{{patient.name}}</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+  <mat-grid-list cols="12" class="recipe-grid-list-height" rowHeight="50px">
+    <mat-grid-tile colspan="3">
+      <div class="control-container add-slider-padding">
+        <mat-label>Limit kalorii: {{menuItem.energyLimit}} kcal</mat-label>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="3">
+      <div class="control-container add-slider-padding">
+        <mat-label>Białko: {{menuItem.proteinsLimit}}g</mat-label>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="3">
+      <div class="control-container add-slider-padding">
+        <mat-label>Tłuszcze: {{menuItem.fatsLimit}}g</mat-label>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="3">
+      <div class="control-container add-slider-padding">
+        <mat-label>Węglowodany: {{menuItem.carbohydratesLimit}}g</mat-label>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="12" class="recipe-grid-list-height" rowHeight="fit">
+    <mat-grid-tile colspan="3">
+      <div class="control-container">
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <input type="number" matInput placeholder="kcal*" autocomplete="off" value="{{copyItem.energyLimit}}" (input)="limitsChanged($event.target.value)" min="0">
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="3">
+      <div class="control-container add-slider-padding">
+        <mat-label>Białko: </mat-label>
+        <mat-label #proteinsLimit>{{copyItem.proteinsLimit}}</mat-label>
+        <mat-label>g</mat-label>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="3">
+      <div class="control-container add-slider-padding">
+        <mat-label>Tłuszcze: </mat-label>
+        <mat-label>{{copyItem.fatsLimit}}</mat-label>
+        <mat-label>g</mat-label>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="3">
+      <div class="control-container add-slider-padding">
+        <mat-label>Węglowodany: </mat-label>
+        <mat-label>{{copyItem.carbohydratesLimit}}</mat-label>
+        <mat-label>g</mat-label>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="12" rowHeight="30px">
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <div class="control-container">
+        <div class="button-row">
+          <button mat-raised-button color="accent" type="button" (click)="onCopyButtonClicked()">Kopiuj jadłospis</button>
+         </div>
+       </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>

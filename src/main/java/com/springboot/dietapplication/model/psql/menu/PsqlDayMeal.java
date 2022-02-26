@@ -33,6 +33,11 @@ public class PsqlDayMeal implements Serializable {
         this.date = dayMealType.getDate();
     }
 
+    public PsqlDayMeal(PsqlDayMeal psqlDayMeal) {
+        this.dayType = psqlDayMeal.getDayType();
+        this.date = psqlDayMeal.getDate();
+    }
+
     public Long getId() {
         return id;
     }

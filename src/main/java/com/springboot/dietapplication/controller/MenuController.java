@@ -36,6 +36,11 @@ public class MenuController {
         return this.menuService.insert(menuSendingType);
     }
 
+    @PostMapping(path = "/copy", produces = "application/json")
+    ResponseEntity<MenuType> copyMenu(@RequestBody MenuSendingType menuSendingType) {
+        return this.menuService.copy(menuSendingType);
+    }
+
     @DeleteMapping(path = "/{id}")
     ResponseEntity<MenuType> deleteMenu(@PathVariable Long id) {
         return this.menuService.delete(id);

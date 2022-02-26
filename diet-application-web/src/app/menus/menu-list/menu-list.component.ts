@@ -3,6 +3,7 @@ import {MenuService} from "../../service/menu.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FileService} from "../../service/file.service";
 import {MeasurementService} from "../../service/measurement.service";
+import {NotificationService} from "../../service/notification.service";
 import {Menu} from "../../model/menu";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
@@ -10,6 +11,7 @@ import {Measurement} from "../../model/measurement";
 import {MatDialog} from "@angular/material/dialog";
 import {MenuAddComponent} from "../menu-add/menu-add.component";
 import {GenerateMenuPanelComponent} from "../generate-menu-panel/generate-menu-panel.component";
+import {CopyMenuPanelComponent} from "../copy-menu-panel/copy-menu-panel.component";
 
 @Component({
   selector: 'app-menu-list',
@@ -24,6 +26,7 @@ export class MenuListComponent implements OnInit {
     private service: MenuService,
     private dialog: MatDialog,
     private measurementService: MeasurementService,
+    private notificationService: NotificationService,
     private fileService: FileService
   ) { }
 
@@ -127,6 +130,37 @@ export class MenuListComponent implements OnInit {
     });
 
     dialogRef.componentInstance.menuId = menuId;
+  }
+
+  openCopyMenuDialog(menuItem) {
+    this.fileService.initializeFormGroup();
+    let dialogRef = this.dialog.open(CopyMenuPanelComponent, {
+      disableClose: true,
+      autoFocus: true,
+      width: "90%"
+    });
+
+    dialogRef.componentInstance.menuItem = menuItem;
+
+    dialogRef.afterClosed().subscribe( result => {
+      this.ngOnInit();
+    });
+  }
+
+  onDeleteMenuButtonClick(menuId) {
+    if (!confirm("Na pewno chcesz usunąć ten jadłospis?")) {
+      return;
+    }
+
+    this.service.deleteMenu(menuId).subscribe(
+      result => {
+        this.notificationService.warn(":: Usunięto pomyślnie! ::");
+      }, error => {
+        this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
+      }, () => {
+        this.ngOnInit();
+    });
+
   }
 
 }

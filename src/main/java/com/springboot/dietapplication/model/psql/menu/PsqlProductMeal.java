@@ -33,6 +33,14 @@ public class PsqlProductMeal {
     public PsqlProductMeal() {
     }
 
+    public PsqlProductMeal(PsqlProductMeal psqlProductMeal) {
+        this.productId = psqlProductMeal.getProductId();
+        this.amountTypeId = psqlProductMeal.getAmountTypeId();
+        this.productName = psqlProductMeal.getProductName();
+        this.amount = psqlProductMeal.getAmount();
+        this.grams = psqlProductMeal.getGrams();
+    }
+
     public PsqlProductMeal(ProductDishType productDish) {
         this.productId = productDish.getProductId();
         this.productName = productDish.getProductName();

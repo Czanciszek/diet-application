@@ -18,10 +18,9 @@
       <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
       <mat-cell *matCellDef="let element">
         <button mat-icon-button (click)="onEnterMenuDetails(element.id)"><mat-icon>launch</mat-icon></button>
-        <!--
-        <button mat-icon-button ><mat-icon>delete</mat-icon></button>
-        -->
         <button mat-icon-button (click)="openGeneratingMenuDialog(element.id)"><mat-icon>picture_as_pdf</mat-icon></button>
+        <button mat-icon-button (click)="openCopyMenuDialog(element)"><mat-icon>content_copy</mat-icon></button>
+        <button mat-icon-button (click)="onDeleteMenuButtonClick(element.id)"><mat-icon>delete</mat-icon></button>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="loading">

@@ -35,34 +35,20 @@ export class PatientListComponent implements OnInit {
 
   getPatients() {
     this.service.getPatients().subscribe(
-      list => {
-        let array = list.map(item => {
-          return {
-            id: item.id,
-            name: item.name,
-            birthDate: item.birthDate,
-            numberPhone: item.numberPhone,
-            email: item.email,
-            sex: item.sex,
-            bodyHeight: item.bodyHeight,
-            currentLifestyleNote: item.currentLifestyleNote,
-            changedLifestyleNote: item.changedLifestyleNote,
-            dietaryPurpose: item.dietaryPurpose,
-            allergens: item.allergens,
-            unlikelyCategories: item.unlikelyCategories
-          };
-        });
+      (data: Patient[] ) => {
+
+        let array = [...data];
         this.listData = new MatTableDataSource(array);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
 
         this.listData.filterPredicate = (data: Patient, filter: string) => {
-          return data == null ||
-            data.name.toLowerCase().includes(filter) ||
-            data.email.toLowerCase().includes(filter) ||
-            data.numberPhone.toLowerCase().includes(filter);
-        };
-      });
+          return data.name == null ||
+          data.name.toLowerCase().includes(filter) ||
+          data.email.toLowerCase().includes(filter) ||
+          data.numberPhone.toLowerCase().includes(filter);
+      };
+    });
   }
 
   onSearchClear() {

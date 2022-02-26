@@ -60,11 +60,7 @@ public class MenuService {
 
         this.menuRepository.save(menu);
 
-        for (FoodType foodType : menuSendingType.getFoodTypes()) {
-            PsqlFoodType psqlFoodType = this.foodTypeRepository.getPsqlFoodTypeByName(foodType.name());
-            PsqlFoodTypeMenu foodTypeMenu = new PsqlFoodTypeMenu(psqlFoodType.getId(), menu.getId());
-            this.foodTypeMenuRepository.save(foodTypeMenu);
-        }
+        saveMenuFoodProperties(menuSendingType.getFoodTypes(), menu.getId());
 
         for (int i = 0; i < menuSendingType.getWeekCount(); i++) {
             WeekMealType weekMeal = new WeekMealType();
@@ -78,9 +74,47 @@ public class MenuService {
         return ResponseEntity.ok().body(new MenuType(menu));
     }
 
+    public ResponseEntity<MenuType> copy(MenuSendingType menuSendingType) {
+
+        PsqlMenu originMenu = getCurrentMenuData(menuSendingType.getId());
+        if (originMenu == null)
+            return null;
+
+        PsqlMenu newMenu = new PsqlMenu(menuSendingType);
+        newMenu.setStartDate(originMenu.getStartDate());
+        newMenu.setEndDate(originMenu.getEndDate());
+
+        this.menuRepository.save(newMenu);
+
+        saveMenuFoodProperties(menuSendingType.getFoodTypes(), newMenu.getId());
+
+        float factor = Math.round((newMenu.getEnergyLimit() / originMenu.getEnergyLimit()) * 100f) / 100f;
+        this.weekMealService.copy(originMenu.getId(), newMenu.getId(), factor);
+
+        return ResponseEntity.ok().body(new MenuType(newMenu));
+    }
+
     public ResponseEntity<MenuType> delete(long id) {
+
+        this.weekMealService.deleteByMenuId(id);
+
+        this.foodTypeMenuRepository.deletePsqlFoodTypeMenuByMenuId(id);
         this.menuRepository.deleteById(id);
+
         return ResponseEntity.ok().build();
+    }
+
+    private PsqlMenu getCurrentMenuData(long menuId) {
+        Optional<PsqlMenu> optionalPsqlMenu = this.menuRepository.findById(menuId);
+        return optionalPsqlMenu.orElse(null);
+    }
+
+    private void saveMenuFoodProperties(List<FoodType> foodTypes, Long menuId) {
+        for (FoodType foodType : foodTypes) {
+            PsqlFoodType psqlFoodType = this.foodTypeRepository.getPsqlFoodTypeByName(foodType.name());
+            PsqlFoodTypeMenu foodTypeMenu = new PsqlFoodTypeMenu(psqlFoodType.getId(), menuId);
+            this.foodTypeMenuRepository.save(foodTypeMenu);
+        }
     }
 
     private List<MenuType> convertLists(List<PsqlMenu> psqlMenuList) {
@@ -93,7 +127,7 @@ public class MenuService {
         return menuList;
     }
 
-    private MenuType  convertPsqlMenuToMenuType(PsqlMenu psqlMenu) {
+    private MenuType convertPsqlMenuToMenuType(PsqlMenu psqlMenu) {
         MenuType menuType = new MenuType(psqlMenu);
 
         List<FoodType> foodTypeList = new ArrayList<>();

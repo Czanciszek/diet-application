@@ -64,4 +64,13 @@ export class MenuService {
     return this.http.post(GlobalVariable.SERVER_ADDRESS +
       GlobalVariable.DATABASE_SERVICE + "menus", menu, this.httpOptions);
   }
+
+  copyMenu(menu) {
+    return this.http.post(GlobalVariable.SERVER_ADDRESS +
+      GlobalVariable.DATABASE_SERVICE + "menus/copy", menu, this.httpOptions);
+  }
+
+  deleteMenu(id: string) {
+      return this.http.delete(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "menus/" + id, this.httpOptions);
+  }
 }
