@@ -1,11 +1,9 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.menu.*;
+import com.springboot.dietapplication.model.psql.product.PsqlShoppingProduct;
 import com.springboot.dietapplication.model.type.*;
-import com.springboot.dietapplication.repository.FoodTypeMenuRepository;
-import com.springboot.dietapplication.repository.FoodTypeRepository;
-import com.springboot.dietapplication.repository.MenuProductsRepository;
-import com.springboot.dietapplication.repository.MenuRepository;
+import com.springboot.dietapplication.repository.*;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +24,8 @@ public class MenuService {
     FoodTypeMenuRepository foodTypeMenuRepository;
     @Autowired
     MenuProductsRepository menuProductsRepository;
+    @Autowired
+    ShoppingProductRepository shoppingProductRepository;
 
     @Autowired
     WeekMealService weekMealService;
@@ -49,6 +49,9 @@ public class MenuService {
 
     public List<PsqlMenuProduct> menuProductLists(long menuId) {
         return menuProductsRepository.findMenuProducts(menuId);
+    }
+    public List<PsqlShoppingProduct> getShoppingProductsForMenu(long menuId) {
+        return shoppingProductRepository.findShoppingProductsByMenuId(menuId);
     }
 
     public ResponseEntity<MenuType> insert(MenuSendingType menuSendingType) {

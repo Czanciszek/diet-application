@@ -6,14 +6,20 @@ public class GenerateMenuType {
 
     private boolean showDates;
 
+    private boolean generateRecipes;
+
+    private boolean generateShoppingList;
+
     private String recommendations;
 
     public GenerateMenuType() {
     }
 
-    public GenerateMenuType(Long menuId, boolean showDates, String recommendations) {
+    public GenerateMenuType(Long menuId, boolean showDates, boolean generateRecipes, boolean generateShoppingList, String recommendations) {
         this.menuId = menuId;
         this.showDates = showDates;
+        this.generateRecipes = generateRecipes;
+        this.generateShoppingList = generateShoppingList;
         this.recommendations = recommendations;
     }
 
@@ -21,23 +27,19 @@ public class GenerateMenuType {
         return menuId;
     }
 
-    public void setMenuId(Long menuId) {
-        this.menuId = menuId;
-    }
-
     public boolean isShowDates() {
         return showDates;
     }
 
-    public void setShowDates(boolean showDates) {
-        this.showDates = showDates;
+    public boolean isGenerateRecipes() {
+        return generateRecipes;
+    }
+
+    public boolean isGenerateShoppingList() {
+        return generateShoppingList;
     }
 
     public String getRecommendations() {
         return recommendations;
-    }
-
-    public void setRecommendations(String recommendations) {
-        this.recommendations = recommendations;
     }
 }

@@ -24,6 +24,8 @@ export class FileService {
   form: FormGroup = new FormGroup({
     menuId: new FormControl(null),
     showDates: new FormControl(null),
+    generateRecipes: new FormControl(null),
+    generateShoppingList: new FormControl(null),
     recommendations: new FormControl(null)
   });
 
@@ -31,6 +33,8 @@ export class FileService {
     this.form.setValue({
       menuId: null,
       showDates: true,
+      generateRecipes: true,
+      generateShoppingList: true,
       recommendations: null
     })
   }

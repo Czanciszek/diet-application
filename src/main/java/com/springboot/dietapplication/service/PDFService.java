@@ -2,6 +2,7 @@ package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.helper.RomanianNumber;
 import com.springboot.dietapplication.model.psql.menu.PsqlMenuProduct;
+import com.springboot.dietapplication.model.psql.product.PsqlShoppingProduct;
 import com.springboot.dietapplication.model.type.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -54,13 +55,11 @@ public class PDFService {
             List<PsqlMenuProduct> menuProductList = menuService.menuProductLists(menuId);
             makeMenuDetails(document, menuProductList);
 
-            List<MealType> mealList = mealService
-                    .getMealsByMenuId(menuId)
-                    .stream()
-                    .filter(meal -> (meal.getIsProduct() == 0) && meal.getOriginMealId() != null && meal.getOriginMealId().equals(meal.getId()))
-                    .collect(Collectors.toList());
+            if (generateMenuType.isGenerateRecipes())
+                makeMenuDishRecipes(document);
 
-            makeMenuDishRecipes(document, mealList);
+            if (generateMenuType.isGenerateShoppingList())
+             makeShoppingList(document);
 
             document.save(file);
             document.close();
@@ -253,7 +252,13 @@ public class PDFService {
         setNewLine(document, contentStream, new Point(0, -20), false, true);
     }
 
-    private void makeMenuDishRecipes(PDDocument document, List<MealType> mealList) throws IOException {
+    private void makeMenuDishRecipes(PDDocument document) throws IOException {
+        List<MealType> mealList = mealService
+                .getMealsByMenuId(menu.getId())
+                .stream()
+                .filter(meal -> (meal.getIsProduct() == 0) && meal.getOriginMealId() != null && meal.getOriginMealId().equals(meal.getId()))
+                .collect(Collectors.toList());
+
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
 
@@ -343,6 +348,50 @@ public class PDFService {
                     contentStream = checkPageOffset(document, contentStream);
                 } while (index < line.length());
             }
+
+        }
+
+        closeContentStream(contentStream);
+    }
+
+    private void makeShoppingList(PDDocument document) throws IOException {
+
+        List<PsqlShoppingProduct> shoppingProductList = menuService.getShoppingProductsForMenu(menu.getId());
+
+        PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
+        PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
+
+        PDPageContentStream contentStream = setNewPage(document, false);
+
+        if (shoppingProductList.size() == 0) return;
+
+        // Display title
+        writeText(contentStream, new Point(40, pageOffset), timesBold, 20,"Lista zakupów:");
+        contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+
+        String categoryName = "";
+
+        for (PsqlShoppingProduct shoppingProduct : shoppingProductList) {
+
+            if (!shoppingProduct.getCategoryName().equals(categoryName)) {
+                if (pageOffset < 160) {
+                    closeContentStream(contentStream);
+                    contentStream = setNewPage(document, false);
+                }
+
+                categoryName = shoppingProduct.getCategoryName();
+
+                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+                writeText(contentStream, new Point(40, pageOffset), timesBold, 16,shoppingProduct.getCategoryName());
+                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+            } else if (pageOffset < 80) {
+                closeContentStream(contentStream);
+                contentStream = setNewPage(document, false);
+            }
+
+            String productSummary = "\u2022 " + shoppingProduct.getProductName() + " " + Math.round(shoppingProduct.getGrams()) + "g";
+            writeText(contentStream, new Point(60, pageOffset), timesNormal, 14, productSummary);
+            contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
 
         }
 
