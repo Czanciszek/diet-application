@@ -1,7 +1,7 @@
 <div class="container">
   <mat-toolbar>
     <span class="fill-remaining-space"></span>
-    <span>{{service.form.controls['id'].value?"Edytuj jadłospis":"Nowy jadłospis"}}</span>
+    <span>{{service.form.controls['id'].value ? "Edytuj jadłospis" : "Nowy jadłospis"}}</span>
     <span class="fill-remaining-space"></span>
     <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
   </mat-toolbar>
@@ -27,8 +27,8 @@
         <div class="add-bottom-padding">
           <mat-form-field>
             <mat-label>Początek diety*</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="startDate" autocomplete="off">
-            <mat-datepicker-toggle matSuffix [for]="picker" >
+            <input matInput [matDatepicker]="picker" formControlName="startDate" autocomplete="off" readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="!allowEdit">
               <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
             </mat-datepicker-toggle>
             <mat-datepicker #picker startView="month"></mat-datepicker>
@@ -41,7 +41,7 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field >
-            <input type="number" min="1" max="8" step="1" formControlName="weekCount" matInput placeholder="Ilość tygodni*" autocomplete="off">
+            <input type="number" min="1" max="8" step="1" formControlName="weekCount" matInput placeholder="Ilość tygodni*" autocomplete="off" [readonly]="!allowEdit">
             <mat-error *ngIf="service.form.controls['weekCount'].errors?.required">Uzupełnij ilość</mat-error>
             <mat-error *ngIf="service.form.controls['weekCount'].errors?.min">Wartość zbyt mała</mat-error>
             <mat-error *ngIf="service.form.controls['weekCount'].errors?.max">Wartość zbyt duża</mat-error>
@@ -54,7 +54,7 @@
   <mat-grid-list cols="8" rowHeight="70px">
     <mat-grid-tile>
       <div class="control-container">
-        <mat-checkbox [checked]='customLimits' (change)="customLimitsOptionChanged($event)">Własne limity kaloryczności</mat-checkbox>
+        <mat-checkbox [checked]='customLimits' (change)="customLimitsOptionChanged($event)" [disabled]="!allowEdit">Własne limity kaloryczności</mat-checkbox>
       </div>
     </mat-grid-tile>
 

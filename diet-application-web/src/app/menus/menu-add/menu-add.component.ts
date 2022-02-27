@@ -22,7 +22,8 @@ export class MenuAddComponent implements OnInit {
     public dialogRef: MatDialogRef<MenuAddComponent>
   ) { }
 
-  customLimits = false;
+  customLimits = true;
+  allowEdit = true;
 
   foodTypes = FOOD_TYPES;
 
@@ -30,9 +31,14 @@ export class MenuAddComponent implements OnInit {
 
   currentPatientId = "";
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.currentPatientId = this.patientService.form.get("id").value;
     this.getMeasurementList(this.currentPatientId);
+
+    if (this.service.form.value.id != null) {
+      this.allowEdit = false;
+      this.checkValues();
+    }
   }
 
   onClear() {
@@ -84,10 +90,10 @@ export class MenuAddComponent implements OnInit {
 
       if (!this.service.form.get('id').value) {
         this.service.insertMenu(this.service.form.value).subscribe();
-        this.notificationService.success(":: Menu created successfully! ::");
+        this.notificationService.success(":: Pomyślnie stworzono jadłospis! ::");
       } else {
-        //this.service.updateMenu(this.service.form.value).subscribe();
-        //this.notificationService.success(":: Menu updated successfully! ::");
+        this.service.updateMenu(this.service.form.value).subscribe();
+        this.notificationService.success(":: Jadłospis zaktualizowano pomyślnie! ::");
       }
       this.onClose();
     }
@@ -231,6 +237,15 @@ export class MenuAddComponent implements OnInit {
       let proteinsPercentage = (100 - fatsPercentage - carbohydratesPercentage);
       this.percentageChanged( Math.max(proteinsPercentage, 0), true, false, 'proteins');
     }
+  }
+
+  checkValues() {
+    setTimeout(() => {
+      this.valueChanged(Number(this.service.form.value.proteinsLimit), true, "proteins");
+      this.valueChanged(Number(this.service.form.value.fatsLimit), true, "fats");
+      let percentage = Number(100 - Number(this.proteinsPercentage.nativeElement.value) - Number(this.fatsPercentage.nativeElement.value) ).toFixed(2);
+      this.carbohydratesPercentage.nativeElement.value = percentage;
+    });
   }
 
   checkLimits() {

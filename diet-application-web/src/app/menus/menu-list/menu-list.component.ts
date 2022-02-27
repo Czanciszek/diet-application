@@ -109,6 +109,17 @@ export class MenuListComponent implements OnInit {
     this.openDialog();
   }
 
+  onEditMenu(menu) {
+    const editMenuObject = Object.assign({}, menu);
+    editMenuObject.weekCount = menu.weekMealList.length;
+    delete editMenuObject.weekMealList;
+    delete editMenuObject.dayMealTypeList;
+    delete editMenuObject.endDate;
+    this.service.populateForm(editMenuObject);
+
+    this.openDialog();
+  }
+
   openDialog() {
     let dialogRef = this.dialog.open(MenuAddComponent, {
       disableClose: true,

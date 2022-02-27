@@ -22,10 +22,10 @@ export class MenuService {
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
-    weekCount: new FormControl('', [Validators.required, Validators.min(1), Validators.max(8)]),
+    weekCount: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(8)]),
     foodTypes: new FormControl(null),
     patientId: new FormControl(null),
-    startDate: new FormControl('', [Validators.required]),
+    startDate: new FormControl(null, [Validators.required]),
     energyLimit: new FormControl(null, [Validators.required]),
     proteinsLimit: new FormControl(null),
     fatsLimit: new FormControl(null),
@@ -46,6 +46,10 @@ export class MenuService {
     })
   }
 
+  populateForm(menu) {
+    this.form.setValue(menu);
+  }
+
   menuList: any;
 
   getMenusByPatientId(patientId): Observable<Menu[]> {
@@ -63,6 +67,11 @@ export class MenuService {
   insertMenu(menu) {
     return this.http.post(GlobalVariable.SERVER_ADDRESS +
       GlobalVariable.DATABASE_SERVICE + "menus", menu, this.httpOptions);
+  }
+
+  updateMenu(menu) {
+    return this.http.put(GlobalVariable.SERVER_ADDRESS +
+          GlobalVariable.DATABASE_SERVICE + "menus/" + menu.id, menu, this.httpOptions);
   }
 
   copyMenu(menu) {

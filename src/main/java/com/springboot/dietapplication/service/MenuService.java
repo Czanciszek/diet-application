@@ -77,6 +77,20 @@ public class MenuService {
         return ResponseEntity.ok().body(new MenuType(menu));
     }
 
+    public ResponseEntity<MenuType> update(MenuSendingType menuSendingType) {
+        PsqlMenu updateMenu = new PsqlMenu(menuSendingType);
+
+        Optional<PsqlMenu> currentMenu = this.menuRepository.findById(menuSendingType.getId());
+        if (!currentMenu.isPresent()) return null;
+        updateMenu.setId(menuSendingType.getId());
+        updateMenu.setEndDate(currentMenu.get().getEndDate());
+
+        saveMenuFoodProperties(menuSendingType.getFoodTypes(), menuSendingType.getId());
+
+        this.menuRepository.save(updateMenu);
+        return ResponseEntity.ok().body(new MenuType(updateMenu));
+    }
+
     public ResponseEntity<MenuType> copy(MenuSendingType menuSendingType) {
 
         PsqlMenu originMenu = getCurrentMenuData(menuSendingType.getId());
@@ -113,6 +127,7 @@ public class MenuService {
     }
 
     private void saveMenuFoodProperties(List<FoodType> foodTypes, Long menuId) {
+        this.foodTypeMenuRepository.deletePsqlFoodTypeMenuByMenuId(menuId);
         for (FoodType foodType : foodTypes) {
             PsqlFoodType psqlFoodType = this.foodTypeRepository.getPsqlFoodTypeByName(foodType.name());
             PsqlFoodTypeMenu foodTypeMenu = new PsqlFoodTypeMenu(psqlFoodType.getId(), menuId);

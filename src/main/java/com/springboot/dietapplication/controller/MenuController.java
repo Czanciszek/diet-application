@@ -32,12 +32,18 @@ public class MenuController {
     }
 
     @PostMapping(produces = "application/json")
-    ResponseEntity<MenuType> insertMenu(@RequestBody MenuSendingType menuSendingType) {
+    ResponseEntity<MenuType> insert(@RequestBody MenuSendingType menuSendingType) {
         return this.menuService.insert(menuSendingType);
     }
 
+    @PutMapping(path = "/{menuId}", produces = "application/json")
+    ResponseEntity<MenuType> update(@PathVariable("menuId") Long menuId,
+                                    @RequestBody MenuSendingType menuSendingType) {
+        return this.menuService.update(menuSendingType);
+    }
+
     @PostMapping(path = "/copy", produces = "application/json")
-    ResponseEntity<MenuType> copyMenu(@RequestBody MenuSendingType menuSendingType) {
+    ResponseEntity<MenuType> copy(@RequestBody MenuSendingType menuSendingType) {
         return this.menuService.copy(menuSendingType);
     }
 
