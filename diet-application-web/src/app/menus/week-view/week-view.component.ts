@@ -115,16 +115,34 @@ export class WeekViewComponent implements OnInit {
     return translateDayType(name);
   }
 
+  getFoodPropertiesWeekSummary(dishType: string, property: string, withLimits: boolean) {
+    if (this.mealListItemData == null)
+      return this.setLimitStatus(0, property, withLimits);
+
+    let meals = this.mealListItemData;
+
+    if (!withLimits) {
+      meals = meals.filter( meal => {
+        return meal.foodType == dishType;
+      });
+    }
+
+    let value = this.getFoodProperties(meals, property);
+
+    return this.setLimitStatus(value/7, property, withLimits);;
+  }
+
   getFoodPropertiesDaySummary(day: DayMeal, property: string) {
     if (day.mealList == null)
-      return this.setLimitStatus(0, property);
+      return this.setLimitStatus(0, property, true);
 
     let dayMeals = day.mealList;
     let meals = this.mealListItemData.filter( meal => {
       return dayMeals.includes(meal.id);
     });
 
-    return this.getFoodProperties(meals, property);
+    let value = this.getFoodProperties(meals, property);
+    return this.setLimitStatus(value, property, true);
   }
 
   getFoodProperties(meals: Meal[], property: string) {
@@ -137,7 +155,7 @@ export class WeekViewComponent implements OnInit {
         let grams = product.grams;
 
         let originProduct = this.productService.productList.find(p => {
-        return p.id == product.productId;
+          return p.id == product.productId;
         });
         if (originProduct == null) continue;
 
@@ -149,24 +167,34 @@ export class WeekViewComponent implements OnInit {
       }
     }
 
-    return this.setLimitStatus(value, property);
+    return value;
   }
 
-  setLimitStatus(value: number, property: string) {
-    if (this.menuItemData.id == null) return;
+  setLimitStatus(value: number, property: string, withLimits: boolean) {
+    if (this.menuItemData.id == null) return "";
+    let limit = 0;
+    let strValue = "";
+
     if (property == "energyValue") {
-      let energyLimit = this.menuItemData.energyLimit;
-      return "Kcal: " + value.toFixed(2) + "/" + energyLimit.toFixed(2);
+      limit = this.menuItemData.energyLimit;
+      strValue = "Kcal: ";
     } else if (property == "proteins") {
-      let proteinsLimit = this.menuItemData.proteinsLimit;
-      return "B: " + value.toFixed(2) + "/" + proteinsLimit.toFixed(2);
+      limit = this.menuItemData.proteinsLimit;
+      strValue = "B: ";
     } else if (property == "fats") {
-      let fatsLimit = this.menuItemData.fatsLimit;
-      return "T: " + value.toFixed(2) + "/" + fatsLimit.toFixed(2);
+      limit = this.menuItemData.fatsLimit;
+      strValue = "T: ";
     } else if (property == "carbohydrates") {
-      let carbohydratesLimit = this.menuItemData.carbohydratesLimit;
-      return "W: " + value.toFixed(2) + "/" + carbohydratesLimit.toFixed(2);
+      limit = this.menuItemData.carbohydratesLimit;
+      strValue = "W: ";
     }
+
+    if (withLimits) {
+      return strValue + value.toFixed(2) + "/" + limit.toFixed(2);
+    } else {
+      return strValue + value.toFixed(2);
+    }
+
   }
 
 }

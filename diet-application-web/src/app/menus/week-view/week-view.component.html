@@ -3,34 +3,79 @@
   <app-week-header [weekIndex]="weekIndex" [maxWeekIndex]="menuItemData.weekMealList.length" (weekIndexChanged)="swapWeek($event)"></app-week-header>
 
   <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
-    <div fxFlex="14%" *ngFor="let day of dayMealListItemData">
+    <div fxFlex="13%" *ngFor="let day of dayMealListItemData">
 
       <div class="mat-card-header-day-name">
         <h2>{{translateDayType(day.dayType)}}</h2>
       </div>
+    </div>
 
-      <div *ngFor="let dishType of menuItemData.foodTypes">
+    <div fxFlex="9%" >
+      <div class="mat-card-header-day-name">
+        <h2>Podsumowanie</h2>
+      </div>
+    </div>
+  </div>
 
+  <div *ngFor="let dishType of menuItemData.foodTypes">
+
+    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+      <div fxFlex="13%" *ngFor="let day of dayMealListItemData">
         <app-dish-type [typeName]="dishType"></app-dish-type>
+      </div>
+      <div fxFlex="9%" >
+        <app-dish-type [typeName]="dishType"></app-dish-type>
+      </div>
+    </div>
 
+    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+      <div fxFlex="13%" *ngFor="let day of dayMealListItemData">
         <div *ngFor="let meal of mealListItemData">
           <div *ngIf="meal.foodType === dishType && meal.dayMealId === day.id">
             <app-dish-summary [menuItemData]="menuItemData" [dayItem]="day" [mealItem]="meal" [daysList]="dayMealListItemData" (refreshItems)="refreshMealList()"></app-dish-summary>
           </div>
         </div>
-
-        <app-dish-add [menuId]="menuId" [dayId]="day.id" [menuItem]="menuItemData" [dishType]="dishType" (refreshItems)="refreshMealList()"></app-dish-add>
+      </div>
+      <div fxFlex="9%" >
+        <div class="container" fxLayoutGap="0.5%">
+          <div class ="summary">
+            <p><b>Średnia:</b></p>
+            <p>{{getFoodPropertiesWeekSummary(dishType, "energyValue", false)}}</p>
+            <p>{{getFoodPropertiesWeekSummary(dishType, "proteins", false)}}</p>
+            <p>{{getFoodPropertiesWeekSummary(dishType, "fats", false)}}</p>
+            <p>{{getFoodPropertiesWeekSummary(dishType, "carbohydrates", false)}}</p>
+          </div>
+        </div>
       </div>
     </div>
+
+    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+      <div fxFlex="13%" *ngFor="let day of dayMealListItemData">
+        <app-dish-add [menuId]="menuId" [dayId]="day.id" [menuItem]="menuItemData" [dishType]="dishType" (refreshItems)="refreshMealList()"></app-dish-add>
+      </div>
+      <div fxFlex="9%"></div>
+    </div>
+
   </div>
 
   <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%">
-    <div fxFlex="14%" *ngFor="let day of dayMealListItemData">
+    <div fxFlex="13%" *ngFor="let day of dayMealListItemData">
       <div class ="summary">
+        <p><b>Suma:</b></p>
         <p>{{getFoodPropertiesDaySummary(day, "energyValue")}}</p>
         <p>{{getFoodPropertiesDaySummary(day, "proteins")}}</p>
         <p>{{getFoodPropertiesDaySummary(day, "fats")}}</p>
         <p>{{getFoodPropertiesDaySummary(day, "carbohydrates")}}</p>
+      </div>
+    </div>
+
+    <div fxFlex="9%">
+      <div class ="summary">
+        <p><b>Średnia: </b></p>
+        <p>{{getFoodPropertiesWeekSummary(dishType, "energyValue", true)}}</p>
+        <p>{{getFoodPropertiesWeekSummary(dishType, "proteins", true)}}</p>
+        <p>{{getFoodPropertiesWeekSummary(dishType, "fats", true)}}</p>
+        <p>{{getFoodPropertiesWeekSummary(dishType, "carbohydrates", true)}}</p>
       </div>
     </div>
   </div>
