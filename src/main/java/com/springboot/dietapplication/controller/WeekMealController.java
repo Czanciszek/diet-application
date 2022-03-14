@@ -3,6 +3,7 @@ package com.springboot.dietapplication.controller;
 import com.springboot.dietapplication.model.type.WeekMealType;
 import com.springboot.dietapplication.service.WeekMealService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,11 @@ public class WeekMealController {
     @GetMapping(path = "/{weekMealId}")
     public WeekMealType getWeekMealById(@PathVariable("weekMealId") Long weekMealId) {
         return this.weekMealService.getWeekMealById(weekMealId);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    ResponseEntity<Void> delete(@PathVariable Long id) {
+        return this.weekMealService.delete(id);
     }
 
 }

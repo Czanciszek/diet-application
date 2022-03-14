@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Menu} from "../../model/menu";
 import {WeekMeal} from "../../model/week-meal";
 import {DayMealService} from "../../service/day-meal.service";
+import {NotificationService} from "../../service/notification.service";
 import {DayMeal} from "../../model/day-meal";
 import {translateDayType} from "../../material/helper/polish-translate";
 import {MealService} from "../../service/meal.service";
@@ -26,7 +27,8 @@ export class WeekViewComponent implements OnInit {
     private weekMealService: WeekMealService,
     private dayMealService: DayMealService,
     private mealService: MealService,
-    private productService: ProductService
+    private productService: ProductService,
+    private notificationService: NotificationService
   ) {};
 
   menuId: any = this.route.snapshot.paramMap.get("menu_id");
@@ -74,6 +76,24 @@ export class WeekViewComponent implements OnInit {
     this.weekIndex = newIndex;
     this.mealListItemData = [];
     this.refreshMealList();
+  }
+
+  deleteWeekMealOnIndex(index: number) {
+    let weekMealId = this.menuItemData.weekMealList[index];
+
+    this.weekMealService.deleteWeekMealById(weekMealId).subscribe(
+      result => {
+        this.notificationService.warn(":: Usunięto pomyślnie! ::");
+        this.weekIndex = (index > 0) ? (index - 1) : 0;
+        this.menuItemData = this.menuItemData.weekMealList.filter( id => {
+          return id != weekMealId;
+        });
+        this.mealListItemData = [];
+        this.getMenuDetails(this.menuId);
+      }, error => {
+        this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
+        this.refreshMealList();
+      });
   }
 
   refreshMealList() {

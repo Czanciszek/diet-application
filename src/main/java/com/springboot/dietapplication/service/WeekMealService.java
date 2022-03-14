@@ -62,17 +62,23 @@ public class WeekMealService {
         }
     }
 
-    public ResponseEntity<WeekMealType> delete(Long id) {
-        weekMealRepository.deleteById(id);
+    public ResponseEntity<Void> delete(Long id) {
+        Optional<PsqlWeekMeal> weekMeal = weekMealRepository.findById(id);
+        if (!weekMeal.isPresent()) return ResponseEntity.ok().build();
+        deleteWeekMeal(weekMeal.get());
         return ResponseEntity.ok().build();
     }
 
     public void deleteByMenuId(Long id) {
         List<PsqlWeekMeal> weekMeals = weekMealRepository.getPsqlWeekMealsByMenuId(id);
         for (PsqlWeekMeal weekMeal : weekMeals) {
-            dayMealService.deleteByWeekMealId(weekMeal.getId());
-            weekMealRepository.deleteById(weekMeal.getId());
+            deleteWeekMeal(weekMeal);
         }
+    }
+
+    public void deleteWeekMeal(PsqlWeekMeal weekMeal) {
+        dayMealService.deleteByWeekMealId(weekMeal.getId());
+        weekMealRepository.deleteById(weekMeal.getId());
     }
 
     private List<WeekMealType> convertLists(List<PsqlWeekMeal> weekMealList) {

@@ -1,6 +1,6 @@
 <div *ngIf="dataLoaded">
 
-  <app-week-header [weekIndex]="weekIndex" [maxWeekIndex]="menuItemData.weekMealList.length" (weekIndexChanged)="swapWeek($event)"></app-week-header>
+  <app-week-header *ngIf="menuItemData.weekMealList != null" [weekIndex]="weekIndex" [maxWeekIndex]="menuItemData.weekMealList.length" (weekIndexChanged)="swapWeek($event)" (weekMealDeleted)="deleteWeekMealOnIndex($event)" ></app-week-header>
 
   <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
     <div fxFlex="13%" *ngFor="let day of dayMealListItemData">
