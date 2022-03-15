@@ -1,22 +1,14 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {GlobalVariable} from "../global";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {RestapiService} from "./restapi.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DishService {
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      Authorization: 'Basic ' +
-        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)
-    })
-  };
-
   constructor(
-    private http: HttpClient
+    private restApiService: RestapiService
   ) { }
 
   dishList: any;
@@ -81,25 +73,24 @@ export class DishService {
   }
 
   getDishes() {
-    this.dishList = this.http.get(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes", this.httpOptions);
+    this.dishList = this.restApiService.get("dishes");
     return this.dishList;
   }
 
   copyDishToMenu(dish) {
-    return this.http.post(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "dishes/copyToMenu", dish, this.httpOptions);
+    return this.restApiService.post("dishes/copyToMenu", dish);
   }
 
   insertDish(dish) {
-    return this.http.post(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes", dish, this.httpOptions);
+    return this.restApiService.post("dishes", dish);
   }
 
   updateDish(dish) {
-    return this.http.put(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes/" + dish.id, dish, this.httpOptions);
+    return this.restApiService.put("dishes/" + dish.id, dish);
   }
 
   deleteDish(id: string) {
-    return this.http.delete(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "dishes/" + id, this.httpOptions);
+    return this.restApiService.delete("dishes/" + id);
   }
 
 }

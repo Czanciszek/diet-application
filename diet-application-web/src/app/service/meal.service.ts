@@ -1,21 +1,14 @@
 import { Injectable } from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {GlobalVariable} from "../global";
+import {RestapiService} from "./restapi.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MealService {
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      Authorization: 'Basic '+
-        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)})
-  };
-
   constructor(
-    private http: HttpClient
+    private restApiService: RestapiService
   ) { }
 
   form: FormGroup = new FormGroup({
@@ -63,27 +56,22 @@ export class MealService {
   }
 
   getMealListByWeekMealId(weekMealId) {
-    return this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "meals/list/" + weekMealId, this.httpOptions);
+    return this.restApiService.get("meals/list/" + weekMealId);
   }
 
   insertMeal(meal) {
-    return this.http.post(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "meals", meal, this.httpOptions);
+    return this.restApiService.post("meals", meal);
   }
 
   copyMeal(meal) {
-    return this.http.post(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "meals/copy", meal, this.httpOptions);
+    return this.restApiService.post("meals/copy", meal);
   }
 
   updateMeal(meal) {
-    return this.http.put(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "meals/" + meal.id, meal, this.httpOptions);
+    return this.restApiService.put("meals/" + meal.id, meal);
   }
 
   deleteMeal(id: string) {
-    return this.http.delete(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "meals/" + id, this.httpOptions);
+    return this.restApiService.delete( "meals/" + id);
   }
 }

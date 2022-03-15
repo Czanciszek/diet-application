@@ -59,7 +59,7 @@ public class PDFService {
                 makeMenuDishRecipes(document);
 
             if (generateMenuType.isGenerateShoppingList())
-             makeShoppingList(document);
+                makeShoppingList(document);
 
             document.save(file);
             document.close();
@@ -361,9 +361,11 @@ public class PDFService {
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
 
-        PDPageContentStream contentStream = setNewPage(document, false);
+        if (shoppingProductList.size() == 0) {
+            return;
+        }
 
-        if (shoppingProductList.size() == 0) return;
+        PDPageContentStream contentStream = setNewPage(document, false);
 
         // Display title
         writeText(contentStream, new Point(40, pageOffset), timesBold, 20,"Lista zakupów:");

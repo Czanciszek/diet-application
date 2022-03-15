@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {GlobalVariable} from "../global";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+
+import {RestapiService} from "./restapi.service";
+
 import {Product} from '../model/product';
 
 @Injectable({
@@ -9,17 +10,9 @@ import {Product} from '../model/product';
 })
 export class ProductService {
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      Authorization: 'Basic ' +
-        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)
-    })
-  };
-
   constructor(
-    private http: HttpClient
-  ) {
-  }
+    private restApiService: RestapiService
+  ) { }
 
   productList: Product[];
 
@@ -92,47 +85,34 @@ export class ProductService {
   }
 
   getProducts() {
-    return this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "products", this.httpOptions);
+    return this.restApiService.get("products");
   }
 
   getProductsByDishId(dishId) {
-    return this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "products/dishlist/" + dishId, this.httpOptions);
+    return this.restApiService.get("products/dishlist/" + dishId);
   }
 
   getCategories() {
-    return this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "categories", this.httpOptions);
+    return this.restApiService.get("categories");
   }
 
   getFilteredProducts(category: string, subcategory: string) {
     let categoryName = (category != null) ? category : "*ANY*";
     let subcategoryName = (subcategory != null) ? subcategory : "*ANY*";
-    return this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "products/" + categoryName + "/" + subcategoryName, this.httpOptions);
+
+    return this.restApiService.get( "products/" + categoryName + "/" + subcategoryName);
   }
 
   insertProduct(product) {
-    return this.http.post(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "products", product, this.httpOptions);
+    return this.restApiService.post("products", product);
   }
 
   updateProduct(product) {
-    return this.http.put(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "products/" + product.id, product, this.httpOptions);
+    return this.restApiService.put( "products/" + product.id, product);
   }
 
   deleteProduct(id: string) {
-    return this.http.delete(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "products/" + id, this.httpOptions);
+    return this.restApiService.delete( "products/" + id);
   }
 
   populateForm(product) {
