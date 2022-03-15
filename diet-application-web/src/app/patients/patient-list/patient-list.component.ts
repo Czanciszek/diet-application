@@ -18,7 +18,7 @@ export class PatientListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private service: PatientService,
+    private patientService: PatientService,
     private dialog: MatDialog,
     private notificationService: NotificationService
   ) { }
@@ -34,11 +34,11 @@ export class PatientListComponent implements OnInit {
   }
 
   getPatients() {
-    this.service.getPatients().subscribe(
+    this.patientService.getPatients().subscribe(
       (data: Patient[] ) => {
 
-        let array = [...data];
-        this.listData = new MatTableDataSource(array);
+        this.patientService.patientList = [...data];
+        this.listData = new MatTableDataSource(this.patientService.patientList);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
 
@@ -61,7 +61,7 @@ export class PatientListComponent implements OnInit {
   }
 
   onCreate() {
-    this.service.initializeFormGroup();
+    this.patientService.initializeFormGroup();
     this.openDialog();
   }
 
@@ -70,7 +70,7 @@ export class PatientListComponent implements OnInit {
   }
 
   onEdit(patient) {
-    this.service.populateForm(patient);
+    this.patientService.populateForm(patient);
     this.openDialog();
   }
 
@@ -88,7 +88,7 @@ export class PatientListComponent implements OnInit {
 
   onDelete(patientId) {
     if (confirm("Are you sure to delete this patient?")) {
-      this.service.deletePatient(patientId).subscribe( result => {
+      this.patientService.deletePatient(patientId).subscribe( result => {
 
         let listDataProduct = this.listData.data.find( x => x.id == patientId);
         let index = this.listData.data.indexOf(listDataProduct);

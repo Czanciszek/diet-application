@@ -50,8 +50,7 @@ export class PatientService {
   }
 
   getPatients() {
-    this.patientList = this.restApiService.get("patients");
-    return this.patientList;
+    return this.restApiService.get("patients");
   }
 
   getPatientById(patientId) {
