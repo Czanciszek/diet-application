@@ -143,7 +143,7 @@ public class PDFService {
                 dateLine += " - " + date;
             }
 
-            writeText(contentStream, new Point(40, pageOffset), timesBold, 12, dateLine);
+            writeText(contentStream, new Point(40, pageOffset), timesBold, 14, dateLine);
             contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
 
             dayEntry.getValue().sort(Comparator.comparingLong(PsqlMenuProduct::getFoodTypeId));
