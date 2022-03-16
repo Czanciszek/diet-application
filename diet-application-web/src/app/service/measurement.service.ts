@@ -65,7 +65,7 @@ export class MeasurementService {
   }
 
   getMeasurementsByPatientId(patientId) {
-    this.measurementList = this.restApiService.get( "measurements/patient/" + patientId).pipe();
+    this.measurementList = this.restApiService.get( "measurements/patient/" + patientId);
     return this.measurementList;
   }
 

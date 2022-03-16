@@ -46,11 +46,11 @@ export class MenuService {
   menuList: any;
 
   getMenusByPatientId(patientId): Observable<Menu[]> {
-    return this.restApiService.get<Menu[]>("menus/patient/" + patientId).pipe();
+    return this.restApiService.get<Menu[]>("menus/patient/" + patientId);
   }
 
   getMenuById(menuId): Observable<Menu[]> {
-    return this.restApiService.get<Menu[]>("menus/" + menuId).pipe();
+    return this.restApiService.get<Menu[]>("menus/" + menuId);
   }
 
   insertMenu(menu) {
