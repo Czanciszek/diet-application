@@ -46,7 +46,7 @@ public class MealController {
     //TODO: Consider deleting mealId from path as looks unnecessary
     @PutMapping(path = "/{mealId}", produces = "application/json")
     ResponseEntity<MealType> update(@RequestBody MealType meal) {
-        boolean isMealCopied = !meal.getOriginMealId().equals(meal.getId());
+        boolean isMealCopied = meal.getOriginMealId() == null || !meal.getOriginMealId().equals(meal.getId());
         this.mealService.insert(meal, isMealCopied);
         return ResponseEntity.ok().body(meal);
     }

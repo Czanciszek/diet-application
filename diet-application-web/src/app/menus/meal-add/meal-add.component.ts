@@ -265,4 +265,12 @@ export class MealAddComponent implements OnInit {
     this.portionCurrentValue = newPortionValue;
   }
 
+  addToRecipeList(mealId) {
+    this.service.form.get('originMealId').patchValue(mealId);
+  }
+
+  deleteFromRecipeList() {
+    this.service.form.get('originMealId').patchValue("");
+  }
+
 }

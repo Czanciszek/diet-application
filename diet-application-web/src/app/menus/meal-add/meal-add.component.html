@@ -77,6 +77,9 @@
               <mat-label>Ilość porcji: {{service.form.controls['portions'].value}}</mat-label>
             </div>
           </mat-grid-tile>
+
+          <mat-grid-tile colspan="2">
+          </mat-grid-tile>
         </div>
 
         <div *ngIf="!withPortions">
@@ -88,6 +91,25 @@
                 </div>
               </mat-form-field>
             </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile colspan="4">
+          </mat-grid-tile>
+        </div>
+
+        <div *ngIf="service.form.controls['id'].value != null && service.form.controls['id'].value != service.form.controls['originMealId'].value">
+          <mat-grid-tile colspan="2">
+            <button mat-raised-button type="button" (click)="addToRecipeList(service.form.controls['id'].value)">
+              <mat-icon>add</mat-icon>Dodaj do listy przepisów
+            </button>
+          </mat-grid-tile>
+        </div>
+
+        <div *ngIf="service.form.controls['id'].value != null && service.form.controls['id'].value == service.form.controls['originMealId'].value">
+          <mat-grid-tile colspan="2">
+            <button mat-raised-button type="button" (click)="deleteFromRecipeList()">
+              <mat-icon>clear</mat-icon>Usuń z listy przepisów
+            </button>
           </mat-grid-tile>
         </div>
 
