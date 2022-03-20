@@ -3,10 +3,13 @@ package com.springboot.dietapplication.model.psql.patient;
 import com.springboot.dietapplication.model.type.MeasurementType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "measurements")
-public class PsqlMeasurement {
+public class PsqlMeasurement implements Serializable {
+
+    private static final long serialVersionUID = -6059912859284630040L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

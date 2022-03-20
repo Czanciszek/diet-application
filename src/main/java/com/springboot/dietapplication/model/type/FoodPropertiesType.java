@@ -6,9 +6,12 @@ import com.springboot.dietapplication.model.psql.properties.PsqlFoodProperties;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class FoodPropertiesType {
+public class FoodPropertiesType implements Serializable {
+
+    private static final long serialVersionUID = 8958334201429822540L;
 
     @Id
     private Long id;

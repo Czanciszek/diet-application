@@ -8,6 +8,8 @@ import java.util.Comparator;
 @IdClass(PsqlMenuProductKey.class)
 public class PsqlMenuProduct implements Serializable, Comparator<Long> {
 
+    private static final long serialVersionUID = -4691174861219232915L;
+
     @Id
     @Column(name = "product_id")
     private Long productId;

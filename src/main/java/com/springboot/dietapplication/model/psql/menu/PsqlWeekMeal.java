@@ -9,6 +9,8 @@ import java.io.Serializable;
 @Table(name = "week_meals")
 public class PsqlWeekMeal implements Serializable {
 
+    private static final long serialVersionUID = 5302846530192767701L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

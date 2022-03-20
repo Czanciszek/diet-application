@@ -6,6 +6,8 @@ import java.io.Serializable;
 @Entity
 public class PsqlProductFoodProperties implements Serializable {
 
+    private static final long serialVersionUID = 733139277397689916L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

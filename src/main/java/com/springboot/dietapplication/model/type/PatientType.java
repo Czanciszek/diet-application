@@ -2,10 +2,13 @@ package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class PatientType {
+public class PatientType implements Serializable {
+
+    private static final long serialVersionUID = -8415223607958394612L;
 
     private Long id;
     private String name;

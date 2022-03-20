@@ -4,11 +4,14 @@ import com.springboot.dietapplication.model.type.AllergensType;
 import com.springboot.dietapplication.model.type.PatientType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "patients")
-public class PsqlPatient {
+public class PsqlPatient implements Serializable {
+
+    private static final long serialVersionUID = 6549760342516106979L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

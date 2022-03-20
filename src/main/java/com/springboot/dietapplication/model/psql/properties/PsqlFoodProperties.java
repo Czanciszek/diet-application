@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Table(name = "food_properties")
 public class PsqlFoodProperties implements Serializable {
 
+    private static final long serialVersionUID = -5866604759669794184L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
