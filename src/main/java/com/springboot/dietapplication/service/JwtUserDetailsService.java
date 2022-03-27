@@ -2,17 +2,18 @@ package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.user.PsqlUser;
 import com.springboot.dietapplication.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Component
-public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+public class JwtUserDetailsService implements UserDetailsService {
 
     @Autowired
     UserRepository psqlUserRepository;
