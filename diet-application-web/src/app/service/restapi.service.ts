@@ -19,11 +19,11 @@ export class RestapiService {
 
   public login(username:string, password:string) {
     const headers = new HttpHeaders({Authorization: 'Basic '+ btoa(username + ":" + password)});
-    return this.http.get("http://localhost:8080/auth/login", {headers, responseType:'text' as 'json'});
+    return this.http.get("http://192.168.0.94:8080/auth/login", {headers, responseType:'text' as 'json'});
   }
 
   public getUsers() {
-    return this.http.get("http://localhost:8080/api/v1/users", this.httpOptions);
+    return this.http.get("http://192.168.0.94:8080/api/v1/users", this.httpOptions);
   }
 
 
