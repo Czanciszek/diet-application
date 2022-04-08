@@ -1,21 +1,14 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {GlobalVariable} from "../global";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {RestapiService} from "./restapi.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatientService {
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      Authorization: 'Basic '+
-        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)})
-  };
-
   constructor(
-    private http: HttpClient
+    private restApiService: RestapiService
   ) { }
 
   patientList: any;
@@ -52,44 +45,31 @@ export class PatientService {
     })
   }
 
+  populateForm(patient) {
+    this.form.setValue(patient);
+  }
+
   getPatients() {
-    this.patientList = this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "patients",
-      this.httpOptions);
-    return this.patientList;
+    return this.restApiService.get("patients");
   }
 
   getPatientById(patientId) {
-    this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "patients/" + patientId, this.httpOptions)
-      .toPromise().then(
-      result => {
-        this.populateForm(result);
-      }
-    );
+    this.restApiService
+    .get("patients/" + patientId)
+    .toPromise().then( result => {
+      this.populateForm(result);
+    });
   }
 
   insertPatient(patient) {
-    return this.http.post(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "patients", patient, this.httpOptions);
+    return this.restApiService.post("patients", patient);
   }
 
   updatePatient(patient) {
-    return this.http.put(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "patients/" + patient.id, patient, this.httpOptions);
+    return this.restApiService.put("patients/" + patient.id, patient);
   }
 
   deletePatient(id: string) {
-    return this.http.delete(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "patients/" + id, this.httpOptions);
-  }
-
-  populateForm(patient) {
-    this.form.setValue(patient);
+    return this.restApiService.delete("patients/" + id);
   }
 }

@@ -2,9 +2,12 @@ package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.psql.menu.PsqlDayMeal;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class DayMealType {
+public class DayMealType implements Serializable {
+
+    private static final long serialVersionUID = 7516939376329349749L;
 
     private Long id;
 

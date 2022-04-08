@@ -1,23 +1,16 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {GlobalVariable} from "../global";
 import { FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
 import {Menu} from '../model/menu';
+import {RestapiService} from "./restapi.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MenuService {
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      Authorization: 'Basic '+
-        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)})
-  };
-
   constructor(
-    private http: HttpClient
+    private restApiService: RestapiService
   ) { }
 
   form: FormGroup = new FormGroup({
@@ -53,33 +46,26 @@ export class MenuService {
   menuList: any;
 
   getMenusByPatientId(patientId): Observable<Menu[]> {
-    return this.http.get<Menu[]>(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "menus/patient/" + patientId, this.httpOptions)
-      .pipe();
+    return this.restApiService.get<Menu[]>("menus/patient/" + patientId);
   }
 
   getMenuById(menuId): Observable<Menu[]> {
-    return this.http.get<Menu[]>(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "menus/" + menuId, this.httpOptions)
-      .pipe();
+    return this.restApiService.get<Menu[]>("menus/" + menuId);
   }
 
   insertMenu(menu) {
-    return this.http.post(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "menus", menu, this.httpOptions);
-  }
-
-  updateMenu(menu) {
-    return this.http.put(GlobalVariable.SERVER_ADDRESS +
-          GlobalVariable.DATABASE_SERVICE + "menus/" + menu.id, menu, this.httpOptions);
+    return this.restApiService.post("menus", menu);
   }
 
   copyMenu(menu) {
-    return this.http.post(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "menus/copy", menu, this.httpOptions);
+    return this.restApiService.post("menus/copy", menu);
+  }
+
+  updateMenu(menu) {
+    return this.restApiService.put("menus/" + menu.id, menu);
   }
 
   deleteMenu(id: string) {
-      return this.http.delete(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "menus/" + id, this.httpOptions);
+    return this.restApiService.delete("menus/" + id);
   }
 }

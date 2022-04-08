@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Table(name = "amount_types")
 public class PsqlAmountType implements Serializable {
 
+    private static final long serialVersionUID = -668880590166875609L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -9,6 +9,8 @@ import java.io.Serializable;
 @Table(name = "menus")
 public class PsqlMenu implements Serializable {
 
+    private static final long serialVersionUID = -5365981026625565450L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

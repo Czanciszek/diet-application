@@ -1,10 +1,13 @@
 package com.springboot.dietapplication.model.psql.product;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "categories")
-public class PsqlCategory {
+public class PsqlCategory implements Serializable {
+
+    private static final long serialVersionUID = -1545056567489664407L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

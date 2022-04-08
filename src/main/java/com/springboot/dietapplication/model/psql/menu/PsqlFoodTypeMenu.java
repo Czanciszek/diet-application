@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Table(name = "food_types_menus")
 public class PsqlFoodTypeMenu implements Serializable {
 
+    private static final long serialVersionUID = -6122707058926237958L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

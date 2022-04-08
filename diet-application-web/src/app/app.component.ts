@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {GlobalVariable} from "./global";
+import {LocalStorageService} from "./service/local-storage.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -10,15 +12,14 @@ export class AppComponent implements OnInit {
   title = 'app';
 
   currentUserName = GlobalVariable.CURRENT_USER_LOGIN;
-  loginPage = false;
 
   constructor(
+    private router: Router,
+    private localStorageService: LocalStorageService,
   ) { }
 
   ngOnInit(): void {
-    if (window.location.href == "http://localhost:4200/login") {
-      this.loginPage = true;
-    }
+
   }
 
   w3_open() {
@@ -27,6 +28,12 @@ export class AppComponent implements OnInit {
 
   w3_close() {
     document.getElementById("mySidebar").style.display = "none";
+  }
+
+  logout() {
+    this.w3_close();
+    this.localStorageService.remove("token");
+    this.router.navigate(["/"]);
   }
 }
 

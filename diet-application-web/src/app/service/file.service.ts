@@ -3,22 +3,15 @@ import {HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest} from "@angu
 import { FormControl, FormGroup, Validators} from "@angular/forms";
 import {GlobalVariable} from "../global";
 import {Observable} from "rxjs";
+import {RestapiService} from "../service/restapi.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileService {
 
-    headers = new HttpHeaders({
-      Authorization: 'Basic ' + btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)
-    });
-
-    httpOptions = {
-      headers: this.headers
-    };
-
   constructor(
-    private http: HttpClient
+    private apiService: RestapiService
   ) { }
 
   form: FormGroup = new FormGroup({
@@ -39,17 +32,12 @@ export class FileService {
     })
   }
 
-  uploadFile(file: File): Observable<HttpEvent<any>> {
+  uploadFile(file: File) {
 
     let formData = new FormData();
     formData.append('upload', file);
 
-    const url = GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "files/uploadProducts"
-    const req = new HttpRequest('POST', url, formData, this.httpOptions);
-    return this.http.request(req);
-
+    return this.apiService.post("files/uploadProducts", formData);
   }
 
   downloadFile(data: any, type: string) {
@@ -57,15 +45,16 @@ export class FileService {
      let url = window.URL.createObjectURL(blob);
      let pwa = window.open(url);
      if (!pwa || pwa.closed || typeof pwa.closed == 'undefined') {
-         alert( 'Please disable your Pop-up blocker and try again.');
+         alert('Please disable your Pop-up blocker and try again.');
      }
   }
 
-  getPdfFile(): any {
-      this.http.post(GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + "files/menu/", this.form.value,
-      { responseType: 'arraybuffer', headers: this.headers}).subscribe(
-          (response) => {
-            this.downloadFile(response, "application/pdf");
+  getPdfFile() {
+    return this.apiService
+      .post("files/menu/",  this.form.value, 'arraybuffer')
+      .subscribe(
+        (response) => {
+          this.downloadFile(response, "application/pdf");
       });
   }
 

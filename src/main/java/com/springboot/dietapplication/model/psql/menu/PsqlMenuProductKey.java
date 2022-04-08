@@ -5,6 +5,8 @@ import java.util.Objects;
 
 public class PsqlMenuProductKey implements Serializable {
 
+    private static final long serialVersionUID = -2801395378838907004L;
+
     private Long productId;
     private Long mealId;
     private Long menuId;

@@ -1,22 +1,15 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {GlobalVariable} from "../global";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Measurement} from "../model/measurement";
+import {RestapiService} from "./restapi.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MeasurementService {
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      Authorization: 'Basic '+
-        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)})
-  };
-
   constructor(
-    private http: HttpClient
+    private restApiService: RestapiService
   ) { }
 
   patientId: '';
@@ -68,22 +61,16 @@ export class MeasurementService {
   }
 
   getMeasurementsById(measurementId) {
-    return this.http.get<Measurement>(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "measurements/" + measurementId, this.httpOptions);
+    return this.restApiService.get<Measurement>("measurements/" + measurementId);
   }
 
   getMeasurementsByPatientId(patientId) {
-    this.measurementList = this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "measurements/patient/" + patientId, this.httpOptions).pipe();
+    this.measurementList = this.restApiService.get( "measurements/patient/" + patientId);
     return this.measurementList;
   }
 
   insertMeasurement(measurement) {
-    return this.http.post(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE +
-      "measurements", measurement, this.httpOptions);
+    return this.restApiService.post("measurements", measurement);
   }
 
   populateForm(measurement) {

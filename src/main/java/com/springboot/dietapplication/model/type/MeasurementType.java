@@ -2,7 +2,11 @@ package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.psql.patient.PsqlMeasurement;
 
-public class MeasurementType {
+import java.io.Serializable;
+
+public class MeasurementType implements Serializable {
+
+    private static final long serialVersionUID = 5648470294571287883L;
 
     private Long id;
     private Long patientId;

@@ -1,25 +1,17 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {GlobalVariable} from "../global";
+import {RestapiService} from "./restapi.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeekMealService {
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      Authorization: 'Basic '+
-        btoa(GlobalVariable.CURRENT_USER_LOGIN + ":" + GlobalVariable.CURRENT_USER_PASSWORD)})
-  };
-
   constructor(
-    private http: HttpClient
+    private restApiService: RestapiService
   ) { }
 
   getWeekMealById(weekMealId) {
-    return this.http.get(GlobalVariable.SERVER_ADDRESS +
-      GlobalVariable.DATABASE_SERVICE + "weekmeals/" + weekMealId, this.httpOptions);
+    return this.restApiService.get("weekmeals/" + weekMealId);
   }
 
   deleteWeekMealById(weekMealId) {

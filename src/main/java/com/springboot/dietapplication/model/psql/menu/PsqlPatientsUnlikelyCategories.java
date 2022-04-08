@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Table(name = "patients_unlikely_categories")
 public class PsqlPatientsUnlikelyCategories implements Serializable {
 
+    private static final long serialVersionUID = 7691073841493970210L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

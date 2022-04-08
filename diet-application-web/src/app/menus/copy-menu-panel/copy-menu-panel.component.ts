@@ -37,7 +37,8 @@ export class CopyMenuPanelComponent implements OnInit {
     getPatients() {
       this.patientService.getPatients().subscribe(
         (data: Patient[] ) => {
-          this.patientList = [...data];
+          this.patientService.patientList = [...data];
+          this.patientList = this.patientService.patientList;
         });
     }
 

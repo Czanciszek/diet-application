@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Table(name = "products")
 public class PsqlProduct implements Serializable {
 
+    private static final long serialVersionUID = 1019041668421449565L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -9,6 +9,7 @@ import java.io.Serializable;
 @Table(name = "day_meals")
 public class PsqlDayMeal implements Serializable {
 
+    private static final long serialVersionUID = -146058555964495441L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
