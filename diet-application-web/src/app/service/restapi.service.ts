@@ -16,10 +16,10 @@ export class RestapiService {
     private router: Router
   ) { }
 
-  loginHeaders(username: string, password: string) {
+  loginHeaders(encryptedAuth: string) {
     return {
       headers: new HttpHeaders({
-        Authorization: btoa(username + ":" + password)
+        AuthEncrypt: encryptedAuth
       }),
       responseType: 'text' as 'json'
     };
@@ -35,8 +35,8 @@ export class RestapiService {
     };
   }
 
-  public login(username:string, password:string) {
-    return this.http.get("http://192.168.0.94:8080/auth/login", this.loginHeaders(username, password));
+  public login(encryptedAuth:string) {
+    return this.http.get(GlobalVariable.SERVER_ADDRESS + "auth/login", this.loginHeaders(encryptedAuth));
   }
 
   public get<T>(path: string): Observable<T> {
