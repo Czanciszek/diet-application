@@ -9,6 +9,9 @@
 # dependencies
 /node_modules
 
+# config
+/package-lock.json
+
 # IDEs and editors
 /.idea
 .project
