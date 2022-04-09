@@ -71,13 +71,11 @@ export class RestapiService {
   observeResponse(observable) {
     observable
       .subscribe(
-        (value) => {
-          console.log("OBSERVABLE OK:", observable);
-      },
-      error => {
-        this.handleError(error);
-      }
-    );
+        (value) => { },
+        error => {
+          this.handleError(error);
+        }
+      );
   }
 
   handleError(error) {
