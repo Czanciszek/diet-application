@@ -25,18 +25,12 @@
     "@angular/platform-browser-dynamic": "^10.0.3",
     "@angular/router": "^10.0.3",
     "core-js": "^2.4.1",
-    "jsencrypt": "2.3.1",
-    "zone.js": "^0.10.3"
+    "jsencrypt": "2.3.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1002.0",
     "@angular/compiler-cli": "^10.0.3",
     "@angular/language-service": "^10.0.3",
-    "@types/jasmine": "~2.8.3",
-    "@types/jasminewd2": "~2.0.2",
-    "jasmine-core": "~2.8.0",
-    "jasmine-spec-reporter": "~4.2.1",
-    "protractor": "^7.0.0",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
     "typescript": "3.9.4"
