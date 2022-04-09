@@ -15,8 +15,6 @@ export class WeekMealService {
   }
 
   deleteWeekMealById(weekMealId) {
-    return this.http.delete(GlobalVariable.SERVER_ADDRESS +
-          GlobalVariable.DATABASE_SERVICE +
-          "weekmeals/" + weekMealId, this.httpOptions);
+    return this.restApiService.delete("weekmeals/" + weekMealId);
   }
 }
