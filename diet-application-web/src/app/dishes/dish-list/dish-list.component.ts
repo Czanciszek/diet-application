@@ -21,7 +21,7 @@ export class DishListComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DishListComponent>,
     private dialog: MatDialog,
-    private service: DishService,
+    private dishService: DishService,
     private notificationService: NotificationService,
   ) { }
 
@@ -43,7 +43,7 @@ export class DishListComponent implements OnInit {
   }
 
   getDishList() {
-    this.service.getDishes().subscribe(
+    this.dishService.getDishes().subscribe(
       (data: Dish[]) => {
         this.fetchResults(data);
       });
@@ -74,17 +74,17 @@ export class DishListComponent implements OnInit {
     if (this.menuId != null) {
       this.addNewDishToMenu();
     } else {
-      (<FormArray>this.service.form.get('products')).push(this.service.addProductFormGroup());
-      this.service.initializeFormGroup();
+      (<FormArray>this.dishService.form.get('products')).push(this.dishService.addProductFormGroup());
+      this.dishService.initializeFormGroup();
       this.openEditDishDialog();
     }
   }
 
   onEdit(dish) {
     for (const product of dish.products) {
-      (<FormArray>this.service.form.get('products')).push(this.service.addProductFormGroup());
+      (<FormArray>this.dishService.form.get('products')).push(this.dishService.addProductFormGroup());
     }
-    this.service.populateForm(dish);
+    this.dishService.populateForm(dish);
     this.openEditDishDialog();
   }
 
@@ -121,14 +121,14 @@ export class DishListComponent implements OnInit {
   }
 
   copyDishToMenu(dish) {
-    this.service.copyDishToMenu(dish).subscribe(result => {
+    this.dishService.copyDishToMenu(dish).subscribe(result => {
       this.fetchDishData();
     });
   }
 
   onDelete(dishId) {
     if (confirm("Na pewno chcesz usunąć potrawę?")) {
-      this.service.deleteDish(dishId).subscribe( result => {
+      this.dishService.deleteDish(dishId).subscribe( result => {
 
         let listDataDish = this.listData.data.find( x => x.id == dishId);
         let index = this.listData.data.indexOf(listDataDish);

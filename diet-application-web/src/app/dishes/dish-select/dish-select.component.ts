@@ -15,7 +15,7 @@ import {Dish} from "../../model/dish";
 export class DishSelectComponent implements OnInit {
 
   constructor(
-    private service: DishService,
+    private dishService: DishService,
     public dialogRef: MatDialogRef<DishSelectComponent>,
   ) { }
 
@@ -44,7 +44,7 @@ export class DishSelectComponent implements OnInit {
   }
 
   getDishList() {
-    this.service.getDishes().subscribe(
+    this.dishService.getDishes().subscribe(
       (data: Dish[]) => {
         this.fetchResults(data);
       });

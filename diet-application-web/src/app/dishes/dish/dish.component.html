@@ -1,14 +1,14 @@
 <div class="container">
   <mat-toolbar>
     <span class="fill-remaining-space"></span>
-    <span>{{service.form.controls['id'].value?"Edytuj Potrawę":"Nowa Potrawa"}}</span>
+    <span>{{dishForm.controls['id'].value?"Edytuj Potrawę":"Nowa Potrawa"}}</span>
     <span class="fill-remaining-space"></span>
     <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
   </mat-toolbar>
 </div>
 
 <mat-dialog-content>
-  <form [formGroup]="service.form" class="normal-form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="dishForm" class="normal-form" (ngSubmit)="onSubmit()">
     <mat-grid-list cols="8" rowHeight="90px">
       <mat-grid-tile colspan="4">
         <div class="control-container">
@@ -17,8 +17,8 @@
             <div class="add-bottom-padding">
               <input formControlName="name" matInput placeholder="Nazwa potrawy*" autocomplete="off">
             </div>
-            <mat-error *ngIf="service.form.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
-            <mat-error *ngIf="service.form.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
+            <mat-error *ngIf="dishForm.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
+            <mat-error *ngIf="dishForm.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -37,7 +37,7 @@
       </mat-grid-tile>
       <mat-grid-tile>
         <div class="control-container add-slider-padding">
-          <mat-label>Ilość porcji: {{service.form.controls['portions'].value}}</mat-label>
+          <mat-label>Ilość porcji: {{dishForm.controls['portions'].value}}</mat-label>
         </div>
       </mat-grid-tile>
       <mat-grid-tile colspan="2">
@@ -63,7 +63,7 @@
       </mat-dialog-content>
     </mat-grid-list>
 
-    <div formArrayName="products" *ngFor="let product of service.form.get('products').controls; let i = index">
+    <div formArrayName="products" *ngFor="let product of dishForm.get('products')['controls']; let i = index">
       <div [formGroupName]="i">
         <mat-grid-list cols="12" rowHeight="60px">
           <mat-grid-tile>
@@ -111,7 +111,7 @@
           <mat-grid-tile colspan="3">
             <div class="control-container">
               <div class="add-bottom-padding">
-                <div *ngIf="service.form.get('products').value.length > 0">
+                <div *ngIf="dishForm.get('products').value.length > 0">
                   {{getProductSummary(i)}}
                 </div>
               </div>
@@ -120,7 +120,7 @@
 
           <mat-grid-tile>
             <div class="control-container">
-              <div class="add-bottom-padding" *ngIf="service.form.get('products').length>1">
+              <div class="add-bottom-padding" *ngIf="dishForm.get('products').length>1">
                 <button mat-icon-button type="button" (click)="onProductDeleteButtonClick(i)"><mat-icon>clear</mat-icon></button>
               </div>
             </div>
@@ -143,7 +143,7 @@
       <mat-grid-tile>
         <div class="control-container">
           <div class="button-row">
-            <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Zapisz</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="dishForm.invalid">Zapisz</button>
             <button mat-raised-button color="warn" type="button" (click)="onClear()">Wyczyść</button>
           </div>
         </div>

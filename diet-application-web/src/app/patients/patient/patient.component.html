@@ -3,19 +3,19 @@
 <div class="container">
   <mat-card class="patient-card">
     <mat-card-header>
-      <mat-card-title>Imię i nazwisko: {{service.form.controls['name'].value}}</mat-card-title>
-      <mat-card-subtitle>Adres e-mail: {{service.form.controls['email'].value}}</mat-card-subtitle>
-      <mat-card-subtitle>Nr kontaktowy: {{service.form.controls['numberPhone'].value}}</mat-card-subtitle>
+      <mat-card-title>Imię i nazwisko: {{patientServiceForm.controls['name'].value}}</mat-card-title>
+      <mat-card-subtitle>Adres e-mail: {{patientServiceForm.controls['email'].value}}</mat-card-subtitle>
+      <mat-card-subtitle>Nr kontaktowy: {{patientServiceForm.controls['numberPhone'].value}}</mat-card-subtitle>
 
     </mat-card-header>
     <mat-card-content>
       <h3>Cel dietetyczny:</h3>
       <p>
-        {{service.form.controls['dietaryPurpose'].value}}
+        {{patientServiceForm.controls['dietaryPurpose'].value}}
       </p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button (click)="onEnterMeasurements(this.service.form.controls['id'].value)">Pomiary ciała</button>
+      <button mat-button (click)="onEnterMeasurements()">Pomiary ciała</button>
     </mat-card-actions>
   </mat-card>
 </div>

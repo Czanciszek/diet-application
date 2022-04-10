@@ -1,13 +1,13 @@
 <div class="container">
   <mat-toolbar>
     <span class="fill-remaining-space"></span>
-    <span>{{service.form.controls['id'].value?"Edytuj produkt":"Nowy Produkt"}}</span>
+    <span>{{productServiceForm.controls['id'].value?"Edytuj produkt":"Nowy Produkt"}}</span>
     <span class="fill-remaining-space"></span>
     <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
   </mat-toolbar>
 </div>
 
-<form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
+<form [formGroup]="productServiceForm" class="normal-form" (submit)="onSubmit()">
   <mat-grid-list cols="7" rowHeight="70px">
     <mat-grid-tile colspan="2">
       <div class="control-container">
@@ -18,7 +18,7 @@
                 <mat-option value="{{category}}">{{category}}</mat-option>
               </ng-container>
             </mat-select>
-            <mat-error *ngIf="service.form.controls['category'].errors?.required">Pole wymagane</mat-error>
+            <mat-error *ngIf="productServiceForm.controls['category'].errors?.required">Pole wymagane</mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -32,7 +32,7 @@
                 <mat-option value="{{subcategory}}">{{subcategory}}</mat-option>
               </ng-container>
             </mat-select>
-            <mat-error *ngIf="service.form.controls['subcategory'].errors?.required">Pole wymagane</mat-error>
+            <mat-error *ngIf="productServiceForm.controls['subcategory'].errors?.required">Pole wymagane</mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -43,8 +43,8 @@
           <input type="hidden" formControlName="id">
           <mat-form-field class="long-form-field">
             <input formControlName="name" matInput placeholder="Nazwa produktu*" autocomplete="off">
-            <mat-error *ngIf="service.form.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
-            <mat-error *ngIf="service.form.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
+            <mat-error *ngIf="productServiceForm.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
+            <mat-error *ngIf="productServiceForm.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -184,7 +184,7 @@
           <mat-checkbox formControlName="gluten">Gluten</mat-checkbox>
         </div>
         <div class="button-row">
-          <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Zapisz</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="productServiceForm.invalid">Zapisz</button>
           <button mat-raised-button color="warn" (click)="onClear()">Wyczyść</button>
         </div>
       </div>

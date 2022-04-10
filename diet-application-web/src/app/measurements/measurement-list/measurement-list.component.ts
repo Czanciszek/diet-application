@@ -12,10 +12,13 @@ import {PatientService} from "../../service/patient.service";
 export class MeasurementListComponent implements OnInit {
 
   constructor(
-    private service: MeasurementService,
+    private measurementService: MeasurementService,
     private patientService: PatientService,
     private dialogRef: MatDialogRef<MeasurementListComponent>
   ) { }
+
+  measurementForm = this.measurementService.form;
+  measurementKeywords = this.measurementService.measurementKeywords;
 
   startDate = new Date();
 
@@ -30,7 +33,7 @@ export class MeasurementListComponent implements OnInit {
   }
 
   getPatientsMeasurements() {
-    this.service.getMeasurementsByPatientId(this.service.patientId)
+    this.measurementService.getMeasurementsByPatientId(this.measurementService.patientId)
       .subscribe(
         list => {
           let array = list.map(item => {
@@ -70,15 +73,15 @@ export class MeasurementListComponent implements OnInit {
           }
 
           this.showTable = true;
-          this.objectKeys = Object.keys(this.service.form.value);
+          this.objectKeys = Object.keys(this.measurementService.form.value);
         });
   }
 
   onSubmit() {
-    if (this.service.form.valid) {
-      this.service.form.get("patientId").patchValue(this.service.patientId);
+    if (this.measurementService.form.valid) {
+      this.measurementService.form.get("patientId").patchValue(this.measurementService.patientId);
       this.showNewMeasurement = false;
-      this.service.insertMeasurement(this.service.form.value).subscribe( result => {
+      this.measurementService.insertMeasurement(this.measurementService.form.value).subscribe( result => {
         this.getPatientsMeasurements();
         this.onClear();
       });
@@ -86,8 +89,8 @@ export class MeasurementListComponent implements OnInit {
   }
 
   onClear() {
-    this.service.form.reset();
-    this.service.initializeFormGroup();
+    this.measurementService.form.reset();
+    this.measurementService.initializeFormGroup();
   }
 
   onClose() {

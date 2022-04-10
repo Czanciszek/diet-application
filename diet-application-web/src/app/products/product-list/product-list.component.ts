@@ -17,7 +17,7 @@ import {Product} from "../../model/product";
 export class ProductListComponent implements OnInit {
 
   constructor(
-    private service: ProductService,
+    private productService: ProductService,
     private fileService: FileService,
     private dialog: MatDialog,
     private notificationService: NotificationService
@@ -39,12 +39,12 @@ export class ProductListComponent implements OnInit {
 
   getProductList() {
     this.onSearchClear();
-    this.service.getProducts()
+    this.productService.getProducts()
       .subscribe(
         (data: Product[] ) => {
 
-          this.service.productList = [...data];
-          this.listData = new MatTableDataSource(this.service.productList);
+          this.productService.productList = [...data];
+          this.listData = new MatTableDataSource(this.productService.productList);
           this.listData.sort = this.sort;
           this.listData.paginator = this.paginator;
 
@@ -69,12 +69,12 @@ export class ProductListComponent implements OnInit {
   }
 
   onCreate() {
-    this.service.initializeFormGroup();
+    this.productService.initializeFormGroup();
     this.showProductDialog(null);
   }
 
   onEdit(product) {
-    this.service.populateForm(product);
+    this.productService.populateForm(product);
     this.showProductDialog(product);
   }
 
@@ -92,21 +92,21 @@ export class ProductListComponent implements OnInit {
 
         let listDataProduct = this.listData.data.find( x => x.id == product.id);
         let index = this.listData.data.indexOf(listDataProduct);
-        this.listData.data[index] = this.service.form.value;
+        this.listData.data[index] = this.productService.form.value;
         this.listData.data = this.listData.data;
 
       } else {
         this.getProductList();
       }
 
-      this.service.form.reset();
-      this.service.initializeFormGroup();
+      this.productService.form.reset();
+      this.productService.initializeFormGroup();
     });
   }
 
   onDelete(productId) {
     if (confirm("Are you sure to delete this product?")) {
-      this.service.deleteProduct(productId).subscribe( result => {
+      this.productService.deleteProduct(productId).subscribe( result => {
 
         let listDataProduct = this.listData.data.find( x => x.id == productId);
         let index = this.listData.data.indexOf(listDataProduct);

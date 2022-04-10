@@ -16,17 +16,19 @@ export class ProductComponent implements OnInit {
   subcategories: any = new Set();
 
   constructor(
-    private service: ProductService,
+    private productService: ProductService,
     private notificationService: NotificationService,
     public dialogRef: MatDialogRef<ProductComponent>
   ) { }
+
+  productServiceForm = this.productService.form;
 
   ngOnInit(): void {
     this.getCategories();
   }
 
   getCategories() {
-    let response = this.service.getCategories();
+    let response = this.productService.getCategories();
     response.subscribe(data => {
       this.categoryList = Object.values(data);
       for (const key of this.categoryList) {
@@ -47,7 +49,7 @@ export class ProductComponent implements OnInit {
     this.subcategories.clear();
     const filteredCategories = this.categoryList.filter( x => !!x.category && x.category.includes(category));
     this.fillSubcategories(filteredCategories);
-    this.service.form.controls['subcategory'].setValue(null);
+    this.productService.form.controls['subcategory'].setValue(null);
   }
 
   onSubcategoryChange(subcategory) {
@@ -55,24 +57,24 @@ export class ProductComponent implements OnInit {
     const filteredCategory = this.categoryList.find( x => !!x.subcategory && x.subcategory.includes(subcategory));
 
     this.onCategoryChange(filteredCategory.category);
-    this.service.form.controls['category'].setValue(filteredCategory.category);
-    this.service.form.controls['subcategory'].setValue(subcategory);
+    this.productService.form.controls['category'].setValue(filteredCategory.category);
+    this.productService.form.controls['subcategory'].setValue(subcategory);
   }
 
   onClear() {
-    this.service.form.reset();
-    this.service.initializeFormGroup();
+    this.productService.form.reset();
+    this.productService.initializeFormGroup();
   }
 
   onSubmit() {
-    if (this.service.form.valid) {
-      if (!this.service.form.get('id').value) {
-        this.service.insertProduct(this.service.form.value).subscribe( result => {
+    if (this.productService.form.valid) {
+      if (!this.productService.form.get('id').value) {
+        this.productService.insertProduct(this.productService.form.value).subscribe( result => {
           this.notificationService.success(":: Product created successfully! ::");
           this.onClose();
         });
       } else {
-        this.service.updateProduct(this.service.form.value).subscribe( result => {
+        this.productService.updateProduct(this.productService.form.value).subscribe( result => {
           this.notificationService.success(":: Product updated successfully! ::");
           this.onClose();
         });

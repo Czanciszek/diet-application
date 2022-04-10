@@ -18,19 +18,21 @@ import {AMOUNT_TYPES} from "../../model/helpers/amountTypes";
 export class DishComponent implements OnInit {
 
   constructor(
-    private service: DishService,
+    private dishService: DishService,
     private productService: ProductService,
     private notificationService: NotificationService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<DishComponent>
   ) { }
 
+  dishForm = this.dishService.form;
+
   amountTypes = AMOUNT_TYPES;
   foodTypes = FOOD_TYPES;
 
   ngOnInit(): void {
-    if (this.service.form.get('id').value) {
-      let dishId = this.service.form.get('id').value;
+    if (this.dishForm.get('id').value) {
+      let dishId = this.dishService.form.get('id').value;
       this.getProductsDetails(dishId);
     }
 
@@ -42,15 +44,15 @@ export class DishComponent implements OnInit {
   }
 
   onClear() {
-    (<FormArray>this.service.form.get('products')).clear();
-    this.service.form.reset();
+    (<FormArray>this.dishForm.get('products')).clear();
+    this.dishService.form.reset();
   }
 
   getProductsDetails(dishId) {
     this.productService.getProductsByDishId(dishId)
       .subscribe(
         (productsData: Dish[]) => {
-          let products = this.service.form.value.products;
+          let products = this.dishForm.value.products;
           for (let i = 0; i < products.length; i++) {
             for (let product of productsData) {
               if (product.id == products[i].productId) {
@@ -62,12 +64,12 @@ export class DishComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.service.form.valid) {
-      if (!this.service.form.get('id').value) {
-        this.service.insertDish(this.service.form.value).subscribe();
+    if (this.dishForm.valid) {
+      if (!this.dishForm.get('id').value) {
+        this.dishService.insertDish(this.dishService.form.value).subscribe();
         this.notificationService.success(":: Dish created successfully! ::");
       } else {
-        this.service.updateDish(this.service.form.value).subscribe();
+        this.dishService.updateDish(this.dishService.form.value).subscribe();
         this.notificationService.success(":: Dish updated successfully! ::");
       }
       this.onClose();
@@ -80,11 +82,11 @@ export class DishComponent implements OnInit {
   }
 
   addProductButtonClick() {
-    (<FormArray>this.service.form.get('products')).push(this.service.addProductFormGroup());
+    (<FormArray>this.dishForm.get('products')).push(this.dishService.addProductFormGroup());
   }
 
   onProductDeleteButtonClick(productIndex) {
-    (<FormArray>this.service.form.get('products')).removeAt(productIndex);
+    (<FormArray>this.dishForm.get('products')).removeAt(productIndex);
   }
 
   selectProduct(productIndex) {
@@ -101,10 +103,10 @@ export class DishComponent implements OnInit {
         (<HTMLInputElement>document.getElementById("name"+productIndex)).value = result.name;
 
         // Update value in Form Group
-        let products = (<FormArray>this.service.form.get('products'));
+        let products = (<FormArray>this.dishService.form.get('products'));
         products.at(productIndex).get('productId').patchValue(result.id);
         products.at(productIndex).get('productName').patchValue(result.name);
-        this.service.form.patchValue({
+        this.dishService.form.patchValue({
           products: [products]
         });
       }
@@ -112,7 +114,7 @@ export class DishComponent implements OnInit {
   }
 
   getProductSummary(index) {
-    let product = this.service.form.get('products').value[index];
+    let product = this.dishForm.get('products').value[index];
     return this.calculateProperties([product]);
   }
 

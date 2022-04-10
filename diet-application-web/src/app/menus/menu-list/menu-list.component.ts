@@ -23,7 +23,7 @@ export class MenuListComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private service: MenuService,
+    private menuService: MenuService,
     private dialog: MatDialog,
     private measurementService: MeasurementService,
     private notificationService: NotificationService,
@@ -47,7 +47,7 @@ export class MenuListComponent implements OnInit {
 
   ngOnInit(): void {
     let patientId = this.route.snapshot.paramMap.get("patient_id");
-    this.service.getMenusByPatientId(patientId)
+    this.menuService.getMenusByPatientId(patientId)
       .subscribe(
         (data: Menu[]) => {
           this.listData = [ ...data];
@@ -105,7 +105,7 @@ export class MenuListComponent implements OnInit {
   }
 
   onCreate() {
-    this.service.initializeFormGroup();
+    this.menuService.initializeFormGroup();
     this.openDialog();
   }
 
@@ -115,7 +115,7 @@ export class MenuListComponent implements OnInit {
     delete editMenuObject.weekMealList;
     delete editMenuObject.dayMealTypeList;
     delete editMenuObject.endDate;
-    this.service.populateForm(editMenuObject);
+    this.menuService.populateForm(editMenuObject);
 
     this.openDialog();
   }
@@ -163,7 +163,7 @@ export class MenuListComponent implements OnInit {
       return;
     }
 
-    this.service.deleteMenu(menuId).subscribe(
+    this.menuService.deleteMenu(menuId).subscribe(
       result => {
         this.notificationService.warn(":: Usunięto pomyślnie! ::");
       }, error => {

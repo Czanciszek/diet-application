@@ -31,7 +31,7 @@ export class DishSummaryComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private service: MealService,
+    private mealService: MealService,
     private productService: ProductService
   ) { }
 
@@ -41,9 +41,9 @@ export class DishSummaryComponent implements OnInit {
 
   onEdit() {
     for (const product of this.mealItem.productList) {
-      (<FormArray>this.service.form.get('productList')).push(this.service.addProductFormGroup());
+      (<FormArray>this.mealService.form.get('productList')).push(this.mealService.addProductFormGroup());
     }
-    this.service.populateForm(this.mealItem);
+    this.mealService.populateForm(this.mealItem);
     this.openDialog();
   }
 
@@ -60,7 +60,7 @@ export class DishSummaryComponent implements OnInit {
   }
 
   onDeleteMealButtonClick(mealId) {
-    this.service.deleteMeal(mealId).subscribe(() => {
+    this.mealService.deleteMeal(mealId).subscribe(() => {
       this.refreshItems.emit();
     });
   }
@@ -68,7 +68,7 @@ export class DishSummaryComponent implements OnInit {
   copyMeal(dayMeal) {
     const copyMeal = Object.assign({}, this.mealItem);
     copyMeal.dayMealId = dayMeal.id;
-    this.service.copyMeal(copyMeal).subscribe(() => {
+    this.mealService.copyMeal(copyMeal).subscribe(() => {
       this.refreshItems.emit();
     });
   }

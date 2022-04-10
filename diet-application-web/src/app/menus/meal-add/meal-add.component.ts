@@ -21,7 +21,7 @@ import {AMOUNT_TYPES} from "../../model/helpers/amountTypes";
 export class MealAddComponent implements OnInit {
 
   constructor(
-    private service: MealService,
+    private mealService: MealService,
     private menuService: MenuService,
     private productService: ProductService,
     private dishService: DishService,
@@ -29,6 +29,8 @@ export class MealAddComponent implements OnInit {
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<MealAddComponent>
   ) { }
+
+  mealServiceForm = this.mealService.form;
 
   public menuId: any;
 
@@ -42,10 +44,10 @@ export class MealAddComponent implements OnInit {
   portionCurrentValue = 0;
 
   ngOnInit(): void {
-    let products = (<FormArray>this.service.form.get('productList'));
-    if (this.service.form.get('id').value != null) {
+    let products = (<FormArray>this.mealService.form.get('productList'));
+    if (this.mealService.form.get('id').value != null) {
       this.checkPortionOption();
-      this.tabIndex = this.service.form.get('isProduct').value;
+      this.tabIndex = this.mealService.form.get('isProduct').value;
       if (this.tabIndex == 1) {
         this.blockDish = true;
         let productGrams = products.at(0).get('grams').value;
@@ -54,15 +56,15 @@ export class MealAddComponent implements OnInit {
         });
       } else {
         this.blockProduct = true;
-        this.portionCurrentValue = this.service.form.get("portions").value;
+        this.portionCurrentValue = this.mealService.form.get("portions").value;
       }
     }
 
   }
 
   onClear() {
-    (<FormArray>this.service.form.get('productList')).clear();
-    this.service.form.reset();
+    (<FormArray>this.mealService.form.get('productList')).clear();
+    this.mealService.form.reset();
   }
 
   onClose() {
@@ -71,14 +73,14 @@ export class MealAddComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.service.form.valid) {
-      if (!this.service.form.get('id').value) {
-        this.service.insertMeal(this.service.form.value).subscribe( result => {
+    if (this.mealService.form.valid) {
+      if (!this.mealService.form.get('id').value) {
+        this.mealService.insertMeal(this.mealService.form.value).subscribe( result => {
           this.notificationService.success(":: Meal created successfully! ::");
           this.onClose();
         });
       } else {
-        this.service.updateMeal(this.service.form.value).subscribe( result => {
+        this.mealService.updateMeal(this.mealService.form.value).subscribe( result => {
           this.notificationService.success(":: Meal updated successfully! ::");
           this.onClose();
         });
@@ -87,15 +89,15 @@ export class MealAddComponent implements OnInit {
   }
 
   checkPortionOption() {
-   this.withPortions = this.service.form.get('grams').value == 0;
+   this.withPortions = this.mealService.form.get('grams').value == 0;
   }
 
   addProductButtonClick() {
-    (<FormArray>this.service.form.get('productList')).push(this.service.addProductFormGroup());
+    (<FormArray>this.mealService.form.get('productList')).push(this.mealService.addProductFormGroup());
   }
 
   onProductDeleteButtonClick(productIndex) {
-    (<FormArray>this.service.form.get('productList')).removeAt(productIndex);
+    (<FormArray>this.mealService.form.get('productList')).removeAt(productIndex);
   }
 
   selectProductForDish(index) {
@@ -109,10 +111,10 @@ export class MealAddComponent implements OnInit {
       if (result != null) {
 
         // Update value in Form Group
-        let products = (<FormArray>this.service.form.get('productList'));
+        let products = (<FormArray>this.mealService.form.get('productList'));
         products.at(index).get('productId').patchValue(result.id);
         products.at(index).get('productName').patchValue(result.name);
-        this.service.form.patchValue({
+        this.mealService.form.patchValue({
           products: [products]
         });
       }
@@ -129,16 +131,16 @@ export class MealAddComponent implements OnInit {
     dialogRef.afterClosed().subscribe( result => {
       if (result != null) {
 
-        (<FormArray>this.service.form.get('productList')).clear();
+        (<FormArray>this.mealService.form.get('productList')).clear();
 
         // Update value in Form Group
-        this.service.form.get('name').patchValue(result.name);
-        this.service.form.get('isProduct').patchValue(1);
+        this.mealService.form.get('name').patchValue(result.name);
+        this.mealService.form.get('isProduct').patchValue(1);
 
-        let productForm = this.service.addProductFormGroup();
+        let productForm = this.mealService.addProductFormGroup();
         productForm.get('productId').patchValue(result.id);
         productForm.get('productName').patchValue(result.name);
-        (<FormArray>this.service.form.get('productList')).push(productForm);
+        (<FormArray>this.mealService.form.get('productList')).push(productForm);
 
         let grams = (<HTMLInputElement>document.getElementById("product_grams")).value;
         if (grams == null || grams == "") {
@@ -161,21 +163,21 @@ export class MealAddComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe( result => {
       if (result != null) {
-        (<FormArray>this.service.form.get('productList')).clear();
+        (<FormArray>this.mealService.form.get('productList')).clear();
 
         // Update value in Form Group
-        this.service.form.get('name').patchValue(result.name);
-        this.service.form.get('recipe').patchValue(result.recipe);
-        this.service.form.get('dishPortions').patchValue(result.portions);
-        this.service.form.get('isProduct').patchValue(0);
+        this.mealService.form.get('name').patchValue(result.name);
+        this.mealService.form.get('recipe').patchValue(result.recipe);
+        this.mealService.form.get('dishPortions').patchValue(result.portions);
+        this.mealService.form.get('isProduct').patchValue(0);
 
         for (let product of result.products) {
-          let productForm = this.service.addProductFormGroup();
+          let productForm = this.mealService.addProductFormGroup();
           productForm.get('productId').patchValue(product.productId);
 
-          let portions = this.service.form.get('portions').value;
+          let portions = this.mealService.form.get('portions').value;
           this.portionCurrentValue = portions;
-          let dishPortions = this.service.form.get('dishPortions').value;
+          let dishPortions = this.mealService.form.get('dishPortions').value;
           let proportions = portions / dishPortions;
           let grams = (product.grams * proportions).toFixed(2);
 
@@ -183,7 +185,7 @@ export class MealAddComponent implements OnInit {
           productForm.get('productName').patchValue(product.productName);
           productForm.get('amount').patchValue(product.amount);
           productForm.get('amountType').patchValue(product.amountType);
-          (<FormArray>this.service.form.get('productList')).push(productForm);
+          (<FormArray>this.mealService.form.get('productList')).push(productForm);
         }
       }
 
@@ -197,12 +199,12 @@ export class MealAddComponent implements OnInit {
   }
 
   getProductSummary(index) {
-    let product = this.service.form.get('productList').value[index];
+    let product = this.mealService.form.get('productList').value[index];
     return this.calculateProperties([product]);
   }
 
   getMealSummary() {
-    return this.calculateProperties(this.service.form.get('productList').value);
+    return this.calculateProperties(this.mealService.form.get('productList').value);
   }
 
   calculateProperties(products) {
@@ -216,7 +218,7 @@ export class MealAddComponent implements OnInit {
         continue;
       }
 
-      let isProduct = (this.service.form.get('isProduct').value == 1);
+      let isProduct = (this.mealService.form.get('isProduct').value == 1);
       let grams = product.grams;
 
       let originProduct = this.productService.productList.find(p => {
@@ -239,12 +241,12 @@ export class MealAddComponent implements OnInit {
   }
 
   gramsChanged(grams) {
-    this.service.form.get('productList').get('0').get('grams').patchValue(grams);
+    this.mealService.form.get('productList').get('0').get('grams').patchValue(grams);
   }
 
   portionOptionChanged(event) {
     if (event.source.checked) {
-      this.service.form.get('grams').patchValue(0);
+      this.mealService.form.get('grams').patchValue(0);
     }
     this.withPortions = event.source.checked;
   }
@@ -253,12 +255,12 @@ export class MealAddComponent implements OnInit {
     let newPortionValue = event.value;
     let proportions = newPortionValue / this.portionCurrentValue;
 
-    let productList = this.service.form.get('productList').value;
+    let productList = this.mealService.form.get('productList').value;
     let productIndex = 0;
     for (let product of productList) {
       if (product.grams == null) continue;
       let grams = (product.grams * proportions).toFixed(2);
-      this.service.form.get('productList').get(productIndex + "").get('grams').patchValue(grams);
+      this.mealService.form.get('productList').get(productIndex + "").get('grams').patchValue(grams);
       productIndex += 1;
     }
 
@@ -266,11 +268,11 @@ export class MealAddComponent implements OnInit {
   }
 
   addToRecipeList(mealId) {
-    this.service.form.get('originMealId').patchValue(mealId);
+    this.mealService.form.get('originMealId').patchValue(mealId);
   }
 
   deleteFromRecipeList() {
-    this.service.form.get('originMealId').patchValue("");
+    this.mealService.form.get('originMealId').patchValue("");
   }
 
 }

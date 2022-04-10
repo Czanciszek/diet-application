@@ -15,29 +15,25 @@ export class PatientComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private service: PatientService,
+    private patientService: PatientService,
     private measurementService: MeasurementService,
     private dialog: MatDialog,
   ) { }
 
+  patientServiceForm = this.patientService.form;
+
   ngOnInit(): void {
     let patientId = this.route.snapshot.paramMap.get("patient_id");
-    this.service.getPatientById(patientId);
+    this.patientService.getPatientById(patientId);
   }
 
-  onEnterMeasurements(patientId) {
-    this.measurementService.patientId = patientId;
+  onEnterMeasurements() {
+    this.measurementService.patientId = this.patientServiceForm.controls['id'].value;
     this.openDialog();
-  }
-
-  onEnterMenus(patientId) {
-    this.measurementService.patientId = patientId;
-    this.router.navigate(["/patients/" + patientId + "/menus"]);
   }
 
   openDialog() {
     let dialogRef = this.dialog.open(MeasurementListComponent, {
-      //disableClose: true,
       autoFocus: true,
       width: "90%"
     });

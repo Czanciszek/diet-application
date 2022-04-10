@@ -1,22 +1,22 @@
 <div class="container">
   <mat-toolbar>
     <span class="fill-remaining-space"></span>
-    <span>{{service.form.controls['id'].value?"Edytuj pacjenta":"Nowy pacjent"}}</span>
+    <span>{{patientServiceForm.controls['id'].value?"Edytuj pacjenta":"Nowy pacjent"}}</span>
     <span class="fill-remaining-space"></span>
     <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
   </mat-toolbar>
 </div>
 
 <mat-dialog-content>
-  <form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
+  <form [formGroup]="patientServiceForm" class="normal-form" (submit)="onSubmit()">
     <mat-grid-list cols="3" rowHeight="70px">
       <mat-grid-tile>
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
               <input formControlName="name" matInput placeholder="Imię i nazwisko*" autocomplete="off">
-              <mat-error *ngIf="service.form.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
-              <mat-error *ngIf="service.form.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
+              <mat-error *ngIf="patientServiceForm.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
+              <mat-error *ngIf="patientServiceForm.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -26,7 +26,7 @@
           <div class="add-bottom-padding">
             <mat-form-field>
               <input formControlName="email" matInput placeholder="Adres e-mail*" autocomplete="off">
-              <mat-error *ngIf="service.form.controls['email'].errors?.email">Niepoprawny adres e-mail</mat-error>
+              <mat-error *ngIf="patientServiceForm.controls['email'].errors?.email">Niepoprawny adres e-mail</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -52,7 +52,7 @@
                 <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
               </mat-datepicker-toggle>
               <mat-datepicker #picker startView="multi-year" [startAt]="startDate"></mat-datepicker>
-              <mat-error *ngIf="service.form.controls['birthDate'].errors?.required">Wprowadź poprawną datę</mat-error>
+              <mat-error *ngIf="patientServiceForm.controls['birthDate'].errors?.required">Wprowadź poprawną datę</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -149,7 +149,7 @@
       <mat-grid-tile>
         <div class="control-container">
           <div class="button-row">
-            <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Zapisz</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="patientServiceForm.invalid">Zapisz</button>
             <button mat-raised-button color="warn" type="button" (click)="onClear()">Wyczyść</button>
           </div>
         </div>

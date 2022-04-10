@@ -1,13 +1,13 @@
 <div class="container">
   <mat-toolbar>
     <span class="fill-remaining-space"></span>
-    <span>{{service.form.controls['id'].value ? "Edytuj jadłospis" : "Nowy jadłospis"}}</span>
+    <span>{{menuServiceForm.controls['id'].value ? "Edytuj jadłospis" : "Nowy jadłospis"}}</span>
     <span class="fill-remaining-space"></span>
     <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
   </mat-toolbar>
 </div>
 
-<form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
+<form [formGroup]="menuServiceForm" class="normal-form" (submit)="onSubmit()">
   <mat-grid-list cols="8" rowHeight="70px">
     <mat-grid-tile>
       <div class="control-container">
@@ -32,7 +32,7 @@
               <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
             </mat-datepicker-toggle>
             <mat-datepicker #picker startView="month"></mat-datepicker>
-            <mat-error *ngIf="service.form.controls['startDate'].errors?.required">Wprowadź poprawny format daty</mat-error>
+            <mat-error *ngIf="menuServiceForm.controls['startDate'].errors?.required">Wprowadź poprawny format daty</mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -42,9 +42,9 @@
         <div class="add-bottom-padding">
           <mat-form-field >
             <input type="number" min="1" max="8" step="1" formControlName="weekCount" matInput placeholder="Ilość tygodni*" autocomplete="off" [readonly]="!allowEdit">
-            <mat-error *ngIf="service.form.controls['weekCount'].errors?.required">Uzupełnij ilość</mat-error>
-            <mat-error *ngIf="service.form.controls['weekCount'].errors?.min">Wartość zbyt mała</mat-error>
-            <mat-error *ngIf="service.form.controls['weekCount'].errors?.max">Wartość zbyt duża</mat-error>
+            <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.required">Uzupełnij ilość</mat-error>
+            <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.min">Wartość zbyt mała</mat-error>
+            <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.max">Wartość zbyt duża</mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -194,7 +194,7 @@
     <mat-grid-tile>
       <div class="control-container">
         <div class="button-row">
-          <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Zapisz</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="menuServiceForm.invalid">Zapisz</button>
           <button mat-raised-button color="warn" type="button" (click)="onClear()">Wyczyść</button>
         </div>
       </div>

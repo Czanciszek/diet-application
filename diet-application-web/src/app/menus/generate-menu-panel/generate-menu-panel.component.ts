@@ -15,6 +15,8 @@ export class GenerateMenuPanelComponent implements OnInit {
       public dialogRef: MatDialogRef<GenerateMenuPanelComponent>
     ) { }
 
+  fileServiceForm = this.fileService.form;
+
   public menuId: number;
 
   ngOnInit(): void {

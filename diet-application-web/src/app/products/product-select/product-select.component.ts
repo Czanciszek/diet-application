@@ -14,7 +14,7 @@ import {Product} from "../../model/product";
 export class ProductSelectComponent implements OnInit {
 
   constructor(
-    private service: ProductService,
+    private productService: ProductService,
     public dialogRef: MatDialogRef<ProductSelectComponent>,
   ) { }
 
@@ -39,7 +39,7 @@ export class ProductSelectComponent implements OnInit {
   }
 
   getCategories() {
-    let response = this.service.getCategories();
+    let response = this.productService.getCategories();
     response.subscribe(data => {
       this.categoryList = Object.values(data);
       for (const key of this.categoryList) {
@@ -81,7 +81,7 @@ export class ProductSelectComponent implements OnInit {
   }
 
   onSearchButtonClick() {
-    this.service.getFilteredProducts(this.selectedCategory, this.selectedSubcategory)
+    this.productService.getFilteredProducts(this.selectedCategory, this.selectedSubcategory)
       .subscribe(
         (data: Product[]) => {
           const productList = [ ...data];

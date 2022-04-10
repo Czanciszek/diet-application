@@ -26,11 +26,13 @@ export class PatientEditComponent implements OnInit {
   categories = [];
 
   constructor(
-    private service: PatientService,
+    private patientService: PatientService,
     private productService: ProductService,
     private notificationService: NotificationService,
     public dialogRef: MatDialogRef<PatientEditComponent>
   ) { }
+
+  patientServiceForm = this.patientService.form;
 
   ngOnInit(): void {
     let response = this.productService.getCategories();
@@ -43,17 +45,17 @@ export class PatientEditComponent implements OnInit {
   }
 
   onClear() {
-    this.service.form.reset();
-    this.service.initializeFormGroup();
+    this.patientService.form.reset();
+    this.patientService.initializeFormGroup();
   }
 
   onSubmit() {
-    if (this.service.form.valid) {
-      if (!this.service.form.get('id').value) {
-        this.service.insertPatient(this.service.form.value).subscribe();
+    if (this.patientService.form.valid) {
+      if (!this.patientService.form.get('id').value) {
+        this.patientService.insertPatient(this.patientService.form.value).subscribe();
         this.notificationService.success(":: Patient created successfully! ::");
       } else {
-        this.service.updatePatient(this.service.form.value).subscribe();
+        this.patientService.updatePatient(this.patientService.form.value).subscribe();
         this.notificationService.success(":: Patient updated successfully! ::");
       }
       this.onClose();

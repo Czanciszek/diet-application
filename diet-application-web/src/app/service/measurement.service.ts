@@ -21,7 +21,6 @@ export class MeasurementService {
     ['calf', 'Łydka'], ['breast', 'Biust'], ['underBreast', 'Pod biustem'],
     ['hipBones', 'Kości biodrowe'], ['thighNarrowest', 'Udo najwęższe'], ['chest', 'Klatka piersiowa'], ['arm', 'Ramię'] ]);
 
-
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     patientId: new FormControl(null),

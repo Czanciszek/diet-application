@@ -15,12 +15,14 @@ import {FOOD_TYPES} from "../../model/helpers/foodTypes";
 export class MenuAddComponent implements OnInit {
 
   constructor(
-    private service: MenuService,
+    private menuService: MenuService,
     private measurementService: MeasurementService,
     private patientService: PatientService,
     private notificationService: NotificationService,
     public dialogRef: MatDialogRef<MenuAddComponent>
   ) { }
+
+  menuServiceForm = this.menuService.form;
 
   customLimits = true;
   allowEdit = true;
@@ -35,15 +37,15 @@ export class MenuAddComponent implements OnInit {
     this.currentPatientId = this.patientService.form.get("id").value;
     this.getMeasurementList(this.currentPatientId);
 
-    if (this.service.form.value.id != null) {
+    if (this.menuService.form.value.id != null) {
       this.allowEdit = false;
       this.checkValues();
     }
   }
 
   onClear() {
-    this.service.form.reset();
-    this.service.initializeFormGroup();
+    this.menuService.form.reset();
+    this.menuService.initializeFormGroup();
   }
 
   onClose() {
@@ -80,19 +82,19 @@ export class MenuAddComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.service.form.valid) {
+    if (this.menuService.form.valid) {
       if (!this.checkLimits()) {
         this.notificationService.error(":: Suma % musi być równa 100! ::");
         return;
       }
 
-      this.service.form.get("patientId").setValue(this.currentPatientId);
+      this.menuService.form.get("patientId").setValue(this.currentPatientId);
 
-      if (!this.service.form.get('id').value) {
-        this.service.insertMenu(this.service.form.value).subscribe();
+      if (!this.menuService.form.get('id').value) {
+        this.menuService.insertMenu(this.menuService.form.value).subscribe();
         this.notificationService.success(":: Pomyślnie stworzono jadłospis! ::");
       } else {
-        this.service.updateMenu(this.service.form.value).subscribe();
+        this.menuService.updateMenu(this.menuService.form.value).subscribe();
         this.notificationService.success(":: Jadłospis zaktualizowano pomyślnie! ::");
       }
       this.onClose();
@@ -106,7 +108,7 @@ export class MenuAddComponent implements OnInit {
     let ppm = this.calculatePPM(measurement);
     let cpm = this.calculateCPM(ppm, activityLevel);
 
-    this.service.form.get("energyLimit").setValue(cpm);
+    this.menuService.form.get("energyLimit").setValue(cpm);
   }
 
   getAge(date: any) {
@@ -146,7 +148,7 @@ export class MenuAddComponent implements OnInit {
 
   customLimitsOptionChanged(event) {
     this.customLimits = event.source.checked;
-    this.service.form.get("energyLimit").setValue(null);
+    this.menuService.form.get("energyLimit").setValue(null);
   }
 
   limitsChanged() {
@@ -179,7 +181,7 @@ export class MenuAddComponent implements OnInit {
       this.proteinsPercentage.nativeElement.value = newValue;
     }
 
-    let limit = Number(this.service.form.value.energyLimit);
+    let limit = Number(this.menuService.form.value.energyLimit);
     if (limit > 0) {
       if (needToCheckValue) {
         let grams =  Number((limit * newValue / 100 / factor).toFixed(1));
@@ -193,17 +195,17 @@ export class MenuAddComponent implements OnInit {
   }
 
   valueChanged(newValue: number, needToCheckPercentage: boolean, type: string) {
-    let limit = Number(this.service.form.value.energyLimit);
+    let limit = Number(this.menuService.form.value.energyLimit);
     newValue = Math.max(0, Math.min(limit, newValue));
 
     let factor = 4;
     if (type == "fats") {
       factor = 9;
-      this.service.form.get("fatsLimit").setValue(newValue);
+      this.menuService.form.get("fatsLimit").setValue(newValue);
     } else if (type == "carbohydrates") {
-      this.service.form.get("carbohydratesLimit").setValue(newValue);
+      this.menuService.form.get("carbohydratesLimit").setValue(newValue);
     } else if (type == "proteins") {
-      this.service.form.get("proteinsLimit").setValue(newValue);
+      this.menuService.form.get("proteinsLimit").setValue(newValue);
     }
 
     if (limit > 0 && needToCheckPercentage) {
@@ -241,8 +243,8 @@ export class MenuAddComponent implements OnInit {
 
   checkValues() {
     setTimeout(() => {
-      this.valueChanged(Number(this.service.form.value.proteinsLimit), true, "proteins");
-      this.valueChanged(Number(this.service.form.value.fatsLimit), true, "fats");
+      this.valueChanged(Number(this.menuService.form.value.proteinsLimit), true, "proteins");
+      this.valueChanged(Number(this.menuService.form.value.fatsLimit), true, "fats");
       let percentage = Number(100 - Number(this.proteinsPercentage.nativeElement.value) - Number(this.fatsPercentage.nativeElement.value) ).toFixed(2);
       this.carbohydratesPercentage.nativeElement.value = percentage;
     });
