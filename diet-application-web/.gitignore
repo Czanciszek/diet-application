@@ -12,6 +12,9 @@
 # config
 /package-lock.json
 
+# Angular
+/.angular
+
 # IDEs and editors
 /.idea
 .project

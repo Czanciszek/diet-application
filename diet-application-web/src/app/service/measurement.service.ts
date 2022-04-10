@@ -25,7 +25,7 @@ export class MeasurementService {
     id: new FormControl(null),
     patientId: new FormControl(null),
     measurementDate: new FormControl('', [Validators.required]),
-    bodyWeight: new FormControl(null),
+    bodyWeight: new FormControl(null, [Validators.required]),
     breast: new FormControl(null),
     underBreast: new FormControl(null),
     waist: new FormControl(null),

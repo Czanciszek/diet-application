@@ -13,8 +13,8 @@ export class MealService {
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
-    name: new FormControl(''),
-    dayMealId: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
+    dayMealId: new FormControl(''),
     originMealId: new FormControl(null),
     productList: new FormArray([]),
     isProduct: new FormControl(null),
@@ -27,9 +27,9 @@ export class MealService {
 
   addProductFormGroup(): FormGroup {
     return new FormGroup( {
-      productId: new FormControl(null),
+      productId: new FormControl(null, [Validators.required]),
       productName: new FormControl(null),
-      grams: new FormControl(null),
+      grams: new FormControl(null, [Validators.required]),
       amount: new FormControl(null),
       amountType: new FormControl(null)
     });

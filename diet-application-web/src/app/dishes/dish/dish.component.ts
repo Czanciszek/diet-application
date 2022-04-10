@@ -53,13 +53,6 @@ export class DishComponent implements OnInit {
       .subscribe(
         (productsData: Dish[]) => {
           let products = this.dishForm.value.products;
-          for (let i = 0; i < products.length; i++) {
-            for (let product of productsData) {
-              if (product.id == products[i].productId) {
-                (<HTMLInputElement>document.getElementById("name"+i)).value = productsData[i].name;
-              }
-            }
-          }
         });
   }
 
@@ -67,10 +60,10 @@ export class DishComponent implements OnInit {
     if (this.dishForm.valid) {
       if (!this.dishForm.get('id').value) {
         this.dishService.insertDish(this.dishService.form.value).subscribe();
-        this.notificationService.success(":: Dish created successfully! ::");
+        this.notificationService.success(":: Potrawa stworzona pomyślnie! ::");
       } else {
         this.dishService.updateDish(this.dishService.form.value).subscribe();
-        this.notificationService.success(":: Dish updated successfully! ::");
+        this.notificationService.success(":: Potrawa zaktualizowana pomyślnie! ::");
       }
       this.onClose();
     }

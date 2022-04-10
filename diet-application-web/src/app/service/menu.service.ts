@@ -16,13 +16,13 @@ export class MenuService {
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     weekCount: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(8)]),
-    foodTypes: new FormControl(null),
+    foodTypes: new FormControl(null, [Validators.required]),
     patientId: new FormControl(null),
     startDate: new FormControl(null, [Validators.required]),
     energyLimit: new FormControl(null, [Validators.required]),
-    proteinsLimit: new FormControl(null),
-    fatsLimit: new FormControl(null),
-    carbohydratesLimit: new FormControl(null)
+    proteinsLimit: new FormControl(null, [Validators.required]),
+    fatsLimit: new FormControl(null, [Validators.required]),
+    carbohydratesLimit: new FormControl(null, [Validators.required])
   });
 
   initializeFormGroup() {

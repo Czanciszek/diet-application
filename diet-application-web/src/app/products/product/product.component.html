@@ -13,7 +13,7 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field class="long-form-field">
-            <mat-select formControlName="category" placeholder="Kategoria*" (valueChange)="onCategoryChange($event)">
+            <mat-select formControlName="category" placeholder="Kategoria" (valueChange)="onCategoryChange($event)">
               <ng-container *ngFor="let category of categories">
                 <mat-option value="{{category}}">{{category}}</mat-option>
               </ng-container>
@@ -27,7 +27,7 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field class="long-form-field">
-            <mat-select formControlName="subcategory" placeholder="Podkategoria*" (valueChange)="onSubcategoryChange($event)">
+            <mat-select formControlName="subcategory" placeholder="Podkategoria" (valueChange)="onSubcategoryChange($event)">
               <ng-container *ngFor="let subcategory of subcategories">
                 <mat-option value="{{subcategory}}">{{subcategory}}</mat-option>
               </ng-container>
@@ -42,7 +42,7 @@
         <div class="add-bottom-padding">
           <input type="hidden" formControlName="id">
           <mat-form-field class="long-form-field">
-            <input formControlName="name" matInput placeholder="Nazwa produktu*" autocomplete="off">
+            <input formControlName="name" matInput placeholder="Nazwa produktu" autocomplete="off">
             <mat-error *ngIf="productServiceForm.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
             <mat-error *ngIf="productServiceForm.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
           </mat-form-field>

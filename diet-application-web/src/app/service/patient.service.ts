@@ -20,7 +20,7 @@ export class PatientService {
     numberPhone: new FormControl(''),
     email: new FormControl('', [Validators.email]),
     sex: new FormControl(true),
-    bodyHeight: new FormControl(null),
+    bodyHeight: new FormControl(null, [Validators.required]),
     currentLifestyleNote: new FormControl(''),
     changedLifestyleNote: new FormControl(''),
     dietaryPurpose: new FormControl(''),

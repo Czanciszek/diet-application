@@ -70,12 +70,12 @@ export class ProductComponent implements OnInit {
     if (this.productService.form.valid) {
       if (!this.productService.form.get('id').value) {
         this.productService.insertProduct(this.productService.form.value).subscribe( result => {
-          this.notificationService.success(":: Product created successfully! ::");
+          this.notificationService.success(":: Produkt stworzony pomyślnie! ::");
           this.onClose();
         });
       } else {
         this.productService.updateProduct(this.productService.form.value).subscribe( result => {
-          this.notificationService.success(":: Product updated successfully! ::");
+          this.notificationService.success(":: Product zaktualizowany pomyślnie! ::");
           this.onClose();
         });
       }

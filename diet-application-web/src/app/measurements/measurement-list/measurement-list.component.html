@@ -65,7 +65,7 @@
                     <div *ngIf="column === 'measurementDate' then measurementBlock else otherBlock"></div>
                       <ng-template #measurementBlock>
                         <mat-form-field class="example-full-width">
-                        <mat-label>Data pomiaru*</mat-label>
+                        <mat-label>Data pomiaru</mat-label>
                         <input matInput [matDatepicker]="picker" formControlName="{{column}}" autocomplete="off">
                         <mat-datepicker-toggle matSuffix [for]="picker">
                           <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>

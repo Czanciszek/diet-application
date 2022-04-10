@@ -15,7 +15,7 @@
           <input type="hidden" formControlName="id">
           <mat-form-field>
             <div class="add-bottom-padding">
-              <input formControlName="name" matInput placeholder="Nazwa potrawy*" autocomplete="off">
+              <input formControlName="name" matInput placeholder="Nazwa potrawy" autocomplete="off">
             </div>
             <mat-error *ngIf="dishForm.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
             <mat-error *ngIf="dishForm.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
@@ -26,7 +26,7 @@
         <div class="control-container">
           <mat-form-field>
             <div class="add-bottom-padding">
-              <mat-select matInput placeholder="Typ*" formControlName="foodType">
+              <mat-select matInput placeholder="Typ" formControlName="foodType">
                 <ng-container *ngFor="let foodType of foodTypes">
                   <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
                 </ng-container>
@@ -103,7 +103,7 @@
           <mat-grid-tile colspan="5">
             <div class="control-container">
                 <div class="add-bottom-padding">
-                  <input matInput (click)="selectProduct(i)" [id]="'name'+i" placeholder="Produkt" readonly>
+                  <input matInput (click)="selectProduct(i)" placeholder="Produkt" formControlName="productName" readonly>
                 </div>
             </div>
           </mat-grid-tile>

@@ -13,7 +13,7 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field>
-              <mat-select matInput placeholder="Typy posiłków*" formControlName="foodTypes" multiple>
+              <mat-select matInput placeholder="Typy posiłków" formControlName="foodTypes" multiple>
                 <ng-container *ngFor="let foodType of foodTypes">
                   <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
                 </ng-container>
@@ -26,7 +26,7 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field>
-            <mat-label>Początek diety*</mat-label>
+            <mat-label>Początek diety</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="startDate" autocomplete="off" readonly>
             <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="!allowEdit">
               <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -41,7 +41,7 @@
       <div class="control-container">
         <div class="add-bottom-padding">
           <mat-form-field >
-            <input type="number" min="1" max="8" step="1" formControlName="weekCount" matInput placeholder="Ilość tygodni*" autocomplete="off" [readonly]="!allowEdit">
+            <input type="number" min="1" max="8" step="1" formControlName="weekCount" matInput placeholder="Ilość tygodni" autocomplete="off" [readonly]="!allowEdit">
             <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.required">Uzupełnij ilość</mat-error>
             <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.min">Wartość zbyt mała</mat-error>
             <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.max">Wartość zbyt duża</mat-error>
@@ -63,7 +63,7 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #activityLevel type="number" min="0.9" max="2" step="0.01" matInput placeholder="Poziom aktywności*" autocomplete="off" value="1.1" (input)="limitPropertyChanged(measurement.value, activityLevel.value)">
+              <input #activityLevel type="number" min="0.9" max="2" step="0.01" matInput placeholder="Poziom aktywności" autocomplete="off" value="1.1" (input)="limitPropertyChanged(measurement.value, activityLevel.value)">
             </mat-form-field>
           </div>
         </div>
@@ -99,7 +99,7 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="energyLimit" type="number" matInput placeholder="kcal*" autocomplete="off" (input)="limitsChanged()" [readonly]="!customLimits">
+              <input formControlName="energyLimit" type="number" matInput placeholder="kcal" autocomplete="off" (input)="limitsChanged()" [readonly]="!customLimits">
             </mat-form-field>
           </div>
         </div>
