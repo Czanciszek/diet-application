@@ -217,4 +217,24 @@ export class WeekViewComponent implements OnInit {
 
   }
 
+  dateChanged(event, originDayMealId: string) {
+      let selectedDate = new Date(event.value);
+      selectedDate.setHours(0,0,0);
+
+      let dayMeal = this.menuItemData.dayMealTypeList.find(key => {
+        let keyValue = new Date(key.date);
+        keyValue.setHours(0,0,0);
+        return selectedDate.toDateString() === keyValue.toDateString();
+      });
+
+      if (dayMeal != null && dayMeal.id != null) {
+        this.copyDayMeal(dayMeal, originDayMealId);
+      }
+   }
+
+   copyDayMeal(dayMeal, originDayMealId) {
+     this.dayMealService.copyDayMeal(dayMeal, originDayMealId).subscribe(() => {
+       this.refreshMealList();
+     });
+   }
 }

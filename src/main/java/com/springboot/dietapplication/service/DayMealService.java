@@ -1,8 +1,6 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.menu.PsqlDayMeal;
-import com.springboot.dietapplication.model.psql.menu.PsqlMenu;
-import com.springboot.dietapplication.model.psql.menu.PsqlWeekMeal;
 import com.springboot.dietapplication.model.type.DayMealType;
 import com.springboot.dietapplication.model.type.DayType;
 import com.springboot.dietapplication.model.type.MealType;
@@ -75,7 +73,7 @@ public class DayMealService {
         return ResponseEntity.ok().body(dayMeal);
     }
 
-    public void copy(long originWeekMealId, long newWeekMealId, float factor) {
+    public void copyDayMeals(long originWeekMealId, long newWeekMealId, float factor) {
         List<PsqlDayMeal> dayMeals = dayMealRepository.getPsqlDayMealsByWeekMealId(originWeekMealId);
         for (PsqlDayMeal originDayMeal : dayMeals) {
             PsqlDayMeal newDayMeal = new PsqlDayMeal(originDayMeal);
@@ -84,6 +82,10 @@ public class DayMealService {
 
             mealService.copy(originDayMeal.getId(), newDayMeal.getId(), factor);
         }
+    }
+
+    public void copy(long originDayMealId, long targetDayMealId) {
+        mealService.copy(originDayMealId, targetDayMealId, 1f);
     }
 
     public ResponseEntity<DayMealType> delete(Long id) {

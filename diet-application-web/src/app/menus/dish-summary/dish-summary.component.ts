@@ -104,13 +104,6 @@ export class DishSummaryComponent implements OnInit {
       "    W: " + carbohydrates.toFixed(2);
   }
 
-  _openCalendar(picker) {
-      picker.open();
-      setTimeout(
-        () => this._input.nativeElement.focus()
-      );
-    }
-
   dateChanged(event) {
     let selectedDate = new Date(event.value);
     selectedDate.setHours(0,0,0);

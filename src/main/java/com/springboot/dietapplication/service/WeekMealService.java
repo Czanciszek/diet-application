@@ -58,7 +58,7 @@ public class WeekMealService {
             newWeekMeal.setMenuId(newMenuId);
             weekMealRepository.save(newWeekMeal);
 
-            dayMealService.copy(currentWeekMeal.getId(), newWeekMeal.getId(), factor);
+            dayMealService.copyDayMeals(currentWeekMeal.getId(), newWeekMeal.getId(), factor);
         }
     }
 

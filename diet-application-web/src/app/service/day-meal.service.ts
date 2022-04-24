@@ -13,4 +13,8 @@ export class DayMealService {
   getDayMealListByWeekMealId(weekMealId) {
     return this.restApiService.get("daymeals/list/" + weekMealId);
   }
+
+  copyDayMeal(dayMeal, originDayMealId) {
+    return this.restApiService.post("daymeals/copy/" + originDayMealId, dayMeal);
+  }
 }

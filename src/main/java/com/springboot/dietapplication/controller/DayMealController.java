@@ -25,6 +25,12 @@ public class DayMealController {
         return this.dayMealService.insert(dayMeal);
     }
 
+    @PostMapping(path="/copy/{originDayMealId}", produces = "application/json")
+    ResponseEntity<DayMealType> copy(@RequestBody DayMealType dayMeal, @PathVariable Long originDayMealId) {
+        this.dayMealService.copy(originDayMealId, dayMeal.getId());
+        return ResponseEntity.ok().body(dayMeal);
+    }
+
     @DeleteMapping(path = "/{id}")
     ResponseEntity<DayMealType> delete(@PathVariable Long id) {
         return this.dayMealService.delete(id);

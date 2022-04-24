@@ -7,6 +7,12 @@
 
       <div class="mat-card-header-day-name">
         <h2>{{translateDayType(day.dayType)}}</h2>
+
+        <button mat-mini-fab matTooltip="Kopiuj dzień" (click)=picker.open()>
+          <mat-icon>content_copy</mat-icon>
+          <input [matDatepicker]="picker" #elementToFocus type="hidden" (dateChange)="dateChanged($event, day.id)" [min]="menuItemData.startDate" [max]="menuItemData.endDate" [value]="day.date">
+          <mat-datepicker #picker="matDatepicker"></mat-datepicker>
+        </button>
       </div>
     </div>
 
