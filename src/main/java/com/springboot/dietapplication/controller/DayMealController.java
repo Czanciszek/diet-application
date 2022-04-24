@@ -31,6 +31,12 @@ public class DayMealController {
         return ResponseEntity.ok().body(dayMeal);
     }
 
+    @PostMapping(path="/clear", produces = "application/json")
+    ResponseEntity<Long> clear(@RequestBody Long dayMealId) {
+        this.dayMealService.clearDayMeal(dayMealId);
+        return ResponseEntity.ok().body(dayMealId);
+    }
+
     @DeleteMapping(path = "/{id}")
     ResponseEntity<DayMealType> delete(@PathVariable Long id) {
         return this.dayMealService.delete(id);

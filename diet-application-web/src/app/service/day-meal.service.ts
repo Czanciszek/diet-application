@@ -17,4 +17,8 @@ export class DayMealService {
   copyDayMeal(dayMeal, originDayMealId) {
     return this.restApiService.post("daymeals/copy/" + originDayMealId, dayMeal);
   }
+
+  clearDayMeal(dayMealId) {
+    return this.restApiService.post("daymeals/clear", dayMealId);
+  }
 }

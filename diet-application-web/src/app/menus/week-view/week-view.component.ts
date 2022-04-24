@@ -237,4 +237,14 @@ export class WeekViewComponent implements OnInit {
        this.refreshMealList();
      });
    }
+
+   clearDayMealButtonClick(dayMealId: string) {
+     if (!confirm("Na pewno chcesz wyczyścić ten dzień?")) {
+       return;
+     }
+
+     this.dayMealService.clearDayMeal(dayMealId).subscribe(() => {
+       this.refreshMealList();
+     });
+   }
 }

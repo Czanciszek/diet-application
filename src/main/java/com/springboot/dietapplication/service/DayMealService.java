@@ -88,6 +88,10 @@ public class DayMealService {
         mealService.copy(originDayMealId, targetDayMealId, 1f);
     }
 
+    public void clearDayMeal(long dayMealId) {
+        mealService.deleteByDayMealId(dayMealId);
+    }
+
     public ResponseEntity<DayMealType> delete(Long id) {
         dayMealRepository.deleteById(id);
         return ResponseEntity.ok().build();
@@ -97,7 +101,7 @@ public class DayMealService {
 
         List<PsqlDayMeal> dayMeals = dayMealRepository.getPsqlDayMealsByWeekMealId(id);
         for (PsqlDayMeal dayMeal : dayMeals) {
-            mealService.deleteByDayMealId(dayMeal.getId());
+            clearDayMeal(dayMeal.getId());
             dayMealRepository.deleteById(dayMeal.getId());
         }
     }
