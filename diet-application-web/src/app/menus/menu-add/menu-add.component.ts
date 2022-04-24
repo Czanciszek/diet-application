@@ -189,7 +189,7 @@ export class MenuAddComponent implements OnInit {
       }
 
       if (needToCheckPercentages) {
-        this.checkPercentages();
+        this.checkPercentages(type);
       }
     }
   }
@@ -210,11 +210,11 @@ export class MenuAddComponent implements OnInit {
 
     if (limit > 0 && needToCheckPercentage) {
       let percentage = Number((newValue / limit * 100 * factor).toFixed(2));
-      this.percentageChanged(percentage, false, false, type);
+      this.percentageChanged(percentage, false, true, type);
     }
   }
 
-  checkPercentages() {
+  checkPercentages(changedType: string) {
 
     let proteinsPercentage = Number(this.proteinsPercentage.nativeElement.value);
     let fatsPercentage = Number(this.fatsPercentage.nativeElement.value);
@@ -229,15 +229,14 @@ export class MenuAddComponent implements OnInit {
     } else if (carbohydratesPercentage == 100) {
       this.percentageChanged(0, true, false, 'proteins');
       this.percentageChanged(0, true, false, 'fats');
-    } else if (proteinsPercentage > 0 && fatsPercentage > 0) {
-      let carbohydratesPercentage = (100 - proteinsPercentage - fatsPercentage);
-      this.percentageChanged( Math.max(carbohydratesPercentage, 0), true, false, 'carbohydrates');
-    } else if (proteinsPercentage > 0 && carbohydratesPercentage > 0) {
-      let fatsPercentage = (100 - proteinsPercentage - carbohydratesPercentage);
-      this.percentageChanged( Math.max(fatsPercentage, 0), true, false, 'fats');
-    } else if (fatsPercentage > 0 && carbohydratesPercentage > 0) {
-      let proteinsPercentage = (100 - fatsPercentage - carbohydratesPercentage);
-      this.percentageChanged( Math.max(proteinsPercentage, 0), true, false, 'proteins');
+    } else {
+      if ( (changedType == "fats" || changedType == "proteins") && fatsPercentage > 0 && proteinsPercentage > 0) {
+        let carbohydratesPercentage = (100 - proteinsPercentage - fatsPercentage);
+        this.percentageChanged( Math.max(carbohydratesPercentage, 0), true, false, 'carbohydrates');
+      } else if (changedType == "carbohydrates" && carbohydratesPercentage > 0 && proteinsPercentage > 0) {
+        let fatsPercentage = (100 - proteinsPercentage - carbohydratesPercentage);
+        this.percentageChanged( Math.max(fatsPercentage, 0), true, false, 'fats');
+      }
     }
   }
 
