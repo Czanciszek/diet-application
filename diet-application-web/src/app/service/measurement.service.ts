@@ -69,7 +69,7 @@ export class MeasurementService {
   }
 
   insertMeasurement(measurement) {
-    return this.restApiService.post("measurements", measurement);
+    return this.restApiService.post(measurement, "measurements");
   }
 
   populateForm(measurement) {

@@ -15,10 +15,10 @@ export class DayMealService {
   }
 
   copyDayMeal(dayMeal, originDayMealId) {
-    return this.restApiService.post("daymeals/copy/" + originDayMealId, dayMeal);
+    return this.restApiService.post(dayMeal, "daymeals/copy/" + originDayMealId);
   }
 
   clearDayMeal(dayMealId) {
-    return this.restApiService.post("daymeals/clear", dayMealId);
+    return this.restApiService.post(dayMealId, "daymeals/clear");
   }
 }

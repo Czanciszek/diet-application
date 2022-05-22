@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {GlobalVariable} from "../global";
 import {Observable} from "rxjs";
 import {LocalStorageService} from "./local-storage.service";
 import {Router} from "@angular/router";
@@ -9,6 +8,8 @@ import {Router} from "@angular/router";
   providedIn: 'root'
 })
 export class RestapiService {
+
+  SERVER_ADDRESS = 'http://192.168.0.94:8080/';
 
   constructor(
     private http: HttpClient,
@@ -36,35 +37,44 @@ export class RestapiService {
   }
 
   public login(encryptedAuth:string) {
-    return this.http.get(GlobalVariable.SERVER_ADDRESS + "auth/login", this.loginHeaders(encryptedAuth));
+    return this.http.get(
+      this.getPath("auth/login", "v1", false),
+      this.loginHeaders(encryptedAuth));
   }
 
-  public get<T>(path: string): Observable<T> {
+  public register(registerForm: any) {
+    return this.http.post(
+      this.getPath("auth/register", "v1", false),
+      registerForm,
+      this.httpHeaders());
+  }
+
+  public get<T>(path: string, version: string = "v1"): Observable<T> {
     let get = this.http.get<T>(
-      GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + path,
+      this.getPath(path, version),
       this.httpHeaders());
 
      this.observeResponse(get);
      return get;
   }
 
-  public post(path: string, body: any, responseType: any = null) {
+  public post(body: any, path: string, version: string = "v1", responseType: any = null) {
     return this.http.post(
-      GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + path,
+      this.getPath(path, version),
       body,
       this.httpHeaders(responseType));
   }
 
-  public put(path: string, body: any) {
+  public put(body: any, path: string, version: string = "v1") {
     return this.http.put(
-      GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + path,
+      this.getPath(path, version),
       body,
       this.httpHeaders());
   }
 
-  public delete(path: string) {
+  public delete(path: string, version: string = "v1") {
     return this.http.delete(
-      GlobalVariable.SERVER_ADDRESS + GlobalVariable.DATABASE_SERVICE + path,
+      this.getPath(path, version),
       this.httpHeaders());
   }
 
@@ -83,5 +93,12 @@ export class RestapiService {
       this.localStorageService.remove("token");
       this.router.navigate(["/"]);
     }
+  }
+
+  getPath(path: string, version: string, useApi: boolean = true) {
+    let url = this.SERVER_ADDRESS;
+    if (useApi) url += "api/";
+    url += version + "/" + path;
+    return url
   }
 }

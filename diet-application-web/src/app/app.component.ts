@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {GlobalVariable} from "./global";
 import {LocalStorageService} from "./service/local-storage.service";
 import {Router} from "@angular/router";
 
@@ -10,8 +9,6 @@ import {Router} from "@angular/router";
 })
 export class AppComponent implements OnInit {
   title = 'app';
-
-  currentUserName = GlobalVariable.CURRENT_USER_LOGIN;
 
   constructor(
     private router: Router,

@@ -100,19 +100,19 @@ export class ProductService {
     let categoryName = (category != null) ? category : "*ANY*";
     let subcategoryName = (subcategory != null) ? subcategory : "*ANY*";
 
-    return this.restApiService.get( "products/" + categoryName + "/" + subcategoryName);
+    return this.restApiService.get("products/" + categoryName + "/" + subcategoryName);
   }
 
   insertProduct(product) {
-    return this.restApiService.post("products", product);
+    return this.restApiService.post(product, "products");
   }
 
   updateProduct(product) {
-    return this.restApiService.put( "products/" + product.id, product);
+    return this.restApiService.put(product, "products/" + product.id);
   }
 
   deleteProduct(id: string) {
-    return this.restApiService.delete( "products/" + id);
+    return this.restApiService.delete("products/" + id);
   }
 
   populateForm(product) {

@@ -54,15 +54,15 @@ export class MenuService {
   }
 
   insertMenu(menu) {
-    return this.restApiService.post("menus", menu);
+    return this.restApiService.post(menu, "menus");
   }
 
   copyMenu(menu) {
-    return this.restApiService.post("menus/copy", menu);
+    return this.restApiService.post(menu, "menus/copy");
   }
 
   updateMenu(menu) {
-    return this.restApiService.put("menus/" + menu.id, menu);
+    return this.restApiService.put(menu, "menus/" + menu.id);
   }
 
   deleteMenu(id: string) {

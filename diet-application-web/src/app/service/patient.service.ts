@@ -62,11 +62,11 @@ export class PatientService {
   }
 
   insertPatient(patient) {
-    return this.restApiService.post("patients", patient);
+    return this.restApiService.post(patient, "patients");
   }
 
   updatePatient(patient) {
-    return this.restApiService.put("patients/" + patient.id, patient);
+    return this.restApiService.put(patient, "patients/" + patient.id);
   }
 
   deletePatient(id: string) {

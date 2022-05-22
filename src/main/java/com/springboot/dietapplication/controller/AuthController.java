@@ -2,6 +2,7 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.config.JwtTokenUtil;
 import com.springboot.dietapplication.config.KeyUtility;
+import com.springboot.dietapplication.model.psql.user.PsqlUser;
 import com.springboot.dietapplication.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +20,7 @@ import java.util.Base64;
 import java.util.List;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("v1/auth")
 public class AuthController {
 
     @Autowired
@@ -46,6 +47,14 @@ public class AuthController {
         }
 
         return ResponseEntity.ok(token);
+    }
+
+    @PostMapping(path = "/register", produces = "application/json")
+    public ResponseEntity<PsqlUser> registerUser(@RequestBody PsqlUser user) {
+
+        userDetailsService.registerNewUser(user);
+
+        return ResponseEntity.ok(user);
     }
 
     private String[] decodeAuthorization(List<String> auth) throws Exception {

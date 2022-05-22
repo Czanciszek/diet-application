@@ -78,15 +78,15 @@ export class DishService {
   }
 
   copyDishToMenu(dish) {
-    return this.restApiService.post("dishes/copyToMenu", dish);
+    return this.restApiService.post(dish, "dishes/copyToMenu");
   }
 
   insertDish(dish) {
-    return this.restApiService.post("dishes", dish);
+    return this.restApiService.post(dish, "dishes");
   }
 
   updateDish(dish) {
-    return this.restApiService.put("dishes/" + dish.id, dish);
+    return this.restApiService.put(dish, "dishes/" + dish.id);
   }
 
   deleteDish(id: string) {

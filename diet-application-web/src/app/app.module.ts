@@ -40,10 +40,12 @@ import { DishSelectComponent } from './dishes/dish-select/dish-select.component'
 import { WeekHeaderComponent } from './menus/week-header/week-header.component';
 import { GenerateMenuPanelComponent } from './menus/generate-menu-panel/generate-menu-panel.component';
 import { CopyMenuPanelComponent } from './menus/copy-menu-panel/copy-menu-panel.component';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
   {path: "login", component:LoginComponent},
+  {path: "register", component:RegisterComponent},
   {path: "home", component:HomeComponent},
   {path: "products", component:ProductsComponent},
   {path: "dishes", component:DishesComponent},
@@ -82,6 +84,7 @@ const routes: Routes = [
     WeekHeaderComponent,
     GenerateMenuPanelComponent,
     CopyMenuPanelComponent,
+    RegisterComponent,
   ],
     imports: [
         BrowserModule,

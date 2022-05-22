@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest} from "@angular/common/http";
 import { FormControl, FormGroup, Validators} from "@angular/forms";
-import {GlobalVariable} from "../global";
 import {Observable} from "rxjs";
 import {RestapiService} from "../service/restapi.service";
 
@@ -37,7 +36,7 @@ export class FileService {
     let formData = new FormData();
     formData.append('upload', file);
 
-    return this.apiService.post("files/uploadProducts", formData);
+    return this.apiService.post(formData, "files/uploadProducts");
   }
 
   downloadFile(data: any, type: string) {
@@ -51,7 +50,7 @@ export class FileService {
 
   getPdfFile() {
     return this.apiService
-      .post("files/menu/",  this.form.value, 'arraybuffer')
+      .post(this.form.value, "files/menu/", "v1", 'arraybuffer')
       .subscribe(
         (response) => {
           this.downloadFile(response, "application/pdf");

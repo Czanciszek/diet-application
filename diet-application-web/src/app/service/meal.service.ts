@@ -60,15 +60,15 @@ export class MealService {
   }
 
   insertMeal(meal) {
-    return this.restApiService.post("meals", meal);
+    return this.restApiService.post(meal, "meals");
   }
 
   copyMeal(meal) {
-    return this.restApiService.post("meals/copy", meal);
+    return this.restApiService.post(meal, "meals/copy");
   }
 
   updateMeal(meal) {
-    return this.restApiService.put("meals/" + meal.id, meal);
+    return this.restApiService.put(meal, "meals/" + meal.id);
   }
 
   deleteMeal(id: string) {

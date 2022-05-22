@@ -4,29 +4,28 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "users")
-public class PsqlUser implements Serializable {
-
-    private static final long serialVersionUID = 8229292938443984564L;
+public class UserEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "user_type_id")
-    private Long userTypeId;
-
-    @Column(name = "name")
+    private String userType;
     private String name;
-
-    @Column(name = "password")
     private String password;
-
-    @Column(name = "email")
     private String email;
-
-    @Column(name = "image_id")
     private String imageId;
+
+    public UserEntity() {
+
+    }
+    
+    public UserEntity(PsqlUser user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+        this.imageId = user.getImageId();
+    }
+
     public Long getId() {
         return id;
     }
@@ -35,12 +34,12 @@ public class PsqlUser implements Serializable {
         this.id = id;
     }
 
-    public Long getUserTypeId() {
-        return userTypeId;
+    public String getUserType() {
+        return userType;
     }
 
-    public void setUserTypeId(Long userTypeId) {
-        this.userTypeId = userTypeId;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public String getName() {
