@@ -3,6 +3,7 @@ package com.springboot.dietapplication.service;
 import com.springboot.dietapplication.model.psql.menu.PsqlPatientsUnlikelyCategories;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 import com.springboot.dietapplication.model.psql.product.PsqlCategory;
+import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.MenuType;
 import com.springboot.dietapplication.model.type.PatientType;
 import com.springboot.dietapplication.repository.CategoryRepository;
@@ -19,6 +20,8 @@ public class PatientService {
 
     @Autowired
     MenuService menuService;
+    @Autowired
+    JwtUserDetailsService userDetailsService;
 
     @Autowired
     PatientRepository patientRepository;
@@ -28,9 +31,11 @@ public class PatientService {
     PatientsUnlikelyCategoriesRepository patientsUnlikelyCategoriesRepository;
 
     public List<PatientType> getAll() {
-        List<PatientType> patientTypeList = new ArrayList<>();
 
-        List<PsqlPatient> patients = this.patientRepository.findAll();
+        UserEntity user = userDetailsService.getCurrentUser();
+
+        List<PatientType> patientTypeList = new ArrayList<>();
+        List<PsqlPatient> patients = this.patientRepository.findPsqlPatientsByUserId(user.getId());
         for (PsqlPatient psqlPatient : patients) {
             PatientType patientType = new PatientType(psqlPatient);
             patientType.setUnlikelyCategories(getPatientsUnlikelyCategories(psqlPatient));

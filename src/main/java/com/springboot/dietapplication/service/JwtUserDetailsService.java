@@ -7,6 +7,7 @@ import com.springboot.dietapplication.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,6 +53,21 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         psqlUserRepository.save(user);
+    }
+
+    public UserEntity getCurrentUser() throws UsernameNotFoundException {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails)principal).getUsername();
+            UserEntity user = userEntityRepository.findByName(username);
+            if (user == null) {
+                throw new UsernameNotFoundException("User with provided name doesn't exist.");
+            }
+            return user;
+        }
+
+        throw new UsernameNotFoundException("Error getting current user authentication principal");
     }
 
 }
