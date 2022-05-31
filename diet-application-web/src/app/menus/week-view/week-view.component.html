@@ -8,7 +8,7 @@
       <div class="mat-card-header-day-name">
         <h2>{{translateDayType(day.dayType)}}</h2>
 
-        <button mat-mini-fab (click)="clearDayMealButtonClick(day.id)"><mat-icon>layers_clear</mat-icon></button>
+        <button mat-mini-fab matTooltip="Wyczyść dzień" (click)="clearDayMealButtonClick(day.id)"><mat-icon>layers_clear</mat-icon></button>
         <button mat-mini-fab matTooltip="Kopiuj dzień" (click)=picker.open()>
           <mat-icon>content_copy</mat-icon>
           <input [matDatepicker]="picker" #elementToFocus type="hidden" (dateChange)="dateChanged($event, day.id)" [min]="menuItemData.startDate" [max]="menuItemData.endDate" [value]="day.date">
