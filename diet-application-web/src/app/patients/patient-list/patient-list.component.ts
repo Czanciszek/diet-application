@@ -87,19 +87,19 @@ export class PatientListComponent implements OnInit {
   }
 
   onDelete(patientId) {
-    if (confirm("Are you sure to delete this patient?")) {
-      this.patientService.deletePatient(patientId).subscribe( result => {
-
-        let listDataProduct = this.listData.data.find( x => x.id == patientId);
-        let index = this.listData.data.indexOf(listDataProduct);
-        this.listData.data.splice(index, 1);
-        this.listData.data = this.listData.data;
-
-        this.notificationService.warn(":: Deleted succesfully! ::");
-      });
-
-      this.getPatients();
+    if (!confirm("Na pewno usunąć tego pacjenta?")) {
+      return;
     }
+
+    this.patientService.deletePatient(patientId).subscribe(
+      result => {
+        this.notificationService.warn(":: Pomyślnie usunięto! ::");
+      }, error => {
+         this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
+      }, () => {
+        this.getPatients();
+      }
+    );
   }
 
 }

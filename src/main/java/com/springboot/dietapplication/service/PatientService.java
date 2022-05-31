@@ -10,10 +10,12 @@ import com.springboot.dietapplication.repository.CategoryRepository;
 import com.springboot.dietapplication.repository.PatientRepository;
 import com.springboot.dietapplication.repository.PatientsUnlikelyCategoriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PatientService {
@@ -31,11 +33,14 @@ public class PatientService {
     PatientsUnlikelyCategoriesRepository patientsUnlikelyCategoriesRepository;
 
     public List<PatientType> getAll() {
+        List<PatientType> patientTypeList = new ArrayList<>();
 
         UserEntity user = userDetailsService.getCurrentUser();
+        List<PsqlPatient> patients = this.patientRepository
+                .findAll()
+                .stream().filter( patient -> patient.getUserId().equals(user.getId()))
+                .collect(Collectors.toList());
 
-        List<PatientType> patientTypeList = new ArrayList<>();
-        List<PsqlPatient> patients = this.patientRepository.findPsqlPatientsByUserId(user.getId());
         for (PsqlPatient psqlPatient : patients) {
             PatientType patientType = new PatientType(psqlPatient);
             patientType.setUnlikelyCategories(getPatientsUnlikelyCategories(psqlPatient));
@@ -45,31 +50,72 @@ public class PatientService {
         return patientTypeList;
     }
 
-    public PatientType getPatientById(Long patientId) {
+    public PatientType getPatientById(Long patientId) throws ResponseStatusException {
         Optional<PsqlPatient> patient = this.patientRepository.findById(patientId);
-        return patient.map(PatientType::new).orElseGet(PatientType::new);
+
+        if (!patient.isPresent())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found");
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        if (patient.get().getUserId().equals(user.getId())) {
+            return new PatientType(patient.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Getting patient is not authorized");
+        }
     }
 
-    public PatientType getPatientByMenuId(Long menuId) {
+    public PatientType getPatientByMenuId(Long menuId) throws ResponseStatusException {
         MenuType menu = this.menuService.getMenuById(menuId);
         Optional<PsqlPatient> patient = this.patientRepository.findById(menu.getPatientId());
-        return patient.map(PatientType::new).orElseGet(PatientType::new);
+
+        if (!patient.isPresent())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found");
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        if (patient.get().getUserId().equals(user.getId())) {
+            return new PatientType(patient.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Getting patient is not authorized");
+        }
     }
 
-    public ResponseEntity<PatientType> insert(PatientType patient) {
+    public PatientType insert(PatientType patient) throws ResponseStatusException {
+        UserEntity user = userDetailsService.getCurrentUser();
+
+        if (patient.getId() != null) {
+            // Check authorization for existing patient
+            Optional<PsqlPatient> psqlPatient = this.patientRepository.findById(patient.getId());
+            if (!psqlPatient.isPresent())
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Patient doesn't exist anymore");
+            if (!psqlPatient.get().getUserId().equals(user.getId()))
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Updating patient is not authorized");
+        }
+
         PsqlPatient psqlPatient = new PsqlPatient(patient);
+        psqlPatient.setUserId(user.getId());
 
         this.patientRepository.save(psqlPatient);
         patient.setId(psqlPatient.getId());
+
         storePatientsUnlikelyCategories(patient);
 
-        return ResponseEntity.ok().body(patient);
+        return patient;
     }
 
-    public ResponseEntity<Void> delete(Long id) {
-        this.patientsUnlikelyCategoriesRepository.deleteAllByPatientId(id);
-        this.patientRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+    public void delete(Long id) throws ResponseStatusException {
+
+        Optional<PsqlPatient> patient = this.patientRepository.findById(id);
+        if (!patient.isPresent())
+            return;
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        if (patient.get().getUserId().equals(user.getId())) {
+            this.patientsUnlikelyCategoriesRepository.deleteAllByPatientId(id);
+            this.patientRepository.deleteById(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Deleting patient is not authorized");
+        }
+
     }
 
     private Set<String> getPatientsUnlikelyCategories(PsqlPatient psqlPatient) {

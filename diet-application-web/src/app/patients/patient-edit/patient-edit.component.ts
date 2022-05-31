@@ -52,13 +52,30 @@ export class PatientEditComponent implements OnInit {
   onSubmit() {
     if (this.patientService.form.valid) {
       if (!this.patientService.form.get('id').value) {
-        this.patientService.insertPatient(this.patientService.form.value).subscribe();
-        this.notificationService.success(":: Patient created successfully! ::");
+        this.patientService
+          .insertPatient(this.patientService.form.value)
+          .subscribe(
+            patient => {
+              this.notificationService.success(":: Pacjent dodany pomyślnie! ::");
+            }, error => {
+              this.notificationService.error(":: Wystąpił błąd podczas dodawania pacjenta! ::");
+            }, () => {
+              this.onClose();
+            }
+          );
       } else {
-        this.patientService.updatePatient(this.patientService.form.value).subscribe();
-        this.notificationService.success(":: Patient updated successfully! ::");
+        this.patientService
+          .updatePatient(this.patientService.form.value)
+          .subscribe(
+            patient => {
+              this.notificationService.success(":: Pacjent zaktualizowany pomyślnie! ::");
+            }, error => {
+              this.notificationService.error(":: Wystąpił błąd podczas aktualizacji pacjenta! ::");
+            }, () => {
+              this.onClose();
+            }
+          );
       }
-      this.onClose();
     }
   }
 

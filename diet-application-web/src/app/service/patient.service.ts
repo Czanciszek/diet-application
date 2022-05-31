@@ -54,11 +54,7 @@ export class PatientService {
   }
 
   getPatientById(patientId) {
-    this.restApiService
-    .get("patients/" + patientId)
-    .toPromise().then( result => {
-      this.populateForm(result);
-    });
+    return this.restApiService.get("patients/" + patientId);
   }
 
   insertPatient(patient) {
