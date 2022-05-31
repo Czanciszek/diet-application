@@ -18,8 +18,13 @@ public class PatientController {
     PatientService patientService;
 
     @GetMapping
-    public List<PatientType> getAll() {
-        return this.patientService.getAll();
+    public ResponseEntity<?> getAll() {
+        try {
+            List<PatientType> patientList = this.patientService.getAll();
+            return ResponseEntity.ok(patientList);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping(path = "/{patientId}")
