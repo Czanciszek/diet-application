@@ -16,6 +16,10 @@ form.normal-form {
   padding: 5%;
 }
 
+mat-form-field {
+  width: 100%;
+}
+
 .control-container > * {
   width: 100%;
 }
