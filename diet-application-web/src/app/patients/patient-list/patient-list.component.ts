@@ -24,7 +24,7 @@ export class PatientListComponent implements OnInit {
   ) { }
 
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['name', 'email', 'numberPhone', 'actions'];
+  displayedColumns: string[] = ['name', 'surname', 'email', 'numberPhone', 'actions'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey: string;

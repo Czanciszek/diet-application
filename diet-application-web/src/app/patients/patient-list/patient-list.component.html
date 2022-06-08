@@ -13,8 +13,12 @@
 <div class ="mat-elevation-z8">
   <mat-table [dataSource]="listData" matSort>
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Imię i nazwisko</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Imię</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="surname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Nazwisko</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.surname}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Adres e-mail</mat-header-cell>

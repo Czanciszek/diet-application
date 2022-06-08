@@ -76,7 +76,7 @@ public class PDFService {
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
         String header = "Dieta dla ";
         header += patient.isSex() ? "Pani " : "Pana ";
-        header += patient.getName();
+        header += patient.getName() + " " + patient.getSurname();
         writeText(contentStream, new Point(40, 740), timesBold, 24, header);
         setNewLine(document, contentStream, new Point(0, -20), false, true);
     }

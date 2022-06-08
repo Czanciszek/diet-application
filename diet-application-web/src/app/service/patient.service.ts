@@ -15,7 +15,8 @@ export class PatientService {
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    surname: new FormControl('', [Validators.required, Validators.minLength(2)]),
     birthDate: new FormControl('', [Validators.required]),
     numberPhone: new FormControl(''),
     email: new FormControl('', [Validators.email]),
@@ -32,6 +33,7 @@ export class PatientService {
     this.form.setValue({
       id: null,
       name: '',
+      surname: '',
       birthDate: '',
       numberPhone: '',
       email: '',

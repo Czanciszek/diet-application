@@ -12,6 +12,7 @@ public class PatientType implements Serializable {
 
     private Long id;
     private String name;
+    private String surname;
     private String birthDate;
     private String numberPhone;
     private String email;
@@ -39,6 +40,7 @@ public class PatientType implements Serializable {
     public PatientType(PsqlPatient psqlPatient) {
         this.id = psqlPatient.getId();
         this.name = psqlPatient.getName();
+        this.surname = psqlPatient.getSurname();
         this.email = psqlPatient.getEmail();
         this.numberPhone = psqlPatient.getNumberPhone();
         this.birthDate = psqlPatient.getBirthDate();
@@ -69,6 +71,14 @@ public class PatientType implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getBirthDate() {

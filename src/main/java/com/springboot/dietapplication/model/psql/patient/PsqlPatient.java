@@ -23,6 +23,9 @@ public class PsqlPatient implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "surname")
+    private String surname;
+
     @Column(name = "birthdate")
     private String birthDate;
 
@@ -63,6 +66,7 @@ public class PsqlPatient implements Serializable {
     public PsqlPatient(PatientType patientType) {
         this.id = patientType.getId();
         this.name = patientType.getName();
+        this.surname = patientType.getSurname();
         this.email = patientType.getEmail();
         this.numberPhone = patientType.getNumberPhone();
         this.birthDate = patientType.getBirthDate();
@@ -96,6 +100,14 @@ public class PsqlPatient implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getBirthDate() {
