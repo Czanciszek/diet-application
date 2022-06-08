@@ -37,7 +37,11 @@ export class PatientListComponent implements OnInit {
     this.patientService.getPatients().subscribe(
       (data: Patient[] ) => {
 
-        this.patientService.patientList = [...data];
+        var patientList: Patient[] = [...data].sort( (p1, p2) => {
+          if (p1.surname == p2.surname) return 0;
+          return p1.surname > p2.surname ? 1 : -1;
+        });
+        this.patientService.patientList = patientList;
         this.listData = new MatTableDataSource(this.patientService.patientList);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
