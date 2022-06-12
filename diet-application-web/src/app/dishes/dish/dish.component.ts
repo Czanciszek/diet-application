@@ -31,29 +31,20 @@ export class DishComponent implements OnInit {
   foodTypes = FOOD_TYPES;
 
   ngOnInit(): void {
-    if (this.dishForm.get('id').value) {
-      let dishId = this.dishService.form.get('id').value;
-      this.getProductsDetails(dishId);
-    }
+    this.getProducts();
+  }
 
+  getProducts() {
     this.productService.getProducts()
       .subscribe(
         (data: Product[] ) => {
-          this.productService.productList = [...data];
+        this.productService.productList = [...data];
       });
   }
 
   onClear() {
     (<FormArray>this.dishForm.get('products')).clear();
     this.dishService.form.reset();
-  }
-
-  getProductsDetails(dishId) {
-    this.productService.getProductsByDishId(dishId)
-      .subscribe(
-        (productsData: Dish[]) => {
-          let products = this.dishForm.value.products;
-        });
   }
 
   onSubmit() {

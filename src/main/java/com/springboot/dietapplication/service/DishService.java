@@ -2,26 +2,23 @@ package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.menu.PsqlAmountType;
 import com.springboot.dietapplication.model.psql.menu.PsqlFoodType;
-import com.springboot.dietapplication.model.type.AmountType;
-import com.springboot.dietapplication.model.type.FoodType;
-import com.springboot.dietapplication.model.type.ProductDishType;
+import com.springboot.dietapplication.model.psql.user.UserEntity;
+import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.model.psql.dish.PsqlDish;
 import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
-import com.springboot.dietapplication.model.type.DishType;
 import com.springboot.dietapplication.repository.AmountTypeRepository;
 import com.springboot.dietapplication.repository.DishRepository;
 import com.springboot.dietapplication.repository.FoodTypeRepository;
 import com.springboot.dietapplication.repository.ProductDishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DishService {
@@ -35,28 +32,35 @@ public class DishService {
     @Autowired
     AmountTypeRepository amountTypeRepository;
 
+    @Autowired
+    JwtUserDetailsService userDetailsService;
+
     public List<DishType> getAll() {
-        List<PsqlDish> dishes = this.dishRepository.findAll();
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        List<PsqlDish> dishes = this.dishRepository
+                .findAll()
+                .stream().filter( dish -> dish.getUserId() == null || dish.getUserId().equals(user.getId()))
+                .collect(Collectors.toList());
         return convertLists(dishes);
     }
 
-    public DishType getDishById(Long dishId) {
-        return new DishType();
-    }
+    public DishType insert(DishType dishType) {
 
-    public DishType insert(DishType dish) {
-        PsqlDish psqlDish = new PsqlDish(dish);
-        try {
-            this.dishRepository.save(psqlDish);
-        } catch (DataIntegrityViolationException e) {
-            //TODO: Check the reason of exception
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "unique conflict", e);
-        }
+        // TODO: Validate all required fields
+        if (dishType.getFoodType() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dish data is not valid");
 
-        if (psqlDish.getId() != null)
-            this.productDishRepository.deletePsqlProductDishesByDishId(psqlDish.getId());
+        // TODO: Check if dish with provided name already exists
 
-        for (ProductDishType productDish : dish.getProducts()) {
+        PsqlDish psqlDish = new PsqlDish(dishType);
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        psqlDish.setUserId(user.getId());
+
+        this.dishRepository.save(psqlDish);
+
+        for (ProductDishType productDish : dishType.getProducts()) {
             PsqlProductDish psqlProductDish = new PsqlProductDish(productDish);
             psqlProductDish.setDishId(psqlDish.getId());
 
@@ -68,31 +72,72 @@ public class DishService {
             this.productDishRepository.save(psqlProductDish);
         }
 
-        if (dish.getFoodType() != null) {
-            PsqlFoodType foodType = this.foodTypeRepository.getPsqlFoodTypeByName(dish.getFoodType().toString());
-            psqlDish.setFoodTypeId(foodType.getId());
-        }
+        PsqlFoodType foodType = this.foodTypeRepository.getPsqlFoodTypeByName(dishType.getFoodType().toString());
+        psqlDish.setFoodTypeId(foodType.getId());
 
         this.dishRepository.save(psqlDish);
+        dishType.setId(psqlDish.getId());
 
-        dish.setId(psqlDish.getId());
-
-        return dish;
+        return dishType;
     }
 
-    public DishType copy(DishType dish) {
-        DishType newDish = new DishType(dish);
-        insert(newDish);
-        return newDish;
+    public DishType update(DishType dishType) {
+
+        // TODO: Validate all required fields
+        if (dishType.getId() == null || dishType.getFoodType() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dish id cannot be null");
+
+        Optional<PsqlDish> psqlDish = this.dishRepository.findById(dishType.getId());
+        if (!psqlDish.isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Dish does not exist");
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        if (!user.getUserType().equals(UserType.ADMIN.name) && !psqlDish.get().getUserId().equals(user.getId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for updating dish");
+
+        // TODO: Check if dish with provided name already exists
+
+        PsqlDish dish = new PsqlDish(dishType);
+        dish.setUserId(psqlDish.get().getId());
+
+        this.dishRepository.save(dish);
+
+        this.productDishRepository.deletePsqlProductDishesByDishId(dish.getId());
+
+        for (ProductDishType productDish : dishType.getProducts()) {
+            PsqlProductDish psqlProductDish = new PsqlProductDish(productDish);
+            psqlProductDish.setDishId(dish.getId());
+
+            if (productDish.getAmountType() != null) {
+                PsqlAmountType amountType = this.amountTypeRepository.getPsqlAmountTypeByName(productDish.getAmountType().toString());
+                psqlProductDish.setAmountTypeId(amountType.getId());
+            }
+
+            this.productDishRepository.save(psqlProductDish);
+        }
+
+        PsqlFoodType foodType = this.foodTypeRepository.getPsqlFoodTypeByName(dishType.getFoodType().toString());
+        dish.setFoodTypeId(foodType.getId());
+
+        this.dishRepository.save(dish);
+
+        return dishType;
     }
 
-    public ResponseEntity<Void> delete(Long id) {
+    public void delete(Long id) {
+        Optional<PsqlDish> dish = this.dishRepository.findById(id);
+        if (!dish.isPresent())
+            return;
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        if (!user.getUserType().equals(UserType.ADMIN.name) && !dish.get().getUserId().equals(user.getId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting dish attempt");
+
         List<PsqlProductDish> productDishList =
                 this.productDishRepository.findPsqlProductDishesByDishId(id);
         this.productDishRepository.deleteAll(productDishList);
 
         this.dishRepository.deleteById(id);
-        return ResponseEntity.ok().build();
     }
 
     private List<DishType> convertLists(List<PsqlDish> psqlDayMeals) {

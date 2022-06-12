@@ -11,8 +11,6 @@ export class DishService {
     private restApiService: RestapiService
   ) { }
 
-  dishList: any;
-
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -73,12 +71,7 @@ export class DishService {
   }
 
   getDishes() {
-    this.dishList = this.restApiService.get("dishes");
-    return this.dishList;
-  }
-
-  copyDishToMenu(dish) {
-    return this.restApiService.post(dish, "dishes/copyToMenu");
+    return this.restApiService.get("dishes");
   }
 
   insertDish(dish) {
@@ -86,7 +79,7 @@ export class DishService {
   }
 
   updateDish(dish) {
-    return this.restApiService.put(dish, "dishes/" + dish.id);
+    return this.restApiService.put(dish, "dishes");
   }
 
   deleteDish(id: string) {

@@ -27,18 +27,6 @@ public class ProductController {
         }
     }
 
-    @GetMapping(path = "/dishlist/{dishId}")
-    ResponseEntity<?> getProductsByDishId(@PathVariable("dishId") Long dishId) {
-        try {
-            List<ProductType> dishProducts = this.productService.getProductsByDishId(dishId);
-            return ResponseEntity.ok(dishProducts);
-        } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(dishId);
-        }
-    }
-
     @PostMapping(produces = "application/json")
     ResponseEntity<?> insert(@RequestBody ProductType productType) {
         try {

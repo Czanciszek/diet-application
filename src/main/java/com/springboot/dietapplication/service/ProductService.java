@@ -46,27 +46,12 @@ public class ProductService {
         return convertLists(products);
     }
 
-    public List<ProductType> getProductsByDishId(Long dishId) throws ResponseStatusException {
-
-        List<PsqlProductFoodProperties> productList = new ArrayList<>();
-
-        UserEntity user = userDetailsService.getCurrentUser();
-        // TODO: Verify dish by user id
-
-        List<PsqlProductDish> productDishTypeList = this.productDishRepository.findPsqlProductDishesByDishId(dishId);
-        for (PsqlProductDish productDish : productDishTypeList) {
-            Optional<PsqlProductFoodProperties> psqlProductFoodProperties =
-                    this.productFoodPropertiesRepository.findByProductId(productDish.getProductId());
-            psqlProductFoodProperties.ifPresent(productList::add);
-        }
-
-        return convertLists(productList);
-    }
-
     public ProductType insert(ProductType productType) {
 
         // TODO: Validate all required fields
         PsqlProduct product = new PsqlProduct(productType);
+
+        // TODO: Check if product with provided name already exists
 
         this.foodPropertiesService.insert(productType.getFoodProperties());
         product.setFoodPropertiesId(productType.getFoodProperties().getId());
@@ -96,6 +81,8 @@ public class ProductService {
         UserEntity user = userDetailsService.getCurrentUser();
         if (!user.getUserType().equals(UserType.ADMIN.name) && !psqlProduct.get().getUserId().equals(user.getId()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for updating product");
+
+        // TODO: Check if product with provided name already exists
 
         PsqlProduct product = new PsqlProduct(productType);
         product.setUserId(psqlProduct.get().getUserId());
@@ -136,8 +123,7 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting product attempt");
 
         this.productRepository.deleteById(id);
-        product.ifPresent(psqlProduct ->
-                this.foodPropertiesService.delete(psqlProduct.getFoodPropertiesId()));
+        this.foodPropertiesService.delete(product.get().getFoodPropertiesId());
 
     }
 

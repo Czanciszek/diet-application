@@ -1,11 +1,12 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.type.DishType;
-import com.springboot.dietapplication.model.type.MealType;
 import com.springboot.dietapplication.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,36 +18,48 @@ public class DishController {
     DishService dishService;
 
     @GetMapping
-    public List<DishType> getAll() {
-        return this.dishService.getAll();
-    }
-
-    @GetMapping(path = "/{dishId}")
-    public DishType getDishById(@PathVariable("dishId") Long dishId) {
-        return this.dishService.getDishById(dishId);
+    ResponseEntity<?> getAll() {
+        try {
+            List<DishType> dishList = this.dishService.getAll();
+            return ResponseEntity.ok(dishList);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping(produces = "application/json")
-    ResponseEntity<DishType> insert(@RequestBody DishType dish) {
-        this.dishService.insert(dish);
-        return ResponseEntity.ok().body(dish);
+    ResponseEntity<?> insert(@RequestBody DishType dishType) {
+        try {
+            DishType dish = this.dishService.insert(dishType);
+            return ResponseEntity.ok().body(dish);
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<HttpStatus>(e.getStatus());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(dishType);
+        }
     }
 
-    @PostMapping(path="/copyToMenu", produces = "application/json")
-    ResponseEntity<DishType> copy(@RequestBody DishType dish) {
-        DishType newDish = this.dishService.copy(dish);
-        return ResponseEntity.ok().body(newDish);
-    }
-
-    @PutMapping(path = "/{dishId}", produces = "application/json")
-    ResponseEntity<DishType> update(@RequestBody DishType dish) {
-        this.dishService.insert(dish);
-        return ResponseEntity.ok().body(dish);
+    @PutMapping(produces = "application/json")
+    ResponseEntity<?> update(@RequestBody DishType dishType) {
+        try {
+            DishType dish = this.dishService.update(dishType);
+            return ResponseEntity.ok().body(dish);
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<HttpStatus>(e.getStatus());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(dishType);
+        }
     }
 
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<Void> delete(@PathVariable Long id) {
-        this.dishService.delete(id);
-        return ResponseEntity.ok().build();
+    ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            this.dishService.delete(id);
+            return ResponseEntity.ok().build();
+        } catch (ResponseStatusException e) {
+            return new ResponseEntity<HttpStatus>(e.getStatus());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(id);
+        }
     }
 }

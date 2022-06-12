@@ -25,8 +25,6 @@ export class DishListComponent implements OnInit {
     private notificationService: NotificationService,
   ) { }
 
-  public menuId: any;
-
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'portions', 'foodType', 'actions'];
 
@@ -35,10 +33,6 @@ export class DishListComponent implements OnInit {
   searchKey: string;
 
   ngOnInit(): void {
-    this.fetchDishData();
-  }
-
-  fetchDishData() {
     this.getDishList();
   }
 
@@ -71,13 +65,9 @@ export class DishListComponent implements OnInit {
   }
 
   onNewDishButtonClick() {
-    if (this.menuId != null) {
-      this.addNewDishToMenu();
-    } else {
-      (<FormArray>this.dishService.form.get('products')).push(this.dishService.addProductFormGroup());
-      this.dishService.initializeFormGroup();
-      this.openEditDishDialog();
-    }
+    (<FormArray>this.dishService.form.get('products')).push(this.dishService.addProductFormGroup());
+    this.dishService.initializeFormGroup();
+    this.openEditDishDialog();
   }
 
   onEdit(dish) {
@@ -96,23 +86,7 @@ export class DishListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.fetchDishData();
-    });
-  }
-
-  addNewDishToMenu() {
-
-    let dialogRef = this.dialog.open(DishSelectComponent, {
-      autoFocus: true,
-      width: "90%"
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
-        let dish = result;
-        dish.menuId = this.menuId;
-        this.copyDishToMenu(dish);
-      }
+      this.getDishList();
     });
   }
 
@@ -120,15 +94,13 @@ export class DishListComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  copyDishToMenu(dish) {
-    this.dishService.copyDishToMenu(dish).subscribe(result => {
-      this.fetchDishData();
-    });
-  }
-
   onDelete(dishId) {
-    if (confirm("Na pewno chcesz usunąć potrawę?")) {
-      this.dishService.deleteDish(dishId).subscribe( result => {
+    if (!confirm("Na pewno chcesz usunąć potrawę?")) {
+      return;
+    }
+
+    this.dishService.deleteDish(dishId).subscribe(
+      result => {
 
         let listDataDish = this.listData.data.find( x => x.id == dishId);
         let index = this.listData.data.indexOf(listDataDish);
@@ -139,17 +111,13 @@ export class DishListComponent implements OnInit {
       }, error => {
         this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
       }, () => {
-        this.fetchDishData();
-      });
-
-    }
+        this.getDishList();
+      }
+    );
   }
 
   getFoodType(foodTypeId) {
-    if (foodTypeId == null) {
-      return;
-    }
-
+    if (foodTypeId == null) return;
     let foodType = FOOD_TYPES.filter(x => x.id == foodTypeId);
     return foodType[0].value;
   }
