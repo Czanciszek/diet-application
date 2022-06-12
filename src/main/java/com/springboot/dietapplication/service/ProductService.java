@@ -5,13 +5,16 @@ import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import com.springboot.dietapplication.model.psql.product.PsqlProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
+import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -29,18 +32,27 @@ public class ProductService {
     FoodPropertiesService foodPropertiesService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    JwtUserDetailsService userDetailsService;
 
     public List<ProductType> getAll() {
-        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllProducts();
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository
+                .getAllProducts()
+                .stream().filter( product -> product.getUserId() == null || product.getUserId().equals(user.getId()))
+                .collect(Collectors.toList());
+
         return convertLists(products);
     }
 
-    public ProductType getProductById(Long productId) {
-        return new ProductType();
-    }
+    public List<ProductType> getProductsByDishId(Long dishId) throws ResponseStatusException {
 
-    public List<ProductType> getProductsByDishId(Long dishId) {
         List<PsqlProductFoodProperties> productList = new ArrayList<>();
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        // TODO: Verify dish by user id
+
         List<PsqlProductDish> productDishTypeList = this.productDishRepository.findPsqlProductDishesByDishId(dishId);
         for (PsqlProductDish productDish : productDishTypeList) {
             Optional<PsqlProductFoodProperties> psqlProductFoodProperties =
@@ -51,39 +63,50 @@ public class ProductService {
         return convertLists(productList);
     }
 
-    public List<ProductType> getFilteredProducts(String category, String subcategory) {
-        String TAG_ANY = "*ANY*";
-        List<ProductType> filteredPsqlProducts = new ArrayList<>();
-        if (category.equals(TAG_ANY) && subcategory.equals(TAG_ANY)) {
-            filteredPsqlProducts.addAll(getAll());
-        } else if (subcategory.equals(TAG_ANY)) {
-            Set<Long> categoryIds = this.categoryService.findCategoryIdsByCategoryName(category);
-            List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.findPsqlProductsByCategoryIdIn(categoryIds);
-            filteredPsqlProducts.addAll(convertLists(products));
-        } else {
-            PsqlCategory psqlCategory = this.categoryService.findCategoryBySubcategoryName(subcategory);
-            List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.findPsqlProductsByCategoryId(psqlCategory.getId());
-            filteredPsqlProducts.addAll(convertLists(products));
-        }
+    public ProductType insert(ProductType productType) {
 
-        return filteredPsqlProducts;
-    }
-
-    public List<ProductType> getFilteredProducts(String name) {
-        return new ArrayList<>();
-    }
-
-    public ResponseEntity<ProductType> insert(ProductType productType) throws NoSuchFieldException {
+        // TODO: Validate all required fields
         PsqlProduct product = new PsqlProduct(productType);
 
         this.foodPropertiesService.insert(productType.getFoodProperties());
-        Long foodPropertiesId = productType.getFoodProperties().getId();
-        product.setFoodPropertiesId(foodPropertiesId);
+        product.setFoodPropertiesId(productType.getFoodProperties().getId());
 
         PsqlCategory category = this.categoryService.findCategory(productType);
         product.setCategoryId(category.getId());
 
-        if (product.getId() != null) {
+        UserEntity user = userDetailsService.getCurrentUser();
+        product.setUserId(user.getId());
+
+        this.productRepository.save(product);
+        productType.setId(product.getId());
+
+        return productType;
+    }
+
+    public ProductType update(ProductType productType) {
+
+        // TODO: Validate all required fields
+        if (productType.getId() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product id cannot be null");
+
+        Optional<PsqlProduct> psqlProduct = this.productRepository.findById(productType.getId());
+        if (!psqlProduct.isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Product does not exist");
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        if (!user.getUserType().equals(UserType.ADMIN.name) && !psqlProduct.get().getUserId().equals(user.getId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for updating product");
+
+        PsqlProduct product = new PsqlProduct(productType);
+        product.setUserId(psqlProduct.get().getUserId());
+
+        this.foodPropertiesService.insert(productType.getFoodProperties());
+        product.setFoodPropertiesId(productType.getFoodProperties().getId());
+
+        PsqlCategory category = this.categoryService.findCategory(productType);
+        product.setCategoryId(category.getId());
+
+        if (!productType.getName().equals(psqlProduct.get().getName())) {
             List<PsqlProductDish> productDishList = this.productDishRepository.findPsqlProductDishesByProductId(product.getId());
             if (productDishList.size() > 0) {
                 productDishList.forEach( productDish -> productDish.setProductName(product.getName()));
@@ -98,19 +121,24 @@ public class ProductService {
         }
 
         this.productRepository.save(product);
-        productType.setId(product.getId());
 
-        return ResponseEntity.ok().body(productType);
+        return productType;
     }
 
-    public ResponseEntity<Void> delete(Long id) {
+    public void delete(Long id) throws ResponseStatusException {
+
         Optional<PsqlProduct> product = this.productRepository.findById(id);
+        if (!product.isPresent())
+            return;
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        if (!user.getUserType().equals(UserType.ADMIN.name) && !product.get().getUserId().equals(user.getId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting product attempt");
 
         this.productRepository.deleteById(id);
         product.ifPresent(psqlProduct ->
                 this.foodPropertiesService.delete(psqlProduct.getFoodPropertiesId()));
 
-        return ResponseEntity.ok().build();
     }
 
     private List<ProductType> convertLists(List<PsqlProductFoodProperties> products) {

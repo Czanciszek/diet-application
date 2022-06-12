@@ -8,48 +8,13 @@
 </div>
 
 <mat-grid-list cols="7" rowHeight="70px">
-  <mat-grid-tile colspan="2">
-    <div class="control-container">
-      <div class="add-bottom-padding">
-        <mat-form-field>
-          <mat-select [(ngModel)]="selectedCategory" placeholder="Kategoria" (valueChange)="onCategoryChange($event)">
-            <ng-container *ngFor="let category of categories">
-              <mat-option value="{{category}}">{{category}}</mat-option>
-            </ng-container>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile colspan="2">
-    <div class="control-container">
-      <div class="add-bottom-padding">
-        <mat-form-field>
-          <mat-select [(ngModel)]="selectedSubcategory" placeholder="Podkategoria" (valueChange)="onSubcategoryChange($event)">
-            <ng-container *ngFor="let subcategory of subcategories">
-              <mat-option value="{{subcategory}}">{{subcategory}}</mat-option>
-            </ng-container>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile colspan="2">
+  <mat-grid-tile colspan="5">
     <mat-form-field class="search-form-field" floatLabel="never">
       <input matInput [(ngModel)]="searchKey" placeholder="Szukaj" autocomplete="off" (keyup)="applyFilter()">
       <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <div class="control-container">
-      <div class="add-bottom-padding">
-        <button mat-raised-button (click)="onSearchButtonClick()">
-          <mat-icon>search</mat-icon>Szukaj
-        </button>
-      </div>
-    </div>
   </mat-grid-tile>
 </mat-grid-list>
 

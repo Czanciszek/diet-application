@@ -15,6 +15,9 @@ public class PsqlProductFoodProperties implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "user_id")
+    private Long userId;
+
     @Column(name = "category")
     private String category;
 
@@ -100,6 +103,14 @@ public class PsqlProductFoodProperties implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {

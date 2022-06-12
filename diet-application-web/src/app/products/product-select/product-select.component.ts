@@ -18,13 +18,6 @@ export class ProductSelectComponent implements OnInit {
     public dialogRef: MatDialogRef<ProductSelectComponent>,
   ) { }
 
-  categoryList: any[] = [];
-  categories: any = new Set();
-  subcategories: any = new Set();
-
-  selectedCategory: "";
-  selectedSubcategory: "";
-
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['category', 'subcategory', 'name',
     'energyValue', 'proteins', 'fats', 'carbohydrates',
@@ -34,41 +27,7 @@ export class ProductSelectComponent implements OnInit {
   searchKey: string;
 
   ngOnInit(): void {
-    this.getCategories();
-    this.onSearchButtonClick();
-  }
-
-  getCategories() {
-    let response = this.productService.getCategories();
-    response.subscribe(data => {
-      this.categoryList = Object.values(data);
-      for (const key of this.categoryList) {
-        this.categories.add(key.category);
-        this.subcategories.add(key.subcategory);
-      }
-    });
-  }
-
-  fillSubcategories(categories) {
-    for (const key of categories) {
-      this.subcategories.add(key.subcategory);
-    }
-  }
-
-  onCategoryChange(category) {
-    if (category == null) return;
-    this.subcategories.clear();
-    const filteredCategories = this.categoryList.filter( x => !!x.category && x.category.includes(category));
-    this.fillSubcategories(filteredCategories);
-    this.selectedSubcategory = null;
-  }
-
-  onSubcategoryChange(subcategory) {
-    if (subcategory == null) return;
-    const filteredCategory = this.categoryList.find( x => !!x.subcategory && x.subcategory.includes(subcategory));
-
-    this.onCategoryChange(filteredCategory.category);
-    this.selectedCategory = filteredCategory.category;
+    this.getProducts();
   }
 
   applyFilter() {
@@ -80,8 +39,8 @@ export class ProductSelectComponent implements OnInit {
     this.applyFilter();
   }
 
-  onSearchButtonClick() {
-    this.productService.getFilteredProducts(this.selectedCategory, this.selectedSubcategory)
+  getProducts() {
+    this.productService.getProducts()
       .subscribe(
         (data: Product[]) => {
           const productList = [ ...data];

@@ -18,7 +18,7 @@ public class PatientController {
     PatientService patientService;
 
     @GetMapping
-    public ResponseEntity<?> getAll() {
+    ResponseEntity<?> getAll() {
         try {
             List<PatientType> patientList = this.patientService.getAll();
             return ResponseEntity.ok(patientList);
@@ -28,7 +28,7 @@ public class PatientController {
     }
 
     @GetMapping(path = "/{patientId}")
-    public ResponseEntity<?> getPatientById(@PathVariable("patientId") Long patientId) {
+    ResponseEntity<?> getPatientById(@PathVariable("patientId") Long patientId) {
         try {
             PatientType patient = this.patientService.getPatientById(patientId);
             return ResponseEntity.ok(patient);
@@ -51,10 +51,10 @@ public class PatientController {
         }
     }
 
-    @PutMapping(path = "/{patientId}", produces = "application/json")
+    @PutMapping(produces = "application/json")
     ResponseEntity<?> update(@RequestBody PatientType patient) {
         try {
-            PatientType patientType = this.patientService.insert(patient);
+            PatientType patientType = this.patientService.update(patient);
             return ResponseEntity.ok().body(patientType);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<HttpStatus>(e.getStatus());

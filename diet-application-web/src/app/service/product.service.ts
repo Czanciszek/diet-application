@@ -96,19 +96,12 @@ export class ProductService {
     return this.restApiService.get("categories");
   }
 
-  getFilteredProducts(category: string, subcategory: string) {
-    let categoryName = (category != null) ? category : "*ANY*";
-    let subcategoryName = (subcategory != null) ? subcategory : "*ANY*";
-
-    return this.restApiService.get("products/" + categoryName + "/" + subcategoryName);
-  }
-
   insertProduct(product) {
     return this.restApiService.post(product, "products");
   }
 
   updateProduct(product) {
-    return this.restApiService.put(product, "products/" + product.id);
+    return this.restApiService.put(product, "products");
   }
 
   deleteProduct(id: string) {

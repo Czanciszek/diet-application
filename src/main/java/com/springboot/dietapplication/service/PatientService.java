@@ -6,6 +6,7 @@ import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.MenuType;
 import com.springboot.dietapplication.model.type.PatientType;
+import com.springboot.dietapplication.model.type.UserType;
 import com.springboot.dietapplication.repository.CategoryRepository;
 import com.springboot.dietapplication.repository.PatientRepository;
 import com.springboot.dietapplication.repository.PatientsUnlikelyCategoriesRepository;
@@ -57,11 +58,10 @@ public class PatientService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found");
 
         UserEntity user = userDetailsService.getCurrentUser();
-        if (patient.get().getUserId().equals(user.getId())) {
-            return new PatientType(patient.get());
-        } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Getting patient is not authorized");
-        }
+        if (!user.getUserType().equals(UserType.ADMIN.name) && !patient.get().getUserId().equals(user.getId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for getting patient");
+
+        return new PatientType(patient.get());
     }
 
     public PatientType getPatientByMenuId(Long menuId) throws ResponseStatusException {
@@ -72,34 +72,50 @@ public class PatientService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found");
 
         UserEntity user = userDetailsService.getCurrentUser();
-        if (patient.get().getUserId().equals(user.getId())) {
-            return new PatientType(patient.get());
-        } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Getting patient is not authorized");
-        }
+        if (!user.getUserType().equals(UserType.ADMIN.name) && !patient.get().getUserId().equals(user.getId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for getting patient");
+
+        return new PatientType(patient.get());
     }
 
-    public PatientType insert(PatientType patient) throws ResponseStatusException {
+    public PatientType insert(PatientType patientType) {
+
+        // TODO: Validate all required fields
+        PsqlPatient psqlPatient = new PsqlPatient(patientType);
+
         UserEntity user = userDetailsService.getCurrentUser();
-
-        if (patient.getId() != null) {
-            // Check authorization for existing patient
-            Optional<PsqlPatient> psqlPatient = this.patientRepository.findById(patient.getId());
-            if (!psqlPatient.isPresent())
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Patient doesn't exist anymore");
-            if (!psqlPatient.get().getUserId().equals(user.getId()))
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Updating patient is not authorized");
-        }
-
-        PsqlPatient psqlPatient = new PsqlPatient(patient);
         psqlPatient.setUserId(user.getId());
 
         this.patientRepository.save(psqlPatient);
-        patient.setId(psqlPatient.getId());
+        patientType.setId(psqlPatient.getId());
 
-        storePatientsUnlikelyCategories(patient);
+        storePatientsUnlikelyCategories(patientType);
 
-        return patient;
+        return patientType;
+    }
+
+    public PatientType update(PatientType patientType) {
+
+        // TODO: Validate all required fields
+        if (patientType.getId() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Patient id cannot be null");
+
+        Optional<PsqlPatient> patient = this.patientRepository.findById(patientType.getId());
+        if (!patient.isPresent())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient does not exist");
+
+        UserEntity user = userDetailsService.getCurrentUser();
+        if (!user.getUserType().equals(UserType.ADMIN.name) && !patient.get().getUserId().equals(user.getId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for updating patient");
+
+        PsqlPatient psqlPatient = new PsqlPatient(patientType);
+        psqlPatient.setUserId(patient.get().getUserId());
+
+        this.patientRepository.save(psqlPatient);
+
+        storePatientsUnlikelyCategories(patientType);
+
+        return patientType;
     }
 
     public void delete(Long id) throws ResponseStatusException {
@@ -109,12 +125,11 @@ public class PatientService {
             return;
 
         UserEntity user = userDetailsService.getCurrentUser();
-        if (patient.get().getUserId().equals(user.getId())) {
-            this.patientsUnlikelyCategoriesRepository.deleteAllByPatientId(id);
-            this.patientRepository.deleteById(id);
-        } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Deleting patient is not authorized");
-        }
+        if (!user.getUserType().equals(UserType.ADMIN.name) && !patient.get().getUserId().equals(user.getId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for deleting patient");
+
+        this.patientsUnlikelyCategoriesRepository.deleteAllByPatientId(id);
+        this.patientRepository.deleteById(id);
 
     }
 

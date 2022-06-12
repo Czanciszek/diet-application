@@ -67,19 +67,42 @@ export class ProductComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.productService.form.valid) {
-      if (!this.productService.form.get('id').value) {
-        this.productService.insertProduct(this.productService.form.value).subscribe( result => {
-          this.notificationService.success(":: Produkt stworzony pomyślnie! ::");
-          this.onClose();
-        });
-      } else {
-        this.productService.updateProduct(this.productService.form.value).subscribe( result => {
-          this.notificationService.success(":: Product zaktualizowany pomyślnie! ::");
-          this.onClose();
-        });
-      }
+    if (!this.productService.form.valid) {
+      return;
     }
+
+    if (!this.productService.form.get('id').value) {
+      this.insertProduct();
+    } else {
+      this.updateProduct();
+    }
+  }
+
+  insertProduct() {
+    this.productService.insertProduct(this.productService.form.value).subscribe(
+      result => {
+       this.notificationService.success(":: Produkt stworzony pomyślnie! ::");
+        this.onClose();
+      }, error => {
+        this.handleError(error);
+      }
+    );
+  }
+
+  updateProduct() {
+    this.productService.updateProduct(this.productService.form.value).subscribe(
+      result => {
+        this.notificationService.success(":: Product zaktualizowany pomyślnie! ::");
+        this.onClose();
+      }, error => {
+        this.handleError(error);
+      }
+    );
+  }
+
+  handleError(error) {
+    // TODO: Handle reason of error
+    this.notificationService.error(":: Wystąpił bład! ::");
   }
 
   onClose() {

@@ -105,17 +105,19 @@ export class ProductListComponent implements OnInit {
   }
 
   onDelete(productId) {
-    if (confirm("Are you sure to delete this product?")) {
-      this.productService.deleteProduct(productId).subscribe( result => {
-
-        let listDataProduct = this.listData.data.find( x => x.id == productId);
-        let index = this.listData.data.indexOf(listDataProduct);
-        this.listData.data.splice(index, 1);
-        this.listData.data = this.listData.data;
-
-        this.notificationService.warn(":: Deleted succesfully! ::");
-      });
+    if (!confirm("Na pewno chcesz usunąć ten produkt?")) {
+      return;
     }
+
+    this.productService.deleteProduct(productId).subscribe(
+      result => {
+        this.notificationService.warn(":: Usunięto pomyślnie! ::");
+      }, error => {
+        this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
+      }, () => {
+        this.getProductList();
+      }
+    );
   }
 
   onDownloadTemplate() {
@@ -147,7 +149,7 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  onRefresh() {
+  onRefreshButtonClick() {
     this.getProductList();
   }
 

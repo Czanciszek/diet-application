@@ -64,7 +64,7 @@ export class PatientService {
   }
 
   updatePatient(patient) {
-    return this.restApiService.put(patient, "patients/" + patient.id);
+    return this.restApiService.put(patient, "patients");
   }
 
   deletePatient(id: string) {

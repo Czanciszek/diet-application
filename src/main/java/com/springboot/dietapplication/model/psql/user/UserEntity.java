@@ -17,14 +17,6 @@ public class UserEntity implements Serializable {
     public UserEntity() {
 
     }
-    
-    public UserEntity(PsqlUser user) {
-        this.id = user.getId();
-        this.name = user.getName();
-        this.password = user.getPassword();
-        this.email = user.getEmail();
-        this.imageId = user.getImageId();
-    }
 
     public Long getId() {
         return id;
