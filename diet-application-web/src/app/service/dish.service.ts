@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
-import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormControl, FormGroup, Validators, ValidatorFn} from "@angular/forms";
 import {RestapiService} from "./restapi.service";
+
+import {Dish} from '../model/dish';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +13,11 @@ export class DishService {
     private restApiService: RestapiService
   ) { }
 
+  dishList: Dish[];
+
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    name: new FormControl('', [Validators.required, Validators.minLength(3), this.dishAlreadyExist()]),
     products: new FormArray([]),
     foodType: new FormControl(null, [Validators.required]),
     portions: new FormControl(null),
@@ -68,6 +72,17 @@ export class DishService {
       productForm.get('amountType').patchValue(product.amountType);
       (<FormArray>this.form.get('products')).push(productForm);
     }
+  }
+
+  dishAlreadyExist(): ValidatorFn {
+    return (controlArray: FormArray) => {
+      if (this.dishList == null) return null;
+
+      let dishNames = this.dishList.map( dish => { return dish.name; });
+      let dishName = this.form.get('name').value;
+
+      return dishNames.includes(dishName) ? { dishAlreadyExist: { value: true } } : null;
+    };
   }
 
   getDishes() {

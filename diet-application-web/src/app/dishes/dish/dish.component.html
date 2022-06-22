@@ -19,6 +19,7 @@
             </div>
             <mat-error *ngIf="dishForm.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
             <mat-error *ngIf="dishForm.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
+            <mat-error *ngIf="dishForm.controls['name'].errors?.dishAlreadyExist">Istnieje już potrawa o takiej nazwie</mat-error>
           </mat-form-field>
         </div>
       </mat-grid-tile>

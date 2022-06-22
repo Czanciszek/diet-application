@@ -44,6 +44,7 @@ export class DishListComponent implements OnInit {
   }
 
   fetchResults(data: Dish[]) {
+    this.dishService.dishList = [...data];
     this.listData = new MatTableDataSource([...data]);
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
