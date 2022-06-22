@@ -76,12 +76,13 @@ export class DishService {
 
   dishAlreadyExist(): ValidatorFn {
     return (controlArray: FormArray) => {
-      if (this.dishList == null) return null;
+    if (this.dishList == null) return null;
 
-      let dishNames = this.dishList.map( dish => { return dish.name; });
-      let dishName = this.form.get('name').value;
+    let dishName = this.form.get('name').value;
+    if (!dishName) return null;
 
-      return dishNames.includes(dishName) ? { dishAlreadyExist: { value: true } } : null;
+    let dishNames = this.dishList.map( dish => { return dish.name.toLowerCase(); });
+    return dishNames.includes(dishName.toLowerCase()) ? { dishAlreadyExist: { value: true } } : null;
     };
   }
 
