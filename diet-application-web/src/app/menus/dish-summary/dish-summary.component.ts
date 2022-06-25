@@ -29,6 +29,8 @@ export class DishSummaryComponent implements OnInit {
 
   foodPropertiesSummary = "";
 
+  isProductAttachedToRecipes = false;
+
   constructor(
     private dialog: MatDialog,
     private mealService: MealService,
@@ -37,6 +39,7 @@ export class DishSummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFoodProperties();
+    this.checkMealAttachedToRecipes();
   }
 
   onEdit() {
@@ -102,6 +105,10 @@ export class DishSummaryComponent implements OnInit {
       "    B: " + proteins.toFixed(2) +
       "    T: " + fats.toFixed(2) +
       "    W: " + carbohydrates.toFixed(2);
+  }
+
+  checkMealAttachedToRecipes() {
+    this.isProductAttachedToRecipes = this.mealItem.id == this.mealItem.originMealId && !this.mealItem.isProduct
   }
 
   dateChanged(event) {
