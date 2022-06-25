@@ -1,7 +1,7 @@
 <div class="mat-card-column">
-  <div class="mat-card-dish">
+  <div [ngClass] = "{ 'mat-card-dish-as-recipe' : mealItem.id == mealItem.originMealId, 'mat-card-dish' :  mealItem.id != mealItem.originMealId }">
     <div>
-      <p>{{mealItem.name}}</p>
+      <p><b>{{mealItem.name}}</b></p>
     </div>
     <div>
       <p>{{foodPropertiesSummary}}</p>

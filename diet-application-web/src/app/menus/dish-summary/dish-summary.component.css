@@ -12,6 +12,11 @@ button {
   margin-right: 15px;
 }
 
+.mat-card-dish-as-recipe {
+  margin-top: 5px;
+  background-color: #E14DD7;
+}
+
 ::ng-deep .langSelect div.mat-select-arrow-wrapper {
   display: none;
 }

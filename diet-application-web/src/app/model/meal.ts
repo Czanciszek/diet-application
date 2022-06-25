@@ -1,5 +1,5 @@
 export interface Meal {
-  id: string,
+  id: number,
   name: string,
   dayMealId: string,
   originMealId: number,
