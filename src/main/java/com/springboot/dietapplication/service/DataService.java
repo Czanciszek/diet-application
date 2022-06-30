@@ -66,7 +66,7 @@ public class DataService {
         try {
             List<String> command = Arrays.asList(
                     "\"C:/Program Files/PostgreSQL/11/bin/pg_dump\"",
-                    "--dbname=postgresql://postgres:postgres@127.0.0.1:5432/DietApp",
+                    "--dbname=postgresql://postgres:postgres@127.0.0.1:5432/dietapp",
                     "--file", "\"dump/psqlDump.bak\""
             );
 
@@ -85,7 +85,7 @@ public class DataService {
                     "\"C:/Program Files/PostgreSQL/11/bin/psql\"",
                     "-f", "\"dump/psqlDump.bak\"",
                     "--verbose",
-                    "--dbname=postgresql://postgres:postgres@127.0.0.1:5432/DietApp"
+                    "--dbname=postgresql://postgres:postgres@127.0.0.1:5432/dietapp"
             );
 
             Process process = new ProcessBuilder(command).start();
