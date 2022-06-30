@@ -1,6 +1,5 @@
 package com.springboot.dietapplication.service;
 
-import com.springboot.dietapplication.model.psql.menu.PsqlMenu;
 import com.springboot.dietapplication.model.psql.menu.PsqlWeekMeal;
 import com.springboot.dietapplication.model.type.WeekMealType;
 import com.springboot.dietapplication.repository.WeekMealRepository;
@@ -62,21 +61,22 @@ public class WeekMealService {
         }
     }
 
-    public ResponseEntity<Void> delete(Long id) {
+    public void delete(Long id) {
         Optional<PsqlWeekMeal> weekMeal = weekMealRepository.findById(id);
-        if (!weekMeal.isPresent()) return ResponseEntity.ok().build();
+        if (!weekMeal.isPresent()) return;
+
+        // TODO: Get origin menu and check user authorization
+
         deleteWeekMeal(weekMeal.get());
-        return ResponseEntity.ok().build();
     }
 
     public void deleteByMenuId(Long id) {
         List<PsqlWeekMeal> weekMeals = weekMealRepository.getPsqlWeekMealsByMenuId(id);
-        for (PsqlWeekMeal weekMeal : weekMeals) {
+        for (PsqlWeekMeal weekMeal : weekMeals)
             deleteWeekMeal(weekMeal);
-        }
     }
 
-    public void deleteWeekMeal(PsqlWeekMeal weekMeal) {
+    private void deleteWeekMeal(PsqlWeekMeal weekMeal) {
         dayMealService.deleteByWeekMealId(weekMeal.getId());
         weekMealRepository.deleteById(weekMeal.getId());
     }
