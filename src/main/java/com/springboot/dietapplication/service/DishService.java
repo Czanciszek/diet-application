@@ -98,7 +98,7 @@ public class DishService {
         // TODO: Check if dish with provided name already exists
 
         PsqlDish dish = new PsqlDish(dishType);
-        dish.setUserId(psqlDish.get().getId());
+        dish.setUserId(psqlDish.get().getUserId());
 
         this.dishRepository.save(dish);
 
