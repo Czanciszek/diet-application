@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
 })
 export class RestapiService {
 
-  SERVER_ADDRESS = 'http://192.168.0.94:8080/';
+  SERVER_ADDRESS = 'https://dietapp.loca.lt:8080/';
 
   constructor(
     private http: HttpClient,
