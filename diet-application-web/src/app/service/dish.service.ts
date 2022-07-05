@@ -81,8 +81,8 @@ export class DishService {
     let dishName = this.form.get('name').value;
     if (!dishName) return null;
 
-    let dishNames = this.dishList.map( dish => { return dish.name.toLowerCase(); });
-    return dishNames.includes(dishName.toLowerCase()) ? { dishAlreadyExist: { value: true } } : null;
+    let dishNames = this.dishList.map( dish => { return dish.name.trim().toLowerCase(); });
+    return dishNames.includes(dishName.trim().toLowerCase()) ? { dishAlreadyExist: { value: true } } : null;
     };
   }
 

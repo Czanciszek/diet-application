@@ -71,6 +71,8 @@ export class ProductComponent implements OnInit {
       return;
     }
 
+    this.trimProductName();
+
     if (!this.productService.form.get('id').value) {
       this.insertProduct();
     } else {
@@ -98,6 +100,11 @@ export class ProductComponent implements OnInit {
         this.handleError(error);
       }
     );
+  }
+
+  trimProductName() {
+    let productName = this.productServiceForm.get('name').value.trim();
+    this.productServiceForm.get('name').patchValue(productName);
   }
 
   handleError(error) {

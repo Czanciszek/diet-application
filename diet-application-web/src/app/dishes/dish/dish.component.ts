@@ -49,6 +49,8 @@ export class DishComponent implements OnInit {
 
   onSubmit() {
     if (this.dishForm.valid) {
+      this.trimDishName();
+
       if (!this.dishForm.get('id').value) {
         this.dishService.insertDish(this.dishService.form.value).subscribe();
         this.notificationService.success(":: Potrawa stworzona pomyślnie! ::");
@@ -95,6 +97,11 @@ export class DishComponent implements OnInit {
         });
       }
     });
+  }
+
+  trimDishName() {
+    let dishName = this.dishForm.get('name').value.trim();
+    this.dishForm.get('name').patchValue(dishName);
   }
 
   getProductSummary(index) {
