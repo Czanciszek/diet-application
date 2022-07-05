@@ -37,10 +37,7 @@ public class PatientService {
         List<PatientType> patientTypeList = new ArrayList<>();
 
         UserEntity user = userDetailsService.getCurrentUser();
-        List<PsqlPatient> patients = this.patientRepository
-                .findAll()
-                .stream().filter( patient -> patient.getUserId().equals(user.getId()))
-                .collect(Collectors.toList());
+        List<PsqlPatient> patients = this.patientRepository.findAllByUserId(user.getId());
 
         for (PsqlPatient psqlPatient : patients) {
             PatientType patientType = new PatientType(psqlPatient);

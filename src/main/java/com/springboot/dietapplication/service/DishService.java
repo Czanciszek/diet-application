@@ -38,10 +38,8 @@ public class DishService {
     public List<DishType> getAll() {
 
         UserEntity user = userDetailsService.getCurrentUser();
-        List<PsqlDish> dishes = this.dishRepository
-                .findAll()
-                .stream().filter( dish -> dish.getUserId() == null || dish.getUserId().equals(user.getId()))
-                .collect(Collectors.toList());
+        List<PsqlDish> dishes = this.dishRepository.findAllWhereIsSystemOrByUserId(user.getId());
+
         return convertLists(dishes);
     }
 

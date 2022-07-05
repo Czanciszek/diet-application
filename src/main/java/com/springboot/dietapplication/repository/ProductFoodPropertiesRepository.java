@@ -7,9 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 @Repository
 public interface ProductFoodPropertiesRepository extends JpaRepository<PsqlProductFoodProperties, Long> {
 
@@ -22,22 +19,9 @@ public interface ProductFoodPropertiesRepository extends JpaRepository<PsqlProdu
             "JOIN food_properties fp ON p.food_properties_id = fp.id " +
             "JOIN categories c ON p.category_id = c.id ";
 
-    @Query(value = selectProductQuery, nativeQuery = true)
-    List<PsqlProductFoodProperties> getAllProducts();
+    String userRestrictQuery = "WHERE p.is_system IS TRUE OR p.user_id = :userId";
 
-    @Query(value = selectProductQuery +
-            "WHERE p.id IN :productIdList", nativeQuery = true)
-    List<PsqlProductFoodProperties> findProductsByIdIn(@Param("productIdList") Set<Long> ids);
+    @Query(value = selectProductQuery + userRestrictQuery, nativeQuery = true)
+    List<PsqlProductFoodProperties> getAllProducts(@Param("userId") Long userId);
 
-    @Query(value = selectProductQuery +
-            "WHERE p.id = :productId", nativeQuery = true)
-    Optional<PsqlProductFoodProperties> findByProductId(@Param("productId") Long productId);
-
-    @Query(value = selectProductQuery +
-            "WHERE category_id = :categoryId", nativeQuery = true)
-    List<PsqlProductFoodProperties> findPsqlProductsByCategoryId(@Param("categoryId") Long categoryIdList);
-
-    @Query(value = selectProductQuery +
-            "WHERE category_id IN :categoryIdList", nativeQuery = true)
-    List<PsqlProductFoodProperties> findPsqlProductsByCategoryIdIn(@Param("categoryIdList") Set<Long> categoryIdList);
 }

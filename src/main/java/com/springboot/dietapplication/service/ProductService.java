@@ -38,10 +38,7 @@ public class ProductService {
     public List<ProductType> getAll() {
 
         UserEntity user = userDetailsService.getCurrentUser();
-        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository
-                .getAllProducts()
-                .stream().filter( product -> product.getUserId() == null || product.getUserId().equals(user.getId()))
-                .collect(Collectors.toList());
+        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllProducts(user.getId());
 
         return convertLists(products);
     }
