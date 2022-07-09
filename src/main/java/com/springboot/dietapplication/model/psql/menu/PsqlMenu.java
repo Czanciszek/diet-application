@@ -24,6 +24,9 @@ public class PsqlMenu implements Serializable {
     @Column(name = "end_date")
     private String endDate;
 
+    @Column(name = "recommendations")
+    private String recommendations;
+
     @Column(name = "energy_limit")
     private float energyLimit;
 
@@ -43,6 +46,7 @@ public class PsqlMenu implements Serializable {
     public PsqlMenu(MenuSendingType menuSendingType) {
         this.startDate = menuSendingType.getStartDate();
         this.patientId = menuSendingType.getPatientId();
+        this.recommendations = menuSendingType.getRecommendations();
         this.energyLimit = menuSendingType.getEnergyLimit();
         this.proteinsLimit = menuSendingType.getProteinsLimit();
         this.fatsLimit = menuSendingType.getFatsLimit();
@@ -79,6 +83,14 @@ public class PsqlMenu implements Serializable {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(String recommendations) {
+        this.recommendations = recommendations;
     }
 
     public float getEnergyLimit() {

@@ -3,6 +3,7 @@ package com.springboot.dietapplication.controller;
 import com.springboot.dietapplication.model.excel.ProductExcel;
 import com.springboot.dietapplication.model.type.GenerateMenuType;
 import com.springboot.dietapplication.service.DataService;
+import com.springboot.dietapplication.service.MenuService;
 import com.springboot.dietapplication.service.PDFService;
 import io.github.biezhi.excel.plus.Reader;
 import org.apache.commons.compress.utils.IOUtils;
@@ -19,8 +20,12 @@ import java.util.List;
 @RequestMapping("api/v1/files")
 public class FileController {
 
-    @Autowired DataService dataService;
-    @Autowired PDFService pdfService;
+    @Autowired
+    DataService dataService;
+    @Autowired
+    PDFService pdfService;
+    @Autowired
+    MenuService menuService;
 
     @PostMapping("/uploadProducts")
     public void handleFileUploadToPsql(
@@ -31,6 +36,10 @@ public class FileController {
 
     @PostMapping(value = "/menu", produces = MediaType.APPLICATION_PDF_VALUE)
     public @ResponseBody byte[] generateMenu(@RequestBody GenerateMenuType generateMenuType) throws IOException {
+
+        // TODO: Add check whenever user wants to override recommendations
+        menuService.updateMenuRecommendations(generateMenuType);
+
         File file = pdfService.generateMenu(generateMenuType);
         final InputStream targetStream = new DataInputStream(new FileInputStream(file));
         return IOUtils.toByteArray(targetStream);

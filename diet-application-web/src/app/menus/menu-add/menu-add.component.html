@@ -7,118 +7,33 @@
   </mat-toolbar>
 </div>
 
-<form [formGroup]="menuServiceForm" class="normal-form" (submit)="onSubmit()">
-  <mat-grid-list cols="8" rowHeight="70px">
-    <mat-grid-tile colspan="2">
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <mat-form-field>
-              <mat-select matInput placeholder="Typy posiłków" formControlName="foodTypes" multiple>
-                <ng-container *ngFor="let foodType of foodTypes">
-                  <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
-                </ng-container>
-              </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="2">
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <mat-form-field>
-            <mat-label>Początek diety</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="startDate" autocomplete="off" readonly>
-            <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="!allowEdit">
-              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #picker startView="month"></mat-datepicker>
-            <mat-error *ngIf="menuServiceForm.controls['startDate'].errors?.required">Wprowadź poprawny format daty</mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <mat-form-field >
-            <input type="number" min="1" max="8" step="1" formControlName="weekCount" matInput placeholder="Ilość tygodni" autocomplete="off" [readonly]="!allowEdit">
-            <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.required">Uzupełnij ilość</mat-error>
-            <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.min">Wartość zbyt mała</mat-error>
-            <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.max">Wartość zbyt duża</mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-
-  <mat-grid-list cols="8" rowHeight="70px">
-    <mat-grid-tile>
-      <div class="control-container">
-        <mat-checkbox [checked]='customLimits' (change)="customLimitsOptionChanged($event)" [disabled]="!allowEdit">Własne limity kaloryczności</mat-checkbox>
-      </div>
-    </mat-grid-tile>
-
-    <div *ngIf="!customLimits">
-      <mat-grid-tile>
-        <div class="control-container">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input #activityLevel type="number" min="0.9" max="2" step="0.01" matInput placeholder="Poziom aktywności" autocomplete="off" value="1.1" (input)="limitPropertyChanged(measurement.value, activityLevel.value)">
-            </mat-form-field>
-          </div>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <div class="control-container">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <mat-select #measurement matInput placeholder="Data pomiaru" (valueChange)="limitPropertyChanged(measurement.value, activityLevel.value)">
-                <ng-container *ngFor="let date of getMeasurementDates()">
-                  <mat-option value="{{date.date}}&{{date.weight}}">{{date.date}} - {{date.weight}}kg</mat-option>
-                </ng-container>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-      </mat-grid-tile>
-    </div>
-
-  </mat-grid-list>
-
-  <mat-grid-list cols="8" rowHeight="70px">
-
-      <mat-grid-tile>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <div class="control-container add-slider-padding text-align-right">
-          <mat-label>Limit:</mat-label>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <div class="control-container">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input formControlName="energyLimit" type="number" matInput placeholder="kcal" autocomplete="off" (input)="limitsChanged()" [readonly]="!customLimits">
-            </mat-form-field>
-          </div>
-        </div>
-      </mat-grid-tile>
-  </mat-grid-list>
-
+<mat-dialog-content>
+  <form [formGroup]="menuServiceForm" class="normal-form" (submit)="onSubmit()">
     <mat-grid-list cols="8" rowHeight="70px">
-      <mat-grid-tile>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <div class="control-container add-slider-padding text-align-right">
-          <mat-label>Białko:</mat-label>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile>
+      <mat-grid-tile colspan="2">
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #proteinsPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'proteins')">
+                <mat-select matInput placeholder="Typy posiłków" formControlName="foodTypes" multiple>
+                  <ng-container *ngFor="let foodType of foodTypes">
+                    <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
+                  </ng-container>
+                </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="2">
+        <div class="control-container">
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <mat-label>Początek diety</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="startDate" autocomplete="off" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="!allowEdit">
+                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker startView="month"></mat-datepicker>
+              <mat-error *ngIf="menuServiceForm.controls['startDate'].errors?.required">Wprowadź poprawny format daty</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -126,8 +41,11 @@
       <mat-grid-tile>
         <div class="control-container">
           <div class="add-bottom-padding">
-            <mat-form-field>
-              <input formControlName="proteinsLimit" type="number" matInput placeholder="gram" autocomplete="off" (input)="valueChanged($event.target.value, true, 'proteins')">
+            <mat-form-field >
+              <input type="number" min="1" max="8" step="1" formControlName="weekCount" matInput placeholder="Ilość tygodni" autocomplete="off" [readonly]="!allowEdit">
+              <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.required">Uzupełnij ilość</mat-error>
+              <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.min">Wartość zbyt mała</mat-error>
+              <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.max">Wartość zbyt duża</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -136,68 +54,167 @@
 
     <mat-grid-list cols="8" rowHeight="70px">
       <mat-grid-tile>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <div class="control-container add-slider-padding text-align-right">
-          <mat-label>Tłuszcze:</mat-label>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile>
         <div class="control-container">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input #fatsPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'fats')">
-            </mat-form-field>
-          </div>
+          <mat-checkbox [checked]='customLimits' (change)="customLimitsOptionChanged($event)" [disabled]="!allowEdit">Własne limity kaloryczności</mat-checkbox>
         </div>
       </mat-grid-tile>
-      <mat-grid-tile>
-        <div class="control-container">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input formControlName="fatsLimit" type="number" matInput placeholder="gram" autocomplete="off" (input)="valueChanged($event.target.value, true, 'fats')">
-            </mat-form-field>
+
+      <div *ngIf="!customLimits">
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input #activityLevel type="number" min="0.9" max="2" step="0.01" matInput placeholder="Poziom aktywności" autocomplete="off" value="1.1" (input)="limitPropertyChanged(measurement.value, activityLevel.value)">
+              </mat-form-field>
+            </div>
           </div>
-        </div>
-      </mat-grid-tile>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <mat-select #measurement matInput placeholder="Data pomiaru" (valueChange)="limitPropertyChanged(measurement.value, activityLevel.value)">
+                  <ng-container *ngFor="let date of getMeasurementDates()">
+                    <mat-option value="{{date.date}}&{{date.weight}}">{{date.date}} - {{date.weight}}kg</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </div>
+
     </mat-grid-list>
 
     <mat-grid-list cols="8" rowHeight="70px">
-      <mat-grid-tile>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <div class="control-container add-slider-padding text-align-right">
-          <mat-label>Węglowodany:</mat-label>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <div class="control-container">
-          <div class="add-bottom-padding">
+
+        <mat-grid-tile>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="control-container add-slider-padding text-align-right">
+            <mat-label>Limit:</mat-label>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input formControlName="energyLimit" type="number" matInput placeholder="kcal" autocomplete="off" (input)="limitsChanged()" [readonly]="!customLimits">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+      <mat-grid-list cols="8" rowHeight="70px">
+        <mat-grid-tile>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container add-slider-padding text-align-right">
+            <mat-label>Białko:</mat-label>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input #proteinsPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'proteins')">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input formControlName="proteinsLimit" type="number" matInput placeholder="gram" autocomplete="off" (input)="valueChanged($event.target.value, true, 'proteins')">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="8" rowHeight="70px">
+        <mat-grid-tile>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container add-slider-padding text-align-right">
+            <mat-label>Tłuszcze:</mat-label>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input #fatsPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'fats')">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input formControlName="fatsLimit" type="number" matInput placeholder="gram" autocomplete="off" (input)="valueChanged($event.target.value, true, 'fats')">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <mat-grid-list cols="8" rowHeight="70px">
+        <mat-grid-tile>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container add-slider-padding text-align-right">
+            <mat-label>Węglowodany:</mat-label>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input #carbohydratesPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'carbohydrates')">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input formControlName="carbohydratesLimit" type="number" matInput placeholder="gram" autocomplete="off" (input)="valueChanged($event.target.value, true, 'carbohydrates')">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+    <mat-grid-list cols="1" class="recipe-grid-list-height" rowHeight="fit">
+      <mat-dialog-content>
+        <mat-grid-tile>
+          <div class="control-container">
             <mat-form-field>
-              <input #carbohydratesPercentage type="number" min="0" max="100" step="1" matInput placeholder="%" autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'carbohydrates')">
+              <div class="add-bottom-padding">
+                  <textarea rows="5" formControlName="recommendations" matInput  style="resize: none;" placeholder="Zalecenia do jadłospisu" autocomplete="off">
+                  </textarea>
+              </div>
             </mat-form-field>
           </div>
-        </div>
-      </mat-grid-tile>
+        </mat-grid-tile>
+      </mat-dialog-content>
+    </mat-grid-list>
+
+    <mat-grid-list cols="1" rowHeight="50px">
       <mat-grid-tile>
         <div class="control-container">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input formControlName="carbohydratesLimit" type="number" matInput placeholder="gram" autocomplete="off" (input)="valueChanged($event.target.value, true, 'carbohydrates')">
-            </mat-form-field>
+          <div class="button-row">
+            <button mat-raised-button color="primary" type="submit" [disabled]="menuServiceForm.invalid">Zapisz</button>
+            <button mat-raised-button color="warn" type="button" (click)="onClear()">Wyczyść</button>
           </div>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-
-  <mat-grid-list cols="1" rowHeight="50px">
-    <mat-grid-tile>
-      <div class="control-container">
-        <div class="button-row">
-          <button mat-raised-button color="primary" type="submit" [disabled]="menuServiceForm.invalid">Zapisz</button>
-          <button mat-raised-button color="warn" type="button" (click)="onClear()">Wyczyść</button>
-        </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-</form>
+  </form>
+</mat-dialog-content>

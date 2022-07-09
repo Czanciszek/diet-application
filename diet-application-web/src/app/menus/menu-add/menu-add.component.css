@@ -16,6 +16,10 @@ form.normal-form {
   padding: 5%;
 }
 
+.recipe-grid-list-height {
+  height: 150px;
+}
+
 mat-form-field {
   width: 100%;
 }

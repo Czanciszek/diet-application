@@ -46,11 +46,21 @@ export class MenuListComponent implements OnInit {
   dataLoaded = false;
 
   ngOnInit(): void {
+    this.getMenuList();
+  }
+
+  getMenuList() {
     let patientId = this.route.snapshot.paramMap.get("patient_id");
+
     this.menuService.getMenusByPatientId(patientId)
       .subscribe(
         (data: Menu[]) => {
-          this.listData = [ ...data];
+          var menuList: Menu[] = [...data].sort( (m1, m2) => {
+            if (m1.startDate == m2.startDate) return 0;
+            return m1.startDate > m2.startDate ? 1 : -1;
+          });
+          this.listData = menuList;
+
           this.listData.sort = this.sort;
           this.listData.paginator = this.paginator;
           this.getMeasurementDates();
@@ -132,7 +142,7 @@ export class MenuListComponent implements OnInit {
     });
   }
 
-  openGeneratingMenuDialog(menuId) {
+  openGeneratingMenuDialog(menu) {
     this.fileService.initializeFormGroup();
     let dialogRef = this.dialog.open(GenerateMenuPanelComponent, {
       disableClose: true,
@@ -140,7 +150,12 @@ export class MenuListComponent implements OnInit {
       width: "90%"
     });
 
-    dialogRef.componentInstance.menuId = menuId;
+    dialogRef.componentInstance.menuId = menu.id;
+    dialogRef.componentInstance.recommendations = menu.recommendations;
+
+    dialogRef.afterClosed().subscribe( result => {
+      this.getMenuList();
+    });
   }
 
   openCopyMenuDialog(menuItem) {
@@ -154,7 +169,7 @@ export class MenuListComponent implements OnInit {
     dialogRef.componentInstance.menuItem = menuItem;
 
     dialogRef.afterClosed().subscribe( result => {
-      this.ngOnInit();
+      this.getMenuList();
     });
   }
 

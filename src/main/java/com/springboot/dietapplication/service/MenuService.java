@@ -121,6 +121,13 @@ public class MenuService {
         return ResponseEntity.ok().build();
     }
 
+    public void updateMenuRecommendations(GenerateMenuType generateMenuType) {
+        Optional<PsqlMenu> menu = this.menuRepository.findById(generateMenuType.getMenuId());
+        if (!menu.isPresent()) return;
+        menu.get().setRecommendations(generateMenuType.getRecommendations());
+        this.menuRepository.save(menu.get());
+    }
+
     private PsqlMenu getCurrentMenuData(long menuId) {
         Optional<PsqlMenu> optionalPsqlMenu = this.menuRepository.findById(menuId);
         return optionalPsqlMenu.orElse(null);

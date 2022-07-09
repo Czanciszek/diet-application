@@ -23,6 +23,8 @@ public class MenuType implements Serializable {
 
     private String endDate; // Najpóźniejsza data z listy DayMeals
 
+    private String recommendations;
+
     private float energyLimit;
 
     private float proteinsLimit;
@@ -40,6 +42,7 @@ public class MenuType implements Serializable {
         this.patientId = menu.getPatientId();
         this.startDate = menu.getStartDate();
         this.endDate = menu.getEndDate();
+        this.recommendations = menu.getRecommendations();
         this.energyLimit = menu.getEnergyLimit();
         this.proteinsLimit = menu.getProteinsLimit();
         this.fatsLimit = menu.getFatsLimit();
@@ -100,6 +103,14 @@ public class MenuType implements Serializable {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(String recommendations) {
+        this.recommendations = recommendations;
     }
 
     public float getEnergyLimit() {

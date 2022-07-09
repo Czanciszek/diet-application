@@ -8,6 +8,7 @@ export interface Menu {
   foodTypes: string [],
   startDate: string,
   endDate: string,
+  recommendations: string,
   energyLimit: number,
   proteinsLimit: number,
   fatsLimit: number,

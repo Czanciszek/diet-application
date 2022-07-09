@@ -50,11 +50,7 @@ export class FileService {
 
   getPdfFile() {
     return this.apiService
-      .post(this.form.value, "files/menu/", "v1", 'arraybuffer')
-      .subscribe(
-        (response) => {
-          this.downloadFile(response, "application/pdf");
-      });
+      .post(this.form.value, "files/menu/", "v1", 'arraybuffer');
   }
 
 }
