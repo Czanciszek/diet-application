@@ -78,6 +78,9 @@ export class DishService {
     return (controlArray: FormArray) => {
     if (this.dishList == null) return null;
 
+    let dishId = this.form.get('id').value;
+    if (dishId) return null;
+
     let dishName = this.form.get('name').value;
     if (!dishName) return null;
 
