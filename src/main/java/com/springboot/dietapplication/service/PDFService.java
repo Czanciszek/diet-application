@@ -324,7 +324,7 @@ public class PDFService {
             contentStream = setNewLine(document, contentStream, new Point(0, -30), false, false);
 
             // Display recipe
-            String[] recipeLines = meal.getRecipe().split("\n");
+            String[] recipeLines = meal.getRecipe().replaceAll("\t", "    ").split("\n");
             for (String line : recipeLines) {
                 if (line.length() == 0) {
                     contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
@@ -334,6 +334,9 @@ public class PDFService {
                 int index = 0;
                 int margin = 100;
                 do {
+                    //Check whenever pageOffset is too close margin
+                    contentStream = checkPageOffset(document, contentStream);
+
                     String subLine = (line.length() > index + margin) ? line.substring(index, index + margin) : line.substring(index);
 
                     int newIndex = subLine.lastIndexOf(" ");
@@ -344,8 +347,6 @@ public class PDFService {
                     contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
                     index += (newIndex > 0 && (index + margin) < line.length()) ? newIndex : margin;
 
-                    //Check whenever pageOffset is too close margin
-                    contentStream = checkPageOffset(document, contentStream);
                 } while (index < line.length());
             }
 
@@ -427,7 +428,7 @@ public class PDFService {
     }
 
     private PDPageContentStream checkPageOffset(PDDocument document, PDPageContentStream contentStream) throws IOException {
-        if (pageOffset <= 120) {
+        if (pageOffset <= 100) {
             return setNewLine(document, contentStream, new Point(0, -20), true, true);
         }
         return contentStream;
