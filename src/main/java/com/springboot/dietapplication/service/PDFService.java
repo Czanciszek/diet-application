@@ -218,7 +218,7 @@ public class PDFService {
                         text = product.getMealName() + " - " + setPortionLabel(Math.round(product.getMealPortions()));
                     }
 
-                    if (fileLocations.containsKey(product.getMealName())) {
+                    if (generateMenuType.isGenerateRecipes() && fileLocations.containsKey(product.getMealName())) {
                         float textWidth = timesNormal.getStringWidth(text) / 1000 * 12;
                         PDRectangle rectangle = new PDRectangle(150, pageOffset, textWidth, 20);
                         int pageLocation = fileLocations.get(product.getMealName());
