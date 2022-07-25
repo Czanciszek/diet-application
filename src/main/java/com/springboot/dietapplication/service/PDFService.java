@@ -229,11 +229,11 @@ public class PDFService {
 
                 dayMealIds.add(product.getMealId());
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
-                contentStream = checkPageOffset(document, contentStream);
+                contentStream = checkPageOffset(document, contentStream, true);
             }
 
             //Check whenever pageOffset is too close margin
-            contentStream = checkPageOffset(document, contentStream);
+            contentStream = checkPageOffset(document, contentStream, true);
 
         }
 
@@ -301,7 +301,7 @@ public class PDFService {
                 index += (newIndex > 0 && (index + margin) < line.length()) ? newIndex : margin;
 
                 //Check whenever pageOffset is too close margin
-                contentStream = checkPageOffset(document, contentStream);
+                contentStream = checkPageOffset(document, contentStream, false);
             } while (index < line.length());
         }
 
@@ -372,7 +372,7 @@ public class PDFService {
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
 
                 //Check whenever pageOffset is too close margin
-                contentStream = checkPageOffset(document, contentStream);
+                contentStream = checkPageOffset(document, contentStream, false);
             }
             contentStream = setNewLine(document, contentStream, new Point(0, -10), false, false);
 
@@ -392,7 +392,7 @@ public class PDFService {
                 int margin = 100;
                 do {
                     //Check whenever pageOffset is too close margin
-                    contentStream = checkPageOffset(document, contentStream);
+                    contentStream = checkPageOffset(document, contentStream, false);
 
                     String subLine = (line.length() > index + margin) ? line.substring(index, index + margin) : line.substring(index);
 
@@ -484,9 +484,9 @@ public class PDFService {
         return menuProductsMap;
     }
 
-    private PDPageContentStream checkPageOffset(PDDocument document, PDPageContentStream contentStream) throws IOException {
-        if (pageOffset <= 100) {
-            return setNewLine(document, contentStream, new Point(0, -20), true, true);
+    private PDPageContentStream checkPageOffset(PDDocument document, PDPageContentStream contentStream, boolean withDateRange) throws IOException {
+        if (pageOffset <= 80) {
+            return setNewLine(document, contentStream, new Point(0, -20), true, withDateRange);
         }
         return contentStream;
     }
@@ -494,7 +494,7 @@ public class PDFService {
     private PDPageContentStream setNewLine(PDDocument document, PDPageContentStream contentStream, Point offset, boolean createNewPageIfNeeded, boolean withDateRange) throws IOException {
         pageOffset += offset.y;
 
-        if (createNewPageIfNeeded && pageOffset <= 120) {
+        if (createNewPageIfNeeded && pageOffset <= 80) {
             closeContentStream(contentStream);
             contentStream = setNewPage(document, withDateRange);
         }
