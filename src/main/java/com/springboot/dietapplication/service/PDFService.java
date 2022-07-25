@@ -7,9 +7,15 @@ import com.springboot.dietapplication.model.type.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPageTree;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageDestination;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageFitWidthDestination;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +45,8 @@ public class PDFService {
 
     GenerateMenuType generateMenuType;
 
+    Map<String, Integer> fileLocations = new HashMap<>();
+
     public File generateMenu(GenerateMenuType generateMenuType) {
 
         try {
@@ -52,11 +60,17 @@ public class PDFService {
             menu = menuService.getMenuById(menuId);
             patient = patientService.getPatientByMenuId(menuId);
 
+            if (generateMenuType.isGenerateRecipes()) {
+                fileLocations.put("Recipe-start", 0);
+                makeMenuDishRecipes(document);
+                fileLocations.put("Recipe-end", document.getNumberOfPages() - 1);
+            }
+
             List<PsqlMenuProduct> menuProductList = menuService.menuProductLists(menuId);
             makeMenuDetails(document, menuProductList);
 
             if (generateMenuType.isGenerateRecipes())
-                makeMenuDishRecipes(document);
+                moveRecipesToTheEnd(document);
 
             if (generateMenuType.isGenerateShoppingList())
                 makeShoppingList(document);
@@ -70,6 +84,41 @@ public class PDFService {
             return new File("dummy.pdf");
         }
 
+    }
+
+    private void addHyperlink(PDDocument document, PDRectangle rectangle, int destinationPage) throws IOException {
+
+        PDPageDestination destination = new PDPageFitWidthDestination();
+        destination.setPage(document.getPage(destinationPage));
+
+        PDActionGoTo action = new PDActionGoTo();
+        action.setDestination(destination);
+
+        PDAnnotationLink link = new PDAnnotationLink();
+        link.setAction(action);
+        link.setRectangle(rectangle);
+
+        PDPage page = document.getPage(document.getNumberOfPages() - 1);
+        page.getAnnotations().add(link);
+    }
+
+    private void moveRecipesToTheEnd(PDDocument document) {
+        PDPageTree allPages = document.getDocumentCatalog().getPages();
+        if (allPages.getCount() < 2
+                || !fileLocations.containsKey("Recipe-end")
+                || !fileLocations.containsKey("Recipe-start")
+        ) { return; }
+
+        int firstPageIndex =  fileLocations.get("Recipe-start");
+        int lastPageIndex = fileLocations.get("Recipe-end");
+        List<PDPage> recipePages = new ArrayList<>();
+        int wsk = firstPageIndex;
+        while (firstPageIndex++ <= lastPageIndex) {
+            recipePages.add(allPages.get(wsk));
+            allPages.remove(wsk);
+        }
+
+        recipePages.forEach(allPages::add);
     }
 
     private void makeHeader(PDDocument document, PDPageContentStream contentStream) throws IOException {
@@ -167,6 +216,13 @@ public class PDFService {
                         text = product.getMealName() + " - " + Math.round(product.getMealGrams()) + "g";
                     } else {
                         text = product.getMealName() + " - " + setPortionLabel(Math.round(product.getMealPortions()));
+                    }
+
+                    if (fileLocations.containsKey(product.getMealName())) {
+                        float textWidth = timesNormal.getStringWidth(text) / 1000 * 12;
+                        PDRectangle rectangle = new PDRectangle(150, pageOffset, textWidth, 20);
+                        int pageLocation = fileLocations.get(product.getMealName());
+                        addHyperlink(document, rectangle, pageLocation);
                     }
                 }
                 writeText(contentStream, new Point(150, pageOffset), timesNormal, 12, text);
@@ -293,6 +349,7 @@ public class PDFService {
             // Display dish name
             writeText(contentStream, new Point(40, pageOffset), timesBold, 18, meal.getName());
             contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+            fileLocations.put(meal.getName(), document.getNumberOfPages() -1);
 
             // Display dish portions
             String portions = setPortionLabel(Math.round(meal.getDishPortions()));
