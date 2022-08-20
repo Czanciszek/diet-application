@@ -3,6 +3,7 @@ import {RestapiService} from "../service/restapi.service";
 import {LocalStorageService} from "../service/local-storage.service";
 import {Router} from "@angular/router";
 import { JSEncrypt } from 'jsencrypt';
+import { LoginResult } from "../model/loginResult";
 
 @Component({
   selector: 'app-login',
@@ -42,12 +43,10 @@ export class LoginComponent implements OnInit {
 
     let response = this.apiService.login(encryptedAuth)
       .subscribe(
-        (token: string) => {
-          this.storeToken(token);
+        (loginResult: LoginResult) => {
+          this.storeToken(loginResult.token);
           this.navigateHome();
-        }, error => {
-          console.log(error);
-        });
+      });
   }
 
   storeToken(token: string) {

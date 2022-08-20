@@ -21,8 +21,7 @@ export class RestapiService {
     return {
       headers: new HttpHeaders({
         AuthEncrypt: encryptedAuth
-      }),
-      responseType: 'text' as 'json'
+      })
     };
   }
 
