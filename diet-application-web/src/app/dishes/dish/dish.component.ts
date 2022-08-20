@@ -31,15 +31,7 @@ export class DishComponent implements OnInit {
   foodTypes = FOOD_TYPES;
 
   ngOnInit(): void {
-    this.getProducts();
-  }
 
-  getProducts() {
-    this.productService.getProducts()
-      .subscribe(
-        (data: Product[] ) => {
-        this.productService.productList = [...data];
-      });
   }
 
   onClear() {
@@ -83,19 +75,18 @@ export class DishComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe( result => {
-      if (result != null) {
+      if (result == null) { return }
 
-        // Update value in HTML form
-        (<HTMLInputElement>document.getElementById("name"+productIndex)).value = result.name;
+      // Update value in HTML form
+      (<HTMLInputElement>document.getElementById("name"+productIndex)).value = result.name;
 
-        // Update value in Form Group
-        let products = (<FormArray>this.dishService.form.get('products'));
-        products.at(productIndex).get('productId').patchValue(result.id);
-        products.at(productIndex).get('productName').patchValue(result.name);
-        this.dishService.form.patchValue({
-          products: [products]
-        });
-      }
+      // Update value in Form Group
+      let products = (<FormArray>this.dishService.form.get('products'));
+      products.at(productIndex).get('productId').patchValue(result.id);
+      products.at(productIndex).get('productName').patchValue(result.name);
+      this.dishService.form.patchValue({
+        products: [products]
+      });
     });
   }
 

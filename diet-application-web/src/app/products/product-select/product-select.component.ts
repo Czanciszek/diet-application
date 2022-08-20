@@ -18,20 +18,50 @@ export class ProductSelectComponent implements OnInit {
     public dialogRef: MatDialogRef<ProductSelectComponent>,
   ) { }
 
-  listData: MatTableDataSource<any>;
+  productList: MatTableDataSource<Product> = new MatTableDataSource();
   displayedColumns: string[] = ['category', 'subcategory', 'name',
     'energyValue', 'proteins', 'fats', 'carbohydrates',
     'alergens', 'actions'];
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  searchKey: string;
 
-  ngOnInit(): void {
+  private paginator: MatPaginator;
+  private sort: MatSort;
+
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
+    this.sort = ms;
+    this.setDataSourceAttributes();
+  }
+
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
+    this.paginator = mp;
+    this.setDataSourceAttributes();
+  }
+
+  setDataSourceAttributes() {
+    this.productList.paginator = this.paginator;
+    this.productList.sort = this.sort;
+
+    this.productList.filterPredicate = (product: Product, filter: string) => {
+    return product.name == null ||
+      product.name.toLowerCase().includes(filter) ||
+      product.category.toLowerCase().includes(filter) ||
+      product.subcategory.toLowerCase().includes(filter);
+    };
+
+    if (this.paginator && this.sort) {
+      this.applyFilter();
+    }
+  }
+
+  searchKey: string = "";
+
+  ngOnInit() { }
+
+  ngAfterViewInit() {
     this.getProducts();
   }
 
   applyFilter() {
-    this.listData.filter = this.searchKey.trim().toLowerCase();
+    this.productList.filter = this.searchKey.trim().toLowerCase();
   }
 
   onSearchClear() {
@@ -39,22 +69,21 @@ export class ProductSelectComponent implements OnInit {
     this.applyFilter();
   }
 
-  getProducts() {
-    this.productService.getProducts()
-      .subscribe(
-        (data: Product[]) => {
-          const productList = [ ...data];
-          this.listData = new MatTableDataSource(productList);
-          this.listData.sort = this.sort;
-          this.listData.paginator = this.paginator;
+  onRefreshButtonClick() {
+    this.fetchProducts();
+  }
 
-          this.listData.filterPredicate = (data: Product, filter: string) => {
-            return data.name == null ||
-              data.name.toLowerCase().includes(filter) ||
-              data.category.toLowerCase().includes(filter) ||
-              data.subcategory.toLowerCase().includes(filter);
-          };
-        });
+  fetchProducts() {
+    this.productService.getProducts()
+      .subscribe( (data: Product[]) => {
+        this.productService.productList = [ ...data];
+        this.getProducts();
+        this.applyFilter();
+    });
+  }
+
+  getProducts() {
+    this.productList.data = [ ...this.productService.productList];
   }
 
   onSelect(product) {

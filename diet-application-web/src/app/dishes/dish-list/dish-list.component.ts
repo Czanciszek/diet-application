@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild, Input} from '@angular/core';
 import {DishService} from "../../service/dish.service";
+import {ProductService} from "../../service/product.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {NotificationService} from "../../service/notification.service";
 import {MatTableDataSource} from "@angular/material/table";
@@ -9,6 +10,7 @@ import {DishComponent} from "../dish/dish.component";
 import {FormArray} from "@angular/forms";
 import {FOOD_TYPES} from "../../model/helpers/foodTypes";
 import {Dish} from "../../model/dish";
+import {Product} from "../../model/product";
 import {DishSelectComponent} from "../../dishes/dish-select/dish-select.component";
 
 @Component({
@@ -22,6 +24,7 @@ export class DishListComponent implements OnInit {
     public dialogRef: MatDialogRef<DishListComponent>,
     private dialog: MatDialog,
     private dishService: DishService,
+    private productService: ProductService,
     private notificationService: NotificationService,
   ) { }
 
@@ -30,10 +33,19 @@ export class DishListComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  searchKey: string;
+  searchKey: string = "";
 
   ngOnInit(): void {
     this.getDishList();
+    this.getProducts();
+  }
+
+  getProducts() {
+    this.productService.getProducts()
+      .subscribe(
+        (data: Product[] ) => {
+        this.productService.productList = [...data];
+      });
   }
 
   getDishList() {

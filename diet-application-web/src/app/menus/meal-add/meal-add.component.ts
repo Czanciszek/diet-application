@@ -162,39 +162,32 @@ export class MealAddComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe( result => {
-      if (result != null) {
-        (<FormArray>this.mealService.form.get('productList')).clear();
+      if (result == null) { return; }
 
-        // Update value in Form Group
-        this.mealService.form.get('name').patchValue(result.name);
-        this.mealService.form.get('recipe').patchValue(result.recipe);
-        this.mealService.form.get('dishPortions').patchValue(result.portions);
-        this.mealService.form.get('isProduct').patchValue(0);
+      (<FormArray>this.mealService.form.get('productList')).clear();
 
-        for (let product of result.products) {
-          let productForm = this.mealService.addProductFormGroup();
-          productForm.get('productId').patchValue(product.productId);
+      // Update value in Form Group
+      this.mealService.form.get('name').patchValue(result.name);
+      this.mealService.form.get('recipe').patchValue(result.recipe);
+      this.mealService.form.get('dishPortions').patchValue(result.portions);
+      this.mealService.form.get('isProduct').patchValue(0);
 
-          let portions = this.mealService.form.get('portions').value;
-          this.portionCurrentValue = portions;
-          let dishPortions = this.mealService.form.get('dishPortions').value;
-          let proportions = portions / dishPortions;
-          let grams = (product.grams * proportions).toFixed(2);
+      for (let product of result.products) {
+        let productForm = this.mealService.addProductFormGroup();
+        productForm.get('productId').patchValue(product.productId);
 
-          productForm.get('grams').patchValue(grams);
-          productForm.get('productName').patchValue(product.productName);
-          productForm.get('amount').patchValue(product.amount);
-          productForm.get('amountType').patchValue(product.amountType);
-          (<FormArray>this.mealService.form.get('productList')).push(productForm);
-        }
+        let portions = this.mealService.form.get('portions').value;
+        this.portionCurrentValue = portions;
+        let dishPortions = this.mealService.form.get('dishPortions').value;
+        let proportions = portions / dishPortions;
+        let grams = (product.grams * proportions).toFixed(2);
+
+        productForm.get('grams').patchValue(grams);
+        productForm.get('productName').patchValue(product.productName);
+        productForm.get('amount').patchValue(product.amount);
+        productForm.get('amountType').patchValue(product.amountType);
+        (<FormArray>this.mealService.form.get('productList')).push(productForm);
       }
-
-      this.productService.getProducts()
-        .subscribe(
-          (data: Product[] ) => {
-          this.productService.productList = [...data];
-          this.ngOnInit();
-        });
     });
   }
 

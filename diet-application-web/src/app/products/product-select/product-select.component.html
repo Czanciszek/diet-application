@@ -7,20 +7,21 @@
   </mat-toolbar>
 </div>
 
-<mat-grid-list cols="7" rowHeight="70px">
-  <mat-grid-tile colspan="5">
-    <mat-form-field class="search-form-field" floatLabel="never">
-      <input matInput [(ngModel)]="searchKey" placeholder="Szukaj" autocomplete="off" (keyup)="applyFilter()">
-      <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-  </mat-grid-tile>
-</mat-grid-list>
+<div class="search-div">
+  <mat-form-field class="search-form-field" floatLabel="never">
+    <input matInput [(ngModel)]="searchKey" placeholder="Szukaj" autocomplete="off" (keyup)="applyFilter()">
+    <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <button id="button_refresh" class="action-buttons" mat-raised-button (click)="onRefreshButtonClick()">
+    <mat-icon>autorenew</mat-icon>Odśwież
+  </button>
+</div>
 
 <mat-dialog-content>
   <div class ="mat-elevation-z8">
-    <mat-table [dataSource]="listData" matSort>
+    <mat-table [dataSource]="productList" matSort>
       <ng-container matColumnDef="category">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Kategoria</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.category}}</mat-cell>
