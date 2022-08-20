@@ -195,7 +195,14 @@ public class PDFService {
             writeText(contentStream, new Point(40, pageOffset), timesBold, 14, dateLine);
             contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
 
-            dayEntry.getValue().sort(Comparator.comparingLong(PsqlMenuProduct::getFoodTypeId));
+            Comparator<PsqlMenuProduct> comp = (p1, p2) -> {
+                if (p1.getFoodTypeId().compareTo(p2.getFoodTypeId()) == 0) {
+                    return (p1.isProduct()) ? 1 : -1;
+                }
+                return p1.getFoodTypeId().compareTo(p2.getFoodTypeId());
+            };
+            dayEntry.getValue().sort(comp);
+
             long foodType = 0;
 
             for (PsqlMenuProduct product : dayEntry.getValue()) {

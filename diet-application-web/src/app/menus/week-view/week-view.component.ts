@@ -115,7 +115,11 @@ export class WeekViewComponent implements OnInit {
     this.mealService.getMealListByWeekMealId(weekMealId)
       .subscribe(
         (mealsData: Meal[]) => {
-          this.mealListItemData = [...mealsData];
+          var mealListSortedData: Meal[] = [...mealsData].sort( (m1, m2) => {
+            if (m1.isProduct == m2.isProduct) return 0;
+            return m1.isProduct > m2.isProduct ? 1 : -1;
+          });
+          this.mealListItemData = mealListSortedData;
           this.mealsLoaded = true;
           this.checkDataLoaded();
         });
