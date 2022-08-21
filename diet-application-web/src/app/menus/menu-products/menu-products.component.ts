@@ -41,7 +41,8 @@ export class MenuProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMenuProducts(83);
+    let menuId = this.menuService.form.get("id").value;
+    this.getMenuProducts(menuId);
   }
 
   getMenuProducts(menuId) {

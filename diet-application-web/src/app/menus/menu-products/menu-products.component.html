@@ -7,8 +7,6 @@
   </mat-form-field>
 </div>
 
-<mat-dialog-content>
-
     <mat-table [dataSource]="menuProductList" matSort>
 
       <ng-container matColumnDef="categoryName">
@@ -29,8 +27,6 @@
           <button mat-icon-button (click)="onProductSelect(element)"><mat-icon>done</mat-icon></button>
         </mat-cell>
       </ng-container>
-
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
-</mat-dialog-content>
