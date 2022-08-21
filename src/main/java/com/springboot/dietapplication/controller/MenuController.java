@@ -1,7 +1,9 @@
 package com.springboot.dietapplication.controller;
 
+import com.springboot.dietapplication.model.psql.product.PsqlShoppingProduct;
 import com.springboot.dietapplication.model.type.MenuSendingType;
 import com.springboot.dietapplication.model.type.MenuType;
+import com.springboot.dietapplication.model.type.ProductReplaceType;
 import com.springboot.dietapplication.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +33,21 @@ public class MenuController {
         return this.menuService.getMenusByPatientId(patientId);
     }
 
+    @GetMapping(path = "/{menuId}/products")
+    public List<PsqlShoppingProduct> menuShoppingProducts(@PathVariable("menuId") long menuId) {
+        return this.menuService.getShoppingProductsForMenu(menuId);
+    }
+
     @PostMapping(produces = "application/json")
     ResponseEntity<MenuType> insert(@RequestBody MenuSendingType menuSendingType) {
         return this.menuService.insert(menuSendingType);
+    }
+
+    @PostMapping(path = "/product-replace/{menuId}", produces = "application/json")
+    ResponseEntity<Void> replaceProductInMenu(
+            @PathVariable("menuId") Long menuId,
+            @RequestBody ProductReplaceType productReplaceType) {
+        return this.menuService.replaceProductInMenu(menuId, productReplaceType);
     }
 
     @PutMapping(path = "/{menuId}", produces = "application/json")

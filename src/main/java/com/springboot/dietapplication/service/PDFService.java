@@ -66,7 +66,7 @@ public class PDFService {
                 fileLocations.put("Recipe-end", document.getNumberOfPages() - 1);
             }
 
-            List<PsqlMenuProduct> menuProductList = menuService.menuProductLists(menuId);
+            List<PsqlMenuProduct> menuProductList = menuService.menuProducts(menuId);
             makeMenuDetails(document, menuProductList);
 
             if (generateMenuType.isGenerateRecipes())

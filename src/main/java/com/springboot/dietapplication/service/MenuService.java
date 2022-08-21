@@ -26,6 +26,10 @@ public class MenuService {
     MenuProductsRepository menuProductsRepository;
     @Autowired
     ShoppingProductRepository shoppingProductRepository;
+    @Autowired
+    ProductMealRepository productMealRepository;
+    @Autowired
+    MealRepository mealRepository;
 
     @Autowired
     WeekMealService weekMealService;
@@ -47,9 +51,10 @@ public class MenuService {
         return convertLists(psqlMenuList);
     }
 
-    public List<PsqlMenuProduct> menuProductLists(long menuId) {
+    public List<PsqlMenuProduct> menuProducts(long menuId) {
         return menuProductsRepository.findMenuProducts(menuId);
     }
+
     public List<PsqlShoppingProduct> getShoppingProductsForMenu(long menuId) {
         return shoppingProductRepository.findShoppingProductsByMenuId(menuId);
     }
@@ -75,6 +80,26 @@ public class MenuService {
 
         this.menuRepository.save(menu);
         return ResponseEntity.ok().body(new MenuType(menu));
+    }
+
+    public ResponseEntity<Void> replaceProductInMenu(Long menuId, ProductReplaceType productReplaceType) {
+
+        ReplacingProduct newProduct = productReplaceType.getNewProduct();
+
+        List<PsqlProductMeal> productMealList = productMealRepository.findPsqlProductMealByMenuIdAndByProductId(menuId, productReplaceType.getOldProduct().getId());
+        productMealList.forEach( product -> {
+            product.setProductId(newProduct.getId());
+            product.setProductName(newProduct.getName());
+        });
+        productMealRepository.saveAll(productMealList);
+
+        List<PsqlMeal> mealList = mealRepository.findByName(productReplaceType.getOldProduct().getName());
+        mealList.forEach( meal -> {
+            meal.setName(newProduct.getName());
+        });
+        mealRepository.saveAll(mealList);
+
+        return ResponseEntity.ok().build();
     }
 
     public ResponseEntity<MenuType> update(MenuSendingType menuSendingType) {
