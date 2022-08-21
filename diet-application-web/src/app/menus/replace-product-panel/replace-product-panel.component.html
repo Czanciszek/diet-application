@@ -1,0 +1,22 @@
+<div class="container">
+  <mat-toolbar>
+    <span class="fill-remaining-space"></span>
+    <span>Wymień produkt</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+  </mat-toolbar>
+</div>
+
+<mat-dialog-content>
+
+    <mat-tab-group mat-stretch-tabs class="container" [(selectedIndex)]="tabIndex">
+      <mat-tab label="Wymień produkt" >
+        <app-menu-products (productSelected)="chooseReplacement($event)"></app-menu-products>
+      </mat-tab>
+
+      <mat-tab label="Nowy produkt" [disabled]="blockReplace">
+        <app-product-select [isReplaceAction]="true" (productSelected)="replacementSelected($event)"></app-product-select>
+      </mat-tab>
+    </mat-tab-group>
+
+</mat-dialog-content>

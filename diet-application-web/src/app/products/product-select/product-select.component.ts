@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, EventEmitter, Input, Output} from '@angular/core';
 import {ProductService} from "../../service/product.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialogRef} from "@angular/material/dialog";
@@ -54,10 +54,20 @@ export class ProductSelectComponent implements OnInit {
 
   searchKey: string = "";
 
+  @Input()
+  isReplaceAction: boolean = false;
+
+  @Output()
+  productSelected = new EventEmitter<Product>();
+
   ngOnInit() { }
 
   ngAfterViewInit() {
-    this.getProducts();
+    if (this.productService.productList == null || this.productService.productList.length == 0) {
+      this.fetchProducts();
+    } else {
+      this.getProducts();
+    }
   }
 
   applyFilter() {
@@ -87,7 +97,12 @@ export class ProductSelectComponent implements OnInit {
   }
 
   onSelect(product) {
-    this.dialogRef.close(product);
+    if (this.isReplaceAction) {
+      // TODO: Ask for confirmation Old Product -> New Product
+      this.productSelected.emit(product);
+    } else {
+      this.dialogRef.close(product);
+    }
   }
 
   onClose() {

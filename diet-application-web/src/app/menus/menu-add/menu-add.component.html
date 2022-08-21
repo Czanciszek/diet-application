@@ -211,7 +211,7 @@
         <div class="control-container">
           <div class="button-row">
             <button mat-raised-button color="primary" type="submit" [disabled]="menuServiceForm.invalid">Zapisz</button>
-            <button mat-raised-button color="warn" type="button" (click)="onClear()">Wyczyść</button>
+            <button mat-raised-button color="secondary" type="button" (click)="onReplaceProductsClick()" [hidden]="!menuServiceForm.controls['id'].value">Wymień produkt</button>
           </div>
         </div>
       </mat-grid-tile>

@@ -55,12 +55,20 @@ export class MenuService {
     return this.restApiService.get<Menu[]>("menus/" + menuId);
   }
 
+  getMenuProducts(menuId) {
+    return this.restApiService.get("menus/" + menuId + "/products");
+  }
+
   insertMenu(menu) {
     return this.restApiService.post(menu, "menus");
   }
 
   copyMenu(menu) {
     return this.restApiService.post(menu, "menus/copy");
+  }
+
+  replaceProductInMenu(menuId, productReplaceType) {
+    return this.restApiService.post(productReplaceType, "menus/product-replace/" + menuId);
   }
 
   updateMenu(menu) {

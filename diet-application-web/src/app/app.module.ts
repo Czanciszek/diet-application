@@ -41,6 +41,8 @@ import { WeekHeaderComponent } from './menus/week-header/week-header.component';
 import { GenerateMenuPanelComponent } from './menus/generate-menu-panel/generate-menu-panel.component';
 import { CopyMenuPanelComponent } from './menus/copy-menu-panel/copy-menu-panel.component';
 import { RegisterComponent } from './register/register.component';
+import { ReplaceProductPanelComponent } from './menus/replace-product-panel/replace-product-panel.component';
+import { MenuProductsComponent } from './menus/menu-products/menu-products.component';
 
 const routes: Routes = [
   {path: "", redirectTo:"login", pathMatch:"full"},
@@ -85,6 +87,8 @@ const routes: Routes = [
     GenerateMenuPanelComponent,
     CopyMenuPanelComponent,
     RegisterComponent,
+    ReplaceProductPanelComponent,
+    MenuProductsComponent,
   ],
     imports: [
         BrowserModule,

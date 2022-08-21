@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {NotificationService} from "../../service/notification.service";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {MenuService} from "../../service/menu.service";
 import {MeasurementService} from "../../service/measurement.service";
 import {Measurement} from "../../model/measurement";
 import {PatientService} from "../../service/patient.service";
+import {ProductService} from "../../service/product.service";
+import {ReplaceProductPanelComponent} from "../replace-product-panel/replace-product-panel.component";
 import {FOOD_TYPES} from "../../model/helpers/foodTypes";
 
 @Component({
@@ -18,7 +20,9 @@ export class MenuAddComponent implements OnInit {
     private menuService: MenuService,
     private measurementService: MeasurementService,
     private patientService: PatientService,
+    private productService: ProductService,
     private notificationService: NotificationService,
+    private dialog: MatDialog,
     public dialogRef: MatDialogRef<MenuAddComponent>
   ) { }
 
@@ -49,8 +53,8 @@ export class MenuAddComponent implements OnInit {
   }
 
   onClose() {
-    this.onClear();
     this.dialogRef.close();
+    this.onClear();
   }
 
   getMeasurementList(patientId) {
@@ -64,16 +68,14 @@ export class MenuAddComponent implements OnInit {
   }
 
   prepareMeasurementDates(measurementList) {
-    if (measurementList != null) {
-      for (let index in measurementList) {
-        if (measurementList[index].measurementDate != null) {
-          const patientWeight = measurementList[index].bodyWeight;
-          const dateFormat = new Date(measurementList[index].measurementDate);
-          const dateString = dateFormat.getDate() + "/"
-            + (dateFormat.getMonth() + 1) + "/" + dateFormat.getFullYear();
-          this.measurementDates.push({ id: measurementList[index].id, date: dateString, weight: patientWeight });
-        }
-      }
+    if (measurementList == null) { return; }
+    for (let index in measurementList) {
+      if (measurementList[index].measurementDate == null) { continue; }
+      const patientWeight = measurementList[index].bodyWeight;
+      const dateFormat = new Date(measurementList[index].measurementDate);
+      const dateString = dateFormat.getDate() + "/"
+        + (dateFormat.getMonth() + 1) + "/" + dateFormat.getFullYear();
+        this.measurementDates.push({ id: measurementList[index].id, date: dateString, weight: patientWeight });
     }
   }
 
@@ -257,4 +259,32 @@ export class MenuAddComponent implements OnInit {
     let summary = proteinsPercentage + fatsPercentage + carbohydratesPercentage;
     return summary == 100;
   }
+
+    onReplaceProductsClick() {
+
+      let dialogRef = this.dialog.open(ReplaceProductPanelComponent, {
+        autoFocus: true,
+        width: "90%",
+        height: "70%"
+      });
+
+      dialogRef.afterClosed().subscribe( (result) => {
+        if (result == null) return;
+        this.replaceProducts(result);
+      });
+
+    }
+
+    replaceProducts(products) {
+      let menuId = this.menuServiceForm.get("id").value;
+
+      this.menuService
+        .replaceProductInMenu(menuId, products)
+        .subscribe(
+          (response) => {
+            this.notificationService.success(":: Produkt zaktualizowano pomyślnie! ::");
+          }, error => {
+           this.notificationService.error(":: Wystąpił błąd podczas aktualizacji produktu! ::");
+        });
+    }
 }
