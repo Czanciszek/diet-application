@@ -37,13 +37,13 @@ export class RestapiService {
 
   public login(encryptedAuth:string) {
     return this.http.get(
-      this.getPath("auth/login", "v1", false),
+      this.getPath("auth/login", "v1"),
       this.loginHeaders(encryptedAuth));
   }
 
   public register(registerForm: any) {
     return this.http.post(
-      this.getPath("auth/register", "v1", false),
+      this.getPath("auth/register", "v1"),
       registerForm,
       this.httpHeaders());
   }
@@ -94,10 +94,8 @@ export class RestapiService {
     }
   }
 
-  getPath(path: string, version: string, useApi: boolean = true) {
-    let url = this.SERVER_ADDRESS;
-    if (useApi) url += "api/";
-    url += version + "/" + path;
+  getPath(path: string, version: string) {
+    let url = this.SERVER_ADDRESS + "api/" + version + "/" + path;
     return url
   }
 }
