@@ -1,9 +1,10 @@
 export var AMOUNT_TYPES = [
+  { id: "GLASS", value: "Szklanka (250ml)" },
+  { id: "SPOON", value: "Łyżka (15ml)" },
+  { id: "TEASPOON", value: "Łyżeczka (5ml)" },
   { id: "PIECE", value: "Sztuka" },
-  { id: "SPOON", value: "Łyżka" },
-  { id: "SCOOPS", value: "Miarka" },
-  { id: "HANDFUL", value: "Garść" },
   { id: "SLICE", value: "Plaster" },
-  { id: "LEAVES", value: "Listek" },
-  { id: "GLASS", value: "Szklanka" },
+  { id: "LEAF", value: "Liść" },
+  { id: "HANDFUL", value: "Garść" },
+  { id: "SCOOP", value: "Miarka" },
 ];
