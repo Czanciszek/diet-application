@@ -4,6 +4,7 @@ import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
 import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ProductDishType implements Serializable {
 
@@ -14,6 +15,7 @@ public class ProductDishType implements Serializable {
     private float grams;
     private float amount;
     private AmountType amountType;
+    private List<ProductAmountType> amountTypes;
 
     public ProductDishType() {
 
@@ -81,4 +83,11 @@ public class ProductDishType implements Serializable {
         this.amountType = amountType;
     }
 
+    public List<ProductAmountType> getAmountTypes() {
+        return amountTypes;
+    }
+
+    public void setAmountTypes(List<ProductAmountType> amountTypes) {
+        this.amountTypes = amountTypes;
+    }
 }

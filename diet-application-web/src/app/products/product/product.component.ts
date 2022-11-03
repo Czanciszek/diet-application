@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ProductService} from "../../service/product.service";
-import {MatDialogRef} from "@angular/material/dialog";
-import {NotificationService} from "../../service/notification.service";
-
+import { ProductService } from "../../service/product.service";
+import { FormArray } from "@angular/forms";
+import { MatDialogRef } from "@angular/material/dialog";
+import { NotificationService } from "../../service/notification.service";
+import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
 
 @Component({
   selector: 'app-product',
@@ -11,6 +12,7 @@ import {NotificationService} from "../../service/notification.service";
 })
 export class ProductComponent implements OnInit {
 
+  amountTypes = AMOUNT_TYPES;
   categoryList: any[] = [];
   categories: any = new Set();
   subcategories: any = new Set();
@@ -22,6 +24,8 @@ export class ProductComponent implements OnInit {
   ) { }
 
   productServiceForm = this.productService.form;
+
+  showMoreProperties = false;
 
   ngOnInit(): void {
     this.getCategories();
@@ -47,14 +51,14 @@ export class ProductComponent implements OnInit {
   onCategoryChange(category) {
     if (category == null) return;
     this.subcategories.clear();
-    const filteredCategories = this.categoryList.filter( x => !!x.category && x.category.includes(category));
+    const filteredCategories = this.categoryList.filter(x => !!x.category && x.category.includes(category));
     this.fillSubcategories(filteredCategories);
     this.productService.form.controls['subcategory'].setValue(null);
   }
 
   onSubcategoryChange(subcategory) {
     if (subcategory == null) return;
-    const filteredCategory = this.categoryList.find( x => !!x.subcategory && x.subcategory.includes(subcategory));
+    const filteredCategory = this.categoryList.find(x => !!x.subcategory && x.subcategory.includes(subcategory));
 
     this.onCategoryChange(filteredCategory.category);
     this.productService.form.controls['category'].setValue(filteredCategory.category);
@@ -62,8 +66,7 @@ export class ProductComponent implements OnInit {
   }
 
   onClear() {
-    this.productService.form.reset();
-    this.productService.initializeFormGroup();
+    this.productService.clearForm();
   }
 
   onSubmit() {
@@ -82,8 +85,8 @@ export class ProductComponent implements OnInit {
 
   insertProduct() {
     this.productService.insertProduct(this.productService.form.value).subscribe(
-      result => {
-       this.notificationService.success(":: Produkt stworzony pomyślnie! ::");
+      _ => {
+        this.notificationService.success(":: Produkt stworzony pomyślnie! ::");
         this.onClose();
       }, error => {
         this.handleError(error);
@@ -93,13 +96,21 @@ export class ProductComponent implements OnInit {
 
   updateProduct() {
     this.productService.updateProduct(this.productService.form.value).subscribe(
-      result => {
+      _ => {
         this.notificationService.success(":: Product zaktualizowany pomyślnie! ::");
         this.onClose();
       }, error => {
         this.handleError(error);
       }
     );
+  }
+
+  addAmountTypeButtonClick() {
+    (<FormArray>this.productServiceForm.get('amountTypes')).push(this.productService.addAmountTypeFormGroup());
+  }
+
+  onAmountTypeDeleteButtonClick(amountTypeIndex) {
+    (<FormArray>this.productServiceForm.get('amountTypes')).removeAt(amountTypeIndex);
   }
 
   trimProductName() {

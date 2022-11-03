@@ -1,10 +1,12 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
+import com.springboot.dietapplication.model.psql.menu.PsqlAmountType;
 import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import com.springboot.dietapplication.model.psql.product.PsqlProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
+import com.springboot.dietapplication.model.psql.product.PsqlProductsAmountTypes;
 import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.*;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -27,6 +28,10 @@ public class ProductService {
     ProductDishRepository productDishRepository;
     @Autowired
     ProductMealRepository productMealRepository;
+    @Autowired
+    AmountTypeRepository amountTypeRepository;
+    @Autowired
+    ProductsAmountTypesRepository productsAmountTypesRepository;
 
     @Autowired
     FoodPropertiesService foodPropertiesService;
@@ -61,6 +66,8 @@ public class ProductService {
 
         this.productRepository.save(product);
         productType.setId(product.getId());
+
+        storeProductsAmountTypes(productType);
 
         return productType;
     }
@@ -106,6 +113,8 @@ public class ProductService {
 
         this.productRepository.save(product);
 
+        storeProductsAmountTypes(productType);
+
         return productType;
     }
 
@@ -127,8 +136,45 @@ public class ProductService {
     private List<ProductType> convertLists(List<PsqlProductFoodProperties> products) {
         List<ProductType> productTypeList = new ArrayList<>();
         for (PsqlProductFoodProperties product : products) {
-            productTypeList.add(new ProductType(product));
+            ProductType productType = new ProductType(product);
+
+            productType.setFoodProperties(new FoodPropertiesType(product));
+            productType.setAmountTypes(convertAmountTypes(product.getId()));
+
+            productTypeList.add(productType);
         }
+
         return productTypeList;
+    }
+
+    private List<ProductAmountType> convertAmountTypes(long productId) {
+        List<ProductAmountType> amountTypes = new ArrayList<>();
+
+        Set<PsqlProductsAmountTypes> productsAmountTypes = productsAmountTypesRepository.findPsqlProductsAmountTypesByProductId(productId);
+
+        productsAmountTypes.forEach( productAmountType -> {
+            Optional<AmountType> optionalAmountType = AmountType.valueOf(productAmountType.getAmountTypeId());
+            optionalAmountType.ifPresent(amountType -> amountTypes.add(new ProductAmountType(amountType, productAmountType.getGrams())));
+        });
+
+        return amountTypes;
+    }
+
+    private void storeProductsAmountTypes(ProductType productType) {
+        this.productsAmountTypesRepository.deleteAllByProductId(productType.getId());
+
+        if (productType.getAmountTypes() == null) return;
+        Set<PsqlProductsAmountTypes> productsAmountTypes = new HashSet<>();
+
+        for (ProductAmountType productAmountType : productType.getAmountTypes()) {
+
+            PsqlAmountType psqlAmountType = this.amountTypeRepository.getPsqlAmountTypeByName(productAmountType.getAmountType().name());
+            if (psqlAmountType == null) continue;
+
+            PsqlProductsAmountTypes productAmountTypes = new PsqlProductsAmountTypes(productType.getId(), psqlAmountType.getId(), productAmountType.getGrams());
+            productsAmountTypes.add(productAmountTypes);
+        }
+
+        this.productsAmountTypesRepository.saveAll(productsAmountTypes);
     }
 }

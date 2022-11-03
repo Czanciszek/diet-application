@@ -1,17 +1,15 @@
-import {Component, OnInit, ViewChild, Input} from '@angular/core';
-import {DishService} from "../../service/dish.service";
-import {ProductService} from "../../service/product.service";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {NotificationService} from "../../service/notification.service";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
-import {DishComponent} from "../dish/dish.component";
-import {FormArray} from "@angular/forms";
-import {FOOD_TYPES} from "../../model/helpers/foodTypes";
-import {Dish} from "../../model/dish";
-import {Product} from "../../model/product";
-import {DishSelectComponent} from "../../dishes/dish-select/dish-select.component";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DishService } from "../../service/dish.service";
+import { ProductService } from "../../service/product.service";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { NotificationService } from "../../service/notification.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
+import { DishComponent } from "../dish/dish.component";
+import { FOOD_TYPES } from "../../model/helpers/foodTypes";
+import { Dish } from "../../model/dish";
+import { Product } from "../../model/product";
 
 @Component({
   selector: 'app-dish-list',
@@ -43,9 +41,9 @@ export class DishListComponent implements OnInit {
   getProducts() {
     this.productService.getProducts()
       .subscribe(
-        (data: Product[] ) => {
-        this.productService.productList = [...data];
-      });
+        (data: Product[]) => {
+          this.productService.productList = [...data];
+        });
   }
 
   getDishList() {
@@ -78,15 +76,11 @@ export class DishListComponent implements OnInit {
   }
 
   onNewDishButtonClick() {
-    (<FormArray>this.dishService.form.get('products')).push(this.dishService.addProductFormGroup());
     this.dishService.initializeFormGroup();
     this.openEditDishDialog();
   }
 
   onEdit(dish) {
-    for (const product of dish.products) {
-      (<FormArray>this.dishService.form.get('products')).push(this.dishService.addProductFormGroup());
-    }
     this.dishService.populateForm(dish);
     this.openEditDishDialog();
   }
@@ -98,7 +92,7 @@ export class DishListComponent implements OnInit {
       width: "90%"
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(_ => {
       this.getDishList();
     });
   }
@@ -113,15 +107,15 @@ export class DishListComponent implements OnInit {
     }
 
     this.dishService.deleteDish(dishId).subscribe(
-      result => {
+      _ => {
 
-        let listDataDish = this.listData.data.find( x => x.id == dishId);
+        let listDataDish = this.listData.data.find(x => x.id == dishId);
         let index = this.listData.data.indexOf(listDataDish);
         this.listData.data.splice(index, 1);
         this.listData.data = this.listData.data;
 
         this.notificationService.warn(":: Usunięto pomyślnie! ::");
-      }, error => {
+      }, _ => {
         this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
       }, () => {
         this.getDishList();

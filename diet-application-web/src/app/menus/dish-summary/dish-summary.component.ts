@@ -2,7 +2,6 @@ import {Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef} f
 import {MealService} from "../../service/meal.service";
 import {Meal} from "../../model/meal";
 import {DayMeal} from "../../model/day-meal";
-import {FormArray} from "@angular/forms";
 import {MealAddComponent} from "../meal-add/meal-add.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ProductService} from "../../service/product.service";
@@ -43,9 +42,6 @@ export class DishSummaryComponent implements OnInit {
   }
 
   onEdit() {
-    for (const product of this.mealItem.productList) {
-      (<FormArray>this.mealService.form.get('productList')).push(this.mealService.addProductFormGroup());
-    }
     this.mealService.populateForm(this.mealItem);
     this.openDialog();
   }
@@ -84,7 +80,6 @@ export class DishSummaryComponent implements OnInit {
     let carbohydrates = 0;
 
     let products = this.mealItem.productList;
-    let isProduct = (this.mealItem.isProduct == 1);
     for (let product of products) {
       grams = product.grams;
 

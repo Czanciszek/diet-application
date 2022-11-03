@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {RestapiService} from "./restapi.service";
+import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
+import { RestapiService } from "./restapi.service";
 
 @Injectable({
   providedIn: 'root'
@@ -26,16 +26,26 @@ export class MealService {
   });
 
   addProductFormGroup(): FormGroup {
-    return new FormGroup( {
-      productId: new FormControl(null, [Validators.required]),
-      productName: new FormControl(null),
+    return new FormGroup({
+      productId: new FormControl(null),
+      productName: new FormControl(null, [Validators.required]),
       grams: new FormControl(null, [Validators.required]),
       amount: new FormControl(null),
-      amountType: new FormControl(null)
+      amountType: new FormControl(null),
+      amountTypes: new FormArray([])
     });
   }
 
+  addAmountTypeFormGroup(): FormGroup {
+    return new FormGroup({
+      amountType: new FormControl(null),
+      grams: new FormControl(null),
+    })
+  }
+
   initializeFormGroup() {
+    this.clearForm();
+
     this.form.setValue({
       id: null,
       name: '',
@@ -52,7 +62,33 @@ export class MealService {
   }
 
   populateForm(meal) {
+    this.clearForm();
+
+    if (meal.productList == null) meal.productList = [];
+    let productIndex = 0;
+    for (const product of meal.productList) {
+      let products = <FormArray>this.form.get('productList');
+      products.push(this.addProductFormGroup());
+      this.setupProductAmountTypes(product.amountTypes, productIndex);
+      productIndex += 1;
+    }
+
     this.form.setValue(meal);
+  }
+
+  setupProductAmountTypes(amountTypes, productIndex: number) {
+    let formProduct = this.form.get('productList').get([productIndex]);
+    (<FormArray>formProduct.get('amountTypes')).clear();
+    if (amountTypes == null) return;
+    for (const amountType of amountTypes) {
+      let formAmountTypes = <FormArray>formProduct.get('amountTypes');
+      formAmountTypes.push(this.addAmountTypeFormGroup());
+    }
+  }
+
+  clearForm() {
+    (<FormArray>this.form.get('productList')).clear();
+    this.form.reset();
   }
 
   getMealListByWeekMealId(weekMealId) {
@@ -72,6 +108,6 @@ export class MealService {
   }
 
   deleteMeal(id: string) {
-    return this.restApiService.delete( "meals/" + id);
+    return this.restApiService.delete("meals/" + id);
   }
 }

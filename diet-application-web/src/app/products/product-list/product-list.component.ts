@@ -1,13 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ProductService} from "../../service/product.service";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {ProductComponent} from "../product/product.component";
-import {NotificationService} from "../../service/notification.service";
-import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
-import {FileService} from "../../service/file.service";
-import {Product} from "../../model/product";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ProductService } from "../../service/product.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { ProductComponent } from "../product/product.component";
+import { NotificationService } from "../../service/notification.service";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
+import { FileService } from "../../service/file.service";
+import { Product } from "../../model/product";
 
 @Component({
   selector: 'app-product-list',
@@ -25,8 +25,8 @@ export class ProductListComponent implements OnInit {
 
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['category', 'subcategory', 'name',
-                                'energyValue', 'proteins', 'fats', 'carbohydrates',
-                                'alergens', 'actions'];
+    'energyValue', 'proteins', 'fats', 'carbohydrates',
+    'alergens', 'actions'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey: string;
@@ -41,7 +41,7 @@ export class ProductListComponent implements OnInit {
     this.onSearchClear();
     this.productService.getProducts()
       .subscribe(
-        (data: Product[] ) => {
+        (data: Product[]) => {
 
           this.productService.productList = [...data];
           this.listData = new MatTableDataSource(this.productService.productList);
@@ -49,12 +49,12 @@ export class ProductListComponent implements OnInit {
           this.listData.paginator = this.paginator;
 
           this.listData.filterPredicate = (data: Product, filter: string) => {
-          return data.name == null ||
-            data.name.toLowerCase().includes(filter) ||
-            data.category.toLowerCase().includes(filter) ||
-            data.subcategory.toLowerCase().includes(filter);
+            return data.name == null ||
+              data.name.toLowerCase().includes(filter) ||
+              data.category.toLowerCase().includes(filter) ||
+              data.subcategory.toLowerCase().includes(filter);
           };
-      });
+        });
   }
 
   onSearchClear() {
@@ -90,7 +90,7 @@ export class ProductListComponent implements OnInit {
 
       if (product != null) {
 
-        let listDataProduct = this.listData.data.find( x => x.id == product.id);
+        let listDataProduct = this.listData.data.find(x => x.id == product.id);
         let index = this.listData.data.indexOf(listDataProduct);
         this.listData.data[index] = this.productService.form.value;
         this.listData.data = this.listData.data;
@@ -99,8 +99,6 @@ export class ProductListComponent implements OnInit {
         this.getProductList();
       }
 
-      this.productService.form.reset();
-      this.productService.initializeFormGroup();
     });
   }
 
@@ -133,10 +131,10 @@ export class ProductListComponent implements OnInit {
   }
 
   setUploadButton() {
-    const realFileBtn =  (<HTMLInputElement>document.getElementById('real_input'));
+    const realFileBtn = (<HTMLInputElement>document.getElementById('real_input'));
     const uploadBtn = document.getElementById('button_upload');
 
-    uploadBtn.addEventListener("click", function() {
+    uploadBtn.addEventListener("click", function () {
       realFileBtn.click();
     });
 

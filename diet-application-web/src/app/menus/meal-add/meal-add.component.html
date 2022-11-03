@@ -3,134 +3,89 @@
     <span class="fill-remaining-space"></span>
     <span>{{mealServiceForm.controls['id'].value?"Edytuj danie":"Nowe danie"}}</span>
     <span class="fill-remaining-space"></span>
-    <button class="btn-dialog-close" mat-stroked-button tabindex="-1" (click)="onClose()"><mat-icon>clear</mat-icon></button>
+    <button class="btn-dialog-close" mat-stroked-button tabindex="-1" (click)="onClose()">
+      <mat-icon>clear</mat-icon>
+    </button>
   </mat-toolbar>
 </div>
 
 <mat-dialog-content>
   <form [formGroup]="mealServiceForm" class="normal-form" (ngSubmit)="onSubmit()">
 
-  <mat-tab-group mat-stretch-tabs class="container" [(selectedIndex)]="tabIndex">
-    <mat-tab label="Potrawa" [disabled]="blockDish">
+    <mat-tab-group mat-stretch-tabs class="container" [(selectedIndex)]="tabIndex">
+      <mat-tab label="Potrawa" [disabled]="blockDish">
 
-      <mat-grid-list cols="9" rowHeight="70px">
+        <mat-grid-list cols="9" rowHeight="70px">
 
-        <mat-grid-tile>
-          <button mat-raised-button type="button" (click)="selectDish()">
-            <mat-icon>add</mat-icon>Wybierz z listy
-          </button>
-        </mat-grid-tile>
+          <mat-grid-tile>
+            <button mat-raised-button type="button" (click)="selectDish()">
+              <mat-icon>add</mat-icon>Wybierz z listy
+            </button>
+          </mat-grid-tile>
 
-        <mat-grid-tile colspan="4">
-          <div class="control-container">
-            <mat-form-field>
-              <input matInput placeholder="Potrawa" formControlName="name" autocomplete="off">
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
+          <mat-grid-tile colspan="4">
+            <div class="control-container">
+              <mat-form-field>
+                <input matInput placeholder="Potrawa" formControlName="name" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
 
-        <mat-grid-tile>
-          <div class="control-container add-slider-padding">
-            <mat-label>Ilość porcji potrawy: {{mealServiceForm.controls['dishPortions'].value}}</mat-label>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <div class="control-container add-slider-padding">
-            <mat-slider min="1" max="20" thumbLabel formControlName="dishPortions">
-            </mat-slider>
-          </div>
-        </mat-grid-tile>
-
-        <mat-grid-tile colspan="2">
-          <div class="control-container">
-            <mat-form-field>
-              <div class="add-bottom-padding">
-                <mat-select matInput placeholder="Typ" formControlName="foodType">
-                  <ng-container *ngFor="let foodType of foodTypes">
-                    <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
-                  </ng-container>
-                </mat-select>
-              </div>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-
-      </mat-grid-list>
-
-      <mat-grid-list cols="9" rowHeight="80px">
-        <mat-grid-tile>
-          <div class="control-container">
-            <mat-checkbox [checked]='withPortions' (change)="portionOptionChanged($event)">Użyj porcji</mat-checkbox>
-          </div>
-        </mat-grid-tile>
-
-        <div *ngIf="withPortions">
-          <mat-grid-tile colspan="2">
+          <mat-grid-tile>
             <div class="control-container add-slider-padding">
-              <mat-slider min="1" max="20" thumbLabel formControlName="portions" (change)="portionCountChanged($event)">
+              <mat-label>Ilość porcji potrawy: {{mealServiceForm.controls['dishPortions'].value}}</mat-label>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="control-container add-slider-padding">
+              <mat-slider min="1" max="20" thumbLabel formControlName="dishPortions">
               </mat-slider>
             </div>
           </mat-grid-tile>
 
-          <mat-grid-tile>
-            <div class="control-container add-slider-padding">
-              <mat-label>Ilość porcji: {{mealServiceForm.controls['portions'].value}}</mat-label>
-            </div>
-          </mat-grid-tile>
-
           <mat-grid-tile colspan="2">
-          </mat-grid-tile>
-        </div>
-
-        <div *ngIf="!withPortions">
-          <mat-grid-tile>
             <div class="control-container">
               <mat-form-field>
                 <div class="add-bottom-padding">
-                  <input type="number" matInput placeholder="Gram" formControlName="grams" autocomplete="off">
+                  <mat-select matInput placeholder="Typ" formControlName="foodType">
+                    <ng-container *ngFor="let foodType of foodTypes">
+                      <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
+                    </ng-container>
+                  </mat-select>
                 </div>
               </mat-form-field>
             </div>
           </mat-grid-tile>
 
-          <mat-grid-tile colspan="4">
+        </mat-grid-list>
+
+        <mat-grid-list cols="9" rowHeight="80px">
+          <mat-grid-tile>
+            <div class="control-container">
+              <mat-checkbox [checked]='withPortions' (change)="portionOptionChanged($event)">Użyj porcji</mat-checkbox>
+            </div>
           </mat-grid-tile>
-        </div>
 
-        <div *ngIf="mealServiceForm.controls['id'].value != null && mealServiceForm.controls['id'].value != mealServiceForm.controls['originMealId'].value">
-          <mat-grid-tile colspan="2">
-            <button mat-raised-button type="button" (click)="addToRecipeList(mealServiceForm.controls['id'].value)">
-              <mat-icon>add</mat-icon>Dodaj do listy przepisów
-            </button>
-          </mat-grid-tile>
-        </div>
-
-        <div *ngIf="mealServiceForm.controls['id'].value != null && mealServiceForm.controls['id'].value == mealServiceForm.controls['originMealId'].value">
-          <mat-grid-tile colspan="2">
-            <button mat-raised-button type="button" (click)="deleteFromRecipeList()">
-              <mat-icon>clear</mat-icon>Usuń z listy przepisów
-            </button>
-          </mat-grid-tile>
-        </div>
-
-      </mat-grid-list>
-
-      <mat-grid-list cols="1" rowHeight="130px">
-        <mat-grid-tile>
-          <div class="control-container">
-            <mat-form-field>
-              <div class="add-bottom-padding">
-                  <textarea rows="5" formControlName="recipe" matInput  style="resize: none;" placeholder="Przepis" autocomplete="off">
-                  </textarea>
+          <div *ngIf="withPortions">
+            <mat-grid-tile colspan="2">
+              <div class="control-container add-slider-padding">
+                <mat-slider min="1" max="20" thumbLabel formControlName="portions"
+                  (change)="portionCountChanged($event)">
+                </mat-slider>
               </div>
-            </mat-form-field>
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list>
+            </mat-grid-tile>
 
-      <div formArrayName="productList" *ngFor="let product of mealServiceForm.get('productList')['controls']; let i = index">
-        <div [formGroupName]="i">
-          <mat-grid-list cols="12" rowHeight="60px">
+            <mat-grid-tile>
+              <div class="control-container add-slider-padding">
+                <mat-label>Ilość porcji: {{mealServiceForm.controls['portions'].value}}</mat-label>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile colspan="2">
+            </mat-grid-tile>
+          </div>
+
+          <div *ngIf="!withPortions">
             <mat-grid-tile>
               <div class="control-container">
                 <mat-form-field>
@@ -141,126 +96,226 @@
               </div>
             </mat-grid-tile>
 
-            <mat-grid-tile>
-              <div class="control-container">
-                <mat-form-field>
-                  <div class="add-bottom-padding">
-                    <input type="number" matInput placeholder="Ilość" formControlName="amount" autocomplete="off">
-                  </div>
-                </mat-form-field>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile colspan="2">
-              <div class="control-container">
-                <mat-form-field>
-                  <div class="add-bottom-padding">
-                    <mat-select matInput placeholder="Typ" formControlName="amountType">
-                      <ng-container *ngFor="let amountType of amountTypes">
-                        <mat-option value="{{amountType.id}}">{{amountType.value}}</mat-option>
-                      </ng-container>
-                    </mat-select>
-                  </div>
-                </mat-form-field>
-              </div>
-            </mat-grid-tile>
-
             <mat-grid-tile colspan="4">
-              <div class="control-container">
-                <div class="add-bottom-padding">
-                  <input matInput (click)="selectProductForDish(i)" formControlName="productName" placeholder="Produkt" readonly>
-                </div>
-              </div>
             </mat-grid-tile>
+          </div>
 
-            <mat-grid-tile colspan="3">
-              <div class="control-container">
+          <div
+            *ngIf="mealServiceForm.controls['id'].value != null && mealServiceForm.controls['id'].value != mealServiceForm.controls['originMealId'].value">
+            <mat-grid-tile colspan="2">
+              <button mat-raised-button type="button" (click)="addToRecipeList(mealServiceForm.controls['id'].value)">
+                <mat-icon>add</mat-icon>Dodaj do listy przepisów
+              </button>
+            </mat-grid-tile>
+          </div>
+
+          <div
+            *ngIf="mealServiceForm.controls['id'].value != null && mealServiceForm.controls['id'].value == mealServiceForm.controls['originMealId'].value">
+            <mat-grid-tile colspan="2">
+              <button mat-raised-button type="button" (click)="deleteFromRecipeList()">
+                <mat-icon>clear</mat-icon>Usuń z listy przepisów
+              </button>
+            </mat-grid-tile>
+          </div>
+
+        </mat-grid-list>
+
+        <mat-grid-list cols="1" rowHeight="130px">
+          <mat-grid-tile>
+            <div class="control-container">
+              <mat-form-field>
                 <div class="add-bottom-padding">
-                  <div *ngIf="mealServiceForm.get('productList').value.length > 0">
-                    {{getProductSummary(i)}}
+                  <textarea rows="5" formControlName="recipe" matInput style="resize: none;" placeholder="Przepis"
+                    autocomplete="off">
+                  </textarea>
+                </div>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+
+        <div formArrayName="productList"
+          *ngFor="let product of mealServiceForm.get('productList')['controls']; let i = index">
+          <div [formGroupName]="i">
+            <mat-grid-list cols="12" rowHeight="60px">
+              <mat-grid-tile>
+                <div class="control-container">
+                  <mat-form-field>
+                    <div class="add-bottom-padding">
+                      <input matInput placeholder="Gram" formControlName="grams" autocomplete="off"
+                        (keyup)="validateProperty($event.target.value, i, 'grams')">
+                    </div>
+                  </mat-form-field>
+                </div>
+              </mat-grid-tile>
+
+              <mat-grid-tile>
+                <div class="control-container">
+                  <mat-form-field>
+                    <div class="add-bottom-padding">
+                      <input matInput placeholder="Ilość" formControlName="amount" autocomplete="off"
+                        (keyup)="validateProperty($event.target.value, i, 'amount')">
+                    </div>
+                  </mat-form-field>
+                </div>
+              </mat-grid-tile>
+
+              <mat-grid-tile colspan="2">
+                <div class="control-container">
+                  <mat-form-field>
+                    <div class="add-bottom-padding">
+                      <mat-select matInput placeholder="Typ" formControlName="amountType"
+                        (selectionChange)="amountTypeChanged(i)">
+                        <ng-container
+                          *ngFor="let type of mealServiceForm.get('productList')['controls'][i].value.amountTypes">
+                          <mat-option value="{{type.amountType}}">{{displayAmountType(type.amountType)}}</mat-option>
+                        </ng-container>
+                      </mat-select>
+                    </div>
+                  </mat-form-field>
+                </div>
+              </mat-grid-tile>
+
+              <mat-grid-tile colspan="4">
+                <div class="control-container">
+                  <div class="add-bottom-padding">
+                    <input matInput (click)="selectProductForDish(i)" formControlName="productName"
+                      placeholder="Produkt" readonly>
                   </div>
                 </div>
-              </div>
-            </mat-grid-tile>
+              </mat-grid-tile>
 
-            <mat-grid-tile>
-              <div class="control-container">
-                <div class="add-bottom-padding" *ngIf="mealServiceForm.get('productList').length>1">
-                  <button mat-icon-button type="button" (click)="onProductDeleteButtonClick(i)"><mat-icon>clear</mat-icon></button>
+              <mat-grid-tile colspan="3">
+                <div class="control-container">
+                  <div class="add-bottom-padding">
+                    <div *ngIf="mealServiceForm.get('productList').value.length > 0">
+                      {{getProductSummary(i)}}
+                    </div>
+                  </div>
+                </div>
+              </mat-grid-tile>
+
+              <mat-grid-tile>
+                <div class="control-container">
+                  <div class="add-bottom-padding" *ngIf="mealServiceForm.get('productList').length>1">
+                    <button mat-icon-button type="button" (click)="onProductDeleteButtonClick(i)">
+                      <mat-icon>clear</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </mat-grid-tile>
+
+            </mat-grid-list>
+          </div>
+        </div>
+
+        <mat-grid-list cols="12" rowHeight="80px">
+          <mat-grid-tile colspan="7"></mat-grid-tile>
+          <mat-grid-tile>
+            <div class="control-container">
+              <div class="add-bottom-padding">
+                <div *ngIf="mealServiceForm.get('productList').value.length > 0">
+                  <b>Suma:</b>
                 </div>
               </div>
-            </mat-grid-tile>
-
-          </mat-grid-list>
-        </div>
-      </div>
-
-      <mat-grid-list cols="12" rowHeight="80px">
-        <mat-grid-tile colspan="7"></mat-grid-tile>
-        <mat-grid-tile>
-          <div class="control-container">
-            <div class="add-bottom-padding">
-              <div *ngIf="mealServiceForm.get('productList').value.length > 0">
-                <b>Suma:</b>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan="3">
+            <div class="control-container">
+              <div class="add-bottom-padding">
+                <div *ngIf="mealServiceForm.get('productList').value.length > 0">
+                  <b>{{getMealSummary()}}</b>
+                </div>
               </div>
             </div>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile colspan="3">
-          <div class="control-container">
-            <div class="add-bottom-padding">
-              <div *ngIf="mealServiceForm.get('productList').value.length > 0">
-                <b>{{getMealSummary()}}</b>
+          </mat-grid-tile>
+          <mat-grid-tile></mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="1" rowHeight="30px">
+          <mat-grid-tile>
+            <div class="control-container">
+              <div class="button-row">
+                <button mat-raised-button color="accent" type="button" (click)="addProductButtonClick()">Dodaj
+                  produkt</button>
               </div>
             </div>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile></mat-grid-tile>
-      </mat-grid-list>
+          </mat-grid-tile>
+        </mat-grid-list>
 
-      <mat-grid-list cols="1" rowHeight="30px">
-        <mat-grid-tile>
-          <div class="control-container">
-            <div class="button-row">
-              <button mat-raised-button color="accent" type="button" (click)="addProductButtonClick()">Dodaj produkt</button>
-            </div>
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list>
+      </mat-tab>
+      <mat-tab label="Produkt" [disabled]="blockProduct">
 
-    </mat-tab>
-    <mat-tab label="Produkt" [disabled]="blockProduct">
+        <div *ngIf="mealServiceForm.get('productList').value.length > 0">
 
           <mat-grid-list cols="12" rowHeight="70px">
 
-            <mat-grid-tile>
-              <div class="control-container">
-                <mat-form-field>
-                  <div class="add-bottom-padding">
-                    <input id="product_grams" type="number" matInput placeholder="Gram" (input)="gramsChanged($event.target.value)" autocomplete="off">
+            <div formArrayName="productList">
+              <div [formGroupName]="0">
+
+                <mat-grid-tile>
+                  <div class="control-container">
+                    <mat-form-field>
+                      <div class="add-bottom-padding">
+                        <input matInput placeholder="Gram" formControlName="grams" autocomplete="off"
+                          (input)="validateProperty($event.target.value, 0, 'grams')">
+                      </div>
+                    </mat-form-field>
                   </div>
-                </mat-form-field>
-              </div>
-            </mat-grid-tile>
+                </mat-grid-tile>
 
-            <mat-grid-tile colspan="5">
-              <div class="control-container">
-                <input matInput (click)="selectProduct()" [id]="'foodName'" formControlName="name" placeholder="Produkt" readonly>
-              </div>
-            </mat-grid-tile>
-
-            <mat-grid-tile colspan="3">
-              <div class="control-container">
-                <div class="add-bottom-padding">
-                  <div *ngIf="mealServiceForm.get('productList').value.length > 0">
-                    {{getProductSummary(0)}}
+                <mat-grid-tile>
+                  <div class="control-container">
+                    <mat-form-field>
+                      <div class="add-bottom-padding">
+                        <input matInput placeholder="Ilość" formControlName="amount" autocomplete="off"
+                          (input)="validateProperty($event.target.value, 0, 'amount')">
+                      </div>
+                    </mat-form-field>
                   </div>
-                </div>
-              </div>
-            </mat-grid-tile>
+                </mat-grid-tile>
 
-            <mat-grid-tile>
-            </mat-grid-tile>
+                <mat-grid-tile>
+                  <div class="control-container">
+                    <mat-form-field>
+                      <div class="add-bottom-padding">
+                        <mat-select matInput formControlName="amountType" placeholder="Typ"
+                          (selectionChange)="amountTypeChanged(0)">
+                          <div *ngIf="mealServiceForm.get('productList').value.length > 0">
+                            <ng-container
+                              *ngFor="let type of mealServiceForm.get('productList')['controls'][0].value.amountTypes">
+                              <mat-option value="{{type.amountType}}">{{displayAmountType(type.amountType)}}
+                              </mat-option>
+                            </ng-container>
+                          </div>
+                        </mat-select>
+                      </div>
+                    </mat-form-field>
+                  </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile colspan="2">
+                  <div class="control-container">
+                    <input matInput placeholder="Produkt" formControlName="productName" (click)="selectProduct()"
+                      readonly>
+                  </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile colspan="3">
+                  <div class="control-container">
+                    <div class="add-bottom-padding">
+                      <div *ngIf="mealServiceForm.get('productList').value.length > 0">
+                        {{getProductSummary(0)}}
+                      </div>
+                    </div>
+                  </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                </mat-grid-tile>
+
+              </div>
+            </div>
 
             <mat-grid-tile colspan="2">
               <div class="control-container">
@@ -276,15 +331,16 @@
               </div>
             </mat-grid-tile>
           </mat-grid-list>
+        </div>
 
-    </mat-tab>
-  </mat-tab-group>
+      </mat-tab>
+    </mat-tab-group>
 
     <mat-grid-list cols="1" rowHeight="50px">
       <mat-grid-tile>
         <div class="control-container">
           <div class="button-row button-save">
-            <button mat-raised-button color="primary" type="submit" [disabled]="mealServiceForm.invalid">Zapisz</button>
+            <button mat-raised-button color="primary" type="submit">Zapisz</button>
           </div>
         </div>
       </mat-grid-tile>
@@ -292,6 +348,3 @@
 
   </form>
 </mat-dialog-content>
-
-
-

@@ -25,6 +25,7 @@ export interface Product {
     vitaminD: number,
     vitaminC: number,
   },
+  amountTypes: any[],
   lactose: boolean,
   starch: boolean,
   gluten: boolean,

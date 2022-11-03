@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import { Injectable } from '@angular/core';
+import { FormControl, FormGroup, FormArray, Validators } from "@angular/forms";
 
-import {RestapiService} from "./restapi.service";
+import { RestapiService } from "./restapi.service";
 
-import {Product} from '../model/product';
+import { Product } from '../model/product';
 
 @Injectable({
   providedIn: 'root'
@@ -44,12 +44,16 @@ export class ProductService {
       vitaminD: new FormControl(null),
       vitaminC: new FormControl(null),
     }),
+    amountTypes: new FormArray([]),
     lactose: new FormControl(false),
     starch: new FormControl(false),
     gluten: new FormControl(false),
   });
 
   initializeFormGroup() {
+    this.clearForm();
+    (<FormArray>this.form.get('amountTypes')).push(this.addAmountTypeFormGroup());
+
     this.form.setValue({
       id: null,
       category: '',
@@ -78,10 +82,23 @@ export class ProductService {
         vitaminD: null,
         vitaminC: null,
       },
+      amountTypes: [
+        {
+          amountType: null,
+          grams: null,
+        }
+      ],
       lactose: false,
       starch: false,
       gluten: false,
     })
+  }
+
+  addAmountTypeFormGroup(): FormGroup {
+    return new FormGroup({
+      amountType: new FormControl(null, Validators.required),
+      grams: new FormControl(null, Validators.required),
+    });
   }
 
   getProducts() {
@@ -109,6 +126,17 @@ export class ProductService {
   }
 
   populateForm(product) {
+    this.clearForm();
+    if (product.amountTypes == null) product.amountTypes = [];
+    for (const amountType of product.amountTypes) {
+      (<FormArray>this.form.get('amountTypes')).push(this.addAmountTypeFormGroup());
+    }
+
     this.form.setValue(product);
+  }
+
+  clearForm() {
+    (<FormArray>this.form.get('amountTypes')).clear();
+    this.form.reset();
   }
 }

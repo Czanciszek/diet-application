@@ -3,23 +3,19 @@ package com.springboot.dietapplication.model.type;
 import com.springboot.dietapplication.model.psql.product.PsqlProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
+import java.util.List;
 
-@Entity
-public class ProductType implements Serializable {
+public class  ProductType implements Serializable {
 
     private static final long serialVersionUID = -6504989715893867042L;
 
-    @Id
     private Long id;
     private String name;
     private String category;
     private String subcategory;
-    @ManyToOne
     private FoodPropertiesType foodProperties;
+    private List<ProductAmountType> amountTypes;
     private boolean lactose;
     private boolean starch;
     private boolean gluten;
@@ -43,7 +39,6 @@ public class ProductType implements Serializable {
         this.gluten = psqlProduct.isGluten();
         this.category = psqlProduct.getCategory();
         this.subcategory = psqlProduct.getSubcategory();
-        this.foodProperties = new FoodPropertiesType(psqlProduct);
     }
 
     public Long getId() {
@@ -84,6 +79,14 @@ public class ProductType implements Serializable {
 
     public void setFoodProperties(FoodPropertiesType foodProperties) {
         this.foodProperties = foodProperties;
+    }
+
+    public List<ProductAmountType> getAmountTypes() {
+        return amountTypes;
+    }
+
+    public void setAmountTypes(List<ProductAmountType> amountTypes) {
+        this.amountTypes = amountTypes;
     }
 
     public boolean isLactose() {

@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {MealService} from "../../service/meal.service";
-import {DishService} from "../../service/dish.service";
-import {NotificationService} from "../../service/notification.service";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {ProductSelectComponent} from "../../products/product-select/product-select.component";
-import {FormArray} from "@angular/forms";
-import {MenuService} from "../../service/menu.service";
-import {DishSelectComponent} from "../../dishes/dish-select/dish-select.component";
-import {ProductService} from "../../service/product.service";
-import {Meal} from "../../model/meal";
-import {Product} from "../../model/product";
-import {FOOD_TYPES} from "../../model/helpers/foodTypes";
-import {AMOUNT_TYPES} from "../../model/helpers/amountTypes";
+import { MealService } from "../../service/meal.service";
+import { NotificationService } from "../../service/notification.service";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { ProductSelectComponent } from "../../products/product-select/product-select.component";
+import { FormArray } from "@angular/forms";
+import { DishSelectComponent } from "../../dishes/dish-select/dish-select.component";
+import { ProductService } from "../../service/product.service";
+import { FOOD_TYPES } from "../../model/helpers/foodTypes";
+import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
 
 @Component({
   selector: 'app-meal-add',
@@ -22,9 +18,7 @@ export class MealAddComponent implements OnInit {
 
   constructor(
     private mealService: MealService,
-    private menuService: MenuService,
     private productService: ProductService,
-    private dishService: DishService,
     private notificationService: NotificationService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<MealAddComponent>
@@ -43,81 +37,91 @@ export class MealAddComponent implements OnInit {
   tabIndex = 0;
   portionCurrentValue = 0;
 
+  dishForm: any;
+  singleProductForm: any;
+
   ngOnInit(): void {
-    let products = (<FormArray>this.mealService.form.get('productList'));
-    if (this.mealService.form.get('id').value != null) {
-      this.checkPortionOption();
-      this.tabIndex = this.mealService.form.get('isProduct').value;
-      if (this.tabIndex == 1) {
-        this.blockDish = true;
-        let productGrams = products.at(0).get('grams').value;
-        setTimeout( () => {
-          (<HTMLInputElement>document.getElementById("product_grams")).value = productGrams;
-        });
-      } else {
-        this.blockProduct = true;
-        this.portionCurrentValue = this.mealService.form.get("portions").value;
-      }
+    if (this.mealServiceForm.get('id').value == null) {
+      let formProducts = <FormArray>this.mealServiceForm.get('productList');
+      let productForm = this.mealService.addProductFormGroup();
+      formProducts.push(productForm);
+      return;
     }
 
-  }
-
-  onClear() {
-    (<FormArray>this.mealService.form.get('productList')).clear();
-    this.mealService.form.reset();
+    this.checkPortionOption();
+    this.tabIndex = this.mealService.form.get('isProduct').value;
+    this.blockDish = true;
+    if (this.tabIndex == 0) {
+      this.portionCurrentValue = this.mealService.form.get("portions").value;
+    }
   }
 
   onClose() {
-    this.onClear();
+    this.mealService.clearForm();
     this.dialogRef.close();
   }
 
   onSubmit() {
-    if (this.mealService.form.valid) {
-      if (!this.mealService.form.get('id').value) {
-        this.mealService.insertMeal(this.mealService.form.value).subscribe( result => {
-          this.notificationService.success(":: Meal created successfully! ::");
-          this.onClose();
-        });
-      } else {
-        this.mealService.updateMeal(this.mealService.form.value).subscribe( result => {
-          this.notificationService.success(":: Meal updated successfully! ::");
-          this.onClose();
-        });
+    if (this.mealServiceForm.invalid) {
+      let invalidName = this.mealServiceForm.get('name').invalid;
+      let dishTab = this.tabIndex == 0;
+      let invalidProducts = this.mealServiceForm.value.productList.length == 1 || this.mealServiceForm.get('productList').get('0').invalid;
+
+      if (dishTab || invalidName || invalidProducts) {
+        this.notificationService.warn(":: Uzupełnij wymagane pola! ::");
+        return;
       }
+    }
+
+    if (!this.mealService.form.get('id').value) {
+      this.mealService.insertMeal(this.mealService.form.value).subscribe(result => {
+        this.notificationService.success("::Dodano posiłek pomyślnie! ::");
+        this.onClose();
+      });
+    } else {
+      this.mealService.updateMeal(this.mealService.form.value).subscribe(result => {
+        this.notificationService.success("::Posiłek zaktualizowany pomyślnie! ::");
+        this.onClose();
+      });
     }
   }
 
   checkPortionOption() {
-   this.withPortions = this.mealService.form.get('grams').value == 0;
+    this.withPortions = this.mealService.form.get('grams').value == 0;
   }
 
   addProductButtonClick() {
-    (<FormArray>this.mealService.form.get('productList')).push(this.mealService.addProductFormGroup());
+    let formProducts = <FormArray>this.mealServiceForm.get('productList');
+    this.selectProductForDish(formProducts.length);
+    formProducts.push(this.mealService.addProductFormGroup());
   }
 
   onProductDeleteButtonClick(productIndex) {
     (<FormArray>this.mealService.form.get('productList')).removeAt(productIndex);
   }
 
-  selectProductForDish(index) {
+  selectProductForDish(productIndex) {
 
     let dialogRef = this.dialog.open(ProductSelectComponent, {
       autoFocus: true,
       width: "90%"
     });
 
-    dialogRef.afterClosed().subscribe( result => {
-      if (result != null) {
+    dialogRef.afterClosed().subscribe(selectedProduct => {
+      if (selectedProduct == null) { return; }
 
-        // Update value in Form Group
-        let products = (<FormArray>this.mealService.form.get('productList'));
-        products.at(index).get('productId').patchValue(result.id);
-        products.at(index).get('productName').patchValue(result.name);
-        this.mealService.form.patchValue({
-          products: [products]
-        });
-      }
+      // Update value in Form Group
+      this.mealService.setupProductAmountTypes(selectedProduct.amountTypes, productIndex);
+
+      // Update value in Form Group
+      let products = (<FormArray>this.mealServiceForm.get('productList'));
+      products.at(productIndex).get('productId').patchValue(selectedProduct.id);
+      products.at(productIndex).get('productName').patchValue(selectedProduct.name);
+      products.at(productIndex).get('amountTypes').patchValue(selectedProduct.amountTypes);
+
+      let initialAmountType = (selectedProduct.amountTypes?.length > 0) ? selectedProduct.amountTypes[0].amountType : null;
+      products.at(productIndex).get('amountType').patchValue(initialAmountType);
+
     });
   }
 
@@ -128,29 +132,38 @@ export class MealAddComponent implements OnInit {
       width: "90%"
     });
 
-    dialogRef.afterClosed().subscribe( result => {
-      if (result != null) {
+    dialogRef.afterClosed().subscribe(selectedProduct => {
+      if (selectedProduct == null) { return; }
 
-        (<FormArray>this.mealService.form.get('productList')).clear();
+      // Update value in Form Group
+      this.mealService.form.get('name').patchValue(selectedProduct.name);
+      this.mealService.form.get('isProduct').patchValue(1);
 
-        // Update value in Form Group
-        this.mealService.form.get('name').patchValue(result.name);
-        this.mealService.form.get('isProduct').patchValue(1);
+      let productForm = this.mealService.form.get('productList').get('0');
+      productForm.get('productId').patchValue(selectedProduct.id);
+      productForm.get('productName').patchValue(selectedProduct.name);
 
-        let productForm = this.mealService.addProductFormGroup();
-        productForm.get('productId').patchValue(result.id);
-        productForm.get('productName').patchValue(result.name);
-        (<FormArray>this.mealService.form.get('productList')).push(productForm);
-
-        let grams = (<HTMLInputElement>document.getElementById("product_grams")).value;
-        if (grams == null || grams == "") {
-          this.gramsChanged(100);
-          (<HTMLInputElement>document.getElementById("product_grams")).value = "100";
-        } else {
-          this.gramsChanged(grams);
-        }
-
+      for (let amountType of selectedProduct.amountTypes) {
+        let amountTypeForm = this.mealService.addAmountTypeFormGroup();
+        amountTypeForm.get('grams').patchValue(amountType.grams);
+        amountTypeForm.get('amountType').patchValue(amountType.amountType);
+        (<FormArray>productForm.get('amountTypes')).push(amountTypeForm);
       }
+
+      let initialAmountType = (selectedProduct.amountTypes?.length > 0) ? selectedProduct.amountTypes[0].amountType : null;
+      productForm.get('amountType').patchValue(initialAmountType);
+
+      let grams = productForm.get('grams').value;
+      if (grams == null || grams == "") {
+        productForm.get('grams').patchValue("100");
+      }
+
+      let amount = productForm.get('amount').value;
+      if (amount == null || amount == "") {
+        productForm.get('amount').patchValue("1");
+      }
+
+      this.validateProperty(productForm.get('grams').value, 0, 'grams');
     });
   }
 
@@ -161,18 +174,18 @@ export class MealAddComponent implements OnInit {
       width: "90%"
     });
 
-    dialogRef.afterClosed().subscribe( result => {
-      if (result == null) { return; }
+    dialogRef.afterClosed().subscribe(selectedDish => {
+      if (selectedDish == null) { return; }
 
       (<FormArray>this.mealService.form.get('productList')).clear();
 
       // Update value in Form Group
-      this.mealService.form.get('name').patchValue(result.name);
-      this.mealService.form.get('recipe').patchValue(result.recipe);
-      this.mealService.form.get('dishPortions').patchValue(result.portions);
+      this.mealService.form.get('name').patchValue(selectedDish.name);
+      this.mealService.form.get('recipe').patchValue(selectedDish.recipe);
+      this.mealService.form.get('dishPortions').patchValue(selectedDish.portions);
       this.mealService.form.get('isProduct').patchValue(0);
 
-      for (let product of result.products) {
+      for (let product of selectedDish.products) {
         let productForm = this.mealService.addProductFormGroup();
         productForm.get('productId').patchValue(product.productId);
 
@@ -186,6 +199,14 @@ export class MealAddComponent implements OnInit {
         productForm.get('productName').patchValue(product.productName);
         productForm.get('amount').patchValue(product.amount);
         productForm.get('amountType').patchValue(product.amountType);
+
+        for (let amountType of product.amountTypes) {
+          let amountTypeForm = this.mealService.addAmountTypeFormGroup();
+          amountTypeForm.get('grams').patchValue(amountType.grams);
+          amountTypeForm.get('amountType').patchValue(amountType.amountType);
+          (<FormArray>productForm.get('amountTypes')).push(amountTypeForm);
+        }
+
         (<FormArray>this.mealService.form.get('productList')).push(productForm);
       }
     });
@@ -207,12 +228,11 @@ export class MealAddComponent implements OnInit {
     let carbohydrates = 0;
 
     for (let product of products) {
-      if (product == null || this.productService.productList == null) {
+      if (product == null || this.productService.productList == null || product.grams == ".") {
         continue;
       }
 
       let isProduct = (this.mealService.form.get('isProduct').value == 1);
-      let grams = product.grams;
 
       let originProduct = this.productService.productList.find(p => {
         return p.id == product.productId;
@@ -220,21 +240,18 @@ export class MealAddComponent implements OnInit {
 
       if (originProduct == null) continue;
       let foodProperties = originProduct.foodProperties;
+      let grams = product.grams;
 
-       energy += (foodProperties.energyValue * grams) / 100;
-       proteins += (foodProperties.proteins * grams) / 100;
-       fats += (foodProperties.fats * grams) / 100;
-       carbohydrates += (foodProperties.carbohydrates * grams) / 100;
+      energy += (foodProperties.energyValue * grams) / 100;
+      proteins += (foodProperties.proteins * grams) / 100;
+      fats += (foodProperties.fats * grams) / 100;
+      carbohydrates += (foodProperties.carbohydrates * grams) / 100;
     }
 
     return "Kcal: " + energy.toFixed(2) +
       "    B: " + proteins.toFixed(2) +
       "    T: " + fats.toFixed(2) +
       "    W: " + carbohydrates.toFixed(2);
-  }
-
-  gramsChanged(grams) {
-    this.mealService.form.get('productList').get('0').get('grams').patchValue(grams);
   }
 
   portionOptionChanged(event) {
@@ -266,6 +283,71 @@ export class MealAddComponent implements OnInit {
 
   deleteFromRecipeList() {
     this.mealService.form.get('originMealId').patchValue("");
+  }
+
+  displayAmountType(amountType: string) {
+    if (amountType == null) return;
+    let selectedAmountType = this.amountTypes.find(type => type.id == amountType);
+    return selectedAmountType.value;
+  }
+
+  validateProperty(newValue: string, productIndex: number, property: string) {
+    console.log("VALIDATING:", newValue);
+    let number = this.validateNumber(newValue);
+
+    let product = this.mealServiceForm.get('productList').get([productIndex]);
+    product.get(property).patchValue(number);
+
+    this.productPropertiesChanged(productIndex, property);
+  }
+
+  productPropertiesChanged(productIndex: number, property: string) {
+    if (productIndex == null) { return; }
+
+    let product = this.mealServiceForm.get('productList').get([productIndex]);
+    let selectedAmountType = product.value.amountTypes?.find(type => type.amountType == product.value.amountType);
+
+    if (product.value.grams == null
+      || product.value.amount == null
+      || product.value.amountType == null
+      || selectedAmountType == null) { return; }
+
+    let productGrams = product.value.grams;
+    let productAmount = product.value.amount;
+    if (property == 'grams') {
+      if (productGrams == ".") {
+        productAmount = 0;
+      } else {
+        productAmount = ((productGrams * 1.0) / selectedAmountType.grams).toFixed(2);
+      }
+
+    } else if (property == 'amount') {
+      if (productAmount == ".") {
+        productGrams = 0;
+      } else {
+        productGrams = ((productAmount * 1.0) * selectedAmountType.grams).toFixed(2);
+      }
+    }
+
+    product.get('grams').patchValue(productGrams);
+    product.get('amount').patchValue(productAmount);
+  }
+
+  validateNumber(entry: string) {
+    let value = entry.replace(/,/g, '.').split("").reverse().join("").replace(/(\.)(?=.*\1)/g, '').split("").reverse().join("").replace(/[^0-9\.]+/g, '');
+
+    if (value != "" && value != "." && value.includes(".") && value.substring(value.indexOf('.') + 1).length > 2) {
+      value = Number(value).toFixed(2);
+    }
+
+    return value;
+  }
+
+  amountTypeChanged(productIndex) {
+    let property = 'grams';
+    let grams = this.mealService.form.get('productList').get([productIndex]).get(property).value;
+    if (grams == null || grams == "") return;
+    this.validateProperty(grams + '', productIndex, property);
   }
 
 }

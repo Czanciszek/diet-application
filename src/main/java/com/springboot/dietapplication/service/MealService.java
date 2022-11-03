@@ -1,17 +1,16 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.menu.*;
+import com.springboot.dietapplication.model.psql.product.PsqlProductsAmountTypes;
 import com.springboot.dietapplication.model.type.*;
-import com.springboot.dietapplication.repository.AmountTypeRepository;
-import com.springboot.dietapplication.repository.FoodTypeRepository;
-import com.springboot.dietapplication.repository.MealRepository;
-import com.springboot.dietapplication.repository.ProductMealRepository;
+import com.springboot.dietapplication.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class MealService {
@@ -24,6 +23,8 @@ public class MealService {
     ProductMealRepository productMealRepository;
     @Autowired
     AmountTypeRepository amountTypeRepository;
+    @Autowired
+    ProductsAmountTypesRepository productsAmountTypesRepository;
 
     @Autowired
     WeekMealService weekMealService;
@@ -94,6 +95,8 @@ public class MealService {
             }
 
             this.productMealRepository.save(psqlProductMeal);
+
+            if (meal.getIsProduct() == 1) { break; }
         }
 
         if (!isMealCopied) {
@@ -164,6 +167,17 @@ public class MealService {
                     productDishType.setAmountType(amountType);
                 }
             }
+
+            Set<PsqlProductsAmountTypes> productAmountTypes = productsAmountTypesRepository.findPsqlProductsAmountTypesByProductId(productMeal.getProductId());
+            List<ProductAmountType> productAmountTypeList = new ArrayList<>();
+            for (PsqlProductsAmountTypes productsAmountType : productAmountTypes) {
+                Optional<AmountType> amountType = AmountType.valueOf(productsAmountType.getAmountTypeId());
+                if (!amountType.isPresent()) continue;
+                productAmountTypeList.add(new ProductAmountType(amountType.get(), productsAmountType.getGrams()));
+            }
+
+            // TODO: Sort Amount Types by its priority
+            productDishType.setAmountTypes(productAmountTypeList);
 
             productDishTypeList.add(productDishType);
         }

@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {FormArray, FormControl, FormGroup, Validators, ValidatorFn} from "@angular/forms";
-import {RestapiService} from "./restapi.service";
+import { Injectable } from '@angular/core';
+import { FormArray, FormControl, FormGroup, Validators, ValidatorFn } from "@angular/forms";
+import { RestapiService } from "./restapi.service";
 
-import {Dish} from '../model/dish';
+import { Dish } from '../model/dish';
 
 @Injectable({
   providedIn: 'root'
@@ -25,28 +25,30 @@ export class DishService {
   });
 
   addProductFormGroup(): FormGroup {
-    return new FormGroup( {
+    return new FormGroup({
       grams: new FormControl(null, [Validators.required]),
       amount: new FormControl(null),
       amountType: new FormControl(null),
+      amountTypes: new FormArray([]),
       productId: new FormControl(null, [Validators.required]),
       productName: new FormControl(null)
     });
   }
 
+  addAmountTypeFormGroup(): FormGroup {
+    return new FormGroup({
+      amountType: new FormControl(null),
+      grams: new FormControl(null),
+    })
+  }
+
   initializeFormGroup() {
+    this.clearForm();
+
     this.form.setValue({
       id: null,
       name: '',
-      products: [
-        {
-          grams: null,
-          amount: null,
-          amountType: null,
-          productId: null,
-          productName: null,
-        }
-      ],
+      products: [],
       foodType: '',
       portions: 1,
       recipe: '',
@@ -54,38 +56,47 @@ export class DishService {
   }
 
   populateForm(dish) {
+    this.clearForm();
+    if (dish.products == null) dish.products = [];
+    let productIndex = 0;
+    for (const product of dish.products) {
+      let products = <FormArray>this.form.get('products');
+      products.push(this.addProductFormGroup());
+
+      this.setupProductAmountTypes(product.amountTypes, productIndex);
+      productIndex += 1;
+    }
+
     this.form.setValue(dish);
   }
 
-  populateFormFromMeal(meal) {
-    this.form.get('name').patchValue(meal.name);
-    this.form.get('foodType').patchValue(meal.foodType);
-    this.form.get('portions').patchValue(meal.portions);
-    this.form.get('recipe').patchValue(meal.recipe);
-
-    (<FormArray>this.form.get('products')).clear();
-    for (let product of meal.productList) {
-      let productForm = this.addProductFormGroup();
-      productForm.get('productId').patchValue(product.productId);
-      productForm.get('grams').patchValue(product.grams);
-      productForm.get('amount').patchValue(product.amount);
-      productForm.get('amountType').patchValue(product.amountType);
-      (<FormArray>this.form.get('products')).push(productForm);
+  setupProductAmountTypes(amountTypes, productIndex: number) {
+    let formProduct = this.form.get('products').get([productIndex]);
+    (<FormArray>formProduct.get('amountTypes')).clear();
+    if (amountTypes == null) return;
+    for (const amountType of amountTypes) {
+      let formAmountTypes = <FormArray>formProduct.get('amountTypes');
+      formAmountTypes.push(this.addAmountTypeFormGroup());
     }
+  }
+
+  clearForm() {
+    (<FormArray>this.form.get('products')).clear();
+    this.form.reset();
   }
 
   dishAlreadyExist(): ValidatorFn {
     return (controlArray: FormArray) => {
-    if (this.dishList == null) return null;
+      if (this.dishList == null) return null;
 
-    let dishId = this.form.get('id').value;
-    if (dishId) return null;
+      let dishId = this.form.get('id').value;
+      if (dishId) return null;
 
-    let dishName = this.form.get('name').value;
-    if (!dishName) return null;
+      let dishName = this.form.get('name').value;
+      if (!dishName) return null;
 
-    let dishNames = this.dishList.map( dish => { return dish.name.trim().toLowerCase(); });
-    return dishNames.includes(dishName.trim().toLowerCase()) ? { dishAlreadyExist: { value: true } } : null;
+      let dishNames = this.dishList.map(dish => { return dish.name.trim().toLowerCase(); });
+      return dishNames.includes(dishName.trim().toLowerCase()) ? { dishAlreadyExist: { value: true } } : null;
     };
   }
 

@@ -3,191 +3,363 @@
     <span class="fill-remaining-space"></span>
     <span>{{productServiceForm.controls['id'].value?"Edytuj produkt":"Nowy Produkt"}}</span>
     <span class="fill-remaining-space"></span>
-    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1">
+      <mat-icon>clear</mat-icon>
+    </button>
   </mat-toolbar>
 </div>
 
-<form [formGroup]="productServiceForm" class="normal-form" (submit)="onSubmit()">
-  <mat-grid-list cols="7" rowHeight="70px">
-    <mat-grid-tile colspan="2">
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <mat-form-field class="long-form-field">
-            <mat-select formControlName="category" placeholder="Kategoria" (valueChange)="onCategoryChange($event)">
-              <ng-container *ngFor="let category of categories">
-                <mat-option value="{{category}}">{{category}}</mat-option>
-              </ng-container>
-            </mat-select>
-            <mat-error *ngIf="productServiceForm.controls['category'].errors?.required">Pole wymagane</mat-error>
-          </mat-form-field>
+<mat-dialog-content>
+
+  <form [formGroup]="productServiceForm" class="normal-form" (submit)="onSubmit()">
+    <mat-grid-list cols="7" rowHeight="70px">
+      <mat-grid-tile colspan="2">
+        <div class="control-container">
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <mat-select formControlName="category" placeholder="Kategoria" (valueChange)="onCategoryChange($event)">
+                <ng-container *ngFor="let category of categories">
+                  <mat-option value="{{category}}">{{category}}</mat-option>
+                </ng-container>
+              </mat-select>
+              <mat-error *ngIf="productServiceForm.controls['category'].errors?.required">Pole wymagane</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="2">
+        <div class="control-container">
+          <div class="add-bottom-padding">
+            <mat-form-field>
+              <mat-select formControlName="subcategory" placeholder="Podkategoria"
+                (valueChange)="onSubcategoryChange($event)">
+                <ng-container *ngFor="let subcategory of subcategories">
+                  <mat-option value="{{subcategory}}">{{subcategory}}</mat-option>
+                </ng-container>
+              </mat-select>
+              <mat-error *ngIf="productServiceForm.controls['subcategory'].errors?.required">Pole wymagane</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="3">
+        <div class="control-container">
+          <div class="add-bottom-padding">
+            <input type="hidden" formControlName="id">
+            <mat-form-field>
+              <input formControlName="name" matInput placeholder="Nazwa produktu" autocomplete="off">
+              <mat-error *ngIf="productServiceForm.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
+              <mat-error *ngIf="productServiceForm.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="60px">
+      <form formGroupName="foodProperties">
+
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input type="number" formControlName="energyValue" matInput placeholder="Wartość energetyczna (kcal)"
+                  autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input type="number" formControlName="proteins" matInput placeholder="Białko (g)" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input type="number" formControlName="carbohydrates" matInput placeholder="Węglowodany (g)"
+                  autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input type="number" formControlName="fats" matInput placeholder="Tłuszcz (g)" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+      </form>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="60px">
+      <form formGroupName="foodProperties">
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile></mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input type="number" formControlName="sucrose" matInput placeholder="W tym cukry (g)"
+                  autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input type="number" formControlName="saturatedFattyAcids" matInput placeholder="Kw. tł. nasycone (g)"
+                  autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+      </form>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="60px">
+      <form formGroupName="foodProperties">
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile></mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input type="number" formControlName="dietaryFibres" matInput placeholder="Błonnik pokarmowy (g)"
+                  autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input type="number" formControlName="monoUnsaturatedFattyAcids" matInput
+                  placeholder="Kw. tł. jednonienasycone (g)" autocomplete="off">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+      </form>
+    </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="60px">
+
+      <mat-grid-tile colspan="2">
+        <div class="control-container">
+          <div class="add-bottom-padding">
+            <mat-checkbox formControlName="lactose">Laktoza</mat-checkbox>
+            <mat-checkbox formControlName="starch">Skrobia</mat-checkbox>
+            <mat-checkbox formControlName="gluten">Gluten</mat-checkbox>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile></mat-grid-tile>
+
+      <form formGroupName="foodProperties">
+
+        <mat-grid-tile>
+          <div class="control-container">
+
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <input type="number" formControlName="polyUnsaturatedFattyAcids" matInput
+                  placeholder="Kw. tł. wielonienasycone (g)" autocomplete="off">
+              </mat-form-field>
+            </div>
+
+          </div>
+        </mat-grid-tile>
+
+      </form>
+    </mat-grid-list>
+
+    <mat-expansion-panel (opened)="showMoreProperties = true" (closed)="showMoreProperties = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{showMoreProperties ? 'Zwiń' : 'Rozwiń więcej'}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-grid-list cols="3" rowHeight="280px">
+        <form formGroupName="foodProperties">
+
+          <mat-grid-tile>
+            <div class="control-container">
+
+              <div class="add-bottom-padding">
+                <mat-form-field>
+                  <input type="number" formControlName="cholesterol" matInput placeholder="Cholesterol (g)"
+                    autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div class="add-bottom-padding">
+                <mat-form-field>
+                  <input type="number" formControlName="sodium" matInput placeholder="Sód (mg)" autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div class="add-bottom-padding">
+                <mat-form-field>
+                  <input type="number" formControlName="potassium" matInput placeholder="Potas (mg)" autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div class="add-bottom-padding">
+                <mat-form-field>
+                  <input type="number" formControlName="calcium" matInput placeholder="Wapń (mg)" autocomplete="off">
+                </mat-form-field>
+              </div>
+
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="control-container">
+
+              <div class="add-bottom-padding">
+                <mat-form-field>
+                  <input type="number" formControlName="phosphorus" matInput placeholder="Fosfor (mg)"
+                    autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div class="add-bottom-padding">
+                <mat-form-field>
+                  <input type="number" formControlName="magnesium" matInput placeholder="Magnes (mg)"
+                    autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div class="add-bottom-padding">
+                <mat-form-field>
+                  <input type="number" formControlName="selenium" matInput placeholder="Selen (mg)" autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div class="add-bottom-padding">
+                <mat-form-field>
+                  <input type="number" formControlName="iron" matInput placeholder="Żelazo (mg)" autocomplete="off">
+                </mat-form-field>
+              </div>
+
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="control-container">
+
+              <div class="add-bottom-padding">
+                <mat-form-field>
+                  <input type="number" formControlName="betaCarotene" matInput placeholder="Beta-karoten (µg)"
+                    autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div class="add-bottom-padding">
+                <mat-form-field>
+                  <input type="number" formControlName="vitaminD" matInput placeholder="Witamina D (µg)"
+                    autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div class="add-bottom-padding">
+                <mat-form-field>
+                  <input type="number" formControlName="vitaminC" matInput placeholder="Witamina C (mg)"
+                    autocomplete="off">
+                </mat-form-field>
+              </div>
+
+            </div>
+          </mat-grid-tile>
+        </form>
+      </mat-grid-list>
+    </mat-expansion-panel>
+
+    <mat-label>Typy ilościowe</mat-label>
+
+    <mat-grid-list cols="10" rowHeight="70px">
+
+      <div formArrayName="amountTypes"
+        *ngFor="let amountType of productServiceForm.get('amountTypes')['controls']; let i = index">
+        <div [formGroupName]="i">
+          <mat-grid-tile>
+            <div class="control-container">
+              <mat-form-field>
+                <div class="add-bottom-padding">
+                  <mat-select matInput placeholder="Typ" formControlName="amountType">
+                    <ng-container *ngFor="let amountType of amountTypes">
+                      <mat-option value="{{amountType.id}}">{{amountType.value}}</mat-option>
+                    </ng-container>
+                  </mat-select>
+                </div>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="control-container">
+              <mat-form-field>
+                <div class="add-bottom-padding">
+                  <input type="number" matInput placeholder="Gram" formControlName="grams" autocomplete="off">
+                </div>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="control-container">
+              <div class="add-bottom-padding" *ngIf="productServiceForm.get('amountTypes').length>1">
+                <button mat-icon-button type="button" (click)="onAmountTypeDeleteButtonClick(i)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-grid-tile>
         </div>
       </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="2">
-      <div class="control-container">
+
+      <mat-grid-tile>
         <div class="add-bottom-padding">
-          <mat-form-field class="long-form-field">
-            <mat-select formControlName="subcategory" placeholder="Podkategoria" (valueChange)="onSubcategoryChange($event)">
-              <ng-container *ngFor="let subcategory of subcategories">
-                <mat-option value="{{subcategory}}">{{subcategory}}</mat-option>
-              </ng-container>
-            </mat-select>
-            <mat-error *ngIf="productServiceForm.controls['subcategory'].errors?.required">Pole wymagane</mat-error>
-          </mat-form-field>
+          <div class="control-container">
+            <button mat-raised-button color="accent" type="button" (click)="addAmountTypeButtonClick()"
+              [hidden]="productServiceForm.value.amountTypes.length >= 3">+</button>
+          </div>
         </div>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="3">
-      <div class="control-container">
-        <div class="add-bottom-padding">
-          <input type="hidden" formControlName="id">
-          <mat-form-field class="long-form-field">
-            <input formControlName="name" matInput placeholder="Nazwa produktu" autocomplete="off">
-            <mat-error *ngIf="productServiceForm.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
-            <mat-error *ngIf="productServiceForm.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
+      </mat-grid-tile>
+    </mat-grid-list>
 
-  <mat-grid-list cols="4" rowHeight="370px">
-    <mat-grid-tile>
-      <div class="control-container">
-        <form formGroupName="foodProperties">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="energyValue" matInput placeholder="Wartość energetyczna (kcal)" autocomplete="off">
-            </mat-form-field>
-          </div>
-
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="proteins" matInput placeholder="Białko (g)" autocomplete="off">
-            </mat-form-field>
-          </div>
-
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="carbohydrates" matInput placeholder="Węglowodany (g)" autocomplete="off">
-            </mat-form-field>
-          </div>
-
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="sucrose" matInput placeholder="Sacharoza (g)" autocomplete="off">
-            </mat-form-field>
-          </div>
-
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="dietaryFibres" matInput placeholder="Błonnik pokarmowy (g)" autocomplete="off">
-            </mat-form-field>
-          </div>
-        </form>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <form formGroupName="foodProperties">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="fats" matInput placeholder="Tłuszcz (g)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="saturatedFattyAcids" matInput placeholder="Kw. tł. nasycone (g)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="monoUnsaturatedFattyAcids" matInput placeholder="Kw. tł. jednonienasycone (g)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="polyUnsaturatedFattyAcids" matInput placeholder="Kw. tł. wielonienasycone (g)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="cholesterol" matInput placeholder="Cholesterol (g)" autocomplete="off">
-            </mat-form-field>
-          </div>
-        </form>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <form formGroupName="foodProperties">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="sodium" matInput placeholder="Sód (mg)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="potassium" matInput placeholder="Potas (mg)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="calcium" matInput placeholder="Wapń (mg)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="phosphorus" matInput placeholder="Fosfor (mg)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="magnesium" matInput placeholder="Magnes (mg)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="selenium" matInput placeholder="Selen (mg)" autocomplete="off">
-            </mat-form-field>
-          </div>
-        </form>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="control-container">
-        <form formGroupName="foodProperties">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="iron" matInput placeholder="Żelazo (mg)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="betaCarotene" matInput placeholder="Beta-karoten (µg)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="vitaminD" matInput placeholder="Witamina D (µg)" autocomplete="off">
-            </mat-form-field>
-          </div>
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <input type="number" formControlName="vitaminC" matInput placeholder="Witamina C (mg)" autocomplete="off">
-            </mat-form-field>
-          </div>
-        </form>
-        <div class="add-bottom-padding">
-          <mat-checkbox formControlName="lactose">Laktoza</mat-checkbox>
-          <mat-checkbox formControlName="starch">Skrobia</mat-checkbox>
-          <mat-checkbox formControlName="gluten">Gluten</mat-checkbox>
-        </div>
+    <mat-grid-list cols="4" rowHeight="70px">
+      <mat-grid-tile>
         <div class="button-row">
-          <button mat-raised-button color="primary" type="submit" [disabled]="productServiceForm.invalid">Zapisz</button>
+          <button mat-raised-button color="primary" type="submit"
+            [disabled]="productServiceForm.invalid">Zapisz</button>
           <button mat-raised-button color="warn" (click)="onClear()">Wyczyść</button>
         </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-</form>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</mat-dialog-content>
