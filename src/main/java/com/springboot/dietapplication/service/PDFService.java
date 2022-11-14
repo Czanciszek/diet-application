@@ -371,11 +371,21 @@ public class PDFService {
 
             // Display dish ingredients
             for (ProductDishType product : meal.getProductList()) {
+                String productPart = "\u2022 ";
+
                 int grams = ((int) meal.getDishPortions() / (int) meal.getPortions()) * (int) product.getGrams();
+                if (grams > 0) {
+                    productPart += grams + "g ";
+                }
+
+                if (product.getAmount() > 0 && product.getAmountType() != null && !product.getAmountType().equals(AmountType.NONE)) {
+                    productPart += "(x" + product.getAmount() + " " + product.getAmountType().toString() + ") ";
+                }
+
                 String name = (product.getProductName() == null || product.getProductName().isEmpty()) ?
                         (product.getProductId() + "!!!!") : product.getProductName();
-                String productPart = (grams > 0) ? ("\u2022 " + grams + "g " + name) : ("\u2022 " + name);
-                writeText(contentStream, new Point(60, pageOffset), timesNormal, 14,productPart);
+                productPart += name;
+                writeText(contentStream, new Point(60, pageOffset), timesNormal, 14, productPart);
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
 
                 //Check whenever pageOffset is too close margin
