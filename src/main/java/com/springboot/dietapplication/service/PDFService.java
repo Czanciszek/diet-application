@@ -197,7 +197,7 @@ public class PDFService {
 
             Comparator<PsqlMenuProduct> comp = (p1, p2) -> {
                 if (p1.getFoodTypeId().compareTo(p2.getFoodTypeId()) == 0) {
-                    return (p1.isProduct()) ? 1 : -1;
+                    return Boolean.compare(p1.isProduct(), p2.isProduct());
                 }
                 return p1.getFoodTypeId().compareTo(p2.getFoodTypeId());
             };
