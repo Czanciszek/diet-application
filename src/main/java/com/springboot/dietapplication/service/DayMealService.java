@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.menu.PsqlDayMeal;
+import com.springboot.dietapplication.model.psql.menu.PsqlMenuProduct;
 import com.springboot.dietapplication.model.type.DayMealType;
 import com.springboot.dietapplication.model.type.DayType;
 import com.springboot.dietapplication.model.type.MealType;
@@ -12,9 +13,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DayMealService {
@@ -47,6 +46,13 @@ public class DayMealService {
         for (Long dayMealId : weekMealType.getDayMealList()) {
             dayMealTypeList.add(this.getDayMealById(dayMealId));
         }
+
+        Comparator<DayMealType> comp = (p1, p2) -> {
+            DateTime dateTime1 = new DateTime(p1.getDate());
+            DateTime dateTime2 = new DateTime(p2.getDate());
+            return dateTime1.compareTo(dateTime2);
+        };
+        dayMealTypeList.sort(comp);
 
         return dayMealTypeList;
     }
