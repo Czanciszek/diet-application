@@ -80,13 +80,13 @@ public class ProductService {
 
         Optional<PsqlProduct> psqlProduct = this.productRepository.findById(productType.getId());
         if (!psqlProduct.isPresent())
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Product does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product does not exist");
 
         UserEntity user = userDetailsService.getCurrentUser();
         if (!user.getUserType().equals(UserType.ADMIN.name) && !psqlProduct.get().getUserId().equals(user.getId()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for updating product");
 
-        // TODO: Check if product with provided name already exists
+        // TODO: Check if product with provided name doesn't override some other one
 
         PsqlProduct product = new PsqlProduct(productType);
         product.setUserId(psqlProduct.get().getUserId());
