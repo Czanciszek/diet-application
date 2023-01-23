@@ -1,6 +1,7 @@
 export var FOOD_TYPES = [
   { id: "BREAKFAST", value: "Śniadanie" },
   { id: "BRUNCH", value: "II śniadanie" },
+  { id: "SNACK", value: "Przekąska" },
   { id: "DINNER", value: "Obiad" },
   { id: "TEA", value: "Podwieczorek"},
   { id: "SUPPER", value: "Kolacja" },

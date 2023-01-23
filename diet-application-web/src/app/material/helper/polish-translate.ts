@@ -4,6 +4,8 @@ export function translateDishType(name) {
       return "Śniadanie";
     case "BRUNCH":
       return "II śniadanie"
+    case "SNACK":
+      return "Przekąska"
     case "DINNER":
       return "Obiad";
     case "TEA":

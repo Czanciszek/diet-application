@@ -258,6 +258,9 @@ public class PDFService {
             case BRUNCH:
                 writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "II Śniadania");
                 break;
+            case SNACK:
+                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Przekąska");
+                break;
             case DINNER:
                 writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Obiady");
                 break;

@@ -4,6 +4,7 @@ public enum FoodType {
 
     BREAKFAST,
     BRUNCH,
+    SNACK,
     DINNER,
     TEA,
     SUPPER,
