@@ -292,7 +292,6 @@ export class MealAddComponent implements OnInit {
   }
 
   validateProperty(newValue: string, productIndex: number, property: string) {
-    console.log("VALIDATING:", newValue);
     let number = this.validateNumber(newValue);
 
     let product = this.mealServiceForm.get('productList').get([productIndex]);
