@@ -46,6 +46,12 @@ export class CopyMenuPanelComponent implements OnInit {
     this.copyItem.patientId = patientId;
   }
 
+  startDateChanged(newDate) {
+    let dateValues = newDate.split(".");
+    if (dateValues.length != 3) return;
+    this.copyItem.startDate = new Date(dateValues[2], dateValues[1] - 1 , dateValues[0]);
+  }
+
   limitsChanged(newLimitValue) {
     this.copyItem.energyLimit = newLimitValue;
     let factor = Number(newLimitValue / this.menuItem.energyLimit);
@@ -53,6 +59,13 @@ export class CopyMenuPanelComponent implements OnInit {
     this.copyItem.proteinsLimit = Number(factor * this.menuItem.proteinsLimit).toFixed(2);
     this.copyItem.fatsLimit = Number(factor * this.menuItem.fatsLimit).toFixed(2);
     this.copyItem.carbohydratesLimit = Number(factor * this.menuItem.carbohydratesLimit).toFixed(2);
+  }
+
+  menuLength() {
+    let length = this.menuItem.weekMealList.length
+    if (length == 1) return length + " tydzień";
+    else if (length < 5) return length + " tygodnie";
+    else return length + " tygodni";
   }
 
   onCopyButtonClicked() {

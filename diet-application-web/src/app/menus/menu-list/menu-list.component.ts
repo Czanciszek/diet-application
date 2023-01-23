@@ -106,7 +106,7 @@ export class MenuListComponent implements OnInit {
 
   getDescribingText(count) {
     if (count == 1) return " tydzień";
-    else if (count >= 2 && count <= 4) return " tygodnie";
+    else if (count < 5) return " tygodnie";
     else return " tygodni";
   }
 

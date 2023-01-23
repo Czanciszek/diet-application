@@ -25,6 +25,29 @@
         </mat-grid-tile>
     </mat-grid-list>
 
+  <mat-grid-list cols="12" rowHeight="70px">
+    <mat-grid-tile colspan="2">
+      <div class="control-container">
+        <div class="add-bottom-padding">
+          <mat-form-field>
+            <mat-label>Początek nowej diety</mat-label>
+            <input #startDate matInput [matDatepicker]="picker" autocomplete="off" value="{{menuItem.startDate}}" (dateChange)="startDateChanged(startDate.value)" readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker">
+              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker startView="month"></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="2">
+      <div class="control-container add-slider-padding">
+        <mat-label>Czas trwania: {{menuLength()}}</mat-label>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
   <mat-grid-list cols="12" class="recipe-grid-list-height" rowHeight="50px">
     <mat-grid-tile colspan="3">
       <div class="control-container add-slider-padding">

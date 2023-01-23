@@ -123,8 +123,11 @@ public class MenuService {
             return null;
 
         PsqlMenu newMenu = new PsqlMenu(menuSendingType);
-        newMenu.setStartDate(originMenu.getStartDate());
-        newMenu.setEndDate(originMenu.getEndDate());
+
+        DateTime dateTime = new DateTime(menuSendingType.getStartDate());
+        newMenu.setStartDate(dateTime.toString());
+        DateTime endDate = dateTime.plusWeeks(menuSendingType.getWeekCount()).minusDays(1);
+        newMenu.setEndDate(endDate.toString());
 
         this.menuRepository.save(newMenu);
 
