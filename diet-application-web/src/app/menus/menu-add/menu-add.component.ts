@@ -84,22 +84,29 @@ export class MenuAddComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.menuService.form.valid) {
-      if (!this.checkLimits()) {
-        this.notificationService.error(":: Suma % musi być równa 100! ::");
-        return;
-      }
+    if (!this.menuService.form.valid) { return; }
 
-      this.menuService.form.get("patientId").setValue(this.currentPatientId);
+    if (!this.checkLimits()) {
+      this.notificationService.error(":: Suma % musi być równa 100! ::");
+      return;
+    }
 
-      if (!this.menuService.form.get('id').value) {
-        this.menuService.insertMenu(this.menuService.form.value).subscribe();
+    this.menuService.form.get("patientId").setValue(this.currentPatientId);
+
+    if (!this.menuService.form.get('id').value) {
+      this.menuService.insertMenu(this.menuService.form.value).subscribe( result => {
         this.notificationService.success(":: Pomyślnie stworzono jadłospis! ::");
-      } else {
-        this.menuService.updateMenu(this.menuService.form.value).subscribe();
+        this.onClose();
+      }, error => {
+        this.notificationService.warn(":: Wystąpił problem z tworzeniem jadłospisu! ::");
+      });
+    } else {
+      this.menuService.updateMenu(this.menuService.form.value).subscribe(result => {
         this.notificationService.success(":: Jadłospis zaktualizowano pomyślnie! ::");
-      }
-      this.onClose();
+        this.onClose();
+      }, error => {
+        this.notificationService.warn(":: Wystąpił problem z aktualizacją jadłospisu! ::");
+      });
     }
   }
 
