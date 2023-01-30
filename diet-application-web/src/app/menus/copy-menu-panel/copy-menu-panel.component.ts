@@ -27,6 +27,7 @@ export class CopyMenuPanelComponent implements OnInit {
 
     ngOnInit(): void {
       this.copyItem = Object.assign({}, this.menuItem);
+      this.copyItem.weekCount = this.menuItem.weekMealList.length;
       this.getPatients();
     }
 

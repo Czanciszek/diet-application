@@ -134,7 +134,7 @@ public class MenuService {
         saveMenuFoodProperties(menuSendingType.getFoodTypes(), newMenu.getId());
 
         float factor = Math.round((newMenu.getEnergyLimit() / originMenu.getEnergyLimit()) * 100f) / 100f;
-        this.weekMealService.copy(originMenu.getId(), newMenu.getId(), factor);
+        this.weekMealService.copy(originMenu.getId(), newMenu.getId(), factor, newMenu.getStartDate());
 
         return ResponseEntity.ok().body(new MenuType(newMenu));
     }

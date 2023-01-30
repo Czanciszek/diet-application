@@ -79,11 +79,17 @@ public class DayMealService {
         return ResponseEntity.ok().body(dayMeal);
     }
 
-    public void copyDayMeals(long originWeekMealId, long newWeekMealId, float factor) {
+    public void copyDayMeals(long originWeekMealId, long newWeekMealId, float factor, String startDate) {
         List<PsqlDayMeal> dayMeals = dayMealRepository.getPsqlDayMealsByWeekMealId(originWeekMealId);
+        DateTime dateTime = new DateTime(startDate);
+
         for (PsqlDayMeal originDayMeal : dayMeals) {
             PsqlDayMeal newDayMeal = new PsqlDayMeal(originDayMeal);
             newDayMeal.setWeekMealId(newWeekMealId);
+
+            newDayMeal.setDate(dateTime.toString());
+            dateTime = dateTime.plusDays(1);
+
             dayMealRepository.save(newDayMeal);
 
             mealService.copy(originDayMeal.getId(), newDayMeal.getId(), factor);

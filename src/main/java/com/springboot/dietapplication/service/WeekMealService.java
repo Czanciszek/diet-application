@@ -50,14 +50,14 @@ public class WeekMealService {
         return ResponseEntity.ok().body(weekMeal);
     }
 
-    public void copy(long originMenuId, long newMenuId, float factor) {
+    public void copy(long originMenuId, long newMenuId, float factor, String startDate) {
         List<PsqlWeekMeal> weekMeals = weekMealRepository.getPsqlWeekMealsByMenuId(originMenuId);
         for (PsqlWeekMeal currentWeekMeal : weekMeals) {
             PsqlWeekMeal newWeekMeal = new PsqlWeekMeal();
             newWeekMeal.setMenuId(newMenuId);
             weekMealRepository.save(newWeekMeal);
 
-            dayMealService.copyDayMeals(currentWeekMeal.getId(), newWeekMeal.getId(), factor);
+            dayMealService.copyDayMeals(currentWeekMeal.getId(), newWeekMeal.getId(), factor, startDate);
         }
     }
 
