@@ -1,12 +1,12 @@
 plugins {
     id 'org.springframework.boot' version '2.3.1.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'io.spring.dependency-management' version '1.1.0'
     id 'java'
 }
 
 group = 'com.springboot'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
@@ -14,11 +14,11 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.7.0'
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.7.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.7.8'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.7.8'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.8'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.0'
     implementation 'org.postgresql:postgresql:42.3.6'
 
     implementation 'io.github.biezhi:excel-plus:1.0.8'
