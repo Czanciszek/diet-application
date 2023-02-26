@@ -34,8 +34,9 @@ public class DishService {
 
     public List<DishType> getAll() {
 
-        UserEntity user = userDetailsService.getCurrentUser();
-        List<PsqlDish> dishes = this.dishRepository.findAllWhereIsSystemOrByUserId(user.getId());
+        List<PsqlDish> dishes = this.dishRepository.findAll();
+//        UserEntity user = userDetailsService.getCurrentUser();
+//        List<PsqlDish> dishes = this.dishRepository.findAllWhereIsSystemOrByUserId(user.getId());
 
         return convertLists(dishes);
     }
@@ -83,12 +84,12 @@ public class DishService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dish id cannot be null");
 
         Optional<PsqlDish> psqlDish = this.dishRepository.findById(dishType.getId());
-        if (!psqlDish.isPresent())
+        if (psqlDish.isEmpty())
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Dish does not exist");
 
-        UserEntity user = userDetailsService.getCurrentUser();
-        if (!user.getUserType().equals(UserType.ADMIN.name) && !psqlDish.get().getUserId().equals(user.getId()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for updating dish");
+//        UserEntity user = userDetailsService.getCurrentUser();
+//        if (!user.getUserType().equals(UserType.ADMIN.name) && !psqlDish.get().getUserId().equals(user.getId()))
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for updating dish");
 
         // TODO: Check if dish with provided name already exists
 
@@ -121,12 +122,12 @@ public class DishService {
 
     public void delete(Long id) {
         Optional<PsqlDish> dish = this.dishRepository.findById(id);
-        if (!dish.isPresent())
+        if (dish.isEmpty())
             return;
 
-        UserEntity user = userDetailsService.getCurrentUser();
-        if (!user.getUserType().equals(UserType.ADMIN.name) && !dish.get().getUserId().equals(user.getId()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting dish attempt");
+//        UserEntity user = userDetailsService.getCurrentUser();
+//        if (!user.getUserType().equals(UserType.ADMIN.name) && !dish.get().getUserId().equals(user.getId()))
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting dish attempt");
 
         List<PsqlProductDish> productDishList =
                 this.productDishRepository.findPsqlProductDishesByDishId(id);
@@ -164,7 +165,7 @@ public class DishService {
             List<ProductAmountType> productAmountTypeList = new ArrayList<>();
             for (PsqlProductsAmountTypes productsAmountType : productAmountTypes) {
                 Optional<AmountType> amountType = AmountType.valueOf(productsAmountType.getAmountTypeId());
-                if (!amountType.isPresent()) continue;
+                if (amountType.isEmpty()) continue;
                 productAmountTypeList.add(new ProductAmountType(amountType.get(), productsAmountType.getGrams()));
             }
 
