@@ -3,6 +3,7 @@ package com.springboot.dietapplication.service;
 import com.springboot.dietapplication.helper.RomanianNumber;
 import com.springboot.dietapplication.model.psql.menu.PsqlMenuProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlShoppingProduct;
+import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -38,6 +39,8 @@ public class PDFService {
     MealService mealService;
     @Autowired
     PatientService patientService;
+    @Autowired
+    JwtUserDetailsService userDetailsService;
 
     int pageOffset = 680;
     MenuType menu;
@@ -131,7 +134,8 @@ public class PDFService {
     }
 
     private void makeFooter(PDPageContentStream contentStream) throws IOException {
-        String footerText = "Agnieszka Kaszuba-Czana Dietetyk kliniczny, Psychodietetyk, Trener personalny";
+        UserEntity user = userDetailsService.getCurrentUser();
+        String footerText = user.getPdfFooter();
         writeText(contentStream, new Point(40, 20), PDType1Font.TIMES_ROMAN, 12, footerText);
     }
 

@@ -27,6 +27,10 @@ public class PsqlUser implements Serializable {
 
     @Column(name = "image_id")
     private String imageId;
+
+    @Column(name = "pdf_footer")
+    private String pdfFooter;
+
     public Long getId() {
         return id;
     }
@@ -73,5 +77,13 @@ public class PsqlUser implements Serializable {
 
     public void setImageId(String imageId) {
         this.imageId = imageId;
+    }
+
+    public String getPdfFooter() {
+        return pdfFooter;
+    }
+
+    public void setPdfFooter(String pdfFooter) {
+        this.pdfFooter = pdfFooter;
     }
 }

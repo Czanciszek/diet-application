@@ -6,6 +6,8 @@ import java.io.Serializable;
 @Entity
 public class UserEntity implements Serializable {
 
+    private static final long serialVersionUID = -3196537900995603L;
+    
     @Id
     private Long id;
     private String userType;
@@ -13,6 +15,7 @@ public class UserEntity implements Serializable {
     private String password;
     private String email;
     private String imageId;
+    private String pdfFooter;
 
     public UserEntity() {
 
@@ -64,5 +67,13 @@ public class UserEntity implements Serializable {
 
     public void setImageId(String imageId) {
         this.imageId = imageId;
+    }
+
+    public String getPdfFooter() {
+        return pdfFooter;
+    }
+
+    public void setPdfFooter(String pdfFooter) {
+        this.pdfFooter = pdfFooter;
     }
 }

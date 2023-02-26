@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
 
     String selectUserQuery = "SELECT " +
-            "u.id, ut.name AS user_type, u.name, email, password, image_id " +
+            "u.id, ut.name AS user_type, u.name, email, password, image_id, pdf_footer " +
             "FROM users u " +
             "JOIN user_types ut ON u.user_type_id = ut.id ";
 

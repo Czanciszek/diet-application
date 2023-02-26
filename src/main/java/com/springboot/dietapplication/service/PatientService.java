@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PatientService {
@@ -51,7 +50,7 @@ public class PatientService {
     public PatientType getPatientById(Long patientId) throws ResponseStatusException {
         Optional<PsqlPatient> patient = this.patientRepository.findById(patientId);
 
-        if (!patient.isPresent())
+        if (patient.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found");
 
         UserEntity user = userDetailsService.getCurrentUser();
@@ -65,7 +64,7 @@ public class PatientService {
         MenuType menu = this.menuService.getMenuById(menuId);
         Optional<PsqlPatient> patient = this.patientRepository.findById(menu.getPatientId());
 
-        if (!patient.isPresent())
+        if (patient.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found");
 
         UserEntity user = userDetailsService.getCurrentUser();
@@ -98,7 +97,7 @@ public class PatientService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Patient id cannot be null");
 
         Optional<PsqlPatient> patient = this.patientRepository.findById(patientType.getId());
-        if (!patient.isPresent())
+        if (patient.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient does not exist");
 
         UserEntity user = userDetailsService.getCurrentUser();
@@ -118,7 +117,7 @@ public class PatientService {
     public void delete(Long id) throws ResponseStatusException {
 
         Optional<PsqlPatient> patient = this.patientRepository.findById(id);
-        if (!patient.isPresent())
+        if (patient.isEmpty())
             return;
 
         UserEntity user = userDetailsService.getCurrentUser();
