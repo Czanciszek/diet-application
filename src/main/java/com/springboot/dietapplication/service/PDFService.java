@@ -382,7 +382,7 @@ public class PDFService {
                 }
 
                 if (product.getAmount() > 0 && product.getAmountType() != null && !product.getAmountType().equals(AmountType.NONE)) {
-                    productPart += "(x" + product.getAmount() + " " + product.getAmountType().toString() + ") ";
+                    productPart += "(x" + product.getAmount() + " " + AmountType.toLocalizedString(product.getAmountType()) + ") ";
                 }
 
                 String name = (product.getProductName() == null || product.getProductName().isEmpty()) ?

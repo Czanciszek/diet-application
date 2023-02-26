@@ -27,4 +27,30 @@ public enum AmountType {
                 .findFirst();
     }
 
+    public static String toLocalizedString(AmountType amountType) {
+
+        switch(amountType) {
+            case NONE:
+                return "";
+            case GLASS:
+                return "Szklanka";
+            case SPOON:
+                return "Łyżka";
+            case TEASPOON:
+                return "Łyżeczka";
+            case PIECE:
+                return "Sztuka";
+            case SLICE:
+                return "Plaster";
+            case LEAF:
+                return "Liść";
+            case HANDFUL:
+                return "Garść";
+            case SCOOP:
+                return "Miarka";
+        }
+
+        return "";
+    }
+
 }
