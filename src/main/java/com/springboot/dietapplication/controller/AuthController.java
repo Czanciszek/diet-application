@@ -3,7 +3,10 @@ package com.springboot.dietapplication.controller;
 import com.springboot.dietapplication.config.JwtTokenUtil;
 import com.springboot.dietapplication.config.KeyUtility;
 import com.springboot.dietapplication.model.psql.user.PsqlUser;
+import com.springboot.dietapplication.model.psql.user.PsqlUserType;
+import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.LoginResult;
+import com.springboot.dietapplication.repository.UserTypeRepository;
 import com.springboot.dietapplication.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +36,9 @@ public class AuthController {
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
+    @Autowired
+    private UserTypeRepository userTypeRepository;
+
     @GetMapping(value = "/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestHeader HttpHeaders httpHeaders) {
 
@@ -51,7 +57,12 @@ public class AuthController {
     }
 
     @PostMapping(path = "/register", produces = "application/json")
-    public ResponseEntity<PsqlUser> registerUser(@RequestBody PsqlUser user) {
+    public ResponseEntity<PsqlUser> registerUser(@RequestBody UserEntity userEntity) {
+
+        PsqlUser user = new PsqlUser(userEntity);
+
+        PsqlUserType userType = userTypeRepository.findByName(userEntity.getUserType().toUpperCase());
+        user.setUserTypeId(userType.getId());
 
         userDetailsService.registerNewUser(user);
 

@@ -48,8 +48,8 @@
         <mat-grid-tile>
           <mat-form-field class="long-form-field">
             <mat-select formControlName="userType" placeholder="Typ użytkownika">
-              <ng-container *ngFor="let userType of ['Admin', 'User']">
-                <mat-option value="userType.toUppercase()">{{userType}}</mat-option>
+              <ng-container *ngFor="let userType of ['ADMIN', 'USER']">
+                <mat-option value="{{userType}}">{{userType}}</mat-option>
               </ng-container>
             </mat-select>
           </mat-form-field>

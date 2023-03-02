@@ -31,6 +31,16 @@ public class PsqlUser implements Serializable {
     @Column(name = "pdf_footer")
     private String pdfFooter;
 
+    public PsqlUser() { }
+
+    public PsqlUser(UserEntity userEntity) {
+        this.id = userEntity.getId();
+        this.name = userEntity.getName();
+        this.password = userEntity.getPassword();
+        this.email = userEntity.getEmail();
+        this.imageId = userEntity.getImageId();
+    }
+
     public Long getId() {
         return id;
     }
