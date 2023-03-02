@@ -405,6 +405,10 @@ public class PDFService {
             contentStream = setNewLine(document, contentStream, new Point(0, -30), false, false);
 
             // Display recipe
+            if (meal.getRecipe() == null) {
+                continue;
+            }
+
             String[] recipeLines = meal.getRecipe().replaceAll("\t", "    ").split("\n");
             for (String line : recipeLines) {
                 if (line.length() == 0) {
