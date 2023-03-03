@@ -43,9 +43,8 @@ public class ProductService {
     public List<ProductType> getAll() {
 
 //        UserEntity user = userDetailsService.getCurrentUser();
-//        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllProducts(user.getId());
-
-        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.findAll();
+//        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllUserProducts(user.getId());
+        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllProducts();
 
         return convertLists(products);
     }
