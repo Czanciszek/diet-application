@@ -42,8 +42,10 @@ public class ProductService {
 
     public List<ProductType> getAll() {
 
-        UserEntity user = userDetailsService.getCurrentUser();
-        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllProducts(user.getId());
+//        UserEntity user = userDetailsService.getCurrentUser();
+//        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllProducts(user.getId());
+
+        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.findAll();
 
         return convertLists(products);
     }
@@ -79,12 +81,12 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product id cannot be null");
 
         Optional<PsqlProduct> psqlProduct = this.productRepository.findById(productType.getId());
-        if (!psqlProduct.isPresent())
+        if (psqlProduct.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product does not exist");
 
-        UserEntity user = userDetailsService.getCurrentUser();
-        if (!user.getUserType().equals(UserType.ADMIN.name) && !psqlProduct.get().getUserId().equals(user.getId()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for updating product");
+//        UserEntity user = userDetailsService.getCurrentUser();
+//        if (!user.getUserType().equals(UserType.ADMIN.name) && !psqlProduct.get().getUserId().equals(user.getId()))
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for updating product");
 
         // TODO: Check if product with provided name doesn't override some other one
 
@@ -121,12 +123,12 @@ public class ProductService {
     public void delete(Long id) throws ResponseStatusException {
 
         Optional<PsqlProduct> product = this.productRepository.findById(id);
-        if (!product.isPresent())
+        if (product.isEmpty())
             return;
 
-        UserEntity user = userDetailsService.getCurrentUser();
-        if (!user.getUserType().equals(UserType.ADMIN.name) && !product.get().getUserId().equals(user.getId()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting product attempt");
+//        UserEntity user = userDetailsService.getCurrentUser();
+//        if (!user.getUserType().equals(UserType.ADMIN.name) && !product.get().getUserId().equals(user.getId()))
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting product attempt");
 
         this.productRepository.deleteById(id);
         this.foodPropertiesService.delete(product.get().getFoodPropertiesId());
