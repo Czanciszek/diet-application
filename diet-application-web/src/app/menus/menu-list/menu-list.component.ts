@@ -7,6 +7,7 @@ import {NotificationService} from "../../service/notification.service";
 import {Menu} from "../../model/menu";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
+import {MatTableDataSource} from "@angular/material/table";
 import {Measurement} from "../../model/measurement";
 import {MatDialog} from "@angular/material/dialog";
 import {MenuAddComponent} from "../menu-add/menu-add.component";
@@ -30,12 +31,11 @@ export class MenuListComponent implements OnInit {
     private fileService: FileService
   ) { }
 
-  displayedColumns: string[] = ['dateRange', 'weekCount', 'actions'];
+  displayedColumns: string[] = ['order', 'dateRange', 'weekCount', 'actions'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  searchKey: string;
 
-  listData: any;
+  listData: MatTableDataSource<any>;
 
   measurements = Array<{
     measurementId: string,
@@ -56,10 +56,13 @@ export class MenuListComponent implements OnInit {
       .subscribe(
         (data: Menu[]) => {
           var menuList: Menu[] = [...data].sort( (m1, m2) => {
-            if (m1.startDate == m2.startDate) return 0;
-            return m1.startDate > m2.startDate ? 1 : -1;
+            return m1.id > m2.id ? 1 : -1;
           });
-          this.listData = menuList;
+          menuList.forEach(
+            (value, index) => {
+            value.order = index + 1;
+          });
+          this.listData = new MatTableDataSource(menuList);
 
           this.listData.sort = this.sort;
           this.listData.paginator = this.paginator;
@@ -68,17 +71,8 @@ export class MenuListComponent implements OnInit {
       );
   }
 
-  onSearchClear() {
-    this.searchKey = "";
-    this.applyFilter();
-  }
-
-  applyFilter() {
-    this.listData.filter = this.searchKey.trim().toLowerCase();
-  }
-
   getMeasurementDates() {
-    for (let data of this.listData) {
+    for (let data of this.listData.data) {
       if (data.measurementId != null) {
         this.getMeasurementById(data.measurementId);
       }

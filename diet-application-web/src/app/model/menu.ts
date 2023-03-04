@@ -12,5 +12,6 @@ export interface Menu {
   energyLimit: number,
   proteinsLimit: number,
   fatsLimit: number,
-  carbohydratesLimit: number
+  carbohydratesLimit: number,
+  order: number
 }
