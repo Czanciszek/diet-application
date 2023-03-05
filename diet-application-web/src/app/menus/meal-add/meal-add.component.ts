@@ -180,6 +180,7 @@ export class MealAddComponent implements OnInit {
       (<FormArray>this.mealService.form.get('productList')).clear();
 
       // Update value in Form Group
+      this.mealService.form.get('baseDishId').patchValue(selectedDish.id);
       this.mealService.form.get('name').patchValue(selectedDish.name);
       this.mealService.form.get('recipe').patchValue(selectedDish.recipe);
       this.mealService.form.get('dishPortions').patchValue(selectedDish.portions);

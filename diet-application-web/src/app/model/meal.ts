@@ -3,6 +3,7 @@ export interface Meal {
   name: string,
   dayMealId: string,
   originMealId: number,
+  baseDishId: number,
   foodId: string,
   isProduct: number,
   productList: any[],

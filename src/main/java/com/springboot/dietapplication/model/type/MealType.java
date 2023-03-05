@@ -17,6 +17,8 @@ public class MealType implements Serializable {
 
     private Long originMealId; // Reference to origin meal day
 
+    private Long baseDishId; // Reference to selected dish
+
     private int isProduct; // true - for Product; false - for Dish
 
     private List<ProductDishType> productList; // Product list for dish type
@@ -39,6 +41,7 @@ public class MealType implements Serializable {
         this.name = meal.name;
         this.dayMealId = meal.dayMealId;
         this.originMealId = meal.originMealId;
+        this.baseDishId = meal.baseDishId;
         this.isProduct = meal.isProduct;
         this.productList = meal.productList;
         this.portions = meal.portions;
@@ -52,6 +55,7 @@ public class MealType implements Serializable {
         this.id = meal.getId();
         this.dayMealId =meal.getDayMealId();
         this.originMealId = meal.getOriginMealId();
+        this.baseDishId = meal.getBaseDishId();
         this.name = meal.getName();
         this.isProduct = (meal.isProduct() ? 1 : 0);
         this.portions = meal.getPortions();
@@ -90,6 +94,14 @@ public class MealType implements Serializable {
 
     public void setOriginMealId(Long originMealId) {
         this.originMealId = originMealId;
+    }
+
+    public Long getBaseDishId() {
+        return baseDishId;
+    }
+
+    public void setBaseDishId(Long baseDishId) {
+        this.baseDishId = baseDishId;
     }
 
     public int getIsProduct() {
