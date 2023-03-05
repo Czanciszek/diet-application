@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DishService } from "../../service/dish.service";
 import { MealService } from "../../service/meal.service";
 import { NotificationService } from "../../service/notification.service";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
@@ -8,6 +9,7 @@ import { DishSelectComponent } from "../../dishes/dish-select/dish-select.compon
 import { ProductService } from "../../service/product.service";
 import { FOOD_TYPES } from "../../model/helpers/foodTypes";
 import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
+import { DishUsage } from "../../model/dishUsage";
 
 @Component({
   selector: 'app-meal-add',
@@ -17,6 +19,7 @@ import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
 export class MealAddComponent implements OnInit {
 
   constructor(
+    private dishService: DishService,
     private mealService: MealService,
     private productService: ProductService,
     private notificationService: NotificationService,
@@ -26,7 +29,8 @@ export class MealAddComponent implements OnInit {
 
   mealServiceForm = this.mealService.form;
 
-  public menuId: any;
+  public menuId: number;
+  public patientId: number;
 
   amountTypes = AMOUNT_TYPES;
   foodTypes = FOOD_TYPES;
@@ -40,7 +44,14 @@ export class MealAddComponent implements OnInit {
   dishForm: any;
   singleProductForm: any;
 
+  dishUsages: DishUsage[] = [];
+
   ngOnInit(): void {
+    this.dishService.getDishUsages(this.patientId).subscribe(
+      (dishUsages: DishUsage[]) => {
+      this.dishUsages = dishUsages;
+    });
+
     if (this.mealServiceForm.get('id').value == null) {
       let formProducts = <FormArray>this.mealServiceForm.get('productList');
       let productForm = this.mealService.addProductFormGroup();
@@ -171,7 +182,10 @@ export class MealAddComponent implements OnInit {
 
     let dialogRef = this.dialog.open(DishSelectComponent, {
       autoFocus: true,
-      width: "90%"
+      width: "90%",
+      data: {
+        dishUsages: this.dishUsages
+      }
     });
 
     dialogRef.afterClosed().subscribe(selectedDish => {

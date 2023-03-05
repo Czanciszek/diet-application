@@ -2,7 +2,7 @@ import {DayMeal} from "./day-meal";
 
 export interface Menu {
   id: string,
-  patientId: string,
+  patientId: number,
   weekMealList: string[],
   dayMealTypeList: DayMeal[],
   foodTypes: string [],

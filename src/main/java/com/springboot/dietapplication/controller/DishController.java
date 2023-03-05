@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.type.DishType;
+import com.springboot.dietapplication.model.type.DishUsageType;
 import com.springboot.dietapplication.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,16 @@ public class DishController {
             return ResponseEntity.ok(dishList);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping(path = "/patient-usage/{patientId}")
+    ResponseEntity<?> dishUsage(@PathVariable Long patientId) {
+        try {
+            List<DishUsageType> dishUsages = dishService.getDishUsages(patientId);
+            return ResponseEntity.ok(dishUsages);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(patientId);
         }
     }
 

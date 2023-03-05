@@ -53,6 +53,8 @@ export class DishSummaryComponent implements OnInit {
       width: "90%"
     });
 
+    dialogRef.componentInstance.patientId = this.menuItemData.patientId;
+
     dialogRef.afterClosed().subscribe(result => {
       this.refreshItems.emit();
     });

@@ -1,5 +1,6 @@
 package com.springboot.dietapplication.service;
 
+import com.springboot.dietapplication.model.psql.dish.PsqlDishUsage;
 import com.springboot.dietapplication.model.psql.menu.PsqlAmountType;
 import com.springboot.dietapplication.model.psql.menu.PsqlFoodType;
 import com.springboot.dietapplication.model.psql.product.PsqlProductsAmountTypes;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DishService {
@@ -28,6 +30,8 @@ public class DishService {
     AmountTypeRepository amountTypeRepository;
     @Autowired
     ProductsAmountTypesRepository productsAmountTypesRepository;
+    @Autowired
+    DishUsageRepository dishUsageRepository;
 
     @Autowired
     JwtUserDetailsService userDetailsService;
@@ -39,6 +43,12 @@ public class DishService {
 //        List<PsqlDish> dishes = this.dishRepository.findAllWhereIsSystemOrByUserId(user.getId());
 
         return convertLists(dishes);
+    }
+
+    public List<DishUsageType> getDishUsages(Long patientId) {
+
+        List<PsqlDishUsage> psqlDishUsages = this.dishUsageRepository.findPsqlDishUsageByPatientId(patientId);
+        return psqlDishUsages.stream().map(DishUsageType::new).collect(Collectors.toList());
     }
 
     public DishType insert(DishType dishType) {
@@ -137,11 +147,7 @@ public class DishService {
     }
 
     private List<DishType> convertLists(List<PsqlDish> psqlDayMeals) {
-        List<DishType> dayMealTypeList = new ArrayList<>();
-        for (PsqlDish dayMeal : psqlDayMeals) {
-            dayMealTypeList.add(convertPsqlDishToDishType(dayMeal));
-        }
-        return dayMealTypeList;
+        return psqlDayMeals.stream().map(this::convertPsqlDishToDishType).collect(Collectors.toList());
     }
 
     private DishType convertPsqlDishToDishType(PsqlDish psqlDish) {

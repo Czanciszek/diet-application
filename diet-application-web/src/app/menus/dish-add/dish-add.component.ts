@@ -42,6 +42,7 @@ export class DishAddComponent implements OnInit {
     });
 
     dialogRef.componentInstance.menuId = this.menuId;
+    dialogRef.componentInstance.patientId = this.menuItem.patientId;
 
     dialogRef.afterClosed().subscribe(result => {
       this.refreshItems.emit();
