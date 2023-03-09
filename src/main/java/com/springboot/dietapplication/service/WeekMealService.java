@@ -3,6 +3,7 @@ package com.springboot.dietapplication.service;
 import com.springboot.dietapplication.model.psql.menu.PsqlWeekMeal;
 import com.springboot.dietapplication.model.type.WeekMealType;
 import com.springboot.dietapplication.repository.WeekMealRepository;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -52,18 +53,21 @@ public class WeekMealService {
 
     public void copy(long originMenuId, long newMenuId, float factor, String startDate) {
         List<PsqlWeekMeal> weekMeals = weekMealRepository.getPsqlWeekMealsByMenuId(originMenuId);
+        DateTime dateTime = new DateTime(startDate);
+
         for (PsqlWeekMeal currentWeekMeal : weekMeals) {
             PsqlWeekMeal newWeekMeal = new PsqlWeekMeal();
             newWeekMeal.setMenuId(newMenuId);
             weekMealRepository.save(newWeekMeal);
 
-            dayMealService.copyDayMeals(currentWeekMeal.getId(), newWeekMeal.getId(), factor, startDate);
+            dayMealService.copyDayMeals(currentWeekMeal.getId(), newWeekMeal.getId(), factor, dateTime);
+            dateTime = dateTime.plusDays(7);
         }
     }
 
     public void delete(Long id) {
         Optional<PsqlWeekMeal> weekMeal = weekMealRepository.findById(id);
-        if (!weekMeal.isPresent()) return;
+        if (weekMeal.isEmpty()) return;
 
         // TODO: Get origin menu and check user authorization
 

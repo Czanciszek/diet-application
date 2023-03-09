@@ -61,7 +61,7 @@ public class DayMealService {
         for (int i = 0; i < 7; i++) {
             int dayTypeValue = date.getDayOfWeek()%7;
             Optional<DayType> dayType = DayType.valueOf(dayTypeValue);
-            if (!dayType.isPresent()) continue;
+            if (dayType.isEmpty()) continue;
 
             DayMealType dayMeal = new DayMealType();
             dayMeal.setDayType(dayType.get());
@@ -79,9 +79,8 @@ public class DayMealService {
         return ResponseEntity.ok().body(dayMeal);
     }
 
-    public void copyDayMeals(long originWeekMealId, long newWeekMealId, float factor, String startDate) {
+    public void copyDayMeals(long originWeekMealId, long newWeekMealId, float factor, DateTime dateTime) {
         List<PsqlDayMeal> dayMeals = dayMealRepository.getPsqlDayMealsByWeekMealId(originWeekMealId);
-        DateTime dateTime = new DateTime(startDate);
 
         for (PsqlDayMeal originDayMeal : dayMeals) {
             PsqlDayMeal newDayMeal = new PsqlDayMeal(originDayMeal);
