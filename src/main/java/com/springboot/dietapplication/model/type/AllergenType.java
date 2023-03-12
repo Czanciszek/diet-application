@@ -7,7 +7,18 @@ public enum AllergenType {
 
     GLUTEN(1), // Gluten
     LACTOSE(2), // Laktoza
-    STARCH(3); //Skrobia
+    STARCH(3),// Skrobia
+    EGGS(4), // Jaja
+    FISH(5), // Ryby
+    NUTS(6), // Orzechy
+    PEANUTS(7), // Orzechy arachidowe
+    SOY(8), // Soja
+    CELERY(9), // Seler
+    MUSTARD(10), //Gorczyca
+    SESAM(11), // Sezam
+    SULPHUR_DIOXIDE(12), // Dwutlenek siarki
+    LUPINE(13), // Łupin
+    MOLLUSCS(14); // Mięczaki
 
     private final long allergenTypeValue;
 
