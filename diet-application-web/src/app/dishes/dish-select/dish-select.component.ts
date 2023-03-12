@@ -59,6 +59,7 @@ export class DishSelectComponent implements OnInit {
   fetchResults(data: Dish[]) {
     this.listData = new MatTableDataSource([...data]);
     this.mapDishUsages();
+    this.mapDishUsageInfo();
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
   }
@@ -76,11 +77,33 @@ export class DishSelectComponent implements OnInit {
     const dishUsages = this.dialogData.dishUsages;
     Object(dishData).forEach( (key, index) => {
       dishData[index].dishUsages = 0;
-      dishUsages.filter(dishUsage => dishUsage.dishId == dishData[index].id)
+      dishUsages
+        .filter(dishUsage => dishUsage.dishId == dishData[index].id)
         .forEach( (dishUsageKey, dishUsageIndex) => {
           dishData[index].dishUsages += dishUsageKey.dishUsage;
         });
+      if (dishData[index].dishUsages == 0) {
+        dishData[index].dishUsages = "-";
+      }
     });
   }
 
+  mapDishUsageInfo() {
+    let dishData = this.listData.data;
+    const dishUsages = this.dialogData.dishUsages;
+    Object(dishData).forEach( (key, index) => {
+        let dishUsageInfo = "";
+        dishUsages
+          .filter(dishUsage => dishUsage.dishId == dishData[index].id)
+          .forEach( (dishUsageKey, dishUsageIndex) => {
+            dishUsageInfo += this.parseDate(dishUsageKey.startDate) + " - " + this.parseDate(dishUsageKey.endDate) + " - " + dishUsageKey.dishUsage + "x \n";
+          });
+        dishData[index].dishUsageInfo = dishUsageInfo;
+    });
+  }
+
+  parseDate(plainDate) {
+    var date = new Date(plainDate);
+    return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+  }
 }

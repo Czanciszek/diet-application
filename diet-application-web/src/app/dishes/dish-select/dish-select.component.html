@@ -33,7 +33,14 @@
       </ng-container>
       <ng-container matColumnDef="dishUsages" >
         <mat-header-cell *matHeaderCellDef mat-sort-header>Użycie w jadłospisach pacjenta</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.dishUsages}}</mat-cell>
+        <mat-cell *matCellDef="let element">
+          <div class="dish-usages-count">
+            {{element.dishUsages}}
+          </div>
+          <div *ngIf="element.dishUsages > 0">
+            <mat-icon matTooltipPosition="after" matTooltip="{{element.dishUsageInfo}}" matTooltipClass="dish-usage-tooltip">info</mat-icon>
+          </div>
+        </mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>

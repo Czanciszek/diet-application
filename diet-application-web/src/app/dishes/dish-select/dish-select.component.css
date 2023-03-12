@@ -40,3 +40,11 @@ mat-footer-row mat-footer-cell {
   height: 32px;
   width: 32px;
 }
+
+.dish-usages-count {
+  margin-right: 8px;
+}
+
+::ng-deep .dish-usage-tooltip {
+  white-space: pre-line;
+}
