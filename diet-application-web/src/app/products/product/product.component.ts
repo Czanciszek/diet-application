@@ -4,6 +4,7 @@ import { FormArray } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { NotificationService } from "../../service/notification.service";
 import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
+import { ALLERGEN_TYPES } from "../../model/helpers/allergenTypes";
 
 @Component({
   selector: 'app-product',
@@ -13,6 +14,8 @@ import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
 export class ProductComponent implements OnInit {
 
   amountTypes = AMOUNT_TYPES;
+  allergens = ALLERGEN_TYPES;
+
   categoryList: any[] = [];
   categories: any = new Set();
   subcategories: any = new Set();

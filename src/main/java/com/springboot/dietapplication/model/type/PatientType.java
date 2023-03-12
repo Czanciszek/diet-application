@@ -3,7 +3,6 @@ package com.springboot.dietapplication.model.type;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 public class PatientType implements Serializable {
@@ -30,7 +29,7 @@ public class PatientType implements Serializable {
     private String changedLifestyleNote;
     private String dietaryPurpose;
 
-    private Set<AllergensType> allergens;
+    private Set<AllergenType> allergens;
     private Set<String> unlikelyCategories;
 
     public PatientType() {
@@ -49,12 +48,6 @@ public class PatientType implements Serializable {
         this.changedLifestyleNote = psqlPatient.getChangedLifestyleNote();
         this.currentLifestyleNote = psqlPatient.getCurrentLifestyleNote();
         this.dietaryPurpose = psqlPatient.getDietaryPurpose();
-
-        Set<AllergensType> allergensTypes = new HashSet<>();
-        if (psqlPatient.isGlutenAllergy()) allergensTypes.add(AllergensType.GLUTEN);
-        if (psqlPatient.isLactoseAllergy()) allergensTypes.add(AllergensType.LACTOSE);
-        if (psqlPatient.isStarchAllergy()) allergensTypes.add(AllergensType.STARCH);
-        this.allergens = allergensTypes;
     }
 
     public Long getId() {
@@ -145,11 +138,11 @@ public class PatientType implements Serializable {
         this.dietaryPurpose = dietaryPurpose;
     }
 
-    public Set<AllergensType> getAllergens() {
+    public Set<AllergenType> getAllergens() {
         return allergens;
     }
 
-    public void setAllergens(Set<AllergensType> allergens) {
+    public void setAllergens(Set<AllergenType> allergens) {
         this.allergens = allergens;
     }
 

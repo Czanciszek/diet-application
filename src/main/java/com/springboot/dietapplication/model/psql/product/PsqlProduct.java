@@ -28,31 +28,16 @@ public class PsqlProduct implements Serializable {
     @Column(name = "food_properties_id")
     private Long foodPropertiesId;
 
-    @Column(name = "lactose")
-    private boolean lactose;
-
-    @Column(name = "starch")
-    private boolean starch;
-
-    @Column(name = "gluten")
-    private boolean gluten;
-
     public PsqlProduct() {
     }
 
     public PsqlProduct(ProductExcel productExcel) {
         this.name = productExcel.getName();
-        this.lactose = productExcel.getLactose() != null && !productExcel.getLactose().isEmpty();
-        this.starch = productExcel.getStarch() != null && !productExcel.getStarch().isEmpty();
-        this.gluten = productExcel.getGluten() != null && !productExcel.getGluten().isEmpty();
     }
 
     public PsqlProduct(ProductType productType) {
         this.id = productType.getId();
         this.name = productType.getName();
-        this.lactose = productType.isLactose();
-        this.starch = productType.isStarch();
-        this.gluten = productType.isGluten();
     }
 
     public Long getId() {
@@ -95,27 +80,4 @@ public class PsqlProduct implements Serializable {
         this.name = name;
     }
 
-    public boolean isLactose() {
-        return lactose;
-    }
-
-    public void setLactose(boolean lactose) {
-        this.lactose = lactose;
-    }
-
-    public boolean isStarch() {
-        return starch;
-    }
-
-    public void setStarch(boolean starch) {
-        this.starch = starch;
-    }
-
-    public boolean isGluten() {
-        return gluten;
-    }
-
-    public void setGluten(boolean gluten) {
-        this.gluten = gluten;
-    }
 }

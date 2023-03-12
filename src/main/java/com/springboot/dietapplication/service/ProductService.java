@@ -1,12 +1,10 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
+import com.springboot.dietapplication.model.psql.menu.PsqlAllergenType;
 import com.springboot.dietapplication.model.psql.menu.PsqlAmountType;
 import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
-import com.springboot.dietapplication.model.psql.product.PsqlCategory;
-import com.springboot.dietapplication.model.psql.product.PsqlProduct;
-import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
-import com.springboot.dietapplication.model.psql.product.PsqlProductsAmountTypes;
+import com.springboot.dietapplication.model.psql.product.*;
 import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.*;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -31,7 +30,11 @@ public class ProductService {
     @Autowired
     AmountTypeRepository amountTypeRepository;
     @Autowired
+    AllergenTypeRepository allergenTypeRepository;
+    @Autowired
     ProductsAmountTypesRepository productsAmountTypesRepository;
+    @Autowired
+    ProductsAllergenTypesRepository productsAllergenTypesRepository;
 
     @Autowired
     FoodPropertiesService foodPropertiesService;
@@ -69,6 +72,7 @@ public class ProductService {
         productType.setId(product.getId());
 
         storeProductsAmountTypes(productType);
+        storeProductsAllergens(productType);
 
         return productType;
     }
@@ -115,6 +119,7 @@ public class ProductService {
         this.productRepository.save(product);
 
         storeProductsAmountTypes(productType);
+        storeProductsAllergens(productType);
 
         return productType;
     }
@@ -122,8 +127,7 @@ public class ProductService {
     public void delete(Long id) throws ResponseStatusException {
 
         Optional<PsqlProduct> product = this.productRepository.findById(id);
-        if (product.isEmpty())
-            return;
+        if (product.isEmpty()) return;
 
 //        UserEntity user = userDetailsService.getCurrentUser();
 //        if (!user.getUserType().equals(UserType.ADMIN.name) && !product.get().getUserId().equals(user.getId()))
@@ -135,17 +139,15 @@ public class ProductService {
     }
 
     private List<ProductType> convertLists(List<PsqlProductFoodProperties> products) {
-        List<ProductType> productTypeList = new ArrayList<>();
-        for (PsqlProductFoodProperties product : products) {
-            ProductType productType = new ProductType(product);
-
-            productType.setFoodProperties(new FoodPropertiesType(product));
-            productType.setAmountTypes(convertAmountTypes(product.getId()));
-
-            productTypeList.add(productType);
-        }
-
-        return productTypeList;
+        return products.stream().map(
+                product -> {
+                    ProductType productType = new ProductType(product);
+                    productType.setFoodProperties(new FoodPropertiesType(product));
+                    productType.setAmountTypes(convertAmountTypes(product.getId()));
+                    productType.setAllergenTypes(convertAllergenTypes(product.getId()));
+                    return productType;
+                })
+                .collect(Collectors.toList());
     }
 
     private List<ProductAmountType> convertAmountTypes(long productId) {
@@ -159,6 +161,19 @@ public class ProductService {
         });
 
         return amountTypes;
+    }
+
+    private List<AllergenType> convertAllergenTypes(long productId) {
+        List<AllergenType> allergenTypes = new ArrayList<>();
+
+        Set<PsqlProductsAllergenTypes> productsAllergens = productsAllergenTypesRepository.findPsqlProductsAllergenTypesByProductId(productId);
+
+        productsAllergens.forEach( productAllergenType -> {
+            Optional<AllergenType> optionalAllergenType = AllergenType.valueOf(productAllergenType.getAllergenTypeId());
+            optionalAllergenType.ifPresent(allergenTypes::add);
+        });
+
+        return allergenTypes;
     }
 
     private void storeProductsAmountTypes(ProductType productType) {
@@ -177,5 +192,23 @@ public class ProductService {
         }
 
         this.productsAmountTypesRepository.saveAll(productsAmountTypes);
+    }
+
+    private void storeProductsAllergens(ProductType productType) {
+        this.productsAllergenTypesRepository.deleteAllByProductId(productType.getId());
+
+        if (productType.getAllergenTypes() == null) return;
+        Set<PsqlProductsAllergenTypes> productAllergenTypes = new HashSet<>();
+
+        for (AllergenType allergenType : productType.getAllergenTypes()) {
+
+            PsqlAllergenType psqlAllergenType = this.allergenTypeRepository.getPsqlAllergenTypeByName(allergenType.name());
+            if (psqlAllergenType == null) continue;
+
+            PsqlProductsAllergenTypes productAllergenType = new PsqlProductsAllergenTypes(productType.getId(), psqlAllergenType.getId());
+            productAllergenTypes.add(productAllergenType);
+        }
+
+        this.productsAllergenTypesRepository.saveAll(productAllergenTypes);
     }
 }

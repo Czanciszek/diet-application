@@ -45,9 +45,7 @@ export class ProductService {
       vitaminC: new FormControl(null),
     }),
     amountTypes: new FormArray([]),
-    lactose: new FormControl(false),
-    starch: new FormControl(false),
-    gluten: new FormControl(false),
+    allergenTypes: new FormControl(null)
   });
 
   initializeFormGroup() {
@@ -88,9 +86,7 @@ export class ProductService {
           grams: null,
         }
       ],
-      lactose: false,
-      starch: false,
-      gluten: false,
+      allergenTypes: null
     })
   }
 

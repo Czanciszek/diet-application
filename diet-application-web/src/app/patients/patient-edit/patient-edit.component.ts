@@ -4,6 +4,7 @@ import {MatDialogRef} from "@angular/material/dialog";
 import {PatientService} from "../../service/patient.service";
 import {FormControl} from "@angular/forms";
 import {ProductService} from "../../service/product.service";
+import { ALLERGEN_TYPES } from "../../model/helpers/allergenTypes";
 
 @Component({
   selector: 'app-patient-edit',
@@ -16,11 +17,7 @@ export class PatientEditComponent implements OnInit {
   startDate = new Date(1985, 0, 1);
   date = new FormControl(new Date());
 
-  allergenTypes: any = [
-    { id: "STARCH", value: "Skrobia"},
-    { id: "LACTOSE", value: "Laktoza"},
-    { id: "GLUTEN", value: "Gluten"},
-  ];
+  allergenTypes = ALLERGEN_TYPES;
 
   unfilteredCategories = [];
   categories = [];

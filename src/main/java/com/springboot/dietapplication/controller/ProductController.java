@@ -20,8 +20,8 @@ public class ProductController {
     @GetMapping
     ResponseEntity<?> getAll() {
         try {
-            List<ProductType> patientList = this.productService.getAll();
-            return ResponseEntity.ok(patientList);
+            List<ProductType> productsList = this.productService.getAll();
+            return ResponseEntity.ok(productsList);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

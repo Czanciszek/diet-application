@@ -57,17 +57,17 @@
     <ng-container matColumnDef="alergens">
       <mat-header-cell *matHeaderCellDef>Alergeny</mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <div *ngIf="element.starch">
+        <div *ngIf="element.allergenTypes.includes('STARCH')">
           <img src="../../../assets/allergens/starch.jpg"
-               width="25" height="25" alt="Products" style="width:100%">
+               width="25" height="25" alt="Starch" style="width:100%">
         </div>
-        <div *ngIf="element.gluten">
+        <div *ngIf="element.allergenTypes.includes('GLUTEN')">
           <img src="../../../assets/allergens/gluten.jpg"
-               width="25" height="25" alt="Products" style="width:100%">
+               width="25" height="25" alt="Gluten" style="width:100%">
         </div>
-        <div *ngIf="element.lactose">
+        <div *ngIf="element.allergenTypes.includes('LACTOSE')">
           <img src="../../../assets/allergens/lactose.jpg"
-               width="25" height="25" alt="Products" style="width:100%">
+               width="25" height="25" alt="Lactose" style="width:100%">
         </div>
       </mat-cell>
     </ng-container>

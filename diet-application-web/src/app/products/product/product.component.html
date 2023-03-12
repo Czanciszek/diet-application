@@ -168,10 +168,13 @@
 
       <mat-grid-tile colspan="2">
         <div class="control-container">
+          <p>Alergeny:</p>
           <div class="add-bottom-padding">
-            <mat-checkbox formControlName="lactose">Laktoza</mat-checkbox>
-            <mat-checkbox formControlName="starch">Skrobia</mat-checkbox>
-            <mat-checkbox formControlName="gluten">Gluten</mat-checkbox>
+            <mat-select formControlName="allergenTypes" multiple>
+              <mat-option *ngFor="let allergen of allergens" [value]="allergen.id">
+                {{allergen.value}}
+              </mat-option>
+            </mat-select>
           </div>
         </div>
       </mat-grid-tile>

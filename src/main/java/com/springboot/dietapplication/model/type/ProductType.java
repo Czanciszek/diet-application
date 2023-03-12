@@ -6,7 +6,7 @@ import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperti
 import java.io.Serializable;
 import java.util.List;
 
-public class  ProductType implements Serializable {
+public class ProductType implements Serializable {
 
     private static final long serialVersionUID = -6504989715893867042L;
 
@@ -16,9 +16,7 @@ public class  ProductType implements Serializable {
     private String subcategory;
     private FoodPropertiesType foodProperties;
     private List<ProductAmountType> amountTypes;
-    private boolean lactose;
-    private boolean starch;
-    private boolean gluten;
+    private List<AllergenType> allergenTypes;
 
     public ProductType() {
     }
@@ -26,17 +24,11 @@ public class  ProductType implements Serializable {
     public ProductType(PsqlProduct psqlProduct) {
         this.id = psqlProduct.getId();
         this.name = psqlProduct.getName();
-        this.lactose = psqlProduct.isLactose();
-        this.starch = psqlProduct.isStarch();
-        this.gluten = psqlProduct.isGluten();
     }
 
     public ProductType(PsqlProductFoodProperties psqlProduct) {
         this.id = psqlProduct.getId();
         this.name = psqlProduct.getName();
-        this.lactose = psqlProduct.isLactose();
-        this.starch = psqlProduct.isStarch();
-        this.gluten = psqlProduct.isGluten();
         this.category = psqlProduct.getCategory();
         this.subcategory = psqlProduct.getSubcategory();
     }
@@ -89,27 +81,11 @@ public class  ProductType implements Serializable {
         this.amountTypes = amountTypes;
     }
 
-    public boolean isLactose() {
-        return lactose;
+    public List<AllergenType> getAllergenTypes() {
+        return allergenTypes;
     }
 
-    public void setLactose(boolean lactose) {
-        this.lactose = lactose;
-    }
-
-    public boolean isStarch() {
-        return starch;
-    }
-
-    public void setStarch(boolean starch) {
-        this.starch = starch;
-    }
-
-    public boolean isGluten() {
-        return gluten;
-    }
-
-    public void setGluten(boolean gluten) {
-        this.gluten = gluten;
+    public void setAllergenTypes(List<AllergenType> allergenTypes) {
+        this.allergenTypes = allergenTypes;
     }
 }

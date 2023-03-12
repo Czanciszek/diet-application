@@ -24,15 +24,6 @@ public class PsqlProductFoodProperties implements Serializable {
     @Column(name = "subcategory")
     private String subcategory;
 
-    @Column(name = "lactose")
-    private boolean lactose;
-
-    @Column(name = "starch")
-    private boolean starch;
-
-    @Column(name = "gluten")
-    private boolean gluten;
-
     @Column(name = "energy_value")
     private int energyValue;
 
@@ -135,30 +126,6 @@ public class PsqlProductFoodProperties implements Serializable {
 
     public void setSubcategory(String subcategory) {
         this.subcategory = subcategory;
-    }
-
-    public boolean isLactose() {
-        return lactose;
-    }
-
-    public void setLactose(boolean lactose) {
-        this.lactose = lactose;
-    }
-
-    public boolean isStarch() {
-        return starch;
-    }
-
-    public void setStarch(boolean starch) {
-        this.starch = starch;
-    }
-
-    public boolean isGluten() {
-        return gluten;
-    }
-
-    public void setGluten(boolean gluten) {
-        this.gluten = gluten;
     }
 
     public int getEnergyValue() {
