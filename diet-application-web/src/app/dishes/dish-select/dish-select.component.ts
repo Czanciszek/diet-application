@@ -7,6 +7,7 @@ import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {Dish} from "../../model/dish";
 import {DishUsage} from "../../model/dishUsage";
+import { FOOD_TYPES } from "../../model/helpers/foodTypes";
 
 export interface DishSelectDialogData {
   dishUsages: DishUsage[]
@@ -105,5 +106,11 @@ export class DishSelectComponent implements OnInit {
   parseDate(plainDate) {
     var date = new Date(plainDate);
     return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+  }
+
+  getFoodType(foodTypeId) {
+    if (foodTypeId == null) return;
+    let foodType = FOOD_TYPES.filter(x => x.id == foodTypeId);
+    return foodType[0].value;
   }
 }

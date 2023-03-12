@@ -29,7 +29,7 @@
       </ng-container>
       <ng-container matColumnDef="foodType" >
         <mat-header-cell *matHeaderCellDef mat-sort-header>Typ potrawy</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.foodType}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{getFoodType(element.foodType)}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="dishUsages" >
         <mat-header-cell *matHeaderCellDef mat-sort-header>Użycie w jadłospisach pacjenta</mat-header-cell>
