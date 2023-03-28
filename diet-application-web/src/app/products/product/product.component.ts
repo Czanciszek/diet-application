@@ -100,7 +100,7 @@ export class ProductComponent implements OnInit {
   updateProduct() {
     this.productService.updateProduct(this.productService.form.value).subscribe(
       _ => {
-        this.notificationService.success(":: Product zaktualizowany pomyślnie! ::");
+        this.notificationService.success(":: Produkt zaktualizowany pomyślnie! ::");
         this.onClose();
       }, error => {
         this.handleError(error);

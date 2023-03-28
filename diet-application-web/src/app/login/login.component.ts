@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {RestapiService} from "../service/restapi.service";
 import {LocalStorageService} from "../service/local-storage.service";
+import {NotificationService} from "../service/notification.service";
 import {Router} from "@angular/router";
 import { JSEncrypt } from 'jsencrypt';
 import { LoginResult } from "../model/loginResult";
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private apiService: RestapiService,
     private localStorageService: LocalStorageService,
+    private notificationService: NotificationService,
     private router: Router
   ) { }
 
@@ -46,7 +48,11 @@ export class LoginComponent implements OnInit {
         (loginResult: LoginResult) => {
           this.storeToken(loginResult.token);
           this.navigateHome();
-      });
+        }, (error) => {
+          if (error.status == 401) {
+            this.notificationService.error(":: Niepoprawne dane logowania! ::");
+          }
+        });
   }
 
   storeToken(token: string) {
