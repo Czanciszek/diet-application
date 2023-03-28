@@ -130,8 +130,13 @@
           <p>Alergeny:</p>
           <div class="add-bottom-padding">
             <mat-select formControlName="allergens" multiple>
-              <mat-option *ngFor="let option of allergenTypes" [value]="option.id">
-                {{option.value}}
+              <div>
+                <mat-form-field class="search-input">
+                  <input #allergenInput matInput placeholder="Szukaj..." autocomplete="off"/>
+                </mat-form-field>
+              </div>
+              <mat-option *ngFor="let allergen of allergens_list" [class.hide-option]="allergenInput.value !== '' && allergen.value.toLowerCase().indexOf(allergenInput.value.toLowerCase()) === -1" [value]="allergen.id">
+                {{allergen.value}}
               </mat-option>
             </mat-select>
           </div>
@@ -143,12 +148,12 @@
           <div class="add-bottom-padding">
             <mat-select formControlName="unlikelyCategories" multiple>
               <div>
-                <mat-form-field class="category-search-input">
-                  <input matInput placeholder="Szukaj..." (input)="filterOptions($event.target.value)" autocomplete="off"/>
+                <mat-form-field class="search-input">
+                  <input #categoryInput matInput placeholder="Szukaj..." autocomplete="off"/>
                 </mat-form-field>
               </div>
-              <mat-option *ngFor="let option of categories" [value]="option">
-                {{option}}
+              <mat-option *ngFor="let category of categories" [class.hide-option]="categoryInput.value !== '' && category.toLowerCase().indexOf(categoryInput.value.toLowerCase()) === -1" [value]="category">
+                {{category}}
               </mat-option>
             </mat-select>
           </div>

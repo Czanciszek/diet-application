@@ -43,6 +43,10 @@ div mat-checkbox {
   padding: 0px !important;
 }
 
-.category-search-input {
+.search-input {
   margin: 10px 0 0 10px;
+}
+
+.hide-option {
+  display: none;
 }

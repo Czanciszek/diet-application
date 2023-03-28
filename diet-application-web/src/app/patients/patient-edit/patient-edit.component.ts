@@ -17,9 +17,7 @@ export class PatientEditComponent implements OnInit {
   startDate = new Date(1985, 0, 1);
   date = new FormControl(new Date());
 
-  allergenTypes = ALLERGEN_TYPES;
-
-  unfilteredCategories = [];
+  allergens_list = ALLERGEN_TYPES;
   categories = [];
 
   constructor(
@@ -35,9 +33,8 @@ export class PatientEditComponent implements OnInit {
     let response = this.productService.getCategories();
     response.subscribe(data => {
       for (const key of Object.values(data)) {
-        this.unfilteredCategories.push(key.subcategory);
+        this.categories.push(key.subcategory);
       }
-      this.categories = this.unfilteredCategories;
     });
   }
 
@@ -47,32 +44,34 @@ export class PatientEditComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.patientService.form.valid) {
-      if (!this.patientService.form.get('id').value) {
-        this.patientService
-          .insertPatient(this.patientService.form.value)
-          .subscribe(
-            patient => {
-              this.notificationService.success(":: Pacjent dodany pomyślnie! ::");
-            }, error => {
-              this.notificationService.error(":: Wystąpił błąd podczas dodawania pacjenta! ::");
-            }, () => {
-              this.onClose();
-            }
-          );
-      } else {
-        this.patientService
-          .updatePatient(this.patientService.form.value)
-          .subscribe(
-            patient => {
-              this.notificationService.success(":: Pacjent zaktualizowany pomyślnie! ::");
-            }, error => {
-              this.notificationService.error(":: Wystąpił błąd podczas aktualizacji pacjenta! ::");
-            }, () => {
-              this.onClose();
-            }
-          );
-      }
+    if (!this.patientService.form.valid) {
+      return;
+    }
+
+    if (!this.patientService.form.get('id').value) {
+      this.patientService
+        .insertPatient(this.patientService.form.value)
+        .subscribe(
+          patient => {
+            this.notificationService.success(":: Pacjent dodany pomyślnie! ::");
+          }, error => {
+            this.notificationService.error(":: Wystąpił błąd podczas dodawania pacjenta! ::");
+          }, () => {
+            this.onClose();
+          }
+        );
+    } else {
+      this.patientService
+        .updatePatient(this.patientService.form.value)
+        .subscribe(
+          patient => {
+            this.notificationService.success(":: Pacjent zaktualizowany pomyślnie! ::");
+          }, error => {
+            this.notificationService.error(":: Wystąpił błąd podczas aktualizacji pacjenta! ::");
+          }, () => {
+            this.onClose();
+          }
+        );
     }
   }
 
@@ -80,9 +79,4 @@ export class PatientEditComponent implements OnInit {
     this.onClear();
     this.dialogRef.close();
   }
-
-  public filterOptions(filter: string): void {
-    this.categories = this.unfilteredCategories.filter(x => x.toLowerCase().includes(filter.toLowerCase()));
-  }
-
 }

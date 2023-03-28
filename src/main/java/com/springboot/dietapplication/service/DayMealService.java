@@ -1,7 +1,6 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.menu.PsqlDayMeal;
-import com.springboot.dietapplication.model.psql.menu.PsqlMenuProduct;
 import com.springboot.dietapplication.model.type.DayMealType;
 import com.springboot.dietapplication.model.type.DayType;
 import com.springboot.dietapplication.model.type.MealType;
