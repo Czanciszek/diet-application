@@ -51,6 +51,8 @@ export class LoginComponent implements OnInit {
         }, (error) => {
           if (error.status == 401) {
             this.notificationService.error(":: Niepoprawne dane logowania! ::");
+          } else {
+            this.notificationService.error(":: Wystąpiły problemy z serwerem - spróbuj ponownie później ::");
           }
         });
   }
