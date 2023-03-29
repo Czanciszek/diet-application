@@ -48,7 +48,7 @@
         <mat-grid-tile>
           <mat-form-field class="long-form-field">
             <mat-select formControlName="userType" placeholder="Typ użytkownika">
-              <ng-container *ngFor="let userType of ['ADMIN', 'USER']">
+              <ng-container *ngFor="let userType of ['ADMIN', 'DIETICIAN', 'PATIENT']">
                 <mat-option value="{{userType}}">{{userType}}</mat-option>
               </ng-container>
             </mat-select>
