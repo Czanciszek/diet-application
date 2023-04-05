@@ -253,7 +253,6 @@ public class PDFService {
     }
 
     private int getAssignedValue(PsqlFoodType foodType) {
-        System.out.println(foodType.getName().toUpperCase());
         switch (foodType.getName().toUpperCase()) {
             case "PRE_BREAKFAST":
                 return 0;
