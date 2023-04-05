@@ -7,10 +7,8 @@ import com.springboot.dietapplication.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class MealService {
@@ -149,6 +147,9 @@ public class MealService {
         for (PsqlMeal meal : mealList) {
             mealTypeList.add(convertPsqlDayMealToDayMealType(meal));
         }
+
+        mealTypeList.sort(new FoodTypeComparator());
+
         return mealTypeList;
     }
 
@@ -188,4 +189,40 @@ public class MealService {
 
         return mealType;
     }
+}
+
+class FoodTypeComparator implements Comparator<MealType> {
+
+    @Override
+    public int compare(MealType o1, MealType o2) {
+        return Integer.compare(getAssignedValue(o1), getAssignedValue(o2));
+    }
+
+    int getAssignedValue(MealType mealType) {
+        switch (mealType.getFoodType()) {
+            case PRE_BREAKFAST:
+                return 0;
+            case BREAKFAST:
+                return 1;
+            case BRUNCH:
+                return 2;
+            case SNACK:
+                return 3;
+            case DINNER:
+                return 4;
+            case TEA:
+                return 5;
+            case SUPPER:
+                return 6;
+            case PRE_WORKOUT:
+                return 7;
+            case POST_WORKOUT:
+                return 8;
+            case OVERNIGHT:
+                return 9;
+        }
+
+        return Integer.MAX_VALUE;
+    }
+
 }

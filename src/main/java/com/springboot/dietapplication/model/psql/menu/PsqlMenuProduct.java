@@ -40,8 +40,9 @@ public class PsqlMenuProduct implements Serializable, Comparator<Long> {
     @Column(name = "meal_name")
     private String mealName;
 
-    @Column(name = "food_type_id")
-    private Long foodTypeId;
+    @OneToOne
+    @JoinColumn(name = "food_type_id")
+    private PsqlFoodType foodType;
 
     @Column(name = "food_type_name")
     private String foodTypeName;
@@ -101,8 +102,8 @@ public class PsqlMenuProduct implements Serializable, Comparator<Long> {
         return mealName;
     }
 
-    public Long getFoodTypeId() {
-        return foodTypeId;
+    public PsqlFoodType getFoodType() {
+        return foodType;
     }
 
     public String getFoodTypeName() {

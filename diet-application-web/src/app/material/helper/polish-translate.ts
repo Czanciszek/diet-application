@@ -1,5 +1,7 @@
 export function translateDishType(name) {
   switch(name) {
+    case "PRE_BREAKFAST":
+      return "Przedśniadanie";
     case "BREAKFAST":
       return "Śniadanie";
     case "BRUNCH":

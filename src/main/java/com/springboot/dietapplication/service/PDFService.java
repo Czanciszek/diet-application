@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.helper.RomanianNumber;
+import com.springboot.dietapplication.model.psql.menu.PsqlFoodType;
 import com.springboot.dietapplication.model.psql.menu.PsqlMenuProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlShoppingProduct;
 import com.springboot.dietapplication.model.psql.user.UserEntity;
@@ -200,10 +201,10 @@ public class PDFService {
             contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
 
             Comparator<PsqlMenuProduct> comp = (p1, p2) -> {
-                if (p1.getFoodTypeId().compareTo(p2.getFoodTypeId()) == 0) {
+                if (getAssignedValue(p1.getFoodType()) == getAssignedValue(p2.getFoodType())) {
                     return Boolean.compare(p1.isProduct(), p2.isProduct());
                 }
-                return p1.getFoodTypeId().compareTo(p2.getFoodTypeId());
+                return getAssignedValue(p1.getFoodType()) > getAssignedValue(p2.getFoodType()) ? 1: -1;
             };
             dayEntry.getValue().sort(comp);
 
@@ -213,8 +214,8 @@ public class PDFService {
 
                 if (dayMealIds.contains(product.getMealId())) continue;
 
-                if (foodType != product.getFoodTypeId()) {
-                    foodType = product.getFoodTypeId();
+                if (foodType != product.getFoodType().getId()) {
+                    foodType = product.getFoodType().getId();
                     String text = bundle.getString(product.getFoodTypeName()) + ": ";
                     writeText(contentStream, new Point(40, pageOffset), timesBold, 12, text);
                 }
@@ -251,11 +252,42 @@ public class PDFService {
         closeContentStream(contentStream);
     }
 
+    private int getAssignedValue(PsqlFoodType foodType) {
+        System.out.println(foodType.getName().toUpperCase());
+        switch (foodType.getName().toUpperCase()) {
+            case "PRE_BREAKFAST":
+                return 0;
+            case "BREAKFAST":
+                return 1;
+            case "BRUNCH":
+                return 2;
+            case "SNACK":
+                return 3;
+            case "DINNER":
+                return 4;
+            case "TEA":
+                return 5;
+            case "SUPPER":
+                return 6;
+            case "PRE_WORKOUT":
+                return 7;
+            case "POST_WORKOUT":
+                return 8;
+            case "OVERNIGHT":
+                return 9;
+        }
+
+        return Integer.MAX_VALUE;
+    }
+
     private void writeFoodType(PDDocument document, PDPageContentStream contentStream, FoodType foodType) throws IOException {
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
         int fontSize = 24;
 
         switch (foodType) {
+            case PRE_BREAKFAST:
+                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Przedśniadania");
+                break;
             case BREAKFAST:
                 writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Śniadania");
                 break;
@@ -336,7 +368,7 @@ public class PDFService {
         pageOffset = 0;
 
         if (mealList.size() == 0) return;
-        mealList.sort(Comparator.comparing(MealType::getFoodType));
+        mealList.sort(new FoodTypeComparator());
 
         FoodType foodType = null;
 

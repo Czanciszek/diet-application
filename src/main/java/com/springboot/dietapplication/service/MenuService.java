@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -189,6 +190,9 @@ public class MenuService {
             Optional<PsqlFoodType> foodType = this.foodTypeRepository.findById(foodTypeMenu.getFoodTypeId());
             foodType.ifPresent(psqlFoodType -> foodTypeList.add(FoodType.valueOf(psqlFoodType.getName())));
         }
+
+        foodTypeList.sort(new MenuFoodTypeComparator());
+
         menuType.setFoodTypes(foodTypeList);
 
         List<Long> weekMealIdList = this.weekMealService.getWeekMealIdList(psqlMenu.getId());
@@ -201,6 +205,42 @@ public class MenuService {
         menuType.setDayMealTypeList(dayMealTypeList);
 
         return menuType;
+    }
+
+}
+
+class MenuFoodTypeComparator implements Comparator<FoodType> {
+
+    @Override
+    public int compare(FoodType o1, FoodType o2) {
+        return Integer.compare(getAssignedValue(o1), getAssignedValue(o2));
+    }
+
+    int getAssignedValue(FoodType foodType) {
+        switch (foodType) {
+            case PRE_BREAKFAST:
+                return 0;
+            case BREAKFAST:
+                return 1;
+            case BRUNCH:
+                return 2;
+            case SNACK:
+                return 3;
+            case DINNER:
+                return 4;
+            case TEA:
+                return 5;
+            case SUPPER:
+                return 6;
+            case PRE_WORKOUT:
+                return 7;
+            case POST_WORKOUT:
+                return 8;
+            case OVERNIGHT:
+                return 9;
+        }
+
+        return Integer.MAX_VALUE;
     }
 
 }

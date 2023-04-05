@@ -2,6 +2,7 @@ package com.springboot.dietapplication.model.type;
 
 public enum FoodType {
 
+    PRE_BREAKFAST,
     BREAKFAST,
     BRUNCH,
     SNACK,
