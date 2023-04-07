@@ -16,7 +16,7 @@
               <mat-form-field class="long-form-field">
                 <mat-select placeholder="Pacjent" value="{{copyItem.patientId}}" (valueChange)="onPatientChange($event)">
                   <ng-container *ngFor="let patient of patientList">
-                    <mat-option value="{{patient.id}}">{{patient.name}}</mat-option>
+                    <mat-option value="{{patient.id}}">{{patient.name}} {{patient.surname}}</mat-option>
                   </ng-container>
                 </mat-select>
               </mat-form-field>
