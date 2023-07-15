@@ -82,9 +82,12 @@ public class DayMealService {
         List<PsqlDayMeal> dayMeals = dayMealRepository.getPsqlDayMealsByWeekMealId(originWeekMealId);
 
         for (PsqlDayMeal originDayMeal : dayMeals) {
-            PsqlDayMeal newDayMeal = new PsqlDayMeal(originDayMeal);
-            newDayMeal.setWeekMealId(newWeekMealId);
+            PsqlDayMeal newDayMeal = new PsqlDayMeal();
 
+            Optional<DayType> optionalDayType = DayType.valueOf(dateTime.dayOfWeek().get() % 7);
+            optionalDayType.ifPresent(dayType -> newDayMeal.setDayType(dayType.toString()));
+
+            newDayMeal.setWeekMealId(newWeekMealId);
             newDayMeal.setDate(dateTime.toString());
             dateTime = dateTime.plusDays(1);
 
