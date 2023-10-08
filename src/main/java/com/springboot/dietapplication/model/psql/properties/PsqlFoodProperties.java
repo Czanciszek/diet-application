@@ -3,13 +3,16 @@ package com.springboot.dietapplication.model.psql.properties;
 import com.springboot.dietapplication.model.excel.ProductExcel;
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "food_properties")
 public class PsqlFoodProperties implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -5866604759669794184L;
 
     @Id

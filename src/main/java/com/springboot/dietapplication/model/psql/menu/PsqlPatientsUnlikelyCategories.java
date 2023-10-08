@@ -1,12 +1,15 @@
 package com.springboot.dietapplication.model.psql.menu;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "patients_unlikely_categories")
 public class PsqlPatientsUnlikelyCategories implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 7691073841493970210L;
 
     @Id

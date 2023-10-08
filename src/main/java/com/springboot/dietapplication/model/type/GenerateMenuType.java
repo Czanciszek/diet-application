@@ -1,9 +1,11 @@
 package com.springboot.dietapplication.model.type;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class GenerateMenuType implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -8763605596788667847L;
 
     private Long menuId;

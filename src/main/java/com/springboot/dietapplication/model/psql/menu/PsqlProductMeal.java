@@ -2,13 +2,16 @@ package com.springboot.dietapplication.model.psql.menu;
 
 import com.springboot.dietapplication.model.type.ProductDishType;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "products_meals")
 public class PsqlProductMeal implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -1528940627693233878L;
 
     @Id

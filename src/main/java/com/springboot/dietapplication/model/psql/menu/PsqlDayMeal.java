@@ -2,14 +2,18 @@ package com.springboot.dietapplication.model.psql.menu;
 
 import com.springboot.dietapplication.model.type.DayMealType;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "day_meals")
 public class PsqlDayMeal implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -146058555964495441L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,5 +1,6 @@
 package com.springboot.dietapplication.config;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenUtil implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1951719764778557404L;
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 2387;

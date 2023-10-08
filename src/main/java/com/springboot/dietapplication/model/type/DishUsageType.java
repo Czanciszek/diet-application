@@ -2,10 +2,12 @@ package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.psql.dish.PsqlDishUsage;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class DishUsageType implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 5273753757462853686L;
 
     private final Long menuId;

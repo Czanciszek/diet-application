@@ -33,7 +33,7 @@ public class PatientController {
             PatientType patient = this.patientService.getPatientById(patientId);
             return ResponseEntity.ok(patient);
         } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
+            return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(patientId);
         }
@@ -45,7 +45,7 @@ public class PatientController {
             PatientType patientType = this.patientService.insert(patient);
             return ResponseEntity.ok().body(patientType);
         } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
+            return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(patient);
         }
@@ -57,7 +57,7 @@ public class PatientController {
             PatientType patientType = this.patientService.update(patient);
             return ResponseEntity.ok().body(patientType);
         } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
+            return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(patient);
         }
@@ -69,7 +69,7 @@ public class PatientController {
             this.patientService.delete(id);
             return ResponseEntity.ok().build();
         } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
+            return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(id);
         }

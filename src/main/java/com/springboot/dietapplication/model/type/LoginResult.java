@@ -1,9 +1,11 @@
 package com.springboot.dietapplication.model.type;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class LoginResult implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 4159009491099581799L;
 
     private String token;

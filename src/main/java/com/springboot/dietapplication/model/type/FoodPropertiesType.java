@@ -4,13 +4,16 @@ import com.springboot.dietapplication.model.excel.ProductExcel;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 import com.springboot.dietapplication.model.psql.properties.PsqlFoodProperties;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 public class FoodPropertiesType implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 8958334201429822540L;
 
     @Id

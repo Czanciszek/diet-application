@@ -1,13 +1,16 @@
 package com.springboot.dietapplication.model.psql.user;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 public class UserEntity implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -3196537900995603L;
-    
+
     @Id
     private Long id;
     private String userType;

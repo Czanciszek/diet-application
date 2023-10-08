@@ -1,10 +1,12 @@
 package com.springboot.dietapplication.model.type;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 public class MenuSendingType implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -5136000565494491767L;
 
     private Long id;

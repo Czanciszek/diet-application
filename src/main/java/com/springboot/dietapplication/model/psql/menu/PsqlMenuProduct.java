@@ -1,6 +1,8 @@
 package com.springboot.dietapplication.model.psql.menu;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -8,6 +10,7 @@ import java.util.Comparator;
 @IdClass(PsqlMenuProductKey.class)
 public class PsqlMenuProduct implements Serializable, Comparator<Long> {
 
+    @Serial
     private static final long serialVersionUID = -4691174861219232915L;
 
     @Id

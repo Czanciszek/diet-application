@@ -2,13 +2,16 @@ package com.springboot.dietapplication.model.psql.patient;
 
 import com.springboot.dietapplication.model.type.PatientType;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "patients")
 public class PsqlPatient implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 6549760342516106979L;
 
     @Id

@@ -2,7 +2,7 @@ package com.springboot.dietapplication.model.psql.dish;
 
 import com.springboot.dietapplication.model.type.ProductDishType;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "products_dishes")

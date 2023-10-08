@@ -33,7 +33,7 @@ public class ProductController {
             ProductType product = this.productService.insert(productType);
             return ResponseEntity.ok().body(product);
         } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
+            return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(productType);
         }
@@ -45,7 +45,7 @@ public class ProductController {
             ProductType product = this.productService.update(productType);
             return ResponseEntity.ok().body(product);
         } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
+            return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(productType);
         }
@@ -57,7 +57,7 @@ public class ProductController {
             this.productService.delete(id);
             return ResponseEntity.ok().build();
         } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
+            return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(id);
         }

@@ -44,7 +44,7 @@ public class DishController {
             DishType dish = this.dishService.insert(dishType);
             return ResponseEntity.ok().body(dish);
         } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
+            return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(dishType);
         }
@@ -56,7 +56,7 @@ public class DishController {
             DishType dish = this.dishService.update(dishType);
             return ResponseEntity.ok().body(dish);
         } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
+            return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(dishType);
         }
@@ -68,7 +68,7 @@ public class DishController {
             this.dishService.delete(id);
             return ResponseEntity.ok().build();
         } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
+            return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(id);
         }

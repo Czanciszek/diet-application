@@ -3,11 +3,13 @@ package com.springboot.dietapplication.model.type;
 import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
 import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 public class ProductDishType implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -3141818667020448755L;
 
     private Long productId;

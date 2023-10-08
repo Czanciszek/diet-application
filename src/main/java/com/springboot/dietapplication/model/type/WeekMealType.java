@@ -2,11 +2,13 @@ package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.psql.menu.PsqlWeekMeal;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 public class WeekMealType implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -103585575521933971L;
 
     private Long id;

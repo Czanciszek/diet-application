@@ -1,12 +1,15 @@
 package com.springboot.dietapplication.model.psql.patient;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "patients_allergens")
 public class PsqlPatientsAllergenTypes implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 4356539590928249464L;
 
     @Id

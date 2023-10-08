@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.model.psql.user;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user_types")

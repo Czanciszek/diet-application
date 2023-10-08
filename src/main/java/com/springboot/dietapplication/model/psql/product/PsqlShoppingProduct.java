@@ -1,11 +1,14 @@
 package com.springboot.dietapplication.model.psql.product;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 public class PsqlShoppingProduct implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -3066021203099671748L;
 
     @Id

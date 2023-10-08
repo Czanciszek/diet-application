@@ -20,7 +20,7 @@ public class WeekMealController {
             this.weekMealService.delete(id);
             return ResponseEntity.ok().build();
         } catch (ResponseStatusException e) {
-            return new ResponseEntity<HttpStatus>(e.getStatus());
+            return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(id);
         }
