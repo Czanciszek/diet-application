@@ -1,12 +1,11 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.1.RELEASE'
+    id 'org.springframework.boot' version '3.1.2'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'java'
 }
 
 group = 'com.springboot'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
@@ -14,21 +13,24 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.7.8'
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.7.8'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.8'
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.1.0'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.0.4'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.4'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
-    implementation 'org.postgresql:postgresql:42.3.6'
+    // Data Type Converter used in JwtTokenUtil
+    implementation 'org.glassfish:javax.xml.bind:3.0-Prelude'
+
+    implementation 'org.postgresql:postgresql:42.5.4'
 
     implementation 'io.github.biezhi:excel-plus:1.0.8'
-    implementation 'joda-time:joda-time:2.10.14'
-    implementation 'org.apache.pdfbox:pdfbox:2.0.26'
+    implementation 'joda-time:joda-time:2.12.5'
+    implementation 'org.apache.pdfbox:pdfbox:2.0.27'
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test:2.7.0') {
+    testImplementation('org.springframework.boot:spring-boot-starter-test:3.1.0') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    testImplementation 'io.projectreactor:reactor-test:3.4.18'
+    testImplementation 'io.projectreactor:reactor-test:3.5.4'
 
 }
 
