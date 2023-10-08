@@ -2,20 +2,17 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.config.JwtTokenUtil;
 import com.springboot.dietapplication.config.KeyUtility;
+import com.springboot.dietapplication.config.SpringSecurityConfig;
 import com.springboot.dietapplication.model.psql.user.PsqlUser;
 import com.springboot.dietapplication.model.psql.user.PsqlUserType;
 import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.LoginResult;
 import com.springboot.dietapplication.repository.UserTypeRepository;
-import com.springboot.dietapplication.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,16 +25,13 @@ import java.util.List;
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    private JwtUserDetailsService userDetailsService;
+    private UserTypeRepository userTypeRepository;
 
     @Autowired
-    private UserTypeRepository userTypeRepository;
+    SpringSecurityConfig springSecurityConfig;
 
     @GetMapping(value = "/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestHeader HttpHeaders httpHeaders) {
@@ -47,7 +41,7 @@ public class AuthController {
             String[] decodedValues = decodeAuthorization(httpHeaders.get("AuthEncrypt"));
             authenticate(decodedValues);
 
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(decodedValues[0]);
+            final UserDetails userDetails = springSecurityConfig.jwtUserDetailsService().loadUserByUsername(decodedValues[0]);
             token = jwtTokenUtil.generateToken(userDetails);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -64,7 +58,7 @@ public class AuthController {
         PsqlUserType userType = userTypeRepository.findByName(userEntity.getUserType().toUpperCase());
         user.setUserTypeId(userType.getId());
 
-        userDetailsService.registerNewUser(user);
+        springSecurityConfig.jwtUserDetailsService().registerNewUser(user);
 
         return ResponseEntity.ok(user);
     }
@@ -89,7 +83,8 @@ public class AuthController {
             if (decodedValues.length != 2) {
                 throw new Exception("INVALID_CREDENTIALS");
             }
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(decodedValues[0], decodedValues[1]));
+
+            springSecurityConfig.authenticationProvider().authenticate(new UsernamePasswordAuthenticationToken(decodedValues[0], decodedValues[1]));
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
