@@ -13,35 +13,37 @@
 
   <form [formGroup]="productServiceForm" class="normal-form" (submit)="onSubmit()">
     <mat-grid-list cols="7" rowHeight="70px">
-      <mat-grid-tile colspan="2">
-        <div class="control-container">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <mat-select formControlName="category" placeholder="Kategoria" (valueChange)="onCategoryChange($event)">
-                <ng-container *ngFor="let category of categories">
-                  <mat-option value="{{category}}">{{category}}</mat-option>
-                </ng-container>
-              </mat-select>
-              <mat-error *ngIf="productServiceForm.controls['category'].errors?.required">Pole wymagane</mat-error>
-            </mat-form-field>
+      <form formGroupName="category">
+        <mat-grid-tile colspan="2">
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <mat-select formControlName="category" placeholder="Kategoria" (valueChange)="onCategoryChange($event)">
+                  <ng-container *ngFor="let category of categories">
+                    <mat-option value="{{category}}">{{category}}</mat-option>
+                  </ng-container>
+                </mat-select>
+                <mat-error *ngIf="productServiceForm.get('category').get('category').errors?.required">Pole wymagane</mat-error>
+              </mat-form-field>
+            </div>
           </div>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile colspan="2">
-        <div class="control-container">
-          <div class="add-bottom-padding">
-            <mat-form-field>
-              <mat-select formControlName="subcategory" placeholder="Podkategoria"
-                (valueChange)="onSubcategoryChange($event)">
-                <ng-container *ngFor="let subcategory of subcategories">
-                  <mat-option value="{{subcategory}}">{{subcategory}}</mat-option>
-                </ng-container>
-              </mat-select>
-              <mat-error *ngIf="productServiceForm.controls['subcategory'].errors?.required">Pole wymagane</mat-error>
-            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="2">
+          <div class="control-container">
+            <div class="add-bottom-padding">
+              <mat-form-field>
+                <mat-select formControlName="subcategory" placeholder="Podkategoria"
+                  (valueChange)="onSubcategoryChange($event)">
+                  <ng-container *ngFor="let subcategory of subcategories">
+                    <mat-option value="{{subcategory}}">{{subcategory}}</mat-option>
+                  </ng-container>
+                </mat-select>
+                <mat-error *ngIf="productServiceForm.get('category').get('subcategory').errors?.required">Pole wymagane</mat-error>
+              </mat-form-field>
+            </div>
           </div>
-        </div>
-      </mat-grid-tile>
+        </mat-grid-tile>
+      </form>
       <mat-grid-tile colspan="3">
         <div class="control-container">
           <div class="add-bottom-padding">

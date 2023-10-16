@@ -39,7 +39,7 @@ public class PsqlProduct implements Serializable {
     }
 
     public PsqlProduct(ProductType productType) {
-        this.id = productType.getId();
+        this.id = Long.valueOf(productType.getId());
         this.name = productType.getName();
     }
 

@@ -18,8 +18,10 @@ export class ProductService {
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
-    category: new FormControl('', Validators.required),
-    subcategory: new FormControl('', Validators.required),
+    category: new FormGroup({
+      category: new FormControl('', Validators.required),
+      subcategory: new FormControl('', Validators.required),
+    }),
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     foodProperties: new FormGroup({
       id: new FormControl(null),
@@ -54,8 +56,10 @@ export class ProductService {
 
     this.form.setValue({
       id: null,
-      category: '',
-      subcategory: '',
+      category: {
+        category: '',
+        subcategory: '',
+      },
       name: '',
       foodProperties: {
         id: null,
@@ -128,7 +132,10 @@ export class ProductService {
       (<FormArray>this.form.get('amountTypes')).push(this.addAmountTypeFormGroup());
     }
 
+    console.log("PRODUCT", product);
+        console.log("FORM", this.form);
     this.form.setValue(product);
+        console.log("PASS", product);
   }
 
   clearForm() {

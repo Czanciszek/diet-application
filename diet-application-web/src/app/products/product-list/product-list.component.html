@@ -28,11 +28,11 @@
   <mat-table [dataSource]="listData" matSort>
     <ng-container matColumnDef="category">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Kategoria</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.category}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{element.category.category}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="subcategory">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Podkategoria</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.subcategory}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{element.category.subcategory}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa produktu</mat-header-cell>

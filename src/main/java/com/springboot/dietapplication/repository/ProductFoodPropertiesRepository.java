@@ -11,7 +11,7 @@ import java.util.List;
 public interface ProductFoodPropertiesRepository extends JpaRepository<PsqlProductFoodProperties, Long> {
 
     String selectProductQuery = "SELECT " +
-            "p.id, p.user_id, category, subcategory, name, energy_value, proteins, fats, " +
+            "p.id, p.user_id, p.category_id, category, subcategory, name, energy_value, proteins, fats, " +
             "saturated_fatty_acids, mono_unsaturated_fatty_acids, poly_unsaturated_fatty_acids, " +
             "cholesterol, carbohydrates, sucrose, dietary_fibres, sodium, potassium, calcium, phosphorus, magnesium, " +
             "iron, selenium, beta_carotene, vitamin_d, vitamin_c " +

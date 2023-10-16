@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.helper;
+package com.springboot.dietapplication.utils;
 
 public enum RomanianNumber {
     I(1),

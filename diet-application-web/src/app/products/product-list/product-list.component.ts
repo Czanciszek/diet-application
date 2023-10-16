@@ -23,7 +23,7 @@ export class ProductListComponent implements OnInit {
     private notificationService: NotificationService
   ) { }
 
-  listData: MatTableDataSource<any>;
+  listData: MatTableDataSource<Product>;
   displayedColumns: string[] = ['category', 'subcategory', 'name',
     'energyValue', 'proteins', 'fats', 'carbohydrates',
     'alergens', 'actions'];
@@ -43,16 +43,25 @@ export class ProductListComponent implements OnInit {
       .subscribe(
         (data: Product[]) => {
 
-          this.productService.productList = [...data];
+          this.productService.productList = data.map(productData => {
+            return new Product(
+              productData['id'],
+              productData['name'],
+              productData['category'],
+              productData['foodProperties'],
+              productData['amountTypes'],
+              productData['allergenTypes'],
+            )
+          });
+
           this.listData = new MatTableDataSource(this.productService.productList);
           this.listData.sort = this.sort;
           this.listData.paginator = this.paginator;
 
           this.listData.filterPredicate = (data: Product, filter: string) => {
-            return data.name == null ||
-              data.name.toLowerCase().includes(filter) ||
-              data.category.toLowerCase().includes(filter) ||
-              data.subcategory.toLowerCase().includes(filter);
+            return data.name == null || data.name.toLowerCase().includes(filter) ||
+              data.category.category == null || data.category.category.toLowerCase().includes(filter) ||
+              data.category.subcategory == null || data.category.subcategory.toLowerCase().includes(filter);
           };
         });
   }

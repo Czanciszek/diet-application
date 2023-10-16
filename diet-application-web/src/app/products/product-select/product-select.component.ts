@@ -18,7 +18,7 @@ export class ProductSelectComponent implements OnInit {
     public dialogRef: MatDialogRef<ProductSelectComponent>,
   ) { }
 
-  productList: MatTableDataSource<Product> = new MatTableDataSource();
+  productList: MatTableDataSource<Partial<Product>> = new MatTableDataSource();
   displayedColumns: string[] = ['category', 'subcategory', 'name',
     'energyValue', 'proteins', 'fats', 'carbohydrates',
     'alergens', 'actions'];
@@ -43,8 +43,8 @@ export class ProductSelectComponent implements OnInit {
     this.productList.filterPredicate = (product: Product, filter: string) => {
     return product.name == null ||
       product.name.toLowerCase().includes(filter) ||
-      product.category.toLowerCase().includes(filter) ||
-      product.subcategory.toLowerCase().includes(filter);
+      product.category.category.toLowerCase().includes(filter) ||
+      product.category.subcategory.toLowerCase().includes(filter);
     };
 
     if (this.paginator && this.sort) {

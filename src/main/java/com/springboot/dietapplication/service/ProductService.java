@@ -45,8 +45,6 @@ public class ProductService {
 
     public List<ProductType> getAll() {
 
-//        UserEntity user = userDetailsService.getCurrentUser();
-//        List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllUserProducts(user.getId());
         List<PsqlProductFoodProperties> products = this.productFoodPropertiesRepository.getAllProducts();
 
         return convertLists(products);
@@ -69,7 +67,7 @@ public class ProductService {
         product.setUserId(user.getId());
 
         this.productRepository.save(product);
-        productType.setId(product.getId());
+        productType.setId(String.valueOf(product.getId()));
 
         storeProductsAmountTypes(productType);
         storeProductsAllergens(productType);
@@ -83,7 +81,8 @@ public class ProductService {
         if (productType.getId() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product id cannot be null");
 
-        Optional<PsqlProduct> psqlProduct = this.productRepository.findById(productType.getId());
+        Long productId = Long.parseLong(productType.getId());
+        Optional<PsqlProduct> psqlProduct = this.productRepository.findById(productId);
         if (psqlProduct.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product does not exist");
 
@@ -124,16 +123,17 @@ public class ProductService {
         return productType;
     }
 
-    public void delete(Long id) throws ResponseStatusException {
+    public void delete(String id) throws ResponseStatusException {
 
-        Optional<PsqlProduct> product = this.productRepository.findById(id);
+        Long productId = Long.parseLong(id);
+        Optional<PsqlProduct> product = this.productRepository.findById(productId);
         if (product.isEmpty()) return;
 
 //        UserEntity user = userDetailsService.getCurrentUser();
 //        if (!user.getUserType().equals(UserType.ADMIN.name) && !product.get().getUserId().equals(user.getId()))
 //            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting product attempt");
 
-        this.productRepository.deleteById(id);
+        this.productRepository.deleteById(productId);
         this.foodPropertiesService.delete(product.get().getFoodPropertiesId());
 
     }
@@ -177,7 +177,8 @@ public class ProductService {
     }
 
     private void storeProductsAmountTypes(ProductType productType) {
-        this.productsAmountTypesRepository.deleteAllByProductId(productType.getId());
+        Long productId = Long.parseLong(productType.getId());
+        this.productsAmountTypesRepository.deleteAllByProductId(productId);
 
         if (productType.getAmountTypes() == null) return;
         Set<PsqlProductsAmountTypes> productsAmountTypes = new HashSet<>();
@@ -187,7 +188,7 @@ public class ProductService {
             PsqlAmountType psqlAmountType = this.amountTypeRepository.getPsqlAmountTypeByName(productAmountType.getAmountType().name());
             if (psqlAmountType == null) continue;
 
-            PsqlProductsAmountTypes productAmountTypes = new PsqlProductsAmountTypes(productType.getId(), psqlAmountType.getId(), productAmountType.getGrams());
+            PsqlProductsAmountTypes productAmountTypes = new PsqlProductsAmountTypes(productId, psqlAmountType.getId(), productAmountType.getGrams());
             productsAmountTypes.add(productAmountTypes);
         }
 
@@ -195,7 +196,8 @@ public class ProductService {
     }
 
     private void storeProductsAllergens(ProductType productType) {
-        this.productsAllergenTypesRepository.deleteAllByProductId(productType.getId());
+        Long productId = Long.parseLong(productType.getId());
+        this.productsAllergenTypesRepository.deleteAllByProductId(productId);
 
         if (productType.getAllergenTypes() == null) return;
         Set<PsqlProductsAllergenTypes> productAllergenTypes = new HashSet<>();
@@ -205,7 +207,7 @@ public class ProductService {
             PsqlAllergenType psqlAllergenType = this.allergenTypeRepository.getPsqlAllergenTypeByName(allergenType.name());
             if (psqlAllergenType == null) continue;
 
-            PsqlProductsAllergenTypes productAllergenType = new PsqlProductsAllergenTypes(productType.getId(), psqlAllergenType.getId());
+            PsqlProductsAllergenTypes productAllergenType = new PsqlProductsAllergenTypes(productId, psqlAllergenType.getId());
             productAllergenTypes.add(productAllergenType);
         }
 

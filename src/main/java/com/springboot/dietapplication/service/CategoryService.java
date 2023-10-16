@@ -34,8 +34,8 @@ public class CategoryService {
     }
 
     public PsqlCategory findCategory(ProductType productType) {
-        String category = productType.getCategory();
-        String subcategory = productType.getSubcategory();
+        String category = productType.getCategory().getCategory();
+        String subcategory = productType.getCategory().getSubcategory();
 
         return this.categoryRepository.getCategoryByCategoryAndSubcategory(category, subcategory);
     }

@@ -2,6 +2,7 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.type.ProductType;
 import com.springboot.dietapplication.service.ProductService;
+import com.springboot.dietapplication.service.ProductServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.util.*;
 public class ProductController {
 
     @Autowired
-    ProductService productService;
+    ProductServiceV2 productService;
 
     @GetMapping
     ResponseEntity<?> getAll() {
@@ -52,7 +53,7 @@ public class ProductController {
     }
 
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<?> delete(@PathVariable Long id) {
+    ResponseEntity<?> delete(@PathVariable String id) {
         try {
             this.productService.delete(id);
             return ResponseEntity.ok().build();

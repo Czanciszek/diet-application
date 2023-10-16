@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.service;
 
-import com.springboot.dietapplication.helper.RomanianNumber;
+import com.springboot.dietapplication.utils.RomanianNumber;
 import com.springboot.dietapplication.model.psql.menu.PsqlFoodType;
 import com.springboot.dietapplication.model.psql.menu.PsqlMenuProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlShoppingProduct;

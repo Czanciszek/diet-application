@@ -13,9 +13,13 @@ repositories {
 }
 
 dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
     implementation 'org.springframework.boot:spring-boot-starter-web:3.1.0'
     implementation 'org.springframework.boot:spring-boot-starter-security:3.0.4'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.4'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:3.1.4'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
     // Data Type Converter used in JwtTokenUtil

@@ -56,7 +56,7 @@ export class ProductComponent implements OnInit {
     this.subcategories.clear();
     const filteredCategories = this.categoryList.filter(x => !!x.category && x.category.includes(category));
     this.fillSubcategories(filteredCategories);
-    this.productService.form.controls['subcategory'].setValue(null);
+    this.productServiceForm.get('category').get('subcategory').patchValue(null);
   }
 
   onSubcategoryChange(subcategory) {
@@ -64,8 +64,8 @@ export class ProductComponent implements OnInit {
     const filteredCategory = this.categoryList.find(x => !!x.subcategory && x.subcategory.includes(subcategory));
 
     this.onCategoryChange(filteredCategory.category);
-    this.productService.form.controls['category'].setValue(filteredCategory.category);
-    this.productService.form.controls['subcategory'].setValue(subcategory);
+    this.productServiceForm.get('category').get('category').patchValue(filteredCategory.category);
+    this.productServiceForm.get('category').get('subcategory').patchValue(subcategory);
   }
 
   onClear() {
