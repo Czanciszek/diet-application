@@ -7,6 +7,7 @@ build/
 
 ### RSA KEY ###
 **/src/main/resources/key/**
+**/src/main/resources/key/application.properties
 
 ### STS ###
 .apt_generated
