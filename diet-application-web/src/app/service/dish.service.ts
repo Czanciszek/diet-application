@@ -101,7 +101,7 @@ export class DishService {
   }
 
   getDishes() {
-    return this.restApiService.get("dishes");
+    return this.restApiService.get("dishes", "v2");
   }
 
   getDishUsages(patientId) {
@@ -109,15 +109,15 @@ export class DishService {
   }
 
   insertDish(dish) {
-    return this.restApiService.post(dish, "dishes");
+    return this.restApiService.post(dish, "dishes", "v2");
   }
 
   updateDish(dish) {
-    return this.restApiService.put(dish, "dishes");
+    return this.restApiService.put(dish, "dishes", "v2");
   }
 
   deleteDish(id: string) {
-    return this.restApiService.delete("dishes/" + id);
+    return this.restApiService.delete("dishes/" + id, "v2");
   }
 
 }

@@ -21,10 +21,14 @@ public interface ProductFoodPropertiesRepository extends JpaRepository<PsqlProdu
 
     String userRestrictQuery = "WHERE p.is_system IS TRUE OR p.user_id = :userId";
 
+    String productRestrictQuery = "WHERE p.id = :productId";
+
     @Query(value = selectProductQuery + userRestrictQuery, nativeQuery = true)
     List<PsqlProductFoodProperties> getAllUserProducts(@Param("userId") Long userId);
 
     @Query(value = selectProductQuery, nativeQuery = true)
     List<PsqlProductFoodProperties> getAllProducts();
 
+    @Query(value = selectProductQuery + productRestrictQuery, nativeQuery = true)
+    PsqlProductFoodProperties findProductById(@Param("productId") Long productId);
 }

@@ -1,21 +1,21 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.type.ProductType;
-import com.springboot.dietapplication.service.ProductService;
+import com.springboot.dietapplication.service.ProductServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/products")
-public class ProductController {
+@RequestMapping("/api/v2/products")
+public class ProductControllerV2 {
 
     @Autowired
-    ProductService productService;
+    ProductServiceV2 productService;
 
     @GetMapping
     ResponseEntity<?> getAll() {

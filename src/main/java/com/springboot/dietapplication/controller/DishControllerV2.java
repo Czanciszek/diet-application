@@ -1,60 +1,67 @@
 package com.springboot.dietapplication.controller;
 
-import com.springboot.dietapplication.model.type.ProductType;
-import com.springboot.dietapplication.service.ProductService;
+import com.springboot.dietapplication.model.type.DishType;
+import com.springboot.dietapplication.model.type.DishUsageType;
+import com.springboot.dietapplication.service.DishServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/products")
-public class ProductController {
+@RequestMapping("api/v2/dishes")
+public class DishControllerV2 {
 
     @Autowired
-    ProductService productService;
+    DishServiceV2 dishService;
 
     @GetMapping
     ResponseEntity<?> getAll() {
         try {
-            List<ProductType> productsList = this.productService.getAll();
-            return ResponseEntity.ok(productsList);
+            List<DishType> dishList = this.dishService.getAll();
+            return ResponseEntity.ok(dishList);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
+    //TODO: Implement when MongoPatient will be ready
+    @GetMapping(path = "/patient-usage/{patientId}")
+    ResponseEntity<?> dishUsage(@PathVariable Long patientId) {
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping(produces = "application/json")
-    ResponseEntity<?> insert(@RequestBody ProductType productType) {
+    ResponseEntity<?> insert(@RequestBody DishType dishType) {
         try {
-            ProductType product = this.productService.insert(productType);
-            return ResponseEntity.ok().body(product);
+            DishType dish = this.dishService.insert(dishType);
+            return ResponseEntity.ok().body(dish);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(productType);
+            return ResponseEntity.badRequest().body(dishType);
         }
     }
 
     @PutMapping(produces = "application/json")
-    ResponseEntity<?> update(@RequestBody ProductType productType) {
+    ResponseEntity<?> update(@RequestBody DishType dishType) {
         try {
-            ProductType product = this.productService.update(productType);
-            return ResponseEntity.ok().body(product);
+            DishType dish = this.dishService.update(dishType);
+            return ResponseEntity.ok().body(dish);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<HttpStatus>(e.getStatusCode());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(productType);
+            return ResponseEntity.badRequest().body(dishType);
         }
     }
 
     @DeleteMapping(path = "/{id}")
     ResponseEntity<?> delete(@PathVariable String id) {
         try {
-            this.productService.delete(id);
+            this.dishService.delete(id);
             return ResponseEntity.ok().build();
         } catch (ResponseStatusException e) {
             return new ResponseEntity<HttpStatus>(e.getStatusCode());

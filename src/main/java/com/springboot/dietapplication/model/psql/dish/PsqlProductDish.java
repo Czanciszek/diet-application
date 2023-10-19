@@ -35,7 +35,7 @@ public class PsqlProductDish {
     }
 
     public PsqlProductDish(ProductDishType productDish) {
-        this.productId = productDish.getProductId();
+        this.productId = Long.valueOf(productDish.getProductId());
         this.productName = productDish.getProductName();
         this.amount = productDish.getAmount();
         this.grams = productDish.getGrams();

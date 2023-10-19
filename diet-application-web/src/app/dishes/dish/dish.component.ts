@@ -141,8 +141,8 @@ export class DishComponent implements OnInit {
     return selectedAmountType.value;
   }
 
-  validateProperty(event, productIndex: number, property: string) {
-    let number = this.validateNumber(event.target.value);
+  validateProperty(value, productIndex: number, property: string) {
+    let number = this.validateNumber(value);
 
     let product = this.dishService.form.get('products').get([productIndex]);
     product.get(property).patchValue(number);
@@ -184,7 +184,6 @@ export class DishComponent implements OnInit {
 
   validateNumber(entry: string) {
     let value = (entry).replace(/,/g, '.').split("").reverse().join("").replace(/(\.)(?=.*\1)/g, '').split("").reverse().join("").replace(/[^0-9\.]+/g, '');
-
     if (value != "" && value != "." && value.includes(".") && value.substring(value.indexOf('.') + 1).length > 2) {
       value = Number(value).toFixed(2);
     }
@@ -194,7 +193,7 @@ export class DishComponent implements OnInit {
 
   amountTypeChanged(productIndex) {
     let property = 'grams';
-    let grams = this.dishService.form.get('productList').get([productIndex]).get(property).value;
+    let grams = this.dishService.form.get('products').get([productIndex]).get(property).value;
     if (grams == null || grams == "") return;
     this.validateProperty(grams + '', productIndex, property);
   }

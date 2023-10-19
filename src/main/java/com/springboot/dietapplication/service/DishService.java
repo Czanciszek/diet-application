@@ -3,6 +3,7 @@ package com.springboot.dietapplication.service;
 import com.springboot.dietapplication.model.psql.dish.PsqlDishUsage;
 import com.springboot.dietapplication.model.psql.menu.PsqlAmountType;
 import com.springboot.dietapplication.model.psql.menu.PsqlFoodType;
+import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 import com.springboot.dietapplication.model.psql.product.PsqlProductsAmountTypes;
 import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
@@ -32,6 +33,8 @@ public class DishService {
     ProductsAmountTypesRepository productsAmountTypesRepository;
     @Autowired
     DishUsageRepository dishUsageRepository;
+    @Autowired
+    ProductFoodPropertiesRepository productFoodPropertiesRepository;
 
     @Autowired
     JwtUserDetailsService userDetailsService;
@@ -82,7 +85,7 @@ public class DishService {
         psqlDish.setFoodTypeId(foodType.getId());
 
         this.dishRepository.save(psqlDish);
-        dishType.setId(psqlDish.getId());
+        dishType.setId(String.valueOf(psqlDish.getId()));
 
         return dishType;
     }
@@ -93,7 +96,7 @@ public class DishService {
         if (dishType.getId() == null || dishType.getFoodType() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dish id cannot be null");
 
-        Optional<PsqlDish> psqlDish = this.dishRepository.findById(dishType.getId());
+        Optional<PsqlDish> psqlDish = this.dishRepository.findById(Long.valueOf(dishType.getId()));
         if (psqlDish.isEmpty())
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Dish does not exist");
 
@@ -166,6 +169,9 @@ public class DishService {
                     productDishType.setAmountType(amountType);
                 }
             }
+
+            PsqlProductFoodProperties productFoodProperties = productFoodPropertiesRepository.findProductById(productDish.getProductId());
+            productDishType.setFoodPropertiesType(new FoodPropertiesType(productFoodProperties));
 
             Set<PsqlProductsAmountTypes> productAmountTypes = productsAmountTypesRepository.findPsqlProductsAmountTypesByProductId(productDish.getProductId());
             List<ProductAmountType> productAmountTypeList = new ArrayList<>();

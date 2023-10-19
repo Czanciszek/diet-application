@@ -76,7 +76,7 @@
               <mat-form-field>
                 <div class="add-bottom-padding">
                   <input matInput placeholder="Gram" formControlName="grams" autocomplete="off"
-                    (keyup)="validateProperty($event, i, 'grams')">
+                    (keyup)="validateProperty($event.target.value, i, 'grams')">
                 </div>
               </mat-form-field>
             </div>
@@ -87,7 +87,7 @@
               <mat-form-field>
                 <div class="add-bottom-padding">
                   <input matInput placeholder="Ilość" formControlName="amount" autocomplete="off"
-                    (keyup)="validateProperty($event, i, 'amount')">
+                    (keyup)="validateProperty($event.target.value, i, 'amount')">
                 </div>
               </mat-form-field>
             </div>

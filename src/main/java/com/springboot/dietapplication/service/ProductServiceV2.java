@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +22,9 @@ public class ProductServiceV2 {
 
     @Autowired
     JwtUserDetailsService userDetailsService;
+
+    @Autowired
+    DishServiceV2 dishService;
 
     @Autowired
     MongoProductRepository mongoProductRepository;
@@ -52,7 +54,6 @@ public class ProductServiceV2 {
         mongoProduct.setUpdateDate(currentDate);
 
         mongoProductRepository.save(mongoProduct);
-        productType.setId(mongoProduct.getId());
 
         return new ProductType(mongoProduct);
     }
@@ -63,7 +64,7 @@ public class ProductServiceV2 {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product id cannot be null");
 
         // TODO: Validate all required fields
-        // TODO: Check if product with provided name d  oesn't override some other already existing one
+        // TODO: Check if product with provided name doesn't override some other already existing one
         Optional<MongoProduct> mongoProduct = mongoProductRepository.findById(productType.getId());
         if (mongoProduct.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product does not exist");
@@ -81,6 +82,9 @@ public class ProductServiceV2 {
         updatedProduct.setUpdateDate(currentDate);
 
         mongoProductRepository.save(updatedProduct);
+
+        // Consider a separate Thread
+        dishService.updateDishProducts(updatedProduct);
 
         return new ProductType(updatedProduct);
     }

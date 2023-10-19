@@ -1,10 +1,10 @@
-import {Component, OnInit, ViewChild, EventEmitter, Input, Output} from '@angular/core';
-import {ProductService} from "../../service/product.service";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatDialogRef} from "@angular/material/dialog";
-import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
-import {Product} from "../../model/product";
+import { Component, OnInit, ViewChild, EventEmitter, Input, Output } from '@angular/core';
+import { ProductService } from "../../service/product.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatDialogRef } from "@angular/material/dialog";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
+import { Product } from "../../model/product";
 
 @Component({
   selector: 'app-product-select',
@@ -41,10 +41,9 @@ export class ProductSelectComponent implements OnInit {
     this.productList.sort = this.sort;
 
     this.productList.filterPredicate = (product: Product, filter: string) => {
-    return product.name == null ||
-      product.name.toLowerCase().includes(filter) ||
-      product.category.category.toLowerCase().includes(filter) ||
-      product.category.subcategory.toLowerCase().includes(filter);
+      return product.name == null || product.name.toLowerCase().includes(filter) ||
+        product.category.category == null || product.category.category.toLowerCase().includes(filter) ||
+        product.category.subcategory == null || product.category.subcategory.toLowerCase().includes(filter);
     };
 
     if (this.paginator && this.sort) {
@@ -85,15 +84,15 @@ export class ProductSelectComponent implements OnInit {
 
   fetchProducts() {
     this.productService.getProducts()
-      .subscribe( (data: Product[]) => {
-        this.productService.productList = [ ...data];
+      .subscribe((data: Product[]) => {
+        this.productService.productList = [...data];
         this.getProducts();
         this.applyFilter();
-    });
+      });
   }
 
   getProducts() {
-    this.productList.data = [ ...this.productService.productList];
+    this.productList.data = [...this.productService.productList];
   }
 
   onSelect(product) {

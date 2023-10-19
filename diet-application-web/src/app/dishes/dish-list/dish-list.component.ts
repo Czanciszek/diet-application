@@ -26,7 +26,7 @@ export class DishListComponent implements OnInit {
     private notificationService: NotificationService,
   ) { }
 
-  listData: MatTableDataSource<any>;
+  listData: MatTableDataSource<Dish>;
   displayedColumns: string[] = ['name', 'portions', 'foodType', 'actions'];
 
   @ViewChild(MatSort) sort: MatSort;
@@ -54,15 +54,25 @@ export class DishListComponent implements OnInit {
   }
 
   fetchResults(data: Dish[]) {
-    this.dishService.dishList = [...data];
-    this.listData = new MatTableDataSource([...data]);
+
+    this.dishService.dishList = data.map(dishData => {
+      return new Dish(
+        dishData['id'],
+        dishData['name'],
+        dishData['products'],
+        dishData['portions'],
+        dishData['recipe'],
+        dishData['foodType'],
+      )
+    });
+
+    this.listData = new MatTableDataSource(this.dishService.dishList);
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
 
     this.listData.filterPredicate = (data: Dish, filter: string) => {
-      return data.name == null ||
-        data.name.toLowerCase().includes(filter) ||
-        data.foodType.toLowerCase().includes(filter);
+      return data.name == null || data.name.toLowerCase().includes(filter) ||
+        data.foodType == null || data.foodType.toLowerCase().includes(filter);
     };
   }
 

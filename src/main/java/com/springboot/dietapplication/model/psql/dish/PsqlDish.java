@@ -38,7 +38,7 @@ public class PsqlDish implements Serializable {
     }
 
     public PsqlDish(DishType dishType) {
-        this.id = dishType.getId();
+        this.id = Long.valueOf(dishType.getId());
         this.name = dishType.getName();
         this.portions = dishType.getPortions();
         this.recipe = dishType.getRecipe();

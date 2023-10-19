@@ -48,7 +48,7 @@ public class PsqlProductMeal implements Serializable {
     }
 
     public PsqlProductMeal(ProductDishType productDish) {
-        this.productId = productDish.getProductId();
+        this.productId = Long.valueOf(productDish.getProductId());
         this.productName = productDish.getProductName();
         this.amount = productDish.getAmount();
         this.grams = productDish.getGrams();

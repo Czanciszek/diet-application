@@ -102,27 +102,27 @@ export class ProductService {
   }
 
   getProducts() {
-    return this.restApiService.get("products");
+    return this.restApiService.get("products", "v2");
   }
 
   getProductsByDishId(dishId) {
-    return this.restApiService.get("products/dishlist/" + dishId);
+    return this.restApiService.get("products/dishlist/" + dishId, "v2");
   }
 
   getCategories() {
-    return this.restApiService.get("categories");
+    return this.restApiService.get("categories", "v1");
   }
 
   insertProduct(product) {
-    return this.restApiService.post(product, "products");
+    return this.restApiService.post(product, "products", "v2");
   }
 
   updateProduct(product) {
-    return this.restApiService.put(product, "products");
+    return this.restApiService.put(product, "products", "v2");
   }
 
   deleteProduct(id: string) {
-    return this.restApiService.delete("products/" + id);
+    return this.restApiService.delete("products/" + id, "v2");
   }
 
   populateForm(product) {
@@ -132,10 +132,7 @@ export class ProductService {
       (<FormArray>this.form.get('amountTypes')).push(this.addAmountTypeFormGroup());
     }
 
-    console.log("PRODUCT", product);
-        console.log("FORM", this.form);
     this.form.setValue(product);
-        console.log("PASS", product);
   }
 
   clearForm() {
