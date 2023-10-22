@@ -5,11 +5,12 @@ export interface Patient {
   birthDate: string,
   numberPhone: string,
   email: string,
-  sex: boolean,
+  sex: string,
   bodyHeight: number,
   currentLifestyleNote: string,
   changedLifestyleNote: string,
   dietaryPurpose: string,
   allergens: string[],
-  unlikelyCategories: string[]
+  unlikelyCategories: string[],
+  measurements: any[]
 }

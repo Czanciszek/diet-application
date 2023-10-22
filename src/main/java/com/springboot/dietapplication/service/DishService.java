@@ -65,7 +65,7 @@ public class DishService {
         PsqlDish psqlDish = new PsqlDish(dishType);
 
         UserEntity user = userDetailsService.getCurrentUser();
-        psqlDish.setUserId(user.getId());
+        psqlDish.setUserId(Long.valueOf(user.getId()));
 
         this.dishRepository.save(psqlDish);
 

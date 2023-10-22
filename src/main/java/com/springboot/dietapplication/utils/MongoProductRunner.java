@@ -7,6 +7,8 @@ import com.springboot.dietapplication.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +23,7 @@ public class MongoProductRunner {
 
     public void reloadProductsPSQLtoMongo() {
 
-//        mongoProductRepository.deleteAll();
+        mongoProductRepository.deleteAll();
 
         List<ProductType> productTypeList = productService.getAll();
 
@@ -30,6 +32,13 @@ public class MongoProductRunner {
                 .map(MongoProduct::new)
                 .collect(Collectors.toList());
 
-//        mongoProductRepository.saveAll(mongoProducts);
+        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
+        String currentDate = dateFormat.format(new Date());
+        mongoProducts.forEach(product -> {
+            product.setCreationDate(currentDate);
+            product.setUpdateDate(currentDate);
+        });
+
+        mongoProductRepository.saveAll(mongoProducts);
     }
 }

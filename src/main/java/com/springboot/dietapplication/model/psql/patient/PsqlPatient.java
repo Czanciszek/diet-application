@@ -2,6 +2,7 @@ package com.springboot.dietapplication.model.psql.patient;
 
 import com.springboot.dietapplication.model.type.PatientType;
 
+import com.springboot.dietapplication.model.type.SexType;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -56,13 +57,13 @@ public class PsqlPatient implements Serializable {
     }
 
     public PsqlPatient(PatientType patientType) {
-        this.id = patientType.getId();
+        this.id = Long.valueOf(patientType.getId());
         this.name = patientType.getName();
         this.surname = patientType.getSurname();
         this.email = patientType.getEmail();
         this.numberPhone = patientType.getNumberPhone();
         this.birthDate = patientType.getBirthDate();
-        this.sex = patientType.isSex();
+        this.sex = patientType.getSex().equals(SexType.FEMALE);
         this.bodyHeight = patientType.getBodyHeight();
         this.changedLifestyleNote = patientType.getChangedLifestyleNote();
         this.currentLifestyleNote = patientType.getCurrentLifestyleNote();

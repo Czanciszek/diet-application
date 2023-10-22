@@ -1,18 +1,18 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MenuService} from "../../service/menu.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {FileService} from "../../service/file.service";
-import {MeasurementService} from "../../service/measurement.service";
-import {NotificationService} from "../../service/notification.service";
-import {Menu} from "../../model/menu";
-import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatTableDataSource} from "@angular/material/table";
-import {Measurement} from "../../model/measurement";
-import {MatDialog} from "@angular/material/dialog";
-import {MenuAddComponent} from "../menu-add/menu-add.component";
-import {GenerateMenuPanelComponent} from "../generate-menu-panel/generate-menu-panel.component";
-import {CopyMenuPanelComponent} from "../copy-menu-panel/copy-menu-panel.component";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MenuService } from "../../service/menu.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { FileService } from "../../service/file.service";
+import { MeasurementService } from "../../service/measurement.service";
+import { NotificationService } from "../../service/notification.service";
+import { Menu } from "../../model/menu";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
+import { Measurement } from "../../model/measurement";
+import { MatDialog } from "@angular/material/dialog";
+import { MenuAddComponent } from "../menu-add/menu-add.component";
+import { GenerateMenuPanelComponent } from "../generate-menu-panel/generate-menu-panel.component";
+import { CopyMenuPanelComponent } from "../copy-menu-panel/copy-menu-panel.component";
 
 @Component({
   selector: 'app-menu-list',
@@ -35,15 +35,7 @@ export class MenuListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  listData: MatTableDataSource<any>;
-
-  measurements = Array<{
-    measurementId: string,
-    measurementDate: string,
-  }>();
-
-  measurement: any;
-  dataLoaded = false;
+  listData: MatTableDataSource<Menu>;
 
   ngOnInit(): void {
     this.getMenuList();
@@ -55,35 +47,19 @@ export class MenuListComponent implements OnInit {
     this.menuService.getMenusByPatientId(patientId)
       .subscribe(
         (data: Menu[]) => {
-          var menuList: Menu[] = [...data].sort( (m1, m2) => {
+          var menuList: Menu[] = [...data].sort((m1, m2) => {
             return m1.id > m2.id ? 1 : -1;
           });
           menuList.forEach(
             (value, index) => {
-            value.order = index + 1;
-          });
+              value.order = index + 1;
+            });
           this.listData = new MatTableDataSource(menuList);
 
           this.listData.sort = this.sort;
           this.listData.paginator = this.paginator;
-          this.getMeasurementDates();
         }
       );
-  }
-
-  getMeasurementDates() {
-    for (let data of this.listData.data) {
-      if (data.measurementId != null) {
-        this.getMeasurementById(data.measurementId);
-      }
-    }
-    this.dataLoaded = true;
-  }
-
-  async getMeasurementById(measurementId) {
-    const measurement = <Measurement> await this.measurementService.getMeasurementsById(measurementId).toPromise();
-    const date = new Date(measurement.measurementDate).toDateString();
-    this.measurements.push({measurementId: measurement.id, measurementDate: date});
   }
 
   dateTimeParser(menu) {
@@ -131,7 +107,7 @@ export class MenuListComponent implements OnInit {
       width: "90%"
     });
 
-    dialogRef.afterClosed().subscribe( result => {
+    dialogRef.afterClosed().subscribe(result => {
       this.ngOnInit();
     });
   }
@@ -147,7 +123,7 @@ export class MenuListComponent implements OnInit {
     dialogRef.componentInstance.menuId = menu.id;
     dialogRef.componentInstance.recommendations = menu.recommendations;
 
-    dialogRef.afterClosed().subscribe( result => {
+    dialogRef.afterClosed().subscribe(result => {
       this.getMenuList();
     });
   }
@@ -162,7 +138,7 @@ export class MenuListComponent implements OnInit {
 
     dialogRef.componentInstance.menuItem = menuItem;
 
-    dialogRef.afterClosed().subscribe( result => {
+    dialogRef.afterClosed().subscribe(result => {
       this.getMenuList();
     });
   }
@@ -179,7 +155,7 @@ export class MenuListComponent implements OnInit {
         this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
       }, () => {
         this.ngOnInit();
-    });
+      });
 
   }
 

@@ -4,7 +4,7 @@
   </button>
 </div>
 
-<div class ="mat-elevation-z8 menu-list">
+<div class="mat-elevation-z8 menu-list">
   <mat-table [dataSource]="listData" matSort>
     <ng-container matColumnDef="order">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Nr jadłospisu</mat-header-cell>
@@ -40,8 +40,9 @@
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': dataLoaded}"></mat-footer-row>
-    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data != null && listData.data.length==0)}"></mat-footer-row>
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>
+    <mat-footer-row *matFooterRowDef="['noData']"
+      [ngClass]="{'hide':!(listData!=null && listData.data != null && listData.data.length==0)}"></mat-footer-row>
   </mat-table>
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
 </div>

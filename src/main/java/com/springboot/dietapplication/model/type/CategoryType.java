@@ -1,5 +1,6 @@
 package com.springboot.dietapplication.model.type;
 
+import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,5 +25,11 @@ public class CategoryType implements Serializable {
         this.id = String.valueOf(productFoodProperties.getCategoryId());
         this.category = productFoodProperties.getCategory();
         this.subcategory = productFoodProperties.getSubcategory();
+    }
+
+    public CategoryType(PsqlCategory category) {
+        this.id = String.valueOf(category.getId());
+        this.category = category.getCategory();
+        this.subcategory = category.getSubcategory();
     }
 }

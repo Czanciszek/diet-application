@@ -46,7 +46,7 @@ public class ProductServiceV2 {
         MongoProduct mongoProduct = new MongoProduct(productType);
 
         UserEntity user = userDetailsService.getCurrentUser();
-        mongoProduct.setUserId(String.valueOf(user.getId()));
+        mongoProduct.setUserId(user.getId());
 
         DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
         String currentDate = dateFormat.format(new Date());

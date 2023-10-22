@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
-import {MeasurementService} from "../../service/measurement.service";
-import {MatTableDataSource} from "@angular/material/table";
-import {PatientService} from "../../service/patient.service";
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from "@angular/material/dialog";
+import { MeasurementService } from "../../service/measurement.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { PatientService } from "../../service/patient.service";
+import { Measurement } from "../../model/measurement";
 
 @Component({
   selector: 'app-measurement-list',
@@ -17,13 +18,15 @@ export class MeasurementListComponent implements OnInit {
     private dialogRef: MatDialogRef<MeasurementListComponent>
   ) { }
 
+  public patientId: string;
+  public measurements: Measurement[];
+
   measurementForm = this.measurementService.form;
   measurementKeywords = this.measurementService.measurementKeywords;
 
   startDate = new Date();
 
-  listData: MatTableDataSource<any>;
-  showTable = false;
+  listData: MatTableDataSource<Measurement>;
   objectKeys: any[];
 
   showNewMeasurement = false;
@@ -33,68 +36,50 @@ export class MeasurementListComponent implements OnInit {
   }
 
   getPatientsMeasurements() {
-    this.measurementService.getMeasurementsByPatientId(this.measurementService.patientId)
-      .subscribe(
-        list => {
-          let array = list.map(item => {
-            return {
-              id: item.id,
-              patientId: item.patientId,
-              measurementDate: item.measurementDate,
-              bodyWeight: item.bodyWeight,
-              breast: item.breast,
-              underBreast: item.underBreast,
-              waist: item.waist,
-              abdominal: item.abdominal,
-              hipBones: item.hipBones,
-              hips: item.hips,
-              thighWidest: item.thighWidest,
-              thighNarrowest: item.thighNarrowest,
-              calf: item.calf,
-              chest: item.chest,
-              arm: item.arm,
-            }
-          });
 
-          for (let element of array) {
-            if (element.measurementDate != null) {
-              let dateFormat = new Date(element.measurementDate);
-              let date = dateFormat.getDate();
-              let month = dateFormat.getMonth();
-              let year = dateFormat.getFullYear();
-              element.measurementDate = date + "/" + (month + 1) + "/" + year;
-            }
-          }
+    for (let element of this.measurements) {
+      if (element.measurementDate == null) {
+        continue;
+      }
 
-          if (array.length > 0) {
-            this.listData = new MatTableDataSource(array);
-          } else {
-            this.listData = new MatTableDataSource();
-          }
+      let dateFormat = new Date(element.measurementDate);
+      let date = dateFormat.getDate();
+      let month = dateFormat.getMonth();
+      let year = dateFormat.getFullYear();
+      element.displayDate = date + "/" + (month + 1) + "/" + year;
+    }
 
-          this.showTable = true;
-          this.objectKeys = Object.keys(this.measurementService.form.value);
-        });
+    if (this.measurements.length > 0) {
+      this.listData = new MatTableDataSource(this.measurements);
+    } else {
+      this.listData = new MatTableDataSource();
+    }
+
+    this.objectKeys = Object.keys(this.measurementService.form.value);
   }
 
   onSubmit() {
-    if (this.measurementService.form.valid) {
-      this.measurementService.form.get("patientId").patchValue(this.measurementService.patientId);
-      this.showNewMeasurement = false;
-      this.measurementService.insertMeasurement(this.measurementService.form.value).subscribe( result => {
+    if (!this.measurementService.form.valid) {
+      return;
+    }
+
+    const measurementDate = new Date(this.measurementForm.value.displayDate);
+    this.measurementForm.get("measurementDate").patchValue(measurementDate);
+    this.measurementForm.get("patientId").patchValue(this.patientId);
+    this.showNewMeasurement = false;
+    this.patientService.insertMeasurement(this.measurementForm.value)
+      .subscribe((data: Measurement) => {
+        this.measurements.push(data);
         this.getPatientsMeasurements();
         this.onClear();
       });
-    }
   }
 
   onClear() {
-    this.measurementService.form.reset();
     this.measurementService.initializeFormGroup();
   }
 
   onClose() {
-    this.onClear();
     this.dialogRef.close();
   }
 

@@ -1,5 +1,6 @@
 package com.springboot.dietapplication.model.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.MongoDish;
 import com.springboot.dietapplication.model.psql.dish.PsqlDish;
 import lombok.Getter;
@@ -18,7 +19,10 @@ public class DishType implements Serializable {
     private static final long serialVersionUID = 7119598963939561319L;
 
     private String id;
+
+    @JsonIgnore
     private String userId;
+
     private String name;
     private List<ProductDishType> products;
     private FoodType foodType;

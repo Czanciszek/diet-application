@@ -35,7 +35,6 @@ export class PatientComponent implements OnInit {
   }
 
   onEnterMeasurements() {
-    this.measurementService.patientId = this.patientServiceForm.controls['id'].value;
     this.openDialog();
   }
 
@@ -44,6 +43,9 @@ export class PatientComponent implements OnInit {
       autoFocus: true,
       width: "90%"
     });
+
+    dialogRef.componentInstance.patientId = this.patientServiceForm.value.id;
+    dialogRef.componentInstance.measurements = this.patientServiceForm.value.measurements;
 
     dialogRef.afterClosed().subscribe( result => {
       this.ngOnInit();

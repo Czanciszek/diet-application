@@ -81,8 +81,9 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-radio-group matInput formControlName="sex">
-              <mat-radio-button [value]="true">Kobieta</mat-radio-button>
-              <mat-radio-button [value]="false">Mężczyzna</mat-radio-button>
+              <mat-radio-button [value]="'FEMALE'">Kobieta</mat-radio-button>
+              <mat-radio-button [value]="'MALE'">Mężczyzna</mat-radio-button>
+              <mat-radio-button [value]="'OTHER'">Inna</mat-radio-button>
             </mat-radio-group>
           </div>
         </div>

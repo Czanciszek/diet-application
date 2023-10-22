@@ -1,7 +1,7 @@
 package com.springboot.dietapplication;
 
-import com.springboot.dietapplication.repository.mongo.MongoProductRepository;
 import com.springboot.dietapplication.utils.MongoDishRunner;
+import com.springboot.dietapplication.utils.MongoPatientRunner;
 import com.springboot.dietapplication.utils.MongoProductRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -24,14 +24,19 @@ public class DietApplication {
     @Autowired
     MongoDishRunner mongoDishRunner;
 
+    @Autowired
+    MongoPatientRunner mongoPatientRunner;
+
     @Bean
-    CommandLineRunner runner(MongoProductRepository repository) {
+    CommandLineRunner runner() {
         return args -> {
             try {
 
 //                mongoProductRunner.reloadProductsPSQLtoMongo();
 
 //                mongoDishRunner.reloadDishesPSQLtoMongo();
+
+//                mongoPatientRunner.reloadPatientsPSQLtoMongo();
 
             } catch (Exception e) {
                 e.printStackTrace();

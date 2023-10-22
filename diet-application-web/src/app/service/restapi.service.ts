@@ -57,8 +57,8 @@ export class RestapiService {
      return get;
   }
 
-  public post(body: any, path: string, version: string = "v1", responseType: any = null) {
-    return this.http.post(
+  public post<T>(body: any, path: string, version: string = "v1", responseType: any = null): Observable<T> {
+    return this.http.post<T>(
       this.getPath(path, version),
       body,
       this.httpHeaders(responseType));

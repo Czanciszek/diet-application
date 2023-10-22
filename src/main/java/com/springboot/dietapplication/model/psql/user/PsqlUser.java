@@ -37,7 +37,7 @@ public class PsqlUser implements Serializable {
     public PsqlUser() { }
 
     public PsqlUser(UserEntity userEntity) {
-        this.id = userEntity.getId();
+        this.id = Long.valueOf(userEntity.getId());
         this.name = userEntity.getName();
         this.password = userEntity.getPassword();
         this.email = userEntity.getEmail();

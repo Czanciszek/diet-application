@@ -128,7 +128,11 @@ public class PDFService {
     private void makeHeader(PDDocument document, PDPageContentStream contentStream) throws IOException {
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
         String header = "Dieta dla ";
-        header += patient.isSex() ? "Pani " : "Pana ";
+        switch (patient.getSex()) {
+            case FEMALE -> header += "Pani ";
+            case MALE -> header += "Pana ";
+            case OTHER -> {}
+        }
         header += patient.getName() + " " + patient.getSurname();
         writeText(contentStream, new Point(40, 740), timesBold, 24, header);
         setNewLine(document, contentStream, new Point(0, -20), false, true);

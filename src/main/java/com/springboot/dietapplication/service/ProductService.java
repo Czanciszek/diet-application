@@ -64,7 +64,7 @@ public class ProductService {
         product.setCategoryId(category.getId());
 
         UserEntity user = userDetailsService.getCurrentUser();
-        product.setUserId(user.getId());
+        product.setUserId(Long.valueOf(user.getId()));
 
         this.productRepository.save(product);
         productType.setId(String.valueOf(product.getId()));

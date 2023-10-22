@@ -1,5 +1,6 @@
 package com.springboot.dietapplication.model.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.MongoProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 import lombok.Getter;
@@ -18,6 +19,8 @@ public class ProductType implements Serializable {
     private static final long serialVersionUID = -6504989715893867042L;
 
     private String id;
+
+    @JsonIgnore
     private String userId;
 
     private String name;

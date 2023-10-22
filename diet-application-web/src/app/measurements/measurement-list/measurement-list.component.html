@@ -3,12 +3,13 @@
     <span class="fill-remaining-space"></span>
     <span>Lista pomiarów</span>
     <span class="fill-remaining-space"></span>
-    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()"
+      tabindex="-1"><mat-icon>clear</mat-icon></button>
   </mat-toolbar>
 </div>
 
 <mat-dialog-content>
-  <div class ="normal-form" *ngIf="showTable">
+  <div class="normal-form">
 
     <form [formGroup]="measurementForm" class="normal-form" (submit)="onSubmit()">
       <mat-grid-list cols="3" rowHeight="40px">
@@ -22,7 +23,8 @@
         <mat-grid-tile>
           <div class="control-container">
             <div class="button-row" *ngIf="showNewMeasurement">
-              <button mat-raised-button color="primary" type="submit" [disabled]="measurementForm.invalid">Zapisz</button>
+              <button mat-raised-button color="primary" type="submit"
+                [disabled]="measurementForm.invalid">Zapisz</button>
             </div>
           </div>
         </mat-grid-tile>
@@ -37,10 +39,10 @@
       <div *ngFor="let column of objectKeys; index as i;">
 
         <div *ngIf="column != 'id' && column != 'patientId'">
-          <div *ngIf="(patientService.form.value.sex == 1
-                          && column != 'chest' && column != 'arm') ||
-                      (patientService.form.value.sex == 0
-                        && column != 'breast' && column != 'underBreast' && column != 'hipBones' && column != 'thighNarrowest')">
+          <div
+            *ngIf="(patientService.form.value.sex == 'OTHER' && column != 'measurementDate') ||
+                      (patientService.form.value.sex == 'FEMALE' && column != 'chest' && column != 'arm' && column != 'measurementDate') ||
+                      (patientService.form.value.sex == 'MALE' && column != 'breast' && column != 'underBreast' && column != 'hipBones' && column != 'thighNarrowest' && column != 'measurementDate')">
             <mat-grid-list cols="{{listData.data.length+3}}" rowHeight="65px">
               <div> <!-- Check whenever sex and measurement type pass together this.patientService.form.value.sex -->
                 <mat-grid-tile colspan="2">
@@ -62,23 +64,25 @@
               <mat-grid-tile>
                 <div class="control-container add-bottom-padding" *ngIf="showNewMeasurement">
 
-                    <div *ngIf="column === 'measurementDate' then measurementBlock else otherBlock"></div>
-                      <ng-template #measurementBlock>
-                        <mat-form-field class="example-full-width">
-                        <mat-label>Data pomiaru</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="{{column}}" autocomplete="off">
-                        <mat-datepicker-toggle matSuffix [for]="picker">
-                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                        </mat-datepicker-toggle>
-                        <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
-                          <mat-error *ngIf="measurementForm.controls['measurementDate'].errors?.required">Wprowadź poprawną datę</mat-error>
-                        </mat-form-field>
-                      </ng-template>
-                      <ng-template #otherBlock>
-                        <mat-form-field>
-                          <input matInput type="number" formControlName="{{column}}" placeholder="{{measurementKeywords.get(column)}}" autocomplete="off">
-                        </mat-form-field>
-                      </ng-template>
+                  <div *ngIf="column === 'displayDate' then measurementBlock else otherBlock"></div>
+                  <ng-template #measurementBlock>
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Data pomiaru</mat-label>
+                      <input matInput [matDatepicker]="picker" formControlName="displayDate" autocomplete="off">
+                      <mat-datepicker-toggle matSuffix [for]="picker">
+                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
+                      <mat-error *ngIf="measurementForm.controls['displayDate'].errors?.required">Wprowadź poprawną
+                        datę</mat-error>
+                    </mat-form-field>
+                  </ng-template>
+                  <ng-template #otherBlock>
+                    <mat-form-field>
+                      <input matInput type="number" formControlName="{{column}}"
+                        placeholder="{{measurementKeywords.get(column)}}" autocomplete="off">
+                    </mat-form-field>
+                  </ng-template>
 
                 </div>
               </mat-grid-tile>

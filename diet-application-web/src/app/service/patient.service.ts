@@ -20,13 +20,14 @@ export class PatientService {
     birthDate: new FormControl('', [Validators.required]),
     numberPhone: new FormControl(''),
     email: new FormControl('', [Validators.email]),
-    sex: new FormControl(true),
+    sex: new FormControl(null),
     bodyHeight: new FormControl(null, [Validators.required]),
     currentLifestyleNote: new FormControl(''),
     changedLifestyleNote: new FormControl(''),
     dietaryPurpose: new FormControl(''),
     allergens: new FormControl(null),
-    unlikelyCategories: new FormControl(null)
+    unlikelyCategories: new FormControl(null),
+    measurements: new FormControl(null)
   });
 
   initializeFormGroup() {
@@ -37,13 +38,14 @@ export class PatientService {
       birthDate: '',
       numberPhone: '',
       email: '',
-      sex: true,
+      sex: null,
       bodyHeight: null,
       currentLifestyleNote: '',
       changedLifestyleNote: '',
       dietaryPurpose: '',
       allergens: null,
-      unlikelyCategories: null
+      unlikelyCategories: null,
+      measurements: null
     })
   }
 
@@ -52,22 +54,26 @@ export class PatientService {
   }
 
   getPatients() {
-    return this.restApiService.get("patients");
+    return this.restApiService.get("patients", "v2");
   }
 
   getPatientById(patientId) {
-    return this.restApiService.get("patients/" + patientId);
+    return this.restApiService.get("patients/" + patientId, "v2");
   }
 
   insertPatient(patient) {
-    return this.restApiService.post(patient, "patients");
+    return this.restApiService.post(patient, "patients", "v2");
+  }
+
+  insertMeasurement(measurement) {
+    return this.restApiService.post(measurement, "patients/measurements", "v2");
   }
 
   updatePatient(patient) {
-    return this.restApiService.put(patient, "patients");
+    return this.restApiService.put(patient, "patients", "v2");
   }
 
   deletePatient(id: string) {
-    return this.restApiService.delete("patients/" + id);
+    return this.restApiService.delete("patients/" + id, "v2");
   }
 }

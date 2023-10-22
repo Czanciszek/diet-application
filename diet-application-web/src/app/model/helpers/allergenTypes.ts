@@ -10,7 +10,7 @@ export var ALLERGEN_TYPES = [
   { id: "CELERY", value: "Seler" },
   { id: "MUSTARD", value: "Gorczyca" },
   { id: "SESAM", value: "Sezam" },
-  { id: "SULPHUR DIOXIDE", value: "Dwutl. siarki" },
+  { id: "SULPHUR_DIOXIDE", value: "Dwutl. siarki" },
   { id: "LUPINE", value: "Łubin" },
   { id: "MOLLUSCS", value: "Mięczaki" },
 ];

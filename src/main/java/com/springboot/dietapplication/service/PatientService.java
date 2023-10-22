@@ -2,6 +2,7 @@ package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.menu.PsqlAllergenType;
 import com.springboot.dietapplication.model.psql.menu.PsqlPatientsUnlikelyCategories;
+import com.springboot.dietapplication.model.psql.patient.PsqlMeasurement;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatientsAllergenTypes;
 import com.springboot.dietapplication.model.psql.product.PsqlCategory;
@@ -21,6 +22,8 @@ public class PatientService {
     @Autowired
     MenuService menuService;
     @Autowired
+    MeasurementService measurementService;
+    @Autowired
     JwtUserDetailsService userDetailsService;
 
     @Autowired
@@ -37,13 +40,15 @@ public class PatientService {
     public List<PatientType> getAll() {
         List<PatientType> patientTypeList = new ArrayList<>();
 
-        UserEntity user = userDetailsService.getCurrentUser();
-        List<PsqlPatient> patients = this.patientRepository.findAllByUserId(user.getId());
+        List<PsqlPatient> patients = patientRepository.findAll();
+//        UserEntity user = userDetailsService.getCurrentUser();
+//        List<PsqlPatient> patients = this.patientRepository.findAllByUserId(user.getId());
 
         for (PsqlPatient psqlPatient : patients) {
             PatientType patientType = new PatientType(psqlPatient);
             patientType.setUnlikelyCategories(getPatientsUnlikelyCategories(psqlPatient.getId()));
             patientType.setAllergens(convertAllergenTypes(psqlPatient.getId()));
+            patientType.setMeasurements(measurementService.getMeasurementsByPatientId(psqlPatient.getId()));
             patientTypeList.add(patientType);
         }
 
@@ -83,10 +88,10 @@ public class PatientService {
         PsqlPatient psqlPatient = new PsqlPatient(patientType);
 
         UserEntity user = userDetailsService.getCurrentUser();
-        psqlPatient.setUserId(user.getId());
+        psqlPatient.setUserId(Long.valueOf(user.getId()));
 
         this.patientRepository.save(psqlPatient);
-        patientType.setId(psqlPatient.getId());
+        patientType.setId(String.valueOf(psqlPatient.getId()));
 
         storePatientsUnlikelyCategories(patientType);
         storePatientsAllergens(patientType);
@@ -100,7 +105,7 @@ public class PatientService {
         if (patientType.getId() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Patient id cannot be null");
 
-        Optional<PsqlPatient> patient = this.patientRepository.findById(patientType.getId());
+        Optional<PsqlPatient> patient = this.patientRepository.findById(Long.valueOf(patientType.getId()));
         if (patient.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient does not exist");
 
@@ -161,7 +166,8 @@ public class PatientService {
     }
 
     private void storePatientsUnlikelyCategories(PatientType patientType) {
-        this.patientsUnlikelyCategoriesRepository.deleteAllByPatientId(patientType.getId());
+        long patientId = Long.parseLong(patientType.getId());
+        this.patientsUnlikelyCategoriesRepository.deleteAllByPatientId(patientId);
         if (patientType.getUnlikelyCategories() == null) return;
         for (String category : patientType.getUnlikelyCategories()) {
 
@@ -169,14 +175,15 @@ public class PatientService {
             if (psqlCategory == null) return;
 
             PsqlPatientsUnlikelyCategories patientsUnlikelyCategories =
-                    new PsqlPatientsUnlikelyCategories(patientType.getId(), psqlCategory.getId());
+                    new PsqlPatientsUnlikelyCategories(patientId, psqlCategory.getId());
             this.patientsUnlikelyCategoriesRepository.save(patientsUnlikelyCategories);
 
         }
     }
 
     private void storePatientsAllergens(PatientType patientType) {
-        this.patientsAllergenTypesRepository.deleteAllByPatientId(patientType.getId());
+        long patientId = Long.parseLong(patientType.getId());
+        this.patientsAllergenTypesRepository.deleteAllByPatientId(patientId);
 
         if (patientType.getAllergens() == null) return;
         Set<PsqlPatientsAllergenTypes> patientAllergenTypes = new HashSet<>();
@@ -186,7 +193,7 @@ public class PatientService {
             PsqlAllergenType psqlAllergenType = this.allergenTypeRepository.getPsqlAllergenTypeByName(allergenType.name());
             if (psqlAllergenType == null) continue;
 
-            PsqlPatientsAllergenTypes patientAllergenType = new PsqlPatientsAllergenTypes(patientType.getId(), psqlAllergenType.getId());
+            PsqlPatientsAllergenTypes patientAllergenType = new PsqlPatientsAllergenTypes(patientId, psqlAllergenType.getId());
             patientAllergenTypes.add(patientAllergenType);
         }
 

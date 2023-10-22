@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import {NotificationService} from "../../service/notification.service";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {MenuService} from "../../service/menu.service";
-import {MeasurementService} from "../../service/measurement.service";
-import {Measurement} from "../../model/measurement";
-import {PatientService} from "../../service/patient.service";
-import {ProductService} from "../../service/product.service";
-import {ReplaceProductPanelComponent} from "../replace-product-panel/replace-product-panel.component";
-import {FOOD_TYPES} from "../../model/helpers/foodTypes";
+import { NotificationService } from "../../service/notification.service";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MenuService } from "../../service/menu.service";
+import { MeasurementService } from "../../service/measurement.service";
+import { Measurement } from "../../model/measurement";
+import { PatientService } from "../../service/patient.service";
+import { ProductService } from "../../service/product.service";
+import { ReplaceProductPanelComponent } from "../replace-product-panel/replace-product-panel.component";
+import { FOOD_TYPES } from "../../model/helpers/foodTypes";
 
 @Component({
   selector: 'app-menu-add',
@@ -39,7 +39,7 @@ export class MenuAddComponent implements OnInit {
 
   ngOnInit() {
     this.currentPatientId = this.patientService.form.get("id").value;
-    this.getMeasurementList(this.currentPatientId);
+    this.prepareMeasurementDates();
 
     if (this.menuService.form.value.id != null) {
       this.allowEdit = false;
@@ -57,25 +57,16 @@ export class MenuAddComponent implements OnInit {
     this.onClear();
   }
 
-  getMeasurementList(patientId) {
-    this.measurementService.getMeasurementsByPatientId(patientId)
-      .subscribe(
-        (data: Measurement[]) => {
-          const measurementList = { ...data};
-          this.prepareMeasurementDates(measurementList);
-        }
-      );
-  }
-
-  prepareMeasurementDates(measurementList) {
-    if (measurementList == null) { return; }
-    for (let index in measurementList) {
-      if (measurementList[index].measurementDate == null) { continue; }
-      const patientWeight = measurementList[index].bodyWeight;
-      const dateFormat = new Date(measurementList[index].measurementDate);
+  prepareMeasurementDates() {
+    const measurements: Measurement[] = this.patientService.form.get("measurements").value;
+    if (measurements == null) { return; }
+    for (let index in measurements) {
+      if (measurements[index].measurementDate == null) { continue; }
+      const patientWeight = measurements[index].bodyWeight;
+      const dateFormat = new Date(measurements[index].measurementDate);
       const dateString = dateFormat.getDate() + "/"
         + (dateFormat.getMonth() + 1) + "/" + dateFormat.getFullYear();
-        this.measurementDates.push({ id: measurementList[index].id, date: dateString, weight: patientWeight });
+      this.measurementDates.push({ id: measurements[index].id, date: dateString, weight: patientWeight });
     }
   }
 
@@ -94,7 +85,7 @@ export class MenuAddComponent implements OnInit {
     this.menuService.form.get("patientId").setValue(this.currentPatientId);
 
     if (!this.menuService.form.get('id').value) {
-      this.menuService.insertMenu(this.menuService.form.value).subscribe( result => {
+      this.menuService.insertMenu(this.menuService.form.value).subscribe(result => {
         this.notificationService.success(":: Pomyślnie stworzono jadłospis! ::");
         this.onClose();
       }, error => {
@@ -193,7 +184,7 @@ export class MenuAddComponent implements OnInit {
     let limit = Number(this.menuService.form.value.energyLimit);
     if (limit > 0) {
       if (needToCheckValue) {
-        let grams =  Number((limit * newValue / 100 / factor).toFixed(1));
+        let grams = Number((limit * newValue / 100 / factor).toFixed(1));
         this.valueChanged(grams, false, type);
       }
 
@@ -239,12 +230,12 @@ export class MenuAddComponent implements OnInit {
       this.percentageChanged(0, true, false, 'proteins');
       this.percentageChanged(0, true, false, 'fats');
     } else {
-      if ( (changedType == "fats" || changedType == "proteins") && fatsPercentage > 0 && proteinsPercentage > 0) {
+      if ((changedType == "fats" || changedType == "proteins") && fatsPercentage > 0 && proteinsPercentage > 0) {
         let carbohydratesPercentage = (100 - proteinsPercentage - fatsPercentage);
-        this.percentageChanged( Math.max(carbohydratesPercentage, 0), true, false, 'carbohydrates');
+        this.percentageChanged(Math.max(carbohydratesPercentage, 0), true, false, 'carbohydrates');
       } else if (changedType == "carbohydrates" && carbohydratesPercentage > 0 && proteinsPercentage > 0) {
         let fatsPercentage = (100 - proteinsPercentage - carbohydratesPercentage);
-        this.percentageChanged( Math.max(fatsPercentage, 0), true, false, 'fats');
+        this.percentageChanged(Math.max(fatsPercentage, 0), true, false, 'fats');
       }
     }
   }
@@ -253,7 +244,7 @@ export class MenuAddComponent implements OnInit {
     setTimeout(() => {
       this.valueChanged(Number(this.menuService.form.value.proteinsLimit), true, "proteins");
       this.valueChanged(Number(this.menuService.form.value.fatsLimit), true, "fats");
-      let percentage = Number(100 - Number(this.proteinsPercentage.nativeElement.value) - Number(this.fatsPercentage.nativeElement.value) ).toFixed(2);
+      let percentage = Number(100 - Number(this.proteinsPercentage.nativeElement.value) - Number(this.fatsPercentage.nativeElement.value)).toFixed(2);
       this.carbohydratesPercentage.nativeElement.value = percentage;
     });
   }
@@ -267,31 +258,31 @@ export class MenuAddComponent implements OnInit {
     return summary == 100;
   }
 
-    onReplaceProductsClick() {
+  onReplaceProductsClick() {
 
-      let dialogRef = this.dialog.open(ReplaceProductPanelComponent, {
-        autoFocus: true,
-        width: "90%",
-        height: "70%"
-      });
+    let dialogRef = this.dialog.open(ReplaceProductPanelComponent, {
+      autoFocus: true,
+      width: "90%",
+      height: "70%"
+    });
 
-      dialogRef.afterClosed().subscribe( (result) => {
-        if (result == null) return;
-        this.replaceProducts(result);
-      });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == null) return;
+      this.replaceProducts(result);
+    });
 
-    }
+  }
 
-    replaceProducts(products) {
-      let menuId = this.menuServiceForm.get("id").value;
+  replaceProducts(products) {
+    let menuId = this.menuServiceForm.get("id").value;
 
-      this.menuService
-        .replaceProductInMenu(menuId, products)
-        .subscribe(
-          (response) => {
-            this.notificationService.success(":: Produkt zaktualizowano pomyślnie! ::");
-          }, error => {
-           this.notificationService.error(":: Wystąpił błąd podczas aktualizacji produktu! ::");
+    this.menuService
+      .replaceProductInMenu(menuId, products)
+      .subscribe(
+        (response) => {
+          this.notificationService.success(":: Produkt zaktualizowano pomyślnie! ::");
+        }, error => {
+          this.notificationService.error(":: Wystąpił błąd podczas aktualizacji produktu! ::");
         });
-    }
+  }
 }

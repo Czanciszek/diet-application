@@ -51,7 +51,7 @@ public class DishServiceV2 {
         MongoDish mongoDish = new MongoDish(dishType);
 
         UserEntity user = userDetailsService.getCurrentUser();
-        mongoDish.setUserId(String.valueOf(user.getId()));
+        mongoDish.setUserId(user.getId());
 
         DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
         String currentDate = dateFormat.format(new Date());

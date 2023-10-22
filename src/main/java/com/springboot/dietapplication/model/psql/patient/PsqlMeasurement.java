@@ -66,7 +66,7 @@ public class PsqlMeasurement implements Serializable {
 
     public PsqlMeasurement(MeasurementType measurementType) {
         this.id = measurementType.getId();
-        this.patientId = measurementType.getPatientId();
+        this.patientId = Long.valueOf(measurementType.getPatientId());
         this.measurementDate = measurementType.getMeasurementDate();
         this.bodyWeight = measurementType.getBodyWeight();
         this.breast = measurementType.getBreast();

@@ -1,30 +1,34 @@
-import {Injectable} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Measurement} from "../model/measurement";
-import {RestapiService} from "./restapi.service";
+import { Injectable } from '@angular/core';
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Measurement } from "../model/measurement";
+import { RestapiService } from "./restapi.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MeasurementService {
 
-  constructor(
-    private restApiService: RestapiService
-  ) { }
-
-  patientId: '';
-  measurementObject: any;
-  measurementList: any;
-
-  measurementKeywords = new Map([ ['measurementDate', 'Data pomiaru'], ['bodyWeight', 'Masa ciała'], ['waist', 'Talia'],
-    ['abdominal', 'Pas'], ['hips', 'Biodra'], ['thighWidest', 'Udo najszersze'],
-    ['calf', 'Łydka'], ['breast', 'Biust'], ['underBreast', 'Pod biustem'],
-    ['hipBones', 'Kości biodrowe'], ['thighNarrowest', 'Udo najwęższe'], ['chest', 'Klatka piersiowa'], ['arm', 'Ramię'] ]);
+  measurementKeywords = new Map([
+    ['displayDate', 'Data pomiaru'],
+    ['bodyWeight', 'Masa ciała'],
+    ['waist', 'Talia'],
+    ['abdominal', 'Pas'],
+    ['hips', 'Biodra'],
+    ['thighWidest', 'Udo najszersze'],
+    ['calf', 'Łydka'],
+    ['breast', 'Biust'],
+    ['underBreast', 'Pod biustem'],
+    ['hipBones', 'Kości biodrowe'],
+    ['thighNarrowest', 'Udo najwęższe'],
+    ['chest', 'Klatka piersiowa'],
+    ['arm', 'Ramię']
+  ]);
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     patientId: new FormControl(null),
-    measurementDate: new FormControl('', [Validators.required]),
+    displayDate: new FormControl(null, [Validators.required]),
+    measurementDate: new FormControl(''),
     bodyWeight: new FormControl(null, [Validators.required]),
     breast: new FormControl(null),
     underBreast: new FormControl(null),
@@ -40,9 +44,12 @@ export class MeasurementService {
   });
 
   initializeFormGroup() {
+    this.clearForm();
+
     this.form.setValue({
       id: null,
       patientId: null,
+      displayDate: null,
       measurementDate: null,
       bodyWeight: null,
       breast: null,
@@ -59,20 +66,12 @@ export class MeasurementService {
     })
   }
 
-  getMeasurementsById(measurementId) {
-    return this.restApiService.get<Measurement>("measurements/" + measurementId);
-  }
-
-  getMeasurementsByPatientId(patientId) {
-    this.measurementList = this.restApiService.get( "measurements/patient/" + patientId);
-    return this.measurementList;
-  }
-
-  insertMeasurement(measurement) {
-    return this.restApiService.post(measurement, "measurements");
-  }
-
   populateForm(measurement) {
+    this.clearForm();
     this.form.setValue(measurement);
+  }
+
+  clearForm() {
+    this.form.reset();
   }
 }
