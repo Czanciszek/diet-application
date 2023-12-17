@@ -42,10 +42,10 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field >
-              <input type="number" min="1" max="8" step="1" formControlName="weekCount" matInput placeholder="Ilość tygodni" autocomplete="off" [readonly]="!allowEdit">
-              <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.required">Uzupełnij ilość</mat-error>
-              <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.min">Wartość zbyt mała</mat-error>
-              <mat-error *ngIf="menuServiceForm.controls['weekCount'].errors?.max">Wartość zbyt duża</mat-error>
+              <input type="number" min="1" max="8" step="1" formControlName="weekMenusCount" matInput placeholder="Ilość tygodni" autocomplete="off" [readonly]="!allowEdit">
+              <mat-error *ngIf="menuServiceForm.controls['weekMenusCount'].errors?.required">Uzupełnij ilość</mat-error>
+              <mat-error *ngIf="menuServiceForm.controls['weekMenusCount'].errors?.min">Wartość zbyt mała</mat-error>
+              <mat-error *ngIf="menuServiceForm.controls['weekMenusCount'].errors?.max">Wartość zbyt duża</mat-error>
             </mat-form-field>
           </div>
         </div>

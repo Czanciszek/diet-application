@@ -1,12 +1,18 @@
 package com.springboot.dietapplication.service;
 
-import com.springboot.dietapplication.model.mongo.MongoDish;
-import com.springboot.dietapplication.model.mongo.MongoDishProduct;
-import com.springboot.dietapplication.model.mongo.MongoProduct;
+import com.springboot.dietapplication.model.mongo.dish.MongoDish;
+import com.springboot.dietapplication.model.mongo.dish.MongoDishProduct;
+import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
+import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
+import com.springboot.dietapplication.model.mongo.menu.MongoWeekMenu;
+import com.springboot.dietapplication.model.mongo.product.MongoProduct;
+import com.springboot.dietapplication.model.psql.dish.PsqlDishUsage;
 import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.mongo.MongoDishRepository;
+import com.springboot.dietapplication.repository.mongo.MongoMenuRepository;
 import com.springboot.dietapplication.repository.mongo.MongoProductRepository;
+import com.springboot.dietapplication.repository.mongo.MongoWeekMenuRepository;
 import com.springboot.dietapplication.utils.DateFormatter;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +34,10 @@ public class DishServiceV2 {
     MongoDishRepository mongoDishRepository;
     @Autowired
     MongoProductRepository mongoProductRepository;
+    @Autowired
+    MongoMenuRepository mongoMenuRepository;
+    @Autowired
+    MongoWeekMenuRepository mongoWeekMenuRepository;
 
     public List<DishType> getAll() {
 
@@ -38,6 +48,53 @@ public class DishServiceV2 {
                 .filter(p -> StringUtils.isEmpty(p.getDeletionDate()))
                 .map(DishType::new)
                 .collect(Collectors.toList());
+    }
+
+    public List<DishUsageType> getDishUsages(String patientId) {
+        List<MongoMenu> mongoMenus = mongoMenuRepository.findByPatientId(patientId);
+
+        List<DishUsageType> dishUsageTypes = new ArrayList<>();
+
+        mongoMenus.forEach(menu -> {
+
+            Map<String, Integer> dishUsages = new HashMap<>();
+
+            List<MongoWeekMenu> weekMenus = mongoWeekMenuRepository.findByMenuId(menu.getId());
+
+            List<MongoMeal> meals = weekMenus.stream()
+                    .flatMap(weekMenu -> weekMenu.getMeals().entrySet().stream()
+                            .flatMap(m -> m.getValue().stream()))
+                    .collect(Collectors.toList());
+
+            meals.forEach(meal -> {
+                if (dishUsages.containsKey(meal.getOriginDishId())) {
+                    int usages = dishUsages.get(meal.getOriginDishId());
+                    dishUsages.put(meal.getOriginDishId(), usages + 1);
+                } else {
+                    dishUsages.put(meal.getOriginDishId(), 1);
+                }
+            });
+
+            dishUsages.forEach((key, value) -> {
+                Optional<MongoMeal> mongoMeal = meals
+                        .stream()
+                        .filter(meal -> meal.getOriginDishId().equals(key))
+                        .findFirst();
+
+                if (mongoMeal.isEmpty()) return;
+
+                DishUsageType dishUsageType = new DishUsageType();
+                dishUsageType.setMenuId(menu.getId());
+                dishUsageType.setStartDate(menu.getStartDate());
+                dishUsageType.setEndDate(menu.getEndDate());
+                dishUsageType.setDishName(mongoMeal.get().getName());
+                dishUsageType.setDishId(key);
+                dishUsageType.setDishUsage(value);
+                dishUsageTypes.add(dishUsageType);
+            });
+        });
+
+        return dishUsageTypes;
     }
 
     public DishType insert(DishType dishType) {

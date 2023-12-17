@@ -2,13 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuService } from "../../service/menu.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FileService } from "../../service/file.service";
-import { MeasurementService } from "../../service/measurement.service";
 import { NotificationService } from "../../service/notification.service";
 import { Menu } from "../../model/menu";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-import { Measurement } from "../../model/measurement";
 import { MatDialog } from "@angular/material/dialog";
 import { MenuAddComponent } from "../menu-add/menu-add.component";
 import { GenerateMenuPanelComponent } from "../generate-menu-panel/generate-menu-panel.component";
@@ -26,12 +24,11 @@ export class MenuListComponent implements OnInit {
     private route: ActivatedRoute,
     private menuService: MenuService,
     private dialog: MatDialog,
-    private measurementService: MeasurementService,
     private notificationService: NotificationService,
     private fileService: FileService
   ) { }
 
-  displayedColumns: string[] = ['order', 'dateRange', 'weekCount', 'actions'];
+  displayedColumns: string[] = ['order', 'dateRange', 'weekMenusCount', 'actions'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -47,13 +44,8 @@ export class MenuListComponent implements OnInit {
     this.menuService.getMenusByPatientId(patientId)
       .subscribe(
         (data: Menu[]) => {
-          var menuList: Menu[] = [...data].sort((m1, m2) => {
-            return m1.id > m2.id ? 1 : -1;
-          });
-          menuList.forEach(
-            (value, index) => {
-              value.order = index + 1;
-            });
+          var menuList: Menu[] = [...data];
+
           this.listData = new MatTableDataSource(menuList);
 
           this.listData.sort = this.sort;
@@ -69,9 +61,10 @@ export class MenuListComponent implements OnInit {
     return startDate + " - " + endDate;
   }
 
-  weekCount(weekMealCount) {
-    let describeText = this.getDescribingText(weekMealCount);
-    return weekMealCount + describeText;
+  weekCount(count) {
+    if (count == null) { return 0; }
+    let describeText = this.getDescribingText(count);
+    return count + describeText;
   }
 
   getDescribingText(count) {
@@ -91,10 +84,12 @@ export class MenuListComponent implements OnInit {
 
   onEditMenu(menu) {
     const editMenuObject = Object.assign({}, menu);
-    editMenuObject.weekCount = menu.weekMealList.length;
-    delete editMenuObject.weekMealList;
+    editMenuObject.patientId = menu.patient.id;
+    delete editMenuObject.patient;
+    delete editMenuObject.weekMenuList;
     delete editMenuObject.dayMealTypeList;
     delete editMenuObject.endDate;
+
     this.menuService.populateForm(editMenuObject);
 
     this.openDialog();
@@ -129,16 +124,23 @@ export class MenuListComponent implements OnInit {
   }
 
   openCopyMenuDialog(menuItem) {
-    this.fileService.initializeFormGroup();
+    const copyMenuObject = Object.assign({}, menuItem);
+    copyMenuObject.patientId = menuItem.patient.id;
+    delete copyMenuObject.patient;
+    delete copyMenuObject.weekMenuList;
+    delete copyMenuObject.dayMealTypeList;
+    delete copyMenuObject.endDate;
+    this.menuService.populateForm(copyMenuObject);
+
+    this.openDialog();
+
     let dialogRef = this.dialog.open(CopyMenuPanelComponent, {
       disableClose: true,
       autoFocus: true,
       width: "90%"
     });
 
-    dialogRef.componentInstance.menuItem = menuItem;
-
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       this.getMenuList();
     });
   }

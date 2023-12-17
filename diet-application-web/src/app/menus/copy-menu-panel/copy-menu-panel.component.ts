@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from "@angular/material/dialog";
 
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {PatientService} from "../../service/patient.service";
-import {MenuService} from "../../service/menu.service";
-import {NotificationService} from "../../service/notification.service";
+import { PatientService } from "../../service/patient.service";
+import { MenuService } from "../../service/menu.service";
+import { NotificationService } from "../../service/notification.service";
 
-import {Patient} from "../../model/patient";
+import { Menu } from "../../model/menu";
+import { Patient } from "../../model/patient";
 
 @Component({
   selector: 'app-copy-menu-panel',
@@ -21,72 +22,54 @@ export class CopyMenuPanelComponent implements OnInit {
     public dialogRef: MatDialogRef<CopyMenuPanelComponent>
   ) { }
 
-    public menuItem: any;
-    copyItem: any;
-    patientList: any;
+  menuServiceForm = this.menuService.form;
+  currentMenuItem: Menu;
 
-    ngOnInit(): void {
-      this.copyItem = Object.assign({}, this.menuItem);
-      this.copyItem.weekCount = this.menuItem.weekMealList.length;
-      this.getPatients();
-    }
+  patientList: any;
 
-    onClose() {
-      this.dialogRef.close();
-    }
-
-    getPatients() {
-      this.patientService.getPatients().subscribe(
-        (data: Patient[] ) => {
-          this.patientService.patientList = [...data];
-          this.patientList = this.patientService.patientList;
-        });
-    }
-
-  onPatientChange(patientId) {
-    this.copyItem.patientId = patientId;
+  ngOnInit(): void {
+    this.getPatients();
+    this.currentMenuItem = Object.assign({}, this.menuServiceForm.value);
   }
 
-  startDateChanged(newDate) {
-    let dateValues = newDate.split(".");
-    if (dateValues.length != 3) return;
-    this.copyItem.startDate = new Date(dateValues[2], dateValues[1] - 1 , dateValues[0]);
+
+  onClose() {
+    this.dialogRef.close();
   }
 
-  limitsChanged(newLimitValue) {
-    this.copyItem.energyLimit = newLimitValue;
-    let factor = Number(newLimitValue / this.menuItem.energyLimit);
+  getPatients() {
+    this.patientService.getPatients().subscribe(
+      (data: Patient[]) => {
+        this.patientService.patientList = [...data];
+        this.patientList = [...data];
+      });
+  }
 
-    this.copyItem.proteinsLimit = Number(factor * this.menuItem.proteinsLimit).toFixed(2);
-    this.copyItem.fatsLimit = Number(factor * this.menuItem.fatsLimit).toFixed(2);
-    this.copyItem.carbohydratesLimit = Number(factor * this.menuItem.carbohydratesLimit).toFixed(2);
+  limitsChanged() {
+    let factor = Number(this.menuServiceForm.value.energyLimit / this.currentMenuItem.energyLimit);
+
+    this.menuServiceForm.get("proteinsLimit").setValue(Number(factor * this.currentMenuItem.proteinsLimit).toFixed(2));
+    this.menuServiceForm.get("fatsLimit").setValue(Number(factor * this.currentMenuItem.fatsLimit).toFixed(2));
+    this.menuServiceForm.get("carbohydratesLimit").setValue(Number(factor * this.currentMenuItem.carbohydratesLimit).toFixed(2));
   }
 
   menuLength() {
-    let length = this.menuItem.weekMealList.length
+    let length = this.menuServiceForm.value.weekMenusCount;
     if (length == 1) return length + " tydzień";
     else if (length < 5) return length + " tygodnie";
     else return length + " tygodni";
   }
 
-  onCopyButtonClicked() {
-    if (!this.areFieldsValid()) {
-      this.notificationService.warn(":: Niepoprawne dane! ::");
-      return;
-    }
-    this.menuService.copyMenu(this.copyItem).subscribe( result => {
+  onSubmit() {
+    if (!this.menuService.form.valid) { return; }
+
+    this.menuService.copyMenu(this.menuServiceForm.value).subscribe(result => {
       this.notificationService.success(":: Skopiowano pomyślnie! ::");
     }, error => {
-     this.notificationService.warn(":: Wystąpił problem z kopiowaniem! ::");
+      this.notificationService.warn(":: Wystąpił problem z kopiowaniem! ::");
     }, () => {
       this.onClose();
     });
-  }
-
-  areFieldsValid() {
-    return this.copyItem.patientId != null &&
-     this.copyItem.energyLimit > 0 &&
-     this.copyItem.id != null;
   }
 
 }

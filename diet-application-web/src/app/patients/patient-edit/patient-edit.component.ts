@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {NotificationService} from "../../service/notification.service";
-import {MatDialogRef} from "@angular/material/dialog";
-import {PatientService} from "../../service/patient.service";
-import {FormControl} from "@angular/forms";
-import {ProductService} from "../../service/product.service";
+import { NotificationService } from "../../service/notification.service";
+import { MatDialogRef } from "@angular/material/dialog";
+import { PatientService } from "../../service/patient.service";
+import { ProductService } from "../../service/product.service";
 import { ALLERGEN_TYPES } from "../../model/helpers/allergenTypes";
 
 @Component({
@@ -15,7 +14,6 @@ import { ALLERGEN_TYPES } from "../../model/helpers/allergenTypes";
 export class PatientEditComponent implements OnInit {
 
   startDate = new Date(1985, 0, 1);
-  date = new FormControl(new Date());
 
   allergens_list = ALLERGEN_TYPES;
   categories = [];

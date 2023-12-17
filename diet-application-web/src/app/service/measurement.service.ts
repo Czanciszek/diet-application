@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Measurement } from "../model/measurement";
-import { RestapiService } from "./restapi.service";
+import { CalendarDateValidator } from "../utils/calendarDateValidator"
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +8,7 @@ import { RestapiService } from "./restapi.service";
 export class MeasurementService {
 
   measurementKeywords = new Map([
-    ['displayDate', 'Data pomiaru'],
+    ['measurementDate', 'Data pomiaru'],
     ['bodyWeight', 'Masa ciała'],
     ['waist', 'Talia'],
     ['abdominal', 'Pas'],
@@ -27,8 +26,7 @@ export class MeasurementService {
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     patientId: new FormControl(null),
-    displayDate: new FormControl(null, [Validators.required]),
-    measurementDate: new FormControl(''),
+    measurementDate: new FormControl(null, [Validators.required, CalendarDateValidator]),
     bodyWeight: new FormControl(null, [Validators.required]),
     breast: new FormControl(null),
     underBreast: new FormControl(null),
@@ -49,7 +47,6 @@ export class MeasurementService {
     this.form.setValue({
       id: null,
       patientId: null,
-      displayDate: null,
       measurementDate: null,
       bodyWeight: null,
       breast: null,

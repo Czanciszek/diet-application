@@ -54,12 +54,12 @@ public class PsqlMeal implements Serializable {
     }
 
     public PsqlMeal(MealType mealType) {
-        this.id = mealType.getId();
-        this.dayMealId = mealType.getDayMealId();
-        this.originMealId = mealType.getOriginMealId();
-        this.baseDishId = mealType.getBaseDishId();
+        this.id = Long.valueOf(mealType.getId());
+        this.dayMealId = Long.valueOf(mealType.getDayMealId());
+        this.originMealId = Long.valueOf(mealType.getOriginMealId());
+        this.baseDishId = Long.valueOf(mealType.getBaseDishId());
         this.name = mealType.getName();
-        this.isProduct = (mealType.getIsProduct() == 1);
+        this.isProduct = mealType.getIsProduct();
         this.portions = mealType.getPortions();
         this.grams = mealType.getGrams();
         this.dishPortions = mealType.getDishPortions();

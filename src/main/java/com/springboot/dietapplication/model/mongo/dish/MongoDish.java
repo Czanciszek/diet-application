@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.model.mongo;
+package com.springboot.dietapplication.model.mongo.dish;
 
 import com.springboot.dietapplication.model.type.DishType;
 import com.springboot.dietapplication.model.type.FoodType;

@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.service;
 
-import com.springboot.dietapplication.model.mongo.MongoPatient;
+import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
 import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.mongo.MongoPatientRepository;
@@ -20,6 +20,9 @@ public class PatientServiceV2 {
 
     @Autowired
     JwtUserDetailsService userDetailsService;
+
+    @Autowired
+    MenuServiceV2 menuService;
 
     @Autowired
     MongoPatientRepository mongoPatientRepository;
@@ -98,6 +101,9 @@ public class PatientServiceV2 {
         updatedPatient.setUpdateDate(currentDate);
 
         mongoPatientRepository.save(updatedPatient);
+
+        // Update patient reference in Menu objects
+        menuService.updateMenuPatients(updatedPatient);
 
         return new PatientType(updatedPatient);
     }

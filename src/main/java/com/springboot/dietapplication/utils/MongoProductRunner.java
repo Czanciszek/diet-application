@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.utils;
 
-import com.springboot.dietapplication.model.mongo.MongoProduct;
+import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.type.ProductType;
 import com.springboot.dietapplication.repository.mongo.MongoProductRepository;
 import com.springboot.dietapplication.service.ProductService;

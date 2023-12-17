@@ -1,23 +1,36 @@
 package com.springboot.dietapplication.model.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
+import com.springboot.dietapplication.model.mongo.patient.BriefPatient;
 import com.springboot.dietapplication.model.psql.menu.PsqlMenu;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
+@Getter
+@Setter
 public class MenuType implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -4825052408639527082L;
 
-    private Long id;
+    private String id;
 
-    private Long patientId; // Ref - Dane pacjenta
+    @JsonIgnore
+    private String userId;
 
-    private List<Long> weekMealList; // Lista odnośników do tygodniowych jadłospisów
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    private BriefPatient patient;
 
-    private List<DayMealType> dayMealTypeList; //Lista odnośników do dni w jadłospisie
+    private int weekMenusCount;
+
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    private List<WeekMenuType> weekMenuList; // Lista tygodniowych jadłospisów
 
     private List<FoodType> foodTypes; // Rodzaje posiłków do menu
 
@@ -35,13 +48,10 @@ public class MenuType implements Serializable {
 
     private float carbohydratesLimit;
 
-    public MenuType() {
-
-    }
+    public MenuType() {}
 
     public MenuType(PsqlMenu menu) {
-        this.id = menu.getId();
-        this.patientId = menu.getPatientId();
+        this.id = String.valueOf(menu.getId());
         this.startDate = menu.getStartDate();
         this.endDate = menu.getEndDate();
         this.recommendations = menu.getRecommendations();
@@ -51,99 +61,18 @@ public class MenuType implements Serializable {
         this.carbohydratesLimit = menu.getCarbohydratesLimit();
     }
 
-    public Long getId() {
-        return id;
+    public MenuType(MongoMenu mongoMenu) {
+        this.id = mongoMenu.getId();
+        this.patient = mongoMenu.getPatient();
+        this.startDate = mongoMenu.getStartDate();
+        this.endDate = mongoMenu.getEndDate();
+        this.recommendations = mongoMenu.getRecommendations();
+        this.foodTypes = mongoMenu.getFoodTypes();
+        this.energyLimit = mongoMenu.getEnergyLimit();
+        this.proteinsLimit = mongoMenu.getProteinsLimit();
+        this.fatsLimit = mongoMenu.getFatsLimit();
+        this.carbohydratesLimit = mongoMenu.getCarbohydratesLimit();
+        this.weekMenusCount = mongoMenu.getWeekMenus().size();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
-    }
-
-    public List<Long> getWeekMealList() {
-        return weekMealList;
-    }
-
-    public void setWeekMealList(List<Long> weekMealList) {
-        this.weekMealList = weekMealList;
-    }
-
-    public List<DayMealType> getDayMealTypeList() {
-        return dayMealTypeList;
-    }
-
-    public void setDayMealTypeList(List<DayMealType> dayMealTypeList) {
-        this.dayMealTypeList = dayMealTypeList;
-    }
-
-    public List<FoodType> getFoodTypes() {
-        return foodTypes;
-    }
-
-    public void setFoodTypes(List<FoodType> foodTypes) {
-        this.foodTypes = foodTypes;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getRecommendations() {
-        return recommendations;
-    }
-
-    public void setRecommendations(String recommendations) {
-        this.recommendations = recommendations;
-    }
-
-    public float getEnergyLimit() {
-        return energyLimit;
-    }
-
-    public void setEnergyLimit(float energyLimit) {
-        this.energyLimit = energyLimit;
-    }
-
-    public float getProteinsLimit() {
-        return proteinsLimit;
-    }
-
-    public void setProteinsLimit(float proteinsLimit) {
-        this.proteinsLimit = proteinsLimit;
-    }
-
-    public float getFatsLimit() {
-        return fatsLimit;
-    }
-
-    public void setFatsLimit(float fatsLimit) {
-        this.fatsLimit = fatsLimit;
-    }
-
-    public float getCarbohydratesLimit() {
-        return carbohydratesLimit;
-    }
-
-    public void setCarbohydratesLimit(float carbohydratesLimit) {
-        this.carbohydratesLimit = carbohydratesLimit;
-    }
 }

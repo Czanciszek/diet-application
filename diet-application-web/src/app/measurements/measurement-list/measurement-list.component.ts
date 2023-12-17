@@ -37,18 +37,6 @@ export class MeasurementListComponent implements OnInit {
 
   getPatientsMeasurements() {
 
-    for (let element of this.measurements) {
-      if (element.measurementDate == null) {
-        continue;
-      }
-
-      let dateFormat = new Date(element.measurementDate);
-      let date = dateFormat.getDate();
-      let month = dateFormat.getMonth();
-      let year = dateFormat.getFullYear();
-      element.displayDate = date + "/" + (month + 1) + "/" + year;
-    }
-
     if (this.measurements.length > 0) {
       this.listData = new MatTableDataSource(this.measurements);
     } else {
@@ -63,8 +51,6 @@ export class MeasurementListComponent implements OnInit {
       return;
     }
 
-    const measurementDate = new Date(this.measurementForm.value.displayDate);
-    this.measurementForm.get("measurementDate").patchValue(measurementDate);
     this.measurementForm.get("patientId").patchValue(this.patientId);
     this.showNewMeasurement = false;
     this.patientService.insertMeasurement(this.measurementForm.value)

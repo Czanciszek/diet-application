@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.model.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.springboot.dietapplication.model.mongo.MongoDish;
+import com.springboot.dietapplication.model.mongo.dish.MongoDish;
 import com.springboot.dietapplication.model.psql.dish.PsqlDish;
 import lombok.Getter;
 import lombok.Setter;

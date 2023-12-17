@@ -1,5 +1,6 @@
 package com.springboot.dietapplication.model.type;
 
+import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -22,5 +23,18 @@ public enum DayType {
         return Arrays.stream(values())
                 .filter(dayType -> dayType.dayTypeValue == dayTypeValue)
                 .findFirst();
+    }
+
+    public static DayType from(DayOfWeek dayOfWeek) {
+        switch (dayOfWeek) {
+            case MONDAY -> { return MONDAY; }
+            case TUESDAY -> { return TUESDAY; }
+            case WEDNESDAY -> { return WEDNESDAY; }
+            case THURSDAY -> { return THURSDAY; }
+            case FRIDAY -> { return FRIDAY; }
+            case SATURDAY -> { return SATURDAY; }
+            case SUNDAY -> { return SUNDAY; }
+            default -> throw new IllegalStateException("Unexpected value: " + dayOfWeek);
+        }
     }
 }

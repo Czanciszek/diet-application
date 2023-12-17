@@ -50,14 +50,13 @@ public class MealService {
     }
 
     public List<MealType> getMealsByMenuId(Long menuId) {
-        MenuType menuType = this.menuService.getMenuById(menuId);
-        return getMealsByWeekMealList(menuType.getWeekMealList());
+        return new ArrayList<>();
     }
 
-    public List<MealType> getMealsByWeekMealList(List<Long> weekMealList) {
+    public List<MealType> getMealsByWeekMealList(List<String> weekMealList) {
         List<MealType> mealList = new ArrayList<>();
-        for (Long weekMealId: weekMealList) {
-            mealList.addAll(getMealsByWeekMealId(weekMealId));
+        for (String weekMealId: weekMealList) {
+            mealList.addAll(getMealsByWeekMealId(Long.valueOf(weekMealId)));
         }
         return mealList;
     }
@@ -94,7 +93,7 @@ public class MealService {
 
             this.productMealRepository.save(psqlProductMeal);
 
-            if (meal.getIsProduct() == 1) { break; }
+            if (meal.getIsProduct()) { break; }
         }
 
         if (!isMealCopied) {
@@ -103,7 +102,7 @@ public class MealService {
 
         this.mealRepository.save(psqlMeal);
 
-        meal.setId(psqlMeal.getId());
+        meal.setId(String.valueOf(psqlMeal.getId()));
         return meal;
     }
 
@@ -157,7 +156,7 @@ public class MealService {
         MealType mealType = new MealType(meal);
 
         List<ProductDishType> productDishTypeList = new ArrayList<>();
-        List<PsqlProductMeal> productMeals = this.productMealRepository.findPsqlProductMealsByMealId(mealType.getId());
+        List<PsqlProductMeal> productMeals = this.productMealRepository.findPsqlProductMealsByMealId(Long.valueOf(mealType.getId()));
         for (PsqlProductMeal productMeal : productMeals) {
             ProductDishType productDishType = new ProductDishType(productMeal);
 
@@ -173,7 +172,7 @@ public class MealService {
             List<ProductAmountType> productAmountTypeList = new ArrayList<>();
             for (PsqlProductsAmountTypes productsAmountType : productAmountTypes) {
                 Optional<AmountType> amountType = AmountType.valueOf(productsAmountType.getAmountTypeId());
-                if (!amountType.isPresent()) continue;
+                if (amountType.isEmpty()) continue;
                 productAmountTypeList.add(new ProductAmountType(amountType.get(), productsAmountType.getGrams()));
             }
 
@@ -199,30 +198,19 @@ class FoodTypeComparator implements Comparator<MealType> {
     }
 
     int getAssignedValue(MealType mealType) {
-        switch (mealType.getFoodType()) {
-            case PRE_BREAKFAST:
-                return 0;
-            case BREAKFAST:
-                return 1;
-            case BRUNCH:
-                return 2;
-            case SNACK:
-                return 3;
-            case DINNER:
-                return 4;
-            case TEA:
-                return 5;
-            case SUPPER:
-                return 6;
-            case PRE_WORKOUT:
-                return 7;
-            case POST_WORKOUT:
-                return 8;
-            case OVERNIGHT:
-                return 9;
-        }
+        return switch (mealType.getFoodType()) {
+            case PRE_BREAKFAST -> 0;
+            case BREAKFAST -> 1;
+            case BRUNCH -> 2;
+            case SNACK -> 3;
+            case DINNER -> 4;
+            case TEA -> 5;
+            case SUPPER -> 6;
+            case PRE_WORKOUT -> 7;
+            case POST_WORKOUT -> 8;
+            case OVERNIGHT -> 9;
+        };
 
-        return Integer.MAX_VALUE;
     }
 
 }

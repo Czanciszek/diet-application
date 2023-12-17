@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {ShoppingProduct} from "../../model/shopping-product";
 import {ProductReplacement} from "../../model/product-replacement";
 import {MatDialogRef} from "@angular/material/dialog";
 
@@ -16,16 +15,16 @@ export class ReplaceProductPanelComponent {
 
   tabIndex = 0;
   blockReplace: boolean = true
-  oldProduct: ShoppingProduct
+  oldProductId: string
 
-  chooseReplacement(product) {
-    this.oldProduct = product;
+  chooseReplacement(productId) {
+    this.oldProductId = productId;
     this.blockReplace = false;
     this.tabIndex = 1;
   }
 
   replacementSelected(newProduct) {
-    this.dialogRef.close(new ProductReplacement(this.oldProduct, newProduct));
+    this.dialogRef.close(new ProductReplacement(this.oldProductId, newProduct.id));
   }
 
   onClose() {

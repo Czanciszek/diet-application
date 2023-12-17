@@ -1,5 +1,6 @@
-package com.springboot.dietapplication.model.mongo;
+package com.springboot.dietapplication.model.mongo.dish;
 
+import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.type.AmountType;
 import com.springboot.dietapplication.model.type.FoodPropertiesType;
 import com.springboot.dietapplication.model.type.ProductAmountType;

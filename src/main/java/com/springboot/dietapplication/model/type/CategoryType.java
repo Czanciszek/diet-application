@@ -1,12 +1,12 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -27,9 +27,20 @@ public class CategoryType implements Serializable {
         this.subcategory = productFoodProperties.getSubcategory();
     }
 
-    public CategoryType(PsqlCategory category) {
-        this.id = String.valueOf(category.getId());
-        this.category = category.getCategory();
-        this.subcategory = category.getSubcategory();
+    @Override
+    public boolean equals(Object categoryType) {
+        if (this == categoryType) {
+            return true;
+        }
+        if (categoryType == null || getClass() != categoryType.getClass()) {
+            return false;
+        }
+        return id.equals(((CategoryType) categoryType).id);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }

@@ -130,7 +130,7 @@ public class DayMealService {
         List<MealType> mealList =  this.mealService.getMealsByDayMealId(dayMeal.getId());
         List<Long> mealIdList = new ArrayList<>();
         for (MealType meal : mealList) {
-            mealIdList.add(meal.getId());
+            mealIdList.add(Long.valueOf(meal.getId()));
         }
         dayMealType.setMealList(mealIdList);
 

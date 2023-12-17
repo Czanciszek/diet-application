@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.model.psql.menu;
 
-import com.springboot.dietapplication.model.type.MenuSendingType;
+import com.springboot.dietapplication.model.type.NewMenuType;
 
 import jakarta.persistence.*;
 
@@ -46,14 +46,14 @@ public class PsqlMenu implements Serializable {
 
     }
 
-    public PsqlMenu(MenuSendingType menuSendingType) {
-        this.startDate = menuSendingType.getStartDate();
-        this.patientId = menuSendingType.getPatientId();
-        this.recommendations = menuSendingType.getRecommendations();
-        this.energyLimit = menuSendingType.getEnergyLimit();
-        this.proteinsLimit = menuSendingType.getProteinsLimit();
-        this.fatsLimit = menuSendingType.getFatsLimit();
-        this.carbohydratesLimit = menuSendingType.getCarbohydratesLimit();
+    public PsqlMenu(NewMenuType newMenuType) {
+        this.startDate = newMenuType.getStartDate();
+        this.patientId = Long.valueOf(newMenuType.getPatientId());
+        this.recommendations = newMenuType.getRecommendations();
+        this.energyLimit = newMenuType.getEnergyLimit();
+        this.proteinsLimit = newMenuType.getProteinsLimit();
+        this.fatsLimit = newMenuType.getFatsLimit();
+        this.carbohydratesLimit = newMenuType.getCarbohydratesLimit();
     }
 
     public Long getId() {

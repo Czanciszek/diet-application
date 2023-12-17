@@ -2,7 +2,6 @@ export interface Measurement {
   id: string,
   patientId: string,
   measurementDate: string,
-  displayDate: string,
   bodyWeight: number,
   breast: number,
   underBreast: number,

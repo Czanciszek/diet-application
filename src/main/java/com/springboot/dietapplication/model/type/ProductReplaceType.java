@@ -1,27 +1,16 @@
 package com.springboot.dietapplication.model.type;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ProductReplaceType {
 
-    private ReplacingProduct oldProduct;
+    private String menuId;
+    private String oldProductId;
+    private String newProductId;
 
-    private ReplacingProduct newProduct;
+    public ProductReplaceType() {}
 
-    public ProductReplaceType() {
-    }
-
-    public ReplacingProduct getOldProduct() {
-        return oldProduct;
-    }
-
-    public void setOldProduct(ReplacingProduct oldProduct) {
-        this.oldProduct = oldProduct;
-    }
-
-    public ReplacingProduct getNewProduct() {
-        return newProduct;
-    }
-
-    public void setNewProduct(ReplacingProduct newProduct) {
-        this.newProduct = newProduct;
-    }
 }

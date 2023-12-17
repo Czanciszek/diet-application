@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.psql.product.PsqlShoppingProduct;
-import com.springboot.dietapplication.model.type.MenuSendingType;
+import com.springboot.dietapplication.model.type.NewMenuType;
 import com.springboot.dietapplication.model.type.MenuType;
 import com.springboot.dietapplication.model.type.ProductReplaceType;
 import com.springboot.dietapplication.service.MenuService;
@@ -39,8 +39,8 @@ public class MenuController {
     }
 
     @PostMapping(produces = "application/json")
-    ResponseEntity<MenuType> insert(@RequestBody MenuSendingType menuSendingType) {
-        return this.menuService.insert(menuSendingType);
+    ResponseEntity<MenuType> insert(@RequestBody NewMenuType newMenuType) {
+        return this.menuService.insert(newMenuType);
     }
 
     @PostMapping(path = "/product-replace/{menuId}", produces = "application/json")
@@ -52,13 +52,13 @@ public class MenuController {
 
     @PutMapping(path = "/{menuId}", produces = "application/json")
     ResponseEntity<MenuType> update(@PathVariable("menuId") Long menuId,
-                                    @RequestBody MenuSendingType menuSendingType) {
-        return this.menuService.update(menuSendingType);
+                                    @RequestBody NewMenuType newMenuType) {
+        return this.menuService.update(newMenuType);
     }
 
     @PostMapping(path = "/copy", produces = "application/json")
-    ResponseEntity<MenuType> copy(@RequestBody MenuSendingType menuSendingType) {
-        return this.menuService.copy(menuSendingType);
+    ResponseEntity<MenuType> copy(@RequestBody NewMenuType newMenuType) {
+        return this.menuService.copy(newMenuType);
     }
 
     @DeleteMapping(path = "/{id}")

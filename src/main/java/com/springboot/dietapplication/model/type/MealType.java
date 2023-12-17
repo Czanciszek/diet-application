@@ -1,27 +1,33 @@
 package com.springboot.dietapplication.model.type;
 
+import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
 import com.springboot.dietapplication.model.psql.menu.PsqlMeal;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Getter
+@Setter
 public class MealType implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -3419782569024875357L;
 
-    private Long id;
+    private String id;
 
     private String name;
 
-    private Long dayMealId; // Reference to day
+    private String dayMealId; // Reference to day
 
-    private Long originMealId; // Reference to origin meal day
+    private String originMealId; // Reference to origin meal day
 
-    private Long baseDishId; // Reference to selected dish
+    private String baseDishId; // Reference to selected dish
 
-    private int isProduct; // true - for Product; false - for Dish
+    private Boolean isProduct; // true - for Product; false - for Dish
 
     private List<ProductDishType> productList; // Product list for dish type
 
@@ -35,9 +41,7 @@ public class MealType implements Serializable {
 
     private FoodType foodType; //Rodzaj posiłku
 
-    public MealType() {
-
-    }
+    public MealType() {}
 
     public MealType(MealType meal) {
         this.name = meal.name;
@@ -54,111 +58,33 @@ public class MealType implements Serializable {
     }
 
     public MealType(PsqlMeal meal) {
-        this.id = meal.getId();
-        this.dayMealId = meal.getDayMealId();
-        this.originMealId = meal.getOriginMealId();
-        this.baseDishId = meal.getBaseDishId();
+        this.id = String.valueOf(meal.getId());
+        this.dayMealId = String.valueOf(meal.getDayMealId());
+        this.originMealId = meal.getBaseDishId() != null ? String.valueOf(meal.getOriginMealId()) : null;
+        this.baseDishId = meal.getBaseDishId() != null ? String.valueOf(meal.getBaseDishId()) : null;
         this.name = meal.getName();
-        this.isProduct = (meal.isProduct() ? 1 : 0);
+        this.isProduct = meal.isProduct();
         this.portions = meal.getPortions();
         this.grams = meal.getGrams();
         this.dishPortions = meal.getDishPortions();
         this.recipe = meal.getRecipe();
     }
 
-    public Long getId() {
-        return id;
+    public MealType(MongoMeal mongoMeal) {
+        this.name = mongoMeal.getName();
+        this.originMealId = mongoMeal.getAttachToRecipes() ? mongoMeal.getId() : null;
+        this.baseDishId = mongoMeal.getOriginDishId();
+        this.isProduct = mongoMeal.getIsProduct();
+        this.portions = mongoMeal.getPortions();
+        this.dishPortions = mongoMeal.getDishPortions();
+        this.grams = mongoMeal.getGrams();
+        this.recipe = mongoMeal.getRecipe();
+        this.foodType = mongoMeal.getFoodType();
+
+        this.productList = mongoMeal.getProducts()
+                .stream()
+                .map(ProductDishType::new)
+                .collect(Collectors.toList());;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getDayMealId() {
-        return dayMealId;
-    }
-
-    public void setDayMealId(Long dayMealId) {
-        this.dayMealId = dayMealId;
-    }
-
-    public Long getOriginMealId() {
-        return originMealId;
-    }
-
-    public void setOriginMealId(Long originMealId) {
-        this.originMealId = originMealId;
-    }
-
-    public Long getBaseDishId() {
-        return baseDishId;
-    }
-
-    public void setBaseDishId(Long baseDishId) {
-        this.baseDishId = baseDishId;
-    }
-
-    public int getIsProduct() {
-        return isProduct;
-    }
-
-    public void setIsProduct(int isProduct) {
-        this.isProduct = isProduct;
-    }
-
-    public List<ProductDishType> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<ProductDishType> productList) {
-        this.productList = productList;
-    }
-
-    public float getPortions() {
-        return portions;
-    }
-
-    public void setPortions(float portions) {
-        this.portions = portions;
-    }
-
-    public float getGrams() {
-        return grams;
-    }
-
-    public void setGrams(float grams) {
-        this.grams = grams;
-    }
-
-    public float getDishPortions() {
-        return dishPortions;
-    }
-
-    public void setDishPortions(float dishPortions) {
-        this.dishPortions = dishPortions;
-    }
-
-    public String getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(String recipe) {
-        this.recipe = recipe;
-    }
-
-    public FoodType getFoodType() {
-        return foodType;
-    }
-
-    public void setFoodType(FoodType foodType) {
-        this.foodType = foodType;
-    }
 }

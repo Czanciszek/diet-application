@@ -5,6 +5,7 @@ import { MatDialogRef } from "@angular/material/dialog";
 import { NotificationService } from "../../service/notification.service";
 import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
 import { ALLERGEN_TYPES } from "../../model/helpers/allergenTypes";
+import { ProductCategory, ProductCategorySet } from "../../model/product-category";
 
 @Component({
   selector: 'app-product',
@@ -16,7 +17,7 @@ export class ProductComponent implements OnInit {
   amountTypes = AMOUNT_TYPES;
   allergens = ALLERGEN_TYPES;
 
-  categoryList: any[] = [];
+  categoryList: ProductCategory[] = [];
   categories: any = new Set();
   subcategories: any = new Set();
 
@@ -35,14 +36,15 @@ export class ProductComponent implements OnInit {
   }
 
   getCategories() {
-    let response = this.productService.getCategories();
-    response.subscribe(data => {
-      this.categoryList = Object.values(data);
-      for (const key of this.categoryList) {
-        this.categories.add(key.category);
-        this.subcategories.add(key.subcategory);
-      }
-    });
+   
+    const productCategories = this.productService.productList.map(p => new ProductCategory(p.category.category, p.category.subcategory));
+    const productCategorySet = new ProductCategorySet(productCategories);
+    this.categoryList = productCategorySet.values();
+    
+    for (const key of this.categoryList) {
+      this.categories.add(key.category);
+      this.subcategories.add(key.subcategory);
+    }
   }
 
   fillSubcategories(categories) {

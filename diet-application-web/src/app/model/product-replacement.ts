@@ -1,16 +1,10 @@
 export class ProductReplacement {
-  oldProduct: {
-    id: number,
-    name: string
-  }
 
-  newProduct: {
-    id: number,
-    name: string
-  }
+  oldProductId: string
+  newProductId: string
 
-  constructor(oldProduct, newProduct) {
-    this.oldProduct = { id: oldProduct.productId, name: oldProduct.productName};
-    this.newProduct = { id: newProduct.id, name: newProduct.name };
+  constructor(oldProductId, newProductId) {
+    this.oldProductId = oldProductId;
+    this.newProductId = newProductId;
   }
 }

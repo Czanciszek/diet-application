@@ -28,10 +28,14 @@ public class DishControllerV2 {
         }
     }
 
-    //TODO: Implement when MongoPatient will be ready
     @GetMapping(path = "/patient-usage/{patientId}")
-    ResponseEntity<?> dishUsage(@PathVariable Long patientId) {
-        return ResponseEntity.noContent().build();
+    ResponseEntity<?> dishUsage(@PathVariable String patientId) {
+        try {
+            List<DishUsageType> dishUsageTypes = this.dishService.getDishUsages(patientId);
+            return ResponseEntity.ok(dishUsageTypes);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping(produces = "application/json")

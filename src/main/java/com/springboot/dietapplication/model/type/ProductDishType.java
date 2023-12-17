@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.mongo.MongoDishProduct;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.springboot.dietapplication.model.mongo.dish.MongoDishProduct;
 import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
 import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 import lombok.Getter;
@@ -23,6 +24,8 @@ public class ProductDishType implements Serializable {
     private float amount;
     private AmountType amountType;
     private List<ProductAmountType> amountTypes;
+
+    @JsonIgnore
     private FoodPropertiesType foodPropertiesType;
 
     public ProductDishType() {}

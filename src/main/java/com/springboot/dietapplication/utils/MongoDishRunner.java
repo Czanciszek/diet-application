@@ -1,6 +1,6 @@
 package com.springboot.dietapplication.utils;
 
-import com.springboot.dietapplication.model.mongo.MongoDish;
+import com.springboot.dietapplication.model.mongo.dish.MongoDish;
 import com.springboot.dietapplication.model.type.DishType;
 import com.springboot.dietapplication.repository.mongo.MongoDishRepository;
 import com.springboot.dietapplication.service.DishService;

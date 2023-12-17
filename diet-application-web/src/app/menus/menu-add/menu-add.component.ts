@@ -2,10 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NotificationService } from "../../service/notification.service";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MenuService } from "../../service/menu.service";
-import { MeasurementService } from "../../service/measurement.service";
 import { Measurement } from "../../model/measurement";
 import { PatientService } from "../../service/patient.service";
-import { ProductService } from "../../service/product.service";
 import { ReplaceProductPanelComponent } from "../replace-product-panel/replace-product-panel.component";
 import { FOOD_TYPES } from "../../model/helpers/foodTypes";
 
@@ -18,9 +16,7 @@ export class MenuAddComponent implements OnInit {
 
   constructor(
     private menuService: MenuService,
-    private measurementService: MeasurementService,
     private patientService: PatientService,
-    private productService: ProductService,
     private notificationService: NotificationService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<MenuAddComponent>
@@ -275,9 +271,10 @@ export class MenuAddComponent implements OnInit {
 
   replaceProducts(products) {
     let menuId = this.menuServiceForm.get("id").value;
+    products.menuId = menuId;
 
     this.menuService
-      .replaceProductInMenu(menuId, products)
+      .replaceProductInMenu(products)
       .subscribe(
         (response) => {
           this.notificationService.success(":: Produkt zaktualizowano pomyślnie! ::");

@@ -1,7 +1,6 @@
 import {Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
 import {MealService} from "../../service/meal.service";
 import {Meal} from "../../model/meal";
-import {DayMeal} from "../../model/day-meal";
 import {MealAddComponent} from "../meal-add/meal-add.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ProductService} from "../../service/product.service";
@@ -19,8 +18,7 @@ export class DishSummaryComponent implements OnInit {
   dayItem: any;
   @Input()
   mealItem: Meal;
-  @Input()
-  daysList: DayMeal[];
+
   @Output()
   refreshItems = new EventEmitter<boolean>();
 

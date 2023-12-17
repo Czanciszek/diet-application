@@ -1,6 +1,7 @@
-import {Injectable} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {RestapiService} from "./restapi.service";
+import { Injectable } from '@angular/core';
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { RestapiService } from "./restapi.service";
+import { CalendarDateValidator } from "../utils/calendarDateValidator"
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class PatientService {
     id: new FormControl(null),
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
     surname: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    birthDate: new FormControl('', [Validators.required]),
+    birthDate: new FormControl(null, [Validators.required, CalendarDateValidator]),
     numberPhone: new FormControl(''),
     email: new FormControl('', [Validators.email]),
     sex: new FormControl(null),
@@ -35,7 +36,7 @@ export class PatientService {
       id: null,
       name: '',
       surname: '',
-      birthDate: '',
+      birthDate: null,
       numberPhone: '',
       email: '',
       sex: null,

@@ -110,7 +110,7 @@ export class ProductService {
   }
 
   getCategories() {
-    return this.restApiService.get("categories", "v1");
+    return this.restApiService.get("products/categories", "v2");
   }
 
   insertProduct(product) {

@@ -257,30 +257,20 @@ public class PDFService {
     }
 
     private int getAssignedValue(PsqlFoodType foodType) {
-        switch (foodType.getName().toUpperCase()) {
-            case "PRE_BREAKFAST":
-                return 0;
-            case "BREAKFAST":
-                return 1;
-            case "BRUNCH":
-                return 2;
-            case "SNACK":
-                return 3;
-            case "DINNER":
-                return 4;
-            case "TEA":
-                return 5;
-            case "SUPPER":
-                return 6;
-            case "PRE_WORKOUT":
-                return 7;
-            case "POST_WORKOUT":
-                return 8;
-            case "OVERNIGHT":
-                return 9;
-        }
+        return switch (foodType.getName().toUpperCase()) {
+            case "PRE_BREAKFAST" -> 0;
+            case "BREAKFAST" -> 1;
+            case "BRUNCH" -> 2;
+            case "SNACK" -> 3;
+            case "DINNER" -> 4;
+            case "TEA" -> 5;
+            case "SUPPER" -> 6;
+            case "PRE_WORKOUT" -> 7;
+            case "POST_WORKOUT" -> 8;
+            case "OVERNIGHT" -> 9;
+            default -> Integer.MAX_VALUE;
+        };
 
-        return Integer.MAX_VALUE;
     }
 
     private void writeFoodType(PDDocument document, PDPageContentStream contentStream, FoodType foodType) throws IOException {
@@ -359,9 +349,9 @@ public class PDFService {
 
     private void makeMenuDishRecipes(PDDocument document) throws IOException {
         List<MealType> mealList = mealService
-                .getMealsByMenuId(menu.getId())
+                .getMealsByMenuId(Long.valueOf(menu.getId()))
                 .stream()
-                .filter(meal -> (meal.getIsProduct() == 0) && meal.getOriginMealId() != null && meal.getOriginMealId().equals(meal.getId()))
+                .filter(meal -> (!meal.getIsProduct()) && meal.getOriginMealId() != null && meal.getOriginMealId().equals(meal.getId()))
                 .collect(Collectors.toList());
 
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
@@ -477,7 +467,7 @@ public class PDFService {
 
     private void makeShoppingList(PDDocument document) throws IOException {
 
-        List<PsqlShoppingProduct> shoppingProductList = menuService.getShoppingProductsForMenu(menu.getId());
+        List<PsqlShoppingProduct> shoppingProductList = menuService.getShoppingProductsForMenu(Long.parseLong(menu.getId()));
 
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));

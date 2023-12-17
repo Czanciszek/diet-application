@@ -1,7 +1,8 @@
 package com.springboot.dietapplication.service;
 
-import com.springboot.dietapplication.model.mongo.MongoProduct;
+import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.psql.user.UserEntity;
+import com.springboot.dietapplication.model.type.CategoryType;
 import com.springboot.dietapplication.model.type.ProductType;
 import com.springboot.dietapplication.repository.mongo.MongoProductRepository;
 import com.springboot.dietapplication.utils.DateFormatter;
@@ -15,6 +16,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +40,16 @@ public class ProductServiceV2 {
                 .filter(p -> StringUtils.isEmpty(p.getDeletionDate()))
                 .map(ProductType::new)
                 .collect(Collectors.toList());
+    }
+
+    public Set<CategoryType> getProductCategories() {
+        List<MongoProduct> mongoProductList = mongoProductRepository.findAll();
+
+        return mongoProductList
+                .stream()
+                .filter(p -> StringUtils.isEmpty(p.getDeletionDate()))
+                .map(MongoProduct::getCategory)
+                .collect(Collectors.toSet());
     }
 
     public ProductType insert(ProductType productType) {

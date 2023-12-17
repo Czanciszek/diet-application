@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.model.mongo;
+package com.springboot.dietapplication.model.mongo.patient;
 
 import com.springboot.dietapplication.model.type.*;
 import lombok.Getter;
@@ -35,13 +35,11 @@ public class MongoPatient {
     // TODO: Switch to CategoryType
     private Set<String> unlikelyCategories;
     private List<MeasurementType> measurements;
+    private List<String> menus;
 
     private String creationDate;
     private String updateDate;
     private String deletionDate;
-
-    // General menu list (without meals)
-    //private List<MenuType> menus;
 
     public MongoPatient() {}
 
@@ -65,7 +63,7 @@ public class MongoPatient {
         this.allergens = patientType.getAllergens();
         this.unlikelyCategories = patientType.getUnlikelyCategories();
         this.measurements = patientType.getMeasurements();
-//        this.menus = patientType.getMenus();
+        this.menus = patientType.getMenus();
     }
 
 

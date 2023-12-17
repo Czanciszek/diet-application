@@ -1,6 +1,8 @@
 package com.springboot.dietapplication.service;
 
+import com.springboot.dietapplication.model.mongo.patient.BriefPatient;
 import com.springboot.dietapplication.model.psql.menu.*;
+import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 import com.springboot.dietapplication.model.psql.product.PsqlShoppingProduct;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.*;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
@@ -28,6 +31,8 @@ public class MenuService {
     @Autowired
     ShoppingProductRepository shoppingProductRepository;
     @Autowired
+    PatientRepository patientRepository;
+    @Autowired
     ProductMealRepository productMealRepository;
     @Autowired
     MealRepository mealRepository;
@@ -38,18 +43,15 @@ public class MenuService {
     DayMealService dayMealService;
 
     public List<MenuType> getAll() {
-        List<PsqlMenu> psqlMenuList = this.menuRepository.findAll();
-        return convertLists(psqlMenuList);
+        return new ArrayList<>();
     }
 
     public MenuType getMenuById(long menuId) {
-        Optional<PsqlMenu> menu = this.menuRepository.findById(menuId);
-        return menu.map(this::convertPsqlMenuToMenuType).orElseGet(MenuType::new);
+        return new MenuType();
     }
 
     public List<MenuType> getMenusByPatientId(long patientId) {
-        List<PsqlMenu> psqlMenuList = this.menuRepository.findPsqlMenusByPatientId(patientId);
-        return convertLists(psqlMenuList);
+        return new ArrayList<>();
     }
 
     public List<PsqlMenuProduct> menuProducts(long menuId) {
@@ -60,18 +62,18 @@ public class MenuService {
         return shoppingProductRepository.findShoppingProductsByMenuId(menuId);
     }
 
-    public ResponseEntity<MenuType> insert(MenuSendingType menuSendingType) {
-        PsqlMenu menu = new PsqlMenu(menuSendingType);
+    public ResponseEntity<MenuType> insert(NewMenuType newMenuType) {
+        PsqlMenu menu = new PsqlMenu(newMenuType);
 
         DateTime dateTime = new DateTime(menu.getStartDate());
-        DateTime endDate = dateTime.plusWeeks(menuSendingType.getWeekCount()).minusDays(1);
+        DateTime endDate = dateTime.plusWeeks(newMenuType.getWeekMenusCount()).minusDays(1);
         menu.setEndDate(endDate.toString());
 
         this.menuRepository.save(menu);
 
-        saveMenuFoodProperties(menuSendingType.getFoodTypes(), menu.getId());
+        saveMenuFoodProperties(newMenuType.getFoodTypes(), menu.getId());
 
-        for (int i = 0; i < menuSendingType.getWeekCount(); i++) {
+        for (int i = 0; i < newMenuType.getWeekMenusCount(); i++) {
             WeekMealType weekMeal = new WeekMealType();
             weekMeal.setMenuId(menu.getId());
             this.weekMealService.insert(weekMeal);
@@ -85,54 +87,54 @@ public class MenuService {
 
     public ResponseEntity<Void> replaceProductInMenu(Long menuId, ProductReplaceType productReplaceType) {
 
-        ReplacingProduct newProduct = productReplaceType.getNewProduct();
+        String newProductId = productReplaceType.getNewProductId();
 
-        List<PsqlProductMeal> productMealList = productMealRepository.findPsqlProductMealByMenuIdAndByProductId(menuId, productReplaceType.getOldProduct().getId());
-        productMealList.forEach( product -> {
-            product.setProductId(newProduct.getId());
-            product.setProductName(newProduct.getName());
-        });
-        productMealRepository.saveAll(productMealList);
-
-        List<PsqlMeal> mealList = mealRepository.findByName(productReplaceType.getOldProduct().getName());
-        mealList.forEach( meal -> {
-            meal.setName(newProduct.getName());
-        });
-        mealRepository.saveAll(mealList);
+//        List<PsqlProductMeal> productMealList = productMealRepository.findPsqlProductMealByMenuIdAndByProductId(menuId, Long.valueOf(productReplaceType.getOldProductId()));
+//        productMealList.forEach( product -> {
+//            product.setProductId(Long.valueOf(newProductId));
+//        });
+//        productMealRepository.saveAll(productMealList);
+//
+//        List<PsqlMeal> mealList = mealRepository.findByName(productReplaceType.getOldProduct().getName());
+//        mealList.forEach( meal -> {
+//            meal.setName(newProduct.getName());
+//        });
+//        mealRepository.saveAll(mealList);
 
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<MenuType> update(MenuSendingType menuSendingType) {
-        PsqlMenu updateMenu = new PsqlMenu(menuSendingType);
+    public ResponseEntity<MenuType> update(NewMenuType newMenuType) {
+        Long menuTypeId = Long.valueOf(newMenuType.getId());
+        PsqlMenu updateMenu = new PsqlMenu(newMenuType);
 
-        Optional<PsqlMenu> currentMenu = this.menuRepository.findById(menuSendingType.getId());
-        if (!currentMenu.isPresent()) return null;
-        updateMenu.setId(menuSendingType.getId());
+        Optional<PsqlMenu> currentMenu = this.menuRepository.findById(menuTypeId);
+        if (currentMenu.isEmpty()) return null;
+        updateMenu.setId(menuTypeId);
         updateMenu.setEndDate(currentMenu.get().getEndDate());
 
-        saveMenuFoodProperties(menuSendingType.getFoodTypes(), menuSendingType.getId());
+        saveMenuFoodProperties(newMenuType.getFoodTypes(), menuTypeId);
 
         this.menuRepository.save(updateMenu);
         return ResponseEntity.ok().body(new MenuType(updateMenu));
     }
 
-    public ResponseEntity<MenuType> copy(MenuSendingType menuSendingType) {
+    public ResponseEntity<MenuType> copy(NewMenuType newMenuType) {
 
-        PsqlMenu originMenu = getCurrentMenuData(menuSendingType.getId());
+        PsqlMenu originMenu = getCurrentMenuData(Long.parseLong(newMenuType.getId()));
         if (originMenu == null)
             return null;
 
-        PsqlMenu newMenu = new PsqlMenu(menuSendingType);
+        PsqlMenu newMenu = new PsqlMenu(newMenuType);
 
-        DateTime dateTime = new DateTime(menuSendingType.getStartDate());
+        DateTime dateTime = new DateTime(newMenuType.getStartDate());
         newMenu.setStartDate(dateTime.toString());
-        DateTime endDate = dateTime.plusWeeks(menuSendingType.getWeekCount()).minusDays(1);
+        DateTime endDate = dateTime.plusWeeks(newMenuType.getWeekMenusCount()).minusDays(1);
         newMenu.setEndDate(endDate.toString());
 
         this.menuRepository.save(newMenu);
 
-        saveMenuFoodProperties(menuSendingType.getFoodTypes(), newMenu.getId());
+        saveMenuFoodProperties(newMenuType.getFoodTypes(), newMenu.getId());
 
         float factor = Math.round((newMenu.getEnergyLimit() / originMenu.getEnergyLimit()) * 100f) / 100f;
         this.weekMealService.copy(originMenu.getId(), newMenu.getId(), factor, newMenu.getStartDate());
@@ -152,7 +154,7 @@ public class MenuService {
 
     public void updateMenuRecommendations(GenerateMenuType generateMenuType) {
         Optional<PsqlMenu> menu = this.menuRepository.findById(generateMenuType.getMenuId());
-        if (!menu.isPresent()) return;
+        if (menu.isEmpty()) return;
         menu.get().setRecommendations(generateMenuType.getRecommendations());
         this.menuRepository.save(menu.get());
     }
@@ -169,78 +171,6 @@ public class MenuService {
             PsqlFoodTypeMenu foodTypeMenu = new PsqlFoodTypeMenu(psqlFoodType.getId(), menuId);
             this.foodTypeMenuRepository.save(foodTypeMenu);
         }
-    }
-
-    private List<MenuType> convertLists(List<PsqlMenu> psqlMenuList) {
-        List<MenuType> menuList = new ArrayList<>();
-
-        for (PsqlMenu menu : psqlMenuList) {
-            menuList.add(convertPsqlMenuToMenuType(menu));
-        }
-
-        return menuList;
-    }
-
-    private MenuType convertPsqlMenuToMenuType(PsqlMenu psqlMenu) {
-        MenuType menuType = new MenuType(psqlMenu);
-
-        List<FoodType> foodTypeList = new ArrayList<>();
-        List<PsqlFoodTypeMenu> psqlFoodTypeList = this.foodTypeMenuRepository.findPsqlFoodTypeMenuByMenuId(psqlMenu.getId());
-        for (PsqlFoodTypeMenu foodTypeMenu : psqlFoodTypeList) {
-            Optional<PsqlFoodType> foodType = this.foodTypeRepository.findById(foodTypeMenu.getFoodTypeId());
-            foodType.ifPresent(psqlFoodType -> foodTypeList.add(FoodType.valueOf(psqlFoodType.getName())));
-        }
-
-        foodTypeList.sort(new MenuFoodTypeComparator());
-
-        menuType.setFoodTypes(foodTypeList);
-
-        List<Long> weekMealIdList = this.weekMealService.getWeekMealIdList(psqlMenu.getId());
-        menuType.setWeekMealList(weekMealIdList);
-
-        List<DayMealType> dayMealTypeList = new ArrayList<>();
-        for (Long weekMealId: weekMealIdList)
-            dayMealTypeList.addAll(this.dayMealService.getDayMealByWeekMealId(weekMealId));
-
-        menuType.setDayMealTypeList(dayMealTypeList);
-
-        return menuType;
-    }
-
-}
-
-class MenuFoodTypeComparator implements Comparator<FoodType> {
-
-    @Override
-    public int compare(FoodType o1, FoodType o2) {
-        return Integer.compare(getAssignedValue(o1), getAssignedValue(o2));
-    }
-
-    int getAssignedValue(FoodType foodType) {
-        switch (foodType) {
-            case PRE_BREAKFAST:
-                return 0;
-            case BREAKFAST:
-                return 1;
-            case BRUNCH:
-                return 2;
-            case SNACK:
-                return 3;
-            case DINNER:
-                return 4;
-            case TEA:
-                return 5;
-            case SUPPER:
-                return 6;
-            case PRE_WORKOUT:
-                return 7;
-            case POST_WORKOUT:
-                return 8;
-            case OVERNIGHT:
-                return 9;
-        }
-
-        return Integer.MAX_VALUE;
     }
 
 }

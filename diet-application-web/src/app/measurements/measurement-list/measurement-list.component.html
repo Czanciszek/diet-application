@@ -40,9 +40,9 @@
 
         <div *ngIf="column != 'id' && column != 'patientId'">
           <div
-            *ngIf="(patientService.form.value.sex == 'OTHER' && column != 'measurementDate') ||
-                      (patientService.form.value.sex == 'FEMALE' && column != 'chest' && column != 'arm' && column != 'measurementDate') ||
-                      (patientService.form.value.sex == 'MALE' && column != 'breast' && column != 'underBreast' && column != 'hipBones' && column != 'thighNarrowest' && column != 'measurementDate')">
+            *ngIf="(patientService.form.value.sex == 'OTHER') ||
+                      (patientService.form.value.sex == 'FEMALE' && column != 'chest' && column != 'arm') ||
+                      (patientService.form.value.sex == 'MALE' && column != 'breast' && column != 'underBreast' && column != 'hipBones' && column != 'thighNarrowest')">
             <mat-grid-list cols="{{listData.data.length+3}}" rowHeight="65px">
               <div> <!-- Check whenever sex and measurement type pass together this.patientService.form.value.sex -->
                 <mat-grid-tile colspan="2">
@@ -64,17 +64,18 @@
               <mat-grid-tile>
                 <div class="control-container add-bottom-padding" *ngIf="showNewMeasurement">
 
-                  <div *ngIf="column === 'displayDate' then measurementBlock else otherBlock"></div>
+                  <div *ngIf="column === 'measurementDate' then measurementBlock else otherBlock"></div>
                   <ng-template #measurementBlock>
                     <mat-form-field class="example-full-width">
                       <mat-label>Data pomiaru</mat-label>
-                      <input matInput [matDatepicker]="picker" formControlName="displayDate" autocomplete="off">
+                      <input matInput [matDatepicker]="picker" formControlName="measurementDate" autocomplete="off">
                       <mat-datepicker-toggle matSuffix [for]="picker">
                         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                       </mat-datepicker-toggle>
                       <mat-datepicker #picker startView="month" [startAt]="startDate"></mat-datepicker>
-                      <mat-error *ngIf="measurementForm.controls['displayDate'].errors?.required">Wprowadź poprawną
-                        datę</mat-error>
+                      <mat-error *ngIf="measurementForm.controls['measurementDate'].errors?.required">
+                        Wprowadź poprawną datę
+                      </mat-error>
                     </mat-form-field>
                   </ng-template>
                   <ng-template #otherBlock>

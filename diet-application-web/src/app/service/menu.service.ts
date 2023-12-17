@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup, Validators} from "@angular/forms";
-import {Observable} from "rxjs";
-import {Menu} from '../model/menu';
-import {RestapiService} from "./restapi.service";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Observable } from "rxjs";
+import { Menu } from '../model/menu';
+import { RestapiService } from "./restapi.service";
+import { CalendarDateValidator } from "../utils/calendarDateValidator"
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,10 @@ export class MenuService {
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
-    weekCount: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(8)]),
+    weekMenusCount: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(8)]),
     foodTypes: new FormControl(null, [Validators.required]),
     patientId: new FormControl(null),
-    startDate: new FormControl(null, [Validators.required]),
+    startDate: new FormControl(null, [Validators.required, CalendarDateValidator]),
     recommendations: new FormControl(null),
     energyLimit: new FormControl(null, [Validators.required]),
     proteinsLimit: new FormControl(null, [Validators.required]),
@@ -27,9 +28,10 @@ export class MenuService {
   });
 
   initializeFormGroup() {
+    this.form.reset();
     this.form.setValue({
       id: null,
-      weekCount: 1,
+      weekMenusCount: 1,
       foodTypes: null,
       patientId: null,
       startDate: null,
@@ -42,40 +44,41 @@ export class MenuService {
   }
 
   populateForm(menu) {
+    this.form.reset();
     this.form.setValue(menu);
   }
 
   menuList: any;
 
   getMenusByPatientId(patientId): Observable<Menu[]> {
-    return this.restApiService.get<Menu[]>("menus/patient/" + patientId);
+    return this.restApiService.get<Menu[]>("menus/patient/" + patientId, "v2");
   }
 
   getMenuById(menuId): Observable<Menu[]> {
-    return this.restApiService.get<Menu[]>("menus/" + menuId);
+    return this.restApiService.get<Menu[]>("menus/" + menuId, "v2");
   }
 
   getMenuProducts(menuId) {
-    return this.restApiService.get("menus/" + menuId + "/products");
+    return this.restApiService.get("menus/" + menuId + "/products", "v2");
   }
 
   insertMenu(menu) {
-    return this.restApiService.post(menu, "menus");
+    return this.restApiService.post(menu, "menus", "v2");
   }
 
   copyMenu(menu) {
-    return this.restApiService.post(menu, "menus/copy");
+    return this.restApiService.post(menu, "menus/copy", "v2");
   }
 
-  replaceProductInMenu(menuId, productReplaceType) {
-    return this.restApiService.post(productReplaceType, "menus/product-replace/" + menuId);
+  replaceProductInMenu(productReplaceType) {
+    return this.restApiService.post(productReplaceType, "menus/product-replace", "v2");
   }
 
   updateMenu(menu) {
-    return this.restApiService.put(menu, "menus/" + menu.id);
+    return this.restApiService.put(menu, "menus", "v2");
   }
 
   deleteMenu(id: string) {
-    return this.restApiService.delete("menus/" + id);
+    return this.restApiService.delete("menus/" + id, "v2");
   }
 }

@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.model.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.springboot.dietapplication.model.mongo.MongoPatient;
+import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +42,9 @@ public class PatientType implements Serializable {
 
     private List<MeasurementType> measurements;
 
+    @JsonIgnore
+    private List<String> menus;
+
     public PatientType() {}
 
     public PatientType(PsqlPatient psqlPatient) {
@@ -75,6 +78,7 @@ public class PatientType implements Serializable {
         this.allergens = mongoPatient.getAllergens();
         this.unlikelyCategories = mongoPatient.getUnlikelyCategories();
         this.measurements = mongoPatient.getMeasurements();
+        this.menus = mongoPatient.getMenus();
     }
 
 }

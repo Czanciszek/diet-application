@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.model.mongo;
+package com.springboot.dietapplication.model.mongo.product;
 
 import com.springboot.dietapplication.model.type.*;
 import lombok.Getter;

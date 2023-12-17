@@ -8,15 +8,15 @@
   <mat-table [dataSource]="listData" matSort>
     <ng-container matColumnDef="order">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Nr jadłospisu</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.order}}</mat-cell>
+      <mat-cell *matCellDef="let element; let i = index;">{{i+1}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="dateRange">
       <mat-header-cell *matHeaderCellDef>Zakres dat</mat-header-cell>
       <mat-cell *matCellDef="let element">{{dateTimeParser(element)}}</mat-cell>
     </ng-container>
-    <ng-container matColumnDef="weekCount">
+    <ng-container matColumnDef="weekMenusCount">
       <mat-header-cell *matHeaderCellDef>Długość trwania diety</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{weekCount(element.weekMealList.length)}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{weekCount(element.weekMenusCount)}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>

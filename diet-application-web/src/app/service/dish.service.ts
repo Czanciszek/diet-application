@@ -105,7 +105,7 @@ export class DishService {
   }
 
   getDishUsages(patientId) {
-    return this.restApiService.get("dishes/patient-usage/" + patientId);
+    return this.restApiService.get("dishes/patient-usage/" + patientId, "v2");
   }
 
   insertDish(dish) {

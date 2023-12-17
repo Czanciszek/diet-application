@@ -10,6 +10,10 @@ export class WeekMealService {
     private restApiService: RestapiService
   ) { }
 
+  getWeekMealsByMenuId(menuId) {
+    return this.restApiService.get("weekmeals/menu/" + menuId, "v2");
+  }
+
   deleteWeekMealById(weekMealId) {
     return this.restApiService.delete("weekmeals/" + weekMealId);
   }

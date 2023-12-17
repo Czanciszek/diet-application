@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PatientService {
@@ -49,6 +50,10 @@ public class PatientService {
             patientType.setUnlikelyCategories(getPatientsUnlikelyCategories(psqlPatient.getId()));
             patientType.setAllergens(convertAllergenTypes(psqlPatient.getId()));
             patientType.setMeasurements(measurementService.getMeasurementsByPatientId(psqlPatient.getId()));
+
+            List<MenuType> menuTypes = menuService.getMenusByPatientId(psqlPatient.getId());
+            patientType.setMenus(menuTypes.stream().map(MenuType::getId).collect(Collectors.toList()));
+
             patientTypeList.add(patientType);
         }
 
@@ -70,7 +75,7 @@ public class PatientService {
 
     public PatientType getPatientByMenuId(Long menuId) throws ResponseStatusException {
         MenuType menu = this.menuService.getMenuById(menuId);
-        Optional<PsqlPatient> patient = this.patientRepository.findById(menu.getPatientId());
+        Optional<PsqlPatient> patient = this.patientRepository.findById(Long.parseLong(menu.getPatient().getId()));
 
         if (patient.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found");

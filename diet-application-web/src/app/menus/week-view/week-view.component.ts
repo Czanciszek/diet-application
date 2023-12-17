@@ -1,17 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {MenuService} from "../../service/menu.service";
-import {WeekMealService} from "../../service/week-meal.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Menu} from "../../model/menu";
-import {WeekMeal} from "../../model/week-meal";
-import {DayMealService} from "../../service/day-meal.service";
-import {NotificationService} from "../../service/notification.service";
-import {DayMeal} from "../../model/day-meal";
-import {translateDayType} from "../../material/helper/polish-translate";
-import {MealService} from "../../service/meal.service";
-import {Meal} from "../../model/meal";
-import {Product} from "../../model/product";
-import {ProductService} from "../../service/product.service";
+import { Component, OnInit } from '@angular/core';
+import { MenuService } from "../../service/menu.service";
+import { ActivatedRoute } from "@angular/router";
+import { WeekMeal } from "../../model/week-meal";
+import { NotificationService } from "../../service/notification.service";
+import { translateDayType } from "../../material/helper/polish-translate";
+import { Meal } from "../../model/meal";
+import { Product } from "../../model/product";
+import { ProductService } from "../../service/product.service";
 
 @Component({
   selector: 'week-view.component',
@@ -21,150 +16,109 @@ import {ProductService} from "../../service/product.service";
 export class WeekViewComponent implements OnInit {
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private menuService: MenuService,
-    private weekMealService: WeekMealService,
-    private dayMealService: DayMealService,
-    private mealService: MealService,
-    private productService: ProductService,
-    private notificationService: NotificationService
-  ) {};
+    private productService: ProductService
+  ) { };
 
   menuId: any = this.route.snapshot.paramMap.get("menu_id");
 
+  weekMealsData: Map<string, Meal[]>[] = [];
+  daysData: string[] = []
   menuItemData: any;
-  dayMealListItemData: any;
-  mealListItemData: any;
   dataLoaded = false;
   weekIndex: number = 0;
 
-  dayLoaded = false;
-  mealsLoaded = false;
-  productsLoaded = false;
-
   ngOnInit(): void {
-    this.getMenuDetails(this.menuId);
-  }
-
-  checkDataLoaded() {
-    if (this.dayLoaded && this.mealsLoaded && this.productsLoaded) {
-      this.dataLoaded = true;
-    }
-  }
-
-  getMenuDetails(menuId) {
-    this.menuService.getMenuById(menuId)
-      .subscribe(
-        (data: Menu[]) => {
-          this.menuItemData = { ...data};
-          if (this.menuItemData.weekMealList.length > 0) {
-            let weekMealId = this.menuItemData.weekMealList[this.weekIndex];
-            this.loadWeekData(weekMealId);
-          }
-        }
-      );
-  }
-
-  loadWeekData(weekMealId) {
-    this.getDayMealListDetails(weekMealId);
-    this.getMealListDetails(weekMealId);
+    this.getMenuDetails();
     this.getProducts();
   }
 
-  swapWeek(newIndex: number) {
+  getMenuDetails() {
+    this.menuService.getMenuById(this.menuId)
+      .subscribe((data: any) => {
+
+        console.log("DATA", data);
+
+        this.menuItemData = data;
+
+        for (let week of data.weekMenuList) {
+          this.weekMealsData.push(week.meals);
+        }
+
+        this.updateWeekIndex(this.weekIndex);
+        this.dataLoaded = true;
+      }
+      );
+  }
+
+  updateWeekIndex(newIndex: number) {
     this.weekIndex = newIndex;
-    this.mealListItemData = [];
-    this.refreshMealList();
+    this.daysData = Object.keys(this.weekMealsData[this.weekIndex]).sort(this.compareDayMealDates);
   }
 
-  deleteWeekMealOnIndex(index: number) {
-    let weekMealId = this.menuItemData.weekMealList[index];
-
-    this.weekMealService.deleteWeekMealById(weekMealId).subscribe(
-      result => {
-        this.notificationService.warn(":: Usunięto pomyślnie! ::");
-        this.weekIndex = (index > 0) ? (index - 1) : 0;
-        this.menuItemData = this.menuItemData.weekMealList.filter( id => {
-          return id != weekMealId;
-        });
-        this.mealListItemData = [];
-        this.getMenuDetails(this.menuId);
-      }, error => {
-        this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
-        this.refreshMealList();
-      });
-  }
-
-  refreshMealList() {
-    let weekMealId = this.menuItemData.weekMealList[this.weekIndex];
-    this.loadWeekData(weekMealId);
-  }
-
-  getDayMealListDetails(weekMealId) {
-    this.dayMealService.getDayMealListByWeekMealId(weekMealId)
-      .subscribe(
-        (daysData: DayMeal[]) => {
-          this.dayMealListItemData = [...daysData];
-          this.dayLoaded = true;
-          this.checkDataLoaded();
-        });
-  }
-
-  getMealListDetails(weekMealId) {
-    this.mealService.getMealListByWeekMealId(weekMealId)
-      .subscribe(
-        (mealsData: Meal[]) => {
-          var mealListSortedData: Meal[] = [...mealsData].sort( (m1, m2) => {
-            if (m1.isProduct == m2.isProduct) return 0;
-            return m1.isProduct > m2.isProduct ? 1 : -1;
-          });
-          this.mealListItemData = mealListSortedData;
-          this.mealsLoaded = true;
-          this.checkDataLoaded();
-        });
+  compareDayMealDates(a: string, b: string): number {
+    const date1 = new Date(a);
+    const date2 = new Date(b);
+    return date1.getTime() - date2.getTime();
   }
 
   getProducts() {
     this.productService.getProducts()
-      .subscribe(
-        (data: Product[] ) => {
-          this.productService.productList = [...data];
-          this.productsLoaded = true;
-          this.checkDataLoaded();
-        });
+      .subscribe((data: Product[]) => {
+        this.productService.productList = [...data];
+      }
+      );
   }
 
-  translateDayType(name) {
-    return translateDayType(name);
+  swapWeek(newIndex: number) {
+    this.updateWeekIndex(newIndex);
+  }
+
+  deleteWeekMealOnIndex(index: number) {
+    console.log("// TODO: DELETE WEEK MEAL OF INDEX " + index);
+
+    //     this.weekMealService.deleteWeekMealById(weekMealId).subscribe(
+    //       result => {
+    //         this.notificationService.warn(":: Usunięto pomyślnie! ::");
+    //         this.weekIndex = (index > 0) ? (index - 1) : 0;
+    //         this.menuItemData = this.menuItemData.weekMealList.filter( id => {
+    //           return id != weekMealId;
+    //         });
+    //         this.mealListItemData = [];
+    //         this.refreshMealList();
+    //       }, error => {
+    //         this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
+    //         this.refreshMealList();
+    //       });
+  }
+
+  refreshMealList() {
+    this.getMenuDetails();
   }
 
   getFoodPropertiesWeekSummary(dishType: string, property: string, withLimits: boolean) {
-    if (this.mealListItemData == null)
+    const weekMeals = this.weekMealsData[this.weekIndex];
+    let meals = Object.values(weekMeals).reduce((wm1, wm2) => wm1.concat(wm2), []);
+
+    if (meals == null || meals.length == 0)
       return this.setLimitStatus(0, property, withLimits);
 
-    let meals = this.mealListItemData;
-
     if (!withLimits) {
-      meals = meals.filter( meal => {
+      meals = meals.filter(meal => {
         return meal.foodType == dishType;
       });
     }
 
     let value = this.getFoodProperties(meals, property);
-
-    return this.setLimitStatus(value/7, property, withLimits);;
+    return this.setLimitStatus(value / 7, property, withLimits);
   }
 
-  getFoodPropertiesDaySummary(day: DayMeal, property: string) {
-    if (day.mealList == null)
+  getFoodPropertiesDaySummary(day: string, property: string) {
+    if (day == null || day === "")
       return this.setLimitStatus(0, property, true);
 
-    let dayMeals = day.mealList;
-    let meals = this.mealListItemData.filter( meal => {
-      return dayMeals.includes(meal.id);
-    });
-
+    const meals = this.weekMealsData[this.weekIndex][day];
     let value = this.getFoodProperties(meals, property);
     return this.setLimitStatus(value, property, true);
   }
@@ -173,7 +127,6 @@ export class WeekViewComponent implements OnInit {
 
     let value = 0;
     for (let meal of meals) {
-      let isProduct = (meal.isProduct == 1);
 
       for (let product of meal.productList) {
         let grams = product.grams;
@@ -221,34 +174,62 @@ export class WeekViewComponent implements OnInit {
 
   }
 
-  dateChanged(event, originDayMealId: string) {
-      let selectedDate = new Date(event.value);
-      selectedDate.setHours(0,0,0);
+  dateChanged(event, day: string) {
+    let selectedDate = new Date(event.value);
+    selectedDate.setHours(0, 0, 0);
+    console.log("// TODO: Copy day to " + selectedDate + " from " + day);
+    //       let dayMeal = this.menuItemData.dayMealTypeList.find(key => {
+    //         let keyValue = new Date(key.date);
+    //         keyValue.setHours(0,0,0);
+    //         return selectedDate.toDateString() === keyValue.toDateString();
+    //       });
+    //
+    //       if (dayMeal != null && dayMeal.id != null) {
+    //         this.copyDayMeal(dayMeal, originDayMealId);
+    //       }
+  }
 
-      let dayMeal = this.menuItemData.dayMealTypeList.find(key => {
-        let keyValue = new Date(key.date);
-        keyValue.setHours(0,0,0);
-        return selectedDate.toDateString() === keyValue.toDateString();
-      });
+  //   copyDayMeal(desiredDate: string, originDay: string) {
+  //     this.dayMealService.copyDayMeal(dayMeal, originDayMealId).subscribe(() => {
+  //       this.refreshMealList();
+  //     });
+  //   }
 
-      if (dayMeal != null && dayMeal.id != null) {
-        this.copyDayMeal(dayMeal, originDayMealId);
-      }
-   }
+  translateDayType(date) {
+    let name = this.indexToDayType(new Date(date).getDay());
+    let dayType = translateDayType(name);
+    return dayType + "\n" + date;
+  }
 
-   copyDayMeal(dayMeal, originDayMealId) {
-     this.dayMealService.copyDayMeal(dayMeal, originDayMealId).subscribe(() => {
-       this.refreshMealList();
-     });
-   }
+  indexToDayType(index: number) {
+    switch (index) {
+      case 0:
+        return "SUNDAY"
+      case 1:
+        return "MONDAY"
+      case 2:
+        return "TUESDAY"
+      case 3:
+        return "WEDNESDAY"
+      case 4:
+        return "THURSDAY"
+      case 5:
+        return "FRIDAY"
+      case 6:
+        return "SATURDAY"
+      default:
+        return "";
+    }
+  }
 
-   clearDayMealButtonClick(dayMealId: string) {
-     if (!confirm("Na pewno chcesz wyczyścić ten dzień?")) {
-       return;
-     }
+  clearDayMealButtonClick(day: string) {
+    if (!confirm("Na pewno chcesz wyczyścić ten dzień?")) {
+      return;
+    }
 
-     this.dayMealService.clearDayMeal(dayMealId).subscribe(() => {
-       this.refreshMealList();
-     });
-   }
+    console.log("// TODO: CLEAR DATE NAMED " + day);
+    //      this.dayMealService.clearDayMeal(dayMealId).subscribe(() => {
+    //        this.refreshMealList();
+    //      });
+  }
 }

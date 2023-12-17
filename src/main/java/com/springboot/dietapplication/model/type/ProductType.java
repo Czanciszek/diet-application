@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.model.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.springboot.dietapplication.model.mongo.MongoProduct;
+import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 import lombok.Getter;
 import lombok.Setter;
