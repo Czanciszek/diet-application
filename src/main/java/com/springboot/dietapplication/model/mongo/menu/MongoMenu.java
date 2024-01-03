@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,10 +58,19 @@ public class MongoMenu {
         this.recommendations = menuType.getRecommendations();
         this.foodTypes = menuType.getFoodTypes();
 
-        this.weekMenus = menuType.getWeekMenuList()
-                .stream()
-                .map(WeekMenuType::getId)
-                .collect(Collectors.toList());
+        if (menuType.getWeekMenuList() != null) {
+            this.weekMenus = menuType.getWeekMenuList()
+                    .stream()
+                    .map(WeekMenuType::getId)
+                    .collect(Collectors.toList());
+        } else if (menuType.getWeekMealList() != null) {
+            this.weekMenus = menuType.getWeekMealList()
+                    .stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+        } else {
+            this.weekMenus = new ArrayList<>();
+        }
     }
 
     // Insert new menu

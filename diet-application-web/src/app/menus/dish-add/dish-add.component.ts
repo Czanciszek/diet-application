@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
 import { MealAddComponent } from "../meal-add/meal-add.component";
 import { MealService } from "../../service/meal.service";
-import { Menu } from "../../model/menu";
 
 @Component({
   selector: 'app-dish-add',
@@ -23,7 +22,10 @@ export class DishAddComponent implements OnInit {
   @Input()
   dishType: string;
   @Input()
-  menuItem: Menu;
+  menuItem: any;
+  @Input()
+  currentDate: string;
+
   @Output()
   refreshItems = new EventEmitter<boolean>();
 
@@ -33,7 +35,6 @@ export class DishAddComponent implements OnInit {
   openDialog() {
     this.mealSerivce.initializeFormGroup();
     this.mealSerivce.form.get('foodType').patchValue(this.dishType);
-    this.mealSerivce.form.get('dayMealId').patchValue(this.dayId);
 
     let dialogRef = this.dialog.open(MealAddComponent, {
       disableClose: true,
@@ -41,10 +42,25 @@ export class DishAddComponent implements OnInit {
       width: "90%"
     });
 
-    dialogRef.componentInstance.menuId = this.menuId;
-    dialogRef.componentInstance.patientId = this.menuItem.patientId;
+    let selectedDate = new Date(this.currentDate);
+    selectedDate.setHours(0, 0, 0);
+    let weekMeal = this.menuItem.weekMenuList.find(weekMenu => {
+      const searchedWeekMenu = Object.keys(weekMenu.meals).find(day => {
+        let date = new Date(day);
+        date.setHours(0, 0, 0);
+        return selectedDate.toDateString() === date.toDateString();
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
+      return searchedWeekMenu != null;
+    });
+
+    dialogRef.componentInstance.weekMealId = weekMeal.id;
+    dialogRef.componentInstance.menuId = this.menuId;
+    dialogRef.componentInstance.patientId = this.menuItem.patient.id;
+    dialogRef.componentInstance.currentDate = this.currentDate;
+
+
+    dialogRef.afterClosed().subscribe(() => {
       this.refreshItems.emit();
     });
   }

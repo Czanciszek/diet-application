@@ -101,18 +101,18 @@
           </div>
 
           <div
-            *ngIf="mealServiceForm.controls['id'].value != null && mealServiceForm.controls['id'].value != mealServiceForm.controls['originMealId'].value">
+            *ngIf="mealServiceForm.controls['id'].value != null && !mealServiceForm.controls['attachToRecipes'].value">
             <mat-grid-tile colspan="2">
-              <button mat-raised-button type="button" (click)="addToRecipeList(mealServiceForm.controls['id'].value)">
+              <button mat-raised-button type="button" (click)="addToRecipeList(true)">
                 <mat-icon>add</mat-icon>Dodaj do listy przepisów
               </button>
             </mat-grid-tile>
           </div>
 
           <div
-            *ngIf="mealServiceForm.controls['id'].value != null && mealServiceForm.controls['id'].value == mealServiceForm.controls['originMealId'].value">
+            *ngIf="mealServiceForm.controls['id'].value != null && mealServiceForm.controls['attachToRecipes'].value">
             <mat-grid-tile colspan="2">
-              <button mat-raised-button type="button" (click)="deleteFromRecipeList()">
+              <button mat-raised-button type="button" (click)="addToRecipeList(false)">
                 <mat-icon>clear</mat-icon>Usuń z listy przepisów
               </button>
             </mat-grid-tile>

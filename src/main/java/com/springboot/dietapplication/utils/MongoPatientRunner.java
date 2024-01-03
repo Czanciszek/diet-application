@@ -7,11 +7,9 @@ import com.springboot.dietapplication.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,8 +53,7 @@ public class MongoPatientRunner {
                 })
                 .collect(Collectors.toList());
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoPatients.forEach(patient -> {
             patient.setCreationDate(currentDate);
             patient.setUpdateDate(currentDate);

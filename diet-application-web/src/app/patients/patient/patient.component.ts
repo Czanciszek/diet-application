@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {PatientService} from "../../service/patient.service";
-import {NotificationService} from "../../service/notification.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
-import {MeasurementListComponent} from "../../measurements/measurement-list/measurement-list.component";
-import {MeasurementService} from "../../service/measurement.service";
+import { PatientService } from "../../service/patient.service";
+import { NotificationService } from "../../service/notification.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { MatDialog } from "@angular/material/dialog";
+import { MeasurementListComponent } from "../../measurements/measurement-list/measurement-list.component";
+import { MeasurementService } from "../../service/measurement.service";
 
 @Component({
   selector: 'app-patient',
@@ -47,7 +47,7 @@ export class PatientComponent implements OnInit {
     dialogRef.componentInstance.patientId = this.patientServiceForm.value.id;
     dialogRef.componentInstance.measurements = this.patientServiceForm.value.measurements;
 
-    dialogRef.afterClosed().subscribe( result => {
+    dialogRef.afterClosed().subscribe(result => {
       this.ngOnInit();
     });
   }

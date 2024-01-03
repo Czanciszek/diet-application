@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {ProductReplacement} from "../../model/product-replacement";
-import {MatDialogRef} from "@angular/material/dialog";
+import { ProductReplacement } from "../../model/product-replacement";
+import { MatDialogRef } from "@angular/material/dialog";
 
 @Component({
   selector: 'app-replace-product-panel',

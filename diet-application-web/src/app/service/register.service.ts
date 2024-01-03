@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {FormControl, FormGroup, Validators, ValidationErrors, AbstractControl, ValidatorFn, FormArray} from "@angular/forms";
+import { FormControl, FormGroup, Validators, ValidatorFn, FormArray } from "@angular/forms";
 import { RestapiService } from "./restapi.service";
 
 @Injectable({
@@ -7,17 +7,17 @@ import { RestapiService } from "./restapi.service";
 })
 export class RegisterService {
 
-   constructor(
-      private restApiService: RestapiService
-   ) { }
+  constructor(
+    private restApiService: RestapiService
+  ) { }
 
-   form: FormGroup = new FormGroup({
-     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-     password: new FormControl('', [Validators.required, Validators.minLength(3)]),
-     repeatPassword: new FormControl('', [Validators.required, this.passwordMatch()]),
-     userType: new FormControl(null),
-     email: new FormControl(null, [Validators.email, Validators.required]),
-   });
+  form: FormGroup = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    repeatPassword: new FormControl('', [Validators.required, this.passwordMatch()]),
+    userType: new FormControl(null),
+    email: new FormControl(null, [Validators.email, Validators.required]),
+  });
 
   initializeFormGroup() {
     this.form.setValue({

@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
@@ -43,7 +42,8 @@ public class MenuService {
     DayMealService dayMealService;
 
     public List<MenuType> getAll() {
-        return new ArrayList<>();
+        List<PsqlMenu> psqlMenuList = this.menuRepository.findAll();
+        return convertLists(psqlMenuList);
     }
 
     public MenuType getMenuById(long menuId) {
@@ -171,6 +171,72 @@ public class MenuService {
             PsqlFoodTypeMenu foodTypeMenu = new PsqlFoodTypeMenu(psqlFoodType.getId(), menuId);
             this.foodTypeMenuRepository.save(foodTypeMenu);
         }
+    }
+    private List<MenuType> convertLists(List<PsqlMenu> psqlMenuList) {
+        List<MenuType> menuList = new ArrayList<>();
+
+        for (PsqlMenu menu : psqlMenuList) {
+            menuList.add(convertPsqlMenuToMenuType(menu));
+        }
+
+        return menuList;
+    }
+
+    private MenuType convertPsqlMenuToMenuType(PsqlMenu psqlMenu) {
+        MenuType menuType = new MenuType(psqlMenu);
+
+        List<FoodType> foodTypeList = new ArrayList<>();
+        List<PsqlFoodTypeMenu> psqlFoodTypeList = this.foodTypeMenuRepository.findPsqlFoodTypeMenuByMenuId(psqlMenu.getId());
+        for (PsqlFoodTypeMenu foodTypeMenu : psqlFoodTypeList) {
+            Optional<PsqlFoodType> foodType = this.foodTypeRepository.findById(foodTypeMenu.getFoodTypeId());
+            foodType.ifPresent(psqlFoodType -> foodTypeList.add(FoodType.valueOf(psqlFoodType.getName())));
+        }
+
+        Optional<PsqlPatient> patient = patientRepository.findById(psqlMenu.getPatientId());
+        if (patient.isPresent()) {
+            BriefPatient briefPatient = new BriefPatient(patient.get());
+            menuType.setPatient(briefPatient);
+        }
+
+        foodTypeList.sort(new MenuFoodTypeComparator());
+
+        menuType.setFoodTypes(foodTypeList);
+
+        List<Long> weekMealIdList = this.weekMealService.getWeekMealIdList(psqlMenu.getId());
+        menuType.setWeekMealList(weekMealIdList);
+
+        List<DayMealType> dayMealTypeList = new ArrayList<>();
+        for (Long weekMealId: weekMealIdList)
+            dayMealTypeList.addAll(this.dayMealService.getDayMealByWeekMealId(weekMealId));
+
+        menuType.setDayMealTypeList(dayMealTypeList);
+
+        return menuType;
+    }
+
+}
+
+class MenuFoodTypeComparator implements Comparator<FoodType> {
+
+    @Override
+    public int compare(FoodType o1, FoodType o2) {
+        return Integer.compare(getAssignedValue(o1), getAssignedValue(o2));
+    }
+
+    int getAssignedValue(FoodType foodType) {
+        return switch (foodType) {
+            case PRE_BREAKFAST -> 0;
+            case BREAKFAST -> 1;
+            case BRUNCH -> 2;
+            case SNACK -> 3;
+            case DINNER -> 4;
+            case TEA -> 5;
+            case SUPPER -> 6;
+            case PRE_WORKOUT -> 7;
+            case POST_WORKOUT -> 8;
+            case OVERNIGHT -> 9;
+        };
+
     }
 
 }

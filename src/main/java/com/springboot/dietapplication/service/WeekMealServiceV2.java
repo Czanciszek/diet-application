@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,8 +46,7 @@ public class WeekMealServiceV2 {
 //        if (!user.getUserType().equals(UserType.ADMIN.name) && !product.get().getUserId().equals(user.getId()))
 //            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting product attempt");
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoWeekMenu.setDeletionDate(currentDate);
 
         mongoWeekMenuRepository.save(mongoWeekMenu);

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from "../../service/menu.service";
 import { ActivatedRoute } from "@angular/router";
-import { WeekMeal } from "../../model/week-meal";
 import { NotificationService } from "../../service/notification.service";
 import { translateDayType } from "../../material/helper/polish-translate";
 import { Meal } from "../../model/meal";
 import { Product } from "../../model/product";
 import { ProductService } from "../../service/product.service";
+import { MealService } from '../../service/meal.service';
 
 @Component({
   selector: 'week-view.component',
@@ -18,7 +18,8 @@ export class WeekViewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private menuService: MenuService,
-    private productService: ProductService
+    private productService: ProductService,
+    private mealService: MealService
   ) { };
 
   menuId: any = this.route.snapshot.paramMap.get("menu_id");
@@ -38,8 +39,7 @@ export class WeekViewComponent implements OnInit {
     this.menuService.getMenuById(this.menuId)
       .subscribe((data: any) => {
 
-        console.log("DATA", data);
-
+        this.weekMealsData = [];
         this.menuItemData = data;
 
         for (let week of data.weekMenuList) {
@@ -48,8 +48,14 @@ export class WeekViewComponent implements OnInit {
 
         this.updateWeekIndex(this.weekIndex);
         this.dataLoaded = true;
-      }
-      );
+      });
+  }
+
+  getProducts() {
+    this.productService.getProducts()
+      .subscribe((data: Product[]) => {
+        this.productService.productList = [...data];
+      }); 
   }
 
   updateWeekIndex(newIndex: number) {
@@ -63,38 +69,8 @@ export class WeekViewComponent implements OnInit {
     return date1.getTime() - date2.getTime();
   }
 
-  getProducts() {
-    this.productService.getProducts()
-      .subscribe((data: Product[]) => {
-        this.productService.productList = [...data];
-      }
-      );
-  }
-
   swapWeek(newIndex: number) {
     this.updateWeekIndex(newIndex);
-  }
-
-  deleteWeekMealOnIndex(index: number) {
-    console.log("// TODO: DELETE WEEK MEAL OF INDEX " + index);
-
-    //     this.weekMealService.deleteWeekMealById(weekMealId).subscribe(
-    //       result => {
-    //         this.notificationService.warn(":: Usunięto pomyślnie! ::");
-    //         this.weekIndex = (index > 0) ? (index - 1) : 0;
-    //         this.menuItemData = this.menuItemData.weekMealList.filter( id => {
-    //           return id != weekMealId;
-    //         });
-    //         this.mealListItemData = [];
-    //         this.refreshMealList();
-    //       }, error => {
-    //         this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
-    //         this.refreshMealList();
-    //       });
-  }
-
-  refreshMealList() {
-    this.getMenuDetails();
   }
 
   getFoodPropertiesWeekSummary(dishType: string, property: string, withLimits: boolean) {
@@ -174,26 +150,31 @@ export class WeekViewComponent implements OnInit {
 
   }
 
-  dateChanged(event, day: string) {
+  copyDayMealDateSelected(event, originDay: string) {
     let selectedDate = new Date(event.value);
     selectedDate.setHours(0, 0, 0);
-    console.log("// TODO: Copy day to " + selectedDate + " from " + day);
-    //       let dayMeal = this.menuItemData.dayMealTypeList.find(key => {
-    //         let keyValue = new Date(key.date);
-    //         keyValue.setHours(0,0,0);
-    //         return selectedDate.toDateString() === keyValue.toDateString();
-    //       });
-    //
-    //       if (dayMeal != null && dayMeal.id != null) {
-    //         this.copyDayMeal(dayMeal, originDayMealId);
-    //       }
-  }
 
-  //   copyDayMeal(desiredDate: string, originDay: string) {
-  //     this.dayMealService.copyDayMeal(dayMeal, originDayMealId).subscribe(() => {
-  //       this.refreshMealList();
-  //     });
-  //   }
+    let selectedDay: string = ""
+    let weekMeal = this.menuItemData.weekMenuList.find(weekMenu => {
+
+      const searchedWeekMenu = Object.keys(weekMenu.meals).find(day => {
+        let date = new Date(day);
+        date.setHours(0, 0, 0);
+        if (selectedDate.toDateString() === date.toDateString()) {
+          selectedDay = day;
+          return true;
+        }
+        return false;
+      });
+
+      return selectedDay && searchedWeekMenu != null;
+    });
+
+    this.mealService.copyDay(weekMeal.id, selectedDay, originDay).subscribe(() => {
+      this.getMenuDetails();
+    });
+
+  }
 
   translateDayType(date) {
     let name = this.indexToDayType(new Date(date).getDay());
@@ -222,14 +203,25 @@ export class WeekViewComponent implements OnInit {
     }
   }
 
+  onDeleteMeal(mealId) {
+
+    const weekMenuId = this.menuItemData.weekMenuList[this.weekIndex].id;
+
+    this.mealService.removeMeal(weekMenuId, mealId).subscribe(() => {
+      this.getMenuDetails();
+    });
+  }
+
   clearDayMealButtonClick(day: string) {
     if (!confirm("Na pewno chcesz wyczyścić ten dzień?")) {
       return;
     }
 
-    console.log("// TODO: CLEAR DATE NAMED " + day);
-    //      this.dayMealService.clearDayMeal(dayMealId).subscribe(() => {
-    //        this.refreshMealList();
-    //      });
+    const weekMenuId = this.menuItemData.weekMenuList[this.weekIndex].id;
+    const date = day;
+
+    this.mealService.clearDay(weekMenuId, date).subscribe(() => {
+      this.getMenuDetails();
+    });
   }
 }

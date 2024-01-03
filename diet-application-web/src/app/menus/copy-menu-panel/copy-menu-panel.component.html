@@ -34,7 +34,8 @@
           <div class="add-bottom-padding">
             <mat-form-field>
               <mat-label>Początek nowej diety</mat-label>
-              <input #startDate matInput [matDatepicker]="picker" autocomplete="off" formControlName="startDate" readonly>
+              <input #startDate matInput [matDatepicker]="picker" autocomplete="off" formControlName="startDate"
+                readonly>
               <mat-datepicker-toggle matSuffix [for]="picker">
                 <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
               </mat-datepicker-toggle>
@@ -82,7 +83,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input type="number" matInput placeholder="kcal" autocomplete="off" formControlName="energyLimit" (input)="limitsChanged()" min="0">
+              <input type="number" matInput placeholder="kcal" autocomplete="off" formControlName="energyLimit"
+                (input)="limitsChanged()" min="0">
             </mat-form-field>
           </div>
         </div>
@@ -118,7 +120,8 @@
       <mat-grid-tile colspan="2">
         <div class="control-container">
           <div class="button-row">
-            <button mat-raised-button color="accent" type="submit" [disabled]="menuServiceForm.invalid">Kopiuj jadłospis</button>
+            <button mat-raised-button color="accent" type="submit" [disabled]="menuServiceForm.invalid">Kopiuj
+              jadłospis</button>
           </div>
         </div>
       </mat-grid-tile>

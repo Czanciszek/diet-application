@@ -1,9 +1,9 @@
-import {Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
-import {MealService} from "../../service/meal.service";
-import {Meal} from "../../model/meal";
-import {MealAddComponent} from "../meal-add/meal-add.component";
-import {MatDialog} from "@angular/material/dialog";
-import {ProductService} from "../../service/product.service";
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { MealService } from "../../service/meal.service";
+import { Meal } from "../../model/meal";
+import { MealAddComponent } from "../meal-add/meal-add.component";
+import { MatDialog } from "@angular/material/dialog";
+import { ProductService } from "../../service/product.service";
 
 @Component({
   selector: 'app-dish-summary',
@@ -15,12 +15,12 @@ export class DishSummaryComponent implements OnInit {
   @Input()
   menuItemData: any;
   @Input()
-  dayItem: any;
+  date: any;
   @Input()
   mealItem: Meal;
 
-  @Output()
-  refreshItems = new EventEmitter<boolean>();
+  @Output() refreshItems = new EventEmitter<boolean>();
+  @Output() deleteMeal = new EventEmitter<string>();
 
   @ViewChild('elementToFocus') _input: ElementRef;
 
@@ -51,25 +51,32 @@ export class DishSummaryComponent implements OnInit {
       width: "90%"
     });
 
-    dialogRef.componentInstance.patientId = this.menuItemData.patientId;
+    let selectedDate = new Date(this.date);
+    selectedDate.setHours(0, 0, 0);
+    let weekMeal = this.menuItemData.weekMenuList.find(weekMenu => {
+      const searchedWeekMenu = Object.keys(weekMenu.meals).find(day => {
+        let date = new Date(day);
+        date.setHours(0, 0, 0);
+        return selectedDate.toDateString() === date.toDateString();
+      });
+
+      return searchedWeekMenu != null;
+    });
+
+    dialogRef.componentInstance.weekMealId = weekMeal.id;
+    dialogRef.componentInstance.patientId = this.menuItemData.patient.id;
 
     dialogRef.afterClosed().subscribe(result => {
       this.refreshItems.emit();
     });
   }
 
-  onDeleteMealButtonClick(mealId) {
-    this.mealService.deleteMeal(mealId).subscribe(() => {
-      this.refreshItems.emit();
-    });
-  }
+  onDeleteMealButtonClick(mealId: string) {
+    if (!confirm("Na pewno chcesz usunąć tę potrawę?")) {
+      return;
+    }
 
-  copyMeal(dayMeal) {
-    const copyMeal = Object.assign({}, this.mealItem);
-    copyMeal.dayMealId = dayMeal.id;
-    this.mealService.copyMeal(copyMeal).subscribe(() => {
-      this.refreshItems.emit();
-    });
+    this.deleteMeal.emit(mealId);
   }
 
   getFoodProperties() {
@@ -103,22 +110,32 @@ export class DishSummaryComponent implements OnInit {
   }
 
   checkMealAttachedToRecipes() {
-    this.isProductAttachedToRecipes = this.mealItem.id == this.mealItem.originMealId && !this.mealItem.isProduct
+    this.isProductAttachedToRecipes = this.mealItem.attachToRecipes && !this.mealItem.isProduct
   }
 
-  dateChanged(event) {
+  copyMealDateSelected(event) {
     let selectedDate = new Date(event.value);
-    selectedDate.setHours(0,0,0);
+    selectedDate.setHours(0, 0, 0);
 
-    let dayMeal = this.menuItemData.dayMealTypeList.find(key => {
-      let keyValue = new Date(key.date);
-      keyValue.setHours(0,0,0);
-      return selectedDate.toDateString() === keyValue.toDateString();
+    let selectedDay: string = ""
+    let weekMeal = this.menuItemData.weekMenuList.find(weekMenu => {
+
+      const searchedWeekMenu = Object.keys(weekMenu.meals).find(day => {
+        let date = new Date(day);
+        date.setHours(0, 0, 0);
+        if (selectedDate.toDateString() === date.toDateString()) {
+          selectedDay = day;
+          return true;
+        }
+        return false;
+      });
+
+      return selectedDay && searchedWeekMenu != null;
     });
 
-    if (dayMeal != null && dayMeal.id != null) {
-      this.copyMeal(dayMeal);
-    }
+    this.mealService.copyMeal(weekMeal.id, selectedDay, this.mealItem.id).subscribe(() => {
+      this.refreshItems.emit();
+    });
   }
 
 }

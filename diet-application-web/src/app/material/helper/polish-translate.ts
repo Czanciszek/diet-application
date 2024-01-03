@@ -1,5 +1,5 @@
 export function translateDishType(name) {
-  switch(name) {
+  switch (name) {
     case "PRE_BREAKFAST":
       return "Przedśniadanie";
     case "BREAKFAST":
@@ -26,7 +26,7 @@ export function translateDishType(name) {
 }
 
 export function translateDayType(name) {
-  switch(name) {
+  switch (name) {
     case "MONDAY":
       return "Poniedziałek";
     case "TUESDAY":

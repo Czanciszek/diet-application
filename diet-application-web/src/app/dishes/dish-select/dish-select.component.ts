@@ -1,12 +1,11 @@
-import {Component, OnInit, ViewChild, Inject} from '@angular/core';
-import {DishService} from "../../service/dish.service";
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {NotificationService} from "../../service/notification.service";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
-import {Dish} from "../../model/dish";
-import {DishUsage} from "../../model/dishUsage";
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { DishService } from "../../service/dish.service";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
+import { Dish } from "../../model/dish";
+import { DishUsage } from "../../model/dishUsage";
 import { FOOD_TYPES } from "../../model/helpers/foodTypes";
 
 export interface DishSelectDialogData {
@@ -76,11 +75,11 @@ export class DishSelectComponent implements OnInit {
   mapDishUsages() {
     let dishData = this.listData.data;
     const dishUsages = this.dialogData.dishUsages;
-    Object(dishData).forEach( (key, index) => {
+    Object(dishData).forEach((key, index) => {
       dishData[index].dishUsages = 0;
       dishUsages
         .filter(dishUsage => dishUsage.dishId == dishData[index].id)
-        .forEach( (dishUsageKey, dishUsageIndex) => {
+        .forEach((dishUsageKey, dishUsageIndex) => {
           dishData[index].dishUsages += dishUsageKey.dishUsage;
         });
       if (dishData[index].dishUsages == 0) {
@@ -92,14 +91,14 @@ export class DishSelectComponent implements OnInit {
   mapDishUsageInfo() {
     let dishData = this.listData.data;
     const dishUsages = this.dialogData.dishUsages;
-    Object(dishData).forEach( (key, index) => {
-        let dishUsageInfo = "";
-        dishUsages
-          .filter(dishUsage => dishUsage.dishId == dishData[index].id)
-          .forEach( (dishUsageKey, dishUsageIndex) => {
-            dishUsageInfo += this.parseDate(dishUsageKey.startDate) + " - " + this.parseDate(dishUsageKey.endDate) + " - " + dishUsageKey.dishUsage + "x \n";
-          });
-        dishData[index].dishUsageInfo = dishUsageInfo;
+    Object(dishData).forEach((key, index) => {
+      let dishUsageInfo = "";
+      dishUsages
+        .filter(dishUsage => dishUsage.dishId == dishData[index].id)
+        .forEach((dishUsageKey, dishUsageIndex) => {
+          dishUsageInfo += this.parseDate(dishUsageKey.startDate) + " - " + this.parseDate(dishUsageKey.endDate) + " - " + dishUsageKey.dishUsage + "x \n";
+        });
+      dishData[index].dishUsageInfo = dishUsageInfo;
     });
   }
 

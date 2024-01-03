@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -58,6 +57,10 @@ public class MenuServiceV2 {
         MongoMenu menu = this.mongoMenuRepository
                 .findById(menuId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu not found"));
+
+        if (menu.getDeletionDate() != null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu was deleted");
+        }
 
         MenuType menuType = new MenuType(menu);
 
@@ -138,8 +141,7 @@ public class MenuServiceV2 {
         newMenu.setStartDate(startDate.toString());
         newMenu.setEndDate(endDate.toString());
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         newMenu.setCreationDate(currentDate);
         newMenu.setUpdateDate(currentDate);
 
@@ -183,8 +185,7 @@ public class MenuServiceV2 {
 
         MongoMenu updatedMenu = new MongoMenu(updateMenuType, currentMenu.get());
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         updatedMenu.setUpdateDate(currentDate);
 
         this.mongoMenuRepository.save(updatedMenu);
@@ -253,8 +254,7 @@ public class MenuServiceV2 {
         copyMenu.setStartDate(newStartDate.toString());
         copyMenu.setEndDate(newEndDate.toString());
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         copyMenu.setCreationDate(currentDate);
         copyMenu.setUpdateDate(currentDate);
 
@@ -309,8 +309,7 @@ public class MenuServiceV2 {
 //        if (!user.getUserType().equals(UserType.ADMIN.name) && !product.get().getUserId().equals(user.getId()))
 //            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting product attempt");
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoMenu.get().setDeletionDate(currentDate);
 
         mongoMenuRepository.save(mongoMenu.get());

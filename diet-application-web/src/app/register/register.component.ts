@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {NotificationService} from "../service/notification.service";
-import {RestapiService} from "../service/restapi.service";
-import {RegisterService} from "../service/register.service";
-import {Router} from "@angular/router";
+import { NotificationService } from "../service/notification.service";
+import { RestapiService } from "../service/restapi.service";
+import { RegisterService } from "../service/register.service";
 
 @Component({
   selector: 'app-register',
@@ -11,25 +10,24 @@ import {Router} from "@angular/router";
 })
 export class RegisterComponent implements OnInit {
 
-    constructor(
-      private notificationService: NotificationService,
-      private registerService: RegisterService,
-      private restapiService: RestapiService
-    ) { }
+  constructor(
+    private notificationService: NotificationService,
+    private registerService: RegisterService
+  ) { }
 
-    userForm = this.registerService.form;
+  userForm = this.registerService.form;
 
-    ngOnInit(): void {
+  ngOnInit(): void {
 
+  }
+
+  onSubmit() {
+    if (!this.registerService.form.valid) {
+      this.notificationService.error(":: Wprowadzone dane są niepoprawne ::");
+      return;
     }
 
-    onSubmit() {
-      if (!this.registerService.form.valid) {
-        this.notificationService.error(":: Wprowadzone dane są niepoprawne ::");
-        return;
-      }
-
-      this.registerService.registerUser().subscribe();
-    }
+    this.registerService.registerUser().subscribe();
+  }
 
 }

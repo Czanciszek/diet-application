@@ -7,26 +7,26 @@
   </mat-form-field>
 </div>
 
-    <mat-table [dataSource]="menuProductList" matSort>
+<mat-table [dataSource]="menuProductList" matSort>
 
-      <ng-container matColumnDef="categoryName">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Kategoria</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.category.category}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="productName">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa produktu</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="grams">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Suma gram</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.gramsOverall}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          <button mat-icon-button (click)="onProductSelect(element.id)"><mat-icon>done</mat-icon></button>
-        </mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
+  <ng-container matColumnDef="categoryName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Kategoria</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.category.category}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="productName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa produktu</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="grams">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Suma gram</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.gramsOverall}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button mat-icon-button (click)="onProductSelect(element.id)"><mat-icon>done</mat-icon></button>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

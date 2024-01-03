@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {LocalStorageService} from "./local-storage.service";
-import {Router} from "@angular/router";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { LocalStorageService } from "./local-storage.service";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,7 @@ export class RestapiService {
     };
   }
 
-  public login(encryptedAuth:string) {
+  public login(encryptedAuth: string) {
     return this.http.get(
       this.getPath("auth/login", "v1"),
       this.loginHeaders(encryptedAuth));
@@ -52,12 +52,15 @@ export class RestapiService {
     let get = this.http.get<T>(
       this.getPath(path, version),
       this.httpHeaders());
+    console.log("GET", this.getPath(path, version));
 
-     this.observeResponse(get);
-     return get;
+    this.observeResponse(get);
+    return get;
   }
 
   public post<T>(body: any, path: string, version: string = "v1", responseType: any = null): Observable<T> {
+    console.log("POST", this.getPath(path, version), body);
+
     return this.http.post<T>(
       this.getPath(path, version),
       body,

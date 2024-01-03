@@ -1,15 +1,13 @@
 export interface Meal {
-  id: number,
-  name: string,
-  dayMealId: string,
-  originMealId: number,
-  baseDishId: number,
-  foodId: string,
-  isProduct: number,
-  productList: any[],
-  grams: number,
-  portions: number,
+  attachToRecipes: boolean,
   dishPortions: number,
-  recipe: string,
   foodType: string
+  grams: number,
+  id: string,
+  isProduct: number,
+  name: string,
+  originDishId: string,
+  portions: number,
+  productList: any[],
+  recipe: string
 }

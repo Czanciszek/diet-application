@@ -30,7 +30,7 @@ export class CustomDateAdapter extends NativeDateAdapter {
   }
 
   getFirstDayOfWeek() {
-   return 1;
+    return 1;
   }
 
 }

@@ -37,13 +37,13 @@ public class DietApplication {
             try {
 
 //                mongoProductRunner.reloadProductsPSQLtoMongo();
-
+//
 //                mongoDishRunner.reloadDishesPSQLtoMongo();
-
+//
 //                mongoPatientRunner.reloadPatientsPSQLtoMongo();
-
+//
 //                mongoMenuRunner.reloadMenusPSQLtoMongo();
-
+//
 //                mongoWeekMenuRunner.reloadMenusPSQLtoMongo();
 
             } catch (Exception e) {

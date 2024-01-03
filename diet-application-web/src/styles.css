@@ -8,10 +8,25 @@ html {
   height: 100%;
 }
 
-body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Karma", sans-serif
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 /* notifications */
 snack-bar-container.success {

@@ -60,8 +60,7 @@ public class ProductServiceV2 {
         UserEntity user = userDetailsService.getCurrentUser();
         mongoProduct.setUserId(user.getId());
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoProduct.setCreationDate(currentDate);
         mongoProduct.setUpdateDate(currentDate);
 
@@ -89,8 +88,7 @@ public class ProductServiceV2 {
         updatedProduct.setUserId(mongoProduct.get().getUserId());
         updatedProduct.setCreationDate(mongoProduct.get().getCreationDate());
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         updatedProduct.setUpdateDate(currentDate);
 
         mongoProductRepository.save(updatedProduct);
@@ -109,8 +107,7 @@ public class ProductServiceV2 {
 //        if (!user.getUserType().equals(UserType.ADMIN.name) && !product.get().getUserId().equals(user.getId()))
 //            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting product attempt");
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoProduct.get().setDeletionDate(currentDate);
 
         mongoProductRepository.save(mongoProduct.get());

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {RestapiService} from "../service/restapi.service";
-import {LocalStorageService} from "../service/local-storage.service";
-import {NotificationService} from "../service/notification.service";
-import {Router} from "@angular/router";
+import { RestapiService } from "../service/restapi.service";
+import { LocalStorageService } from "../service/local-storage.service";
+import { NotificationService } from "../service/notification.service";
+import { Router } from "@angular/router";
 import { JSEncrypt } from 'jsencrypt';
 import { LoginResult } from "../model/loginResult";
 
@@ -15,9 +15,9 @@ export class LoginComponent implements OnInit {
 
   PUBLIC_KEY = '305C300D06092A864886F70D0101010500034B003048024100B505F437415C1597674F37E6D6F60285ECB08EB27D17DA6F980E515EBC35BD821066F2006F0193A7A4BE8911DE339E02A0135EDAADBDC60A5174A80A2BC2B4490203010001'
 
-  public currentUser:any;
-  username:string;
-  password:string;
+  public currentUser: any;
+  username: string;
+  password: string;
 
   encryptor: any;
 

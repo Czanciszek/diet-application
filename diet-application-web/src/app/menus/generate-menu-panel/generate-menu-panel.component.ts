@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {FileService} from "../../service/file.service";
-import {MenuService} from "../../service/menu.service";
+import { MatDialogRef } from "@angular/material/dialog";
+import { FileService } from "../../service/file.service";
+import { MenuService } from "../../service/menu.service";
 
 @Component({
   selector: 'app-generate-menu-panel',
@@ -12,10 +12,10 @@ import {MenuService} from "../../service/menu.service";
 export class GenerateMenuPanelComponent implements OnInit {
 
   constructor(
-      private fileService: FileService,
-      private menuService: MenuService,
-      public dialogRef: MatDialogRef<GenerateMenuPanelComponent>
-    ) { }
+    private fileService: FileService,
+    private menuService: MenuService,
+    public dialogRef: MatDialogRef<GenerateMenuPanelComponent>
+  ) { }
 
   fileServiceForm = this.fileService.form;
 
@@ -32,9 +32,9 @@ export class GenerateMenuPanelComponent implements OnInit {
       .getPdfFile()
       .subscribe(
         (response) => {
-        this.fileService.downloadFile(response, "application/pdf");
-        this.dialogRef.close();
-      });
+          this.fileService.downloadFile(response, "application/pdf");
+          this.dialogRef.close();
+        });
   }
 
   onClose() {

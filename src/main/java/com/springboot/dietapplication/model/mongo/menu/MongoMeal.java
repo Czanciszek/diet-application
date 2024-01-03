@@ -1,7 +1,6 @@
 package com.springboot.dietapplication.model.mongo.menu;
 
 import com.springboot.dietapplication.model.mongo.dish.MongoDishProduct;
-import com.springboot.dietapplication.model.psql.menu.PsqlDayMeal;
 import com.springboot.dietapplication.model.type.FoodType;
 import com.springboot.dietapplication.model.type.MealType;
 import lombok.Getter;
@@ -9,7 +8,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Getter
@@ -39,7 +38,29 @@ public class MongoMeal {
 
     public MongoMeal() {}
 
-    public MongoMeal(MealType mealType, PsqlDayMeal psqlDayMeal) {
+    public MongoMeal(MongoMeal mongoMeal, String currentDate) {
+        this.id = UUID.randomUUID().toString();
+        this.attachToRecipes = false;
+        this.creationDate = currentDate;
+        this.updateDate = currentDate;
+
+        this.name = mongoMeal.getName();
+        this.recipe = mongoMeal.getRecipe();
+        this.portions = mongoMeal.getPortions();
+        this.dishPortions = mongoMeal.getDishPortions();
+        this.grams = mongoMeal.getGrams();
+        this.foodType = mongoMeal.getFoodType();
+        this.isProduct = mongoMeal.getIsProduct();
+        this.originDishId = mongoMeal.getOriginDishId();
+        this.products = mongoMeal.getProducts()
+                .stream()
+                .map(MongoDishProduct::new)
+                .collect(Collectors.toList());
+        this.date = mongoMeal.getDate();
+        this.deletionDate = mongoMeal.getDeletionDate();
+    }
+
+    public MongoMeal(MealType mealType) {
         this.id = mealType.getId();
         this.name = mealType.getName();
         this.recipe = mealType.getRecipe();
@@ -48,13 +69,27 @@ public class MongoMeal {
         this.grams = mealType.getGrams();
         this.foodType = mealType.getFoodType();
         this.isProduct = mealType.getIsProduct();
-        this.originDishId = mealType.getBaseDishId();
-        this.attachToRecipes = mealType.getOriginMealId() != null && mealType.getOriginMealId().equals(mealType.getId());
+        this.originDishId = mealType.getOriginDishId();
+        this.attachToRecipes = mealType.isAttachToRecipes();
         this.products = mealType.getProductList()
                 .stream()
                 .map(MongoDishProduct::new)
                 .collect(Collectors.toList());
+    }
 
-        this.date = psqlDayMeal.getDate();
+    public void updateFrom(MealType mealType) {
+        setName(mealType.getName());
+        setRecipe(mealType.getRecipe());
+        setPortions(mealType.getPortions());
+        setDishPortions((int) mealType.getDishPortions());
+        setGrams(mealType.getGrams());
+        setFoodType(mealType.getFoodType());
+        setIsProduct(mealType.getIsProduct());
+        setOriginDishId(mealType.getOriginDishId());
+        setAttachToRecipes(mealType.isAttachToRecipes());
+        setProducts(mealType.getProductList()
+                .stream()
+                .map(MongoDishProduct::new)
+                .collect(Collectors.toList()));
     }
 }

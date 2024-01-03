@@ -1,5 +1,6 @@
 package com.springboot.dietapplication.model.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
 import com.springboot.dietapplication.model.psql.menu.PsqlMeal;
 import lombok.Getter;
@@ -21,11 +22,9 @@ public class MealType implements Serializable {
 
     private String name;
 
-    private String dayMealId; // Reference to day
+    private boolean attachToRecipes; // Decides whenever meal should be added to recipes list
 
-    private String originMealId; // Reference to origin meal day
-
-    private String baseDishId; // Reference to selected dish
+    private String originDishId; // Reference to selected dish
 
     private Boolean isProduct; // true - for Product; false - for Dish
 
@@ -41,27 +40,31 @@ public class MealType implements Serializable {
 
     private FoodType foodType; //Rodzaj posiłku
 
+    @JsonIgnore
+    private String dayMealId; // Reference to day
+
     public MealType() {}
 
     public MealType(MealType meal) {
-        this.name = meal.name;
-        this.dayMealId = meal.dayMealId;
-        this.originMealId = meal.originMealId;
-        this.baseDishId = meal.baseDishId;
-        this.isProduct = meal.isProduct;
-        this.productList = meal.productList;
-        this.portions = meal.portions;
-        this.grams = meal.grams;
-        this.dishPortions = meal.dishPortions;
-        this.recipe = meal.recipe;
-        this.foodType = meal.foodType;
+        this.id = meal.getId();
+        this.name = meal.getName();
+        this.dayMealId = meal.getDayMealId();
+        this.attachToRecipes = meal.isAttachToRecipes();
+        this.originDishId = meal.getOriginDishId();
+        this.isProduct = meal.getIsProduct();
+        this.productList = meal.getProductList();
+        this.portions = meal.getPortions();
+        this.grams = meal.getGrams();
+        this.dishPortions = meal.getDishPortions();
+        this.recipe = meal.getRecipe();
+        this.foodType = meal.getFoodType();
     }
 
     public MealType(PsqlMeal meal) {
         this.id = String.valueOf(meal.getId());
         this.dayMealId = String.valueOf(meal.getDayMealId());
-        this.originMealId = meal.getBaseDishId() != null ? String.valueOf(meal.getOriginMealId()) : null;
-        this.baseDishId = meal.getBaseDishId() != null ? String.valueOf(meal.getBaseDishId()) : null;
+        this.attachToRecipes = meal.getOriginMealId() != null;
+        this.originDishId = meal.getBaseDishId() != null ? String.valueOf(meal.getBaseDishId()) : null;
         this.name = meal.getName();
         this.isProduct = meal.isProduct();
         this.portions = meal.getPortions();
@@ -71,9 +74,10 @@ public class MealType implements Serializable {
     }
 
     public MealType(MongoMeal mongoMeal) {
+        this.id = mongoMeal.getId();
         this.name = mongoMeal.getName();
-        this.originMealId = mongoMeal.getAttachToRecipes() ? mongoMeal.getId() : null;
-        this.baseDishId = mongoMeal.getOriginDishId();
+        this.attachToRecipes = mongoMeal.getAttachToRecipes();
+        this.originDishId = mongoMeal.getOriginDishId();
         this.isProduct = mongoMeal.getIsProduct();
         this.portions = mongoMeal.getPortions();
         this.dishPortions = mongoMeal.getDishPortions();

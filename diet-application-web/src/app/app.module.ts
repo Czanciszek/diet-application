@@ -1,30 +1,30 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {forwardRef, NgModule} from '@angular/core';
-import {MaterialModule} from "./material/material.module";
+import { NgModule } from '@angular/core';
+import { MaterialModule } from "./material/material.module";
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import {RestapiService} from "./service/restapi.service";
-import {HttpClientModule} from "@angular/common/http";
-import {FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/forms";
+import { RestapiService } from "./service/restapi.service";
+import { HttpClientModule } from "@angular/common/http";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AppRoutingModule } from './app-routing.module';
-import {RouterModule, Routes} from "@angular/router";
+import { RouterModule, Routes } from "@angular/router";
 import { ProductsComponent } from './products/products.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProductComponent } from './products/product/product.component';
-import {ProductService} from "./service/product.service";
+import { ProductService } from "./service/product.service";
 import { DishesComponent } from './dishes/dishes.component';
 import { ProductListComponent } from './products/product-list/product-list.component';
-import {NotificationService} from "./service/notification.service";
+import { NotificationService } from "./service/notification.service";
 import { DishListComponent } from './dishes/dish-list/dish-list.component';
 import { DishComponent } from './dishes/dish/dish.component';
-import {DishService} from "./service/dish.service";
+import { DishService } from "./service/dish.service";
 import { ProductSelectComponent } from './products/product-select/product-select.component';
 import { PatientsComponent } from './patients/patients.component';
 import { PatientListComponent } from './patients/patient-list/patient-list.component';
-import {PatientService} from "./service/patient.service";
+import { PatientService } from "./service/patient.service";
 import { PatientComponent } from './patients/patient/patient.component';
 import { PatientEditComponent } from './patients/patient-edit/patient-edit.component';
 import { MeasurementListComponent } from './measurements/measurement-list/measurement-list.component';
@@ -45,16 +45,16 @@ import { ReplaceProductPanelComponent } from './menus/replace-product-panel/repl
 import { MenuProductsComponent } from './menus/menu-products/menu-products.component';
 
 const routes: Routes = [
-  {path: "", redirectTo:"login", pathMatch:"full"},
-  {path: "login", component:LoginComponent},
-  {path: "register", component:RegisterComponent},
-  {path: "home", component:HomeComponent},
-  {path: "products", component:ProductsComponent},
-  {path: "dishes", component:DishesComponent},
-  {path: "patients", component:PatientsComponent},
-  {path: "menu/:menu_id", component: WeekViewComponent},
-  {path: "patients/:patient_id", component: PatientComponent},
-  {path: "patients/:patient_id/menus", component: MenusComponent},
+  { path: "", redirectTo: "login", pathMatch: "full" },
+  { path: "login", component: LoginComponent },
+  { path: "register", component: RegisterComponent },
+  { path: "home", component: HomeComponent },
+  { path: "products", component: ProductsComponent },
+  { path: "dishes", component: DishesComponent },
+  { path: "patients", component: PatientsComponent },
+  { path: "menu/:menu_id", component: WeekViewComponent },
+  { path: "patients/:patient_id", component: PatientComponent },
+  { path: "patients/:patient_id/menus", component: MenusComponent },
 ];
 
 @NgModule({
@@ -90,17 +90,17 @@ const routes: Routes = [
     ReplaceProductPanelComponent,
     MenuProductsComponent,
   ],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        HttpClientModule,
-        AppRoutingModule,
-        RouterModule.forRoot(routes),
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MaterialModule,
-        FlexLayoutModule
-    ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    AppRoutingModule,
+    RouterModule.forRoot(routes),
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    FlexLayoutModule
+  ],
   providers: [
     RestapiService,
     ProductService,

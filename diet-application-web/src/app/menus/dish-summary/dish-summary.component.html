@@ -1,5 +1,6 @@
 <div class="mat-card-column">
-  <div [ngClass] = "{ 'mat-card-dish-as-recipe' : isProductAttachedToRecipes, 'mat-card-dish' :  !isProductAttachedToRecipes }">
+  <div
+    [ngClass]="{ 'mat-card-dish-as-recipe' : isProductAttachedToRecipes, 'mat-card-dish' :  !isProductAttachedToRecipes }">
     <div>
       <p><b>{{mealItem.name}}</b></p>
     </div>
@@ -8,10 +9,12 @@
     </div>
     <div>
       <button mat-mini-fab matTooltip="Edytuj danie" (click)="onEdit()"><mat-icon>launch</mat-icon></button>
-      <button mat-mini-fab matTooltip="Usuń danie" (click)="onDeleteMealButtonClick(mealItem.id)"><mat-icon>delete</mat-icon></button>
+      <button mat-mini-fab matTooltip="Usuń danie"
+        (click)="onDeleteMealButtonClick(mealItem.id)"><mat-icon>delete</mat-icon></button>
       <button mat-mini-fab matTooltip="Kopiuj danie" (click)=picker.open()>
         <mat-icon>content_copy</mat-icon>
-        <input [matDatepicker]="picker" #elementToFocus type="hidden" (dateChange)="dateChanged($event)" [min]="menuItemData.startDate" [max]="menuItemData.endDate" [value]="dayItem.date">
+        <input [matDatepicker]="picker" #elementToFocus type="hidden" (dateChange)="copyMealDateSelected($event)"
+          [min]="menuItemData.startDate" [max]="menuItemData.endDate" [value]="date">
         <mat-datepicker #picker="matDatepicker"></mat-datepicker>
       </button>
     </div>

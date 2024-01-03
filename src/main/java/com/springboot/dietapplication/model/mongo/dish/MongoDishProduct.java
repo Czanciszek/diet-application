@@ -27,6 +27,16 @@ public class MongoDishProduct {
 
     public MongoDishProduct() {}
 
+    public MongoDishProduct(MongoDishProduct mongoDishProduct) {
+        this.productId = mongoDishProduct.getProductId();
+        this.name = mongoDishProduct.getName();
+        this.availableAmountTypes = mongoDishProduct.getAvailableAmountTypes();
+        this.foodProperties = mongoDishProduct.getFoodProperties();
+        this.amountType = mongoDishProduct.getAmountType();
+        this.grams = mongoDishProduct.getGrams();
+        this.amount = mongoDishProduct.getAmount();
+    }
+
     public MongoDishProduct(ProductDishType productDishType) {
         this.productId = String.valueOf(productDishType.getProductId());
         this.name = productDishType.getProductName();

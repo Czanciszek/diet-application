@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {translateDishType} from "../../material/helper/polish-translate";
+import { Component, Input, OnInit } from '@angular/core';
+import { translateDishType } from "../../material/helper/polish-translate";
 
 @Component({
   selector: 'app-dish-type',

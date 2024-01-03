@@ -6,7 +6,6 @@ import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
 import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import com.springboot.dietapplication.model.mongo.menu.MongoWeekMenu;
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
-import com.springboot.dietapplication.model.psql.dish.PsqlDishUsage;
 import com.springboot.dietapplication.model.psql.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.mongo.MongoDishRepository;
@@ -20,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.DateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -64,6 +62,7 @@ public class DishServiceV2 {
             List<MongoMeal> meals = weekMenus.stream()
                     .flatMap(weekMenu -> weekMenu.getMeals().entrySet().stream()
                             .flatMap(m -> m.getValue().stream()))
+                    .filter(mongoMeal -> mongoMeal.getOriginDishId() != null)
                     .collect(Collectors.toList());
 
             meals.forEach(meal -> {
@@ -110,8 +109,7 @@ public class DishServiceV2 {
         UserEntity user = userDetailsService.getCurrentUser();
         mongoDish.setUserId(user.getId());
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoDish.setCreationDate(currentDate);
         mongoDish.setUpdateDate(currentDate);
 
@@ -139,8 +137,7 @@ public class DishServiceV2 {
         updatedDish.setUserId(mongoDish.get().getUserId());
         updatedDish.setCreationDate(mongoDish.get().getCreationDate());
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         updatedDish.setUpdateDate(currentDate);
 
         // Collect original products and pass actual values
@@ -159,8 +156,7 @@ public class DishServiceV2 {
 //        if (!user.getUserType().equals(UserType.ADMIN.name) && !product.get().getUserId().equals(user.getId()))
 //            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting product attempt");
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoDish.get().setDeletionDate(currentDate);
 
         mongoDishRepository.save(mongoDish.get());

@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.DateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,8 +67,7 @@ public class PatientServiceV2 {
         UserEntity user = userDetailsService.getCurrentUser();
         mongoPatient.setUserId(user.getId());
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoPatient.setCreationDate(currentDate);
         mongoPatient.setUpdateDate(currentDate);
 
@@ -96,8 +94,7 @@ public class PatientServiceV2 {
         updatedPatient.setUserId(mongoPatient.get().getUserId());
         updatedPatient.setCreationDate(mongoPatient.get().getCreationDate());
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         updatedPatient.setUpdateDate(currentDate);
 
         mongoPatientRepository.save(updatedPatient);
@@ -119,8 +116,7 @@ public class PatientServiceV2 {
         List<MeasurementType> measurements = mongoPatient.get().getMeasurements();
         measurements.add(measurementType);
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoPatient.get().setUpdateDate(currentDate);
 
         mongoPatientRepository.save(mongoPatient.get());
@@ -137,8 +133,7 @@ public class PatientServiceV2 {
 //        if (!user.getUserType().equals(UserType.ADMIN.name) && !product.get().getUserId().equals(user.getId()))
 //            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized deleting product attempt");
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoPatient.get().setDeletionDate(currentDate);
 
         mongoPatientRepository.save(mongoPatient.get());

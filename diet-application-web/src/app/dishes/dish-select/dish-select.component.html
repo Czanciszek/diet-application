@@ -3,7 +3,8 @@
     <span class="fill-remaining-space"></span>
     <span>Wybierz potrawę</span>
     <span class="fill-remaining-space"></span>
-    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()"
+      tabindex="-1"><mat-icon>clear</mat-icon></button>
   </mat-toolbar>
 </div>
 
@@ -17,28 +18,29 @@
 </div>
 
 <mat-dialog-content>
-  <div class ="mat-elevation-z8">
+  <div class="mat-elevation-z8">
     <mat-table [dataSource]="listData" matSort>
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa potrawy</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="portions">
-        <mat-header-cell *matHeaderCellDef  mat-sort-header>Ilość porcji</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Ilość porcji</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.portions}}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="foodType" >
+      <ng-container matColumnDef="foodType">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Typ potrawy</mat-header-cell>
         <mat-cell *matCellDef="let element">{{getFoodType(element.foodType)}}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="dishUsages" >
+      <ng-container matColumnDef="dishUsages">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Użycie w jadłospisach pacjenta</mat-header-cell>
         <mat-cell *matCellDef="let element">
           <div class="dish-usages-count">
             {{element.dishUsages}}
           </div>
           <div *ngIf="element.dishUsages > 0">
-            <mat-icon matTooltipPosition="after" matTooltip="{{element.dishUsageInfo}}" matTooltipClass="dish-usage-tooltip">info</mat-icon>
+            <mat-icon matTooltipPosition="after" matTooltip="{{element.dishUsageInfo}}"
+              matTooltipClass="dish-usage-tooltip">info</mat-icon>
           </div>
         </mat-cell>
       </ng-container>
@@ -61,7 +63,8 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>
-      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
+      <mat-footer-row *matFooterRowDef="['noData']"
+        [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
     </mat-table>
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
   </div>

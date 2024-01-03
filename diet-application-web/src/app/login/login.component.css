@@ -16,6 +16,7 @@
   border-radius: 5px;
 
 }
+
 .brand_logo_container {
   position: absolute;
   height: 170px;
@@ -26,37 +27,45 @@
   padding: 10px;
   text-align: center;
 }
+
 .brand_logo {
   height: 150px;
   width: 150px;
   border-radius: 50%;
 }
+
 .form_container {
   margin-top: 100px;
 }
+
 .login_btn {
   width: 100%;
   background: #c0392b !important;
   color: white !important;
 }
+
 .login_btn:focus {
   box-shadow: none !important;
   outline: 0px !important;
 }
+
 .login_container {
   padding: 0 2rem;
 }
+
 .input-group-text {
   background: #c0392b !important;
   color: white !important;
   border: 0 !important;
   border-radius: 0.25rem 0 0 0.25rem !important;
 }
+
 .input_user,
 .input_pass:focus {
   box-shadow: none !important;
   outline: 0px !important;
 }
+
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
   background-color: #c0392b !important;
 }

@@ -1,13 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {PatientService} from "../../service/patient.service";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {NotificationService} from "../../service/notification.service";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
-import {Router} from "@angular/router";
-import {PatientEditComponent} from "../patient-edit/patient-edit.component";
-import {Patient} from "../../model/patient";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { PatientService } from "../../service/patient.service";
+import { MatDialog } from "@angular/material/dialog";
+import { NotificationService } from "../../service/notification.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
+import { Router } from "@angular/router";
+import { PatientEditComponent } from "../patient-edit/patient-edit.component";
+import { Patient } from "../../model/patient";
 
 @Component({
   selector: 'app-patient-list',
@@ -35,9 +35,9 @@ export class PatientListComponent implements OnInit {
 
   getPatients() {
     this.patientService.getPatients().subscribe(
-      (data: Patient[] ) => {
+      (data: Patient[]) => {
 
-        var patientList: Patient[] = [...data].sort( (p1, p2) => {
+        var patientList: Patient[] = [...data].sort((p1, p2) => {
           if (p1.surname == p2.surname) return 0;
           return p1.surname > p2.surname ? 1 : -1;
         });
@@ -48,11 +48,11 @@ export class PatientListComponent implements OnInit {
 
         this.listData.filterPredicate = (data: Patient, filter: string) => {
           return data.name == null ||
-          data.name.toLowerCase().includes(filter) ||
-          data.email.toLowerCase().includes(filter) ||
-          data.numberPhone.toLowerCase().includes(filter);
-      };
-    });
+            data.name.toLowerCase().includes(filter) ||
+            data.email.toLowerCase().includes(filter) ||
+            data.numberPhone.toLowerCase().includes(filter);
+        };
+      });
   }
 
   onSearchClear() {
@@ -85,7 +85,7 @@ export class PatientListComponent implements OnInit {
       width: "90%"
     });
 
-    dialogRef.afterClosed().subscribe( result => {
+    dialogRef.afterClosed().subscribe(result => {
       this.ngOnInit();
     });
   }
@@ -99,7 +99,7 @@ export class PatientListComponent implements OnInit {
       result => {
         this.notificationService.warn(":: Pomyślnie usunięto! ::");
       }, error => {
-         this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
+        this.notificationService.error(":: Wystąpił błąd podczas usuwania! ::");
       }, () => {
         this.getPatients();
       }

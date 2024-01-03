@@ -7,8 +7,6 @@ import com.springboot.dietapplication.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,8 +30,7 @@ public class MongoProductRunner {
                 .map(MongoProduct::new)
                 .collect(Collectors.toList());
 
-        DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-        String currentDate = dateFormat.format(new Date());
+        String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoProducts.forEach(product -> {
             product.setCreationDate(currentDate);
             product.setUpdateDate(currentDate);

@@ -12,18 +12,17 @@ export class MealService {
   ) { }
 
   form: FormGroup = new FormGroup({
-    id: new FormControl(null),
-    name: new FormControl('', [Validators.required]),
-    dayMealId: new FormControl(''),
-    originMealId: new FormControl(null),
-    baseDishId: new FormControl(null),
-    productList: new FormArray([]),
-    isProduct: new FormControl(null),
-    portions: new FormControl(null),
-    grams: new FormControl(null),
+    attachToRecipes: new FormControl(null),
     dishPortions: new FormControl(null),
-    recipe: new FormControl(null),
-    foodType: new FormControl('')
+    foodType: new FormControl(''),
+    grams: new FormControl(null),
+    id: new FormControl(null),
+    isProduct: new FormControl(null),
+    name: new FormControl('', [Validators.required]),
+    originDishId: new FormControl(null),
+    portions: new FormControl(null),
+    productList: new FormArray([]),
+    recipe: new FormControl(null)
   });
 
   addProductFormGroup(): FormGroup {
@@ -48,24 +47,23 @@ export class MealService {
     this.clearForm();
 
     this.form.setValue({
-      id: null,
-      name: '',
-      productList: [],
-      dayMealId: '',
-      originMealId: null,
-      baseDishId: null,
-      isProduct: 0,
-      portions: 1,
-      grams: 0,
+      attachToRecipes: false,
       dishPortions: 1,
-      recipe: '',
-      foodType: ''
+      foodType: '',
+      grams: 0,
+      id: null,
+      isProduct: 0,
+      name: '',
+      originDishId: null,
+      portions: 1,
+      productList: [],
+      recipe: ''
     })
   }
 
   populateForm(meal) {
     this.clearForm();
-
+    
     if (meal.productList == null) meal.productList = [];
     let productIndex = 0;
     for (const product of meal.productList) {
@@ -93,23 +91,27 @@ export class MealService {
     this.form.reset();
   }
 
-  getMealListByWeekMealId(weekMealId) {
-    return this.restApiService.get("meals/list/" + weekMealId);
+  insertMeal(weekMenuId: string, date: string) {
+    return this.restApiService.post({ "weekMenuId": weekMenuId, "date": date, "meal": this.form.value }, "meals", "v2");
   }
 
-  insertMeal(meal) {
-    return this.restApiService.post(meal, "meals");
+  copyDay(weekMenuId: string, newDate: string, originDate: string) {
+    return this.restApiService.post({ "weekMenuId": weekMenuId, "newDate": newDate, "originDate": originDate }, "meals/copyDay", "v2");
   }
 
-  copyMeal(meal) {
-    return this.restApiService.post(meal, "meals/copy");
+  copyMeal(weekMenuId: string, newDate: string, mealId: string) {
+    return this.restApiService.post({ "weekMenuId": weekMenuId, "newDate": newDate, "originMealId": mealId }, "meals/copyMeal", "v2");
   }
 
-  updateMeal(meal) {
-    return this.restApiService.put(meal, "meals/" + meal.id);
+  updateMeal(weekMenuId: string) {
+    return this.restApiService.put({ "weekMenuId": weekMenuId, "meal": this.form.value }, "meals", "v2");
   }
 
-  deleteMeal(id: string) {
-    return this.restApiService.delete("meals/" + id);
+  removeMeal(weekMenuId: string, mealId: string) {
+    return this.restApiService.put({ "weekMenuId": weekMenuId, "mealId": mealId }, "meals/removeMeal", "v2");
+  }
+
+  clearDay(weekMenuId: string, date: string) {
+    return this.restApiService.put({ "weekMenuId": weekMenuId, "date": date }, "meals/clearDay", "v2");
   }
 }

@@ -36,11 +36,11 @@ export class ProductComponent implements OnInit {
   }
 
   getCategories() {
-   
+
     const productCategories = this.productService.productList.map(p => new ProductCategory(p.category.category, p.category.subcategory));
     const productCategorySet = new ProductCategorySet(productCategories);
     this.categoryList = productCategorySet.values();
-    
+
     for (const key of this.categoryList) {
       this.categories.add(key.category);
       this.subcategories.add(key.subcategory);

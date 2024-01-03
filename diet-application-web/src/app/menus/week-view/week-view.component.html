@@ -1,6 +1,7 @@
 <div *ngIf="dataLoaded">
 
-  <app-week-header *ngIf="weekMealsData != null" [weekIndex]="weekIndex" [maxWeekIndex]="weekMealsData.length" (weekIndexChanged)="swapWeek($event)" (weekMealDeleted)="deleteWeekMealOnIndex($event)" ></app-week-header>
+  <app-week-header *ngIf="weekMealsData != null" [weekIndex]="weekIndex" [maxWeekIndex]="weekMealsData.length"
+    (weekIndexChanged)="swapWeek($event)"></app-week-header>
 
   <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
     <div fxFlex="13%" *ngFor="let day of daysData">
@@ -8,18 +9,18 @@
       <div class="mat-card-header-day-name">
         <h2 style="white-space: pre-wrap;">{{translateDayType(day)}}</h2>
 
-        <button mat-mini-fab matTooltip="Wyczyść dzień" (click)="clearDayMealButtonClick(day)"><mat-icon>layers_clear</mat-icon></button>
+        <button mat-mini-fab matTooltip="Wyczyść dzień"
+          (click)="clearDayMealButtonClick(day)"><mat-icon>layers_clear</mat-icon></button>
         <button mat-mini-fab matTooltip="Kopiuj dzień" (click)=picker.open()>
           <mat-icon>content_copy</mat-icon>
-          <input
-            [matDatepicker]="picker" #elementToFocus type="hidden" (dateChange)="dateChanged($event, day)"
-            [min]="menuItemData.startDate" [max]="menuItemData.endDate" [value] = "day">
+          <input [matDatepicker]="picker" #elementToFocus type="hidden" (dateChange)="copyDayMealDateSelected($event, day)"
+            [min]="menuItemData.startDate" [max]="menuItemData.endDate" [value]="day">
           <mat-datepicker #picker="matDatepicker"></mat-datepicker>
         </button>
       </div>
     </div>
 
-    <div fxFlex="9%" >
+    <div fxFlex="9%">
       <div class="mat-card-header-day-name">
         <h2>Podsumowanie</h2>
       </div>
@@ -32,7 +33,7 @@
       <div fxFlex="13%" *ngFor="let day of daysData">
         <app-dish-type [typeName]="dishType"></app-dish-type>
       </div>
-      <div fxFlex="9%" >
+      <div fxFlex="9%">
         <app-dish-type [typeName]="dishType"></app-dish-type>
       </div>
     </div>
@@ -41,13 +42,14 @@
       <div fxFlex="13%" *ngFor="let day of daysData">
         <div *ngFor="let meal of weekMealsData[weekIndex][day]">
           <div *ngIf="meal.foodType === dishType">
-            <app-dish-summary [menuItemData]="menuItemData" [dayItem]="day" [mealItem]="meal" (refreshItems)="refreshMealList()"></app-dish-summary>
+            <app-dish-summary [menuItemData]="menuItemData" [date]="day" [mealItem]="meal"
+              (refreshItems)="getMenuDetails()" (deleteMeal)="onDeleteMeal($event)"></app-dish-summary>
           </div>
         </div>
       </div>
-      <div fxFlex="9%" >
+      <div fxFlex="9%">
         <div class="container" fxLayoutGap="0.5%">
-          <div class ="summary">
+          <div class="summary">
             <p><b>Średnia:</b></p>
             <p>{{getFoodPropertiesWeekSummary(dishType, "energyValue", false)}}</p>
             <p>{{getFoodPropertiesWeekSummary(dishType, "proteins", false)}}</p>
@@ -60,7 +62,8 @@
 
     <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
       <div fxFlex="13%" *ngFor="let day of daysData">
-        <app-dish-add [menuId]="menuId" [dayId]="" [menuItem]="menuItemData" [dishType]="dishType" (refreshItems)="refreshMealList()"></app-dish-add>
+        <app-dish-add [menuId]="menuId" [dayId]="" [menuItem]="menuItemData" [dishType]="dishType" [currentDate]="day"
+          (refreshItems)="getMenuDetails()"></app-dish-add>
       </div>
       <div fxFlex="9%"></div>
     </div>
@@ -69,7 +72,7 @@
 
   <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%">
     <div fxFlex="13%" *ngFor="let day of daysData">
-      <div class ="summary">
+      <div class="summary">
         <p><b>Suma:</b></p>
         <p>{{getFoodPropertiesDaySummary(day, "energyValue")}}</p>
         <p>{{getFoodPropertiesDaySummary(day, "proteins")}}</p>
@@ -79,7 +82,7 @@
     </div>
 
     <div fxFlex="9%">
-      <div class ="summary">
+      <div class="summary">
         <p><b>Średnia: </b></p>
         <p>{{getFoodPropertiesWeekSummary(dishType, "energyValue", true)}}</p>
         <p>{{getFoodPropertiesWeekSummary(dishType, "proteins", true)}}</p>

@@ -1,9 +1,8 @@
-import {Component, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
-import {MenuService} from "../../service/menu.service";
-import {ShoppingProduct} from "../../model/shopping-product";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { MenuService } from "../../service/menu.service";
+import { ShoppingProduct } from "../../model/shopping-product";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatSort } from "@angular/material/sort";
 
 @Component({
   selector: 'app-menu-products',
@@ -49,8 +48,8 @@ export class MenuProductsComponent implements OnInit {
     this.menuService.getMenuProducts(menuId)
       .subscribe(
         (data: ShoppingProduct[]) => {
-          this.menuProductList.data = [ ...data];
-      });
+          this.menuProductList.data = [...data];
+        });
   }
 
   onProductSelect(product) {

@@ -3,20 +3,17 @@ package com.springboot.dietapplication.utils;
 import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
 import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import com.springboot.dietapplication.model.mongo.menu.MongoWeekMenu;
-import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
 import com.springboot.dietapplication.model.psql.menu.PsqlDayMeal;
 import com.springboot.dietapplication.model.psql.menu.PsqlWeekMeal;
 import com.springboot.dietapplication.model.type.MealType;
 import com.springboot.dietapplication.repository.DayMealRepository;
 import com.springboot.dietapplication.repository.WeekMealRepository;
 import com.springboot.dietapplication.repository.mongo.MongoMenuRepository;
-import com.springboot.dietapplication.repository.mongo.MongoPatientRepository;
 import com.springboot.dietapplication.repository.mongo.MongoWeekMenuRepository;
 import com.springboot.dietapplication.service.MealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
 import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -66,8 +63,7 @@ public class MongoWeekMenuRunner {
 
                     Map<String, List<MongoMeal>> mealDictionary = new HashMap<>();
 
-                    DateFormat dateFormat = DateFormatter.getInstance().getIso8601Formatter();
-                    String currentDate = dateFormat.format(new Date());
+                    String currentDate = DateFormatter.getInstance().getCurrentDate();
 
                     dayMeals.forEach(dm -> {
                         List<MealType> mealsInDay = mealTypes.stream()
@@ -81,7 +77,11 @@ public class MongoWeekMenuRunner {
                                 .toLocalDate();
 
                         List<MongoMeal> mongoMeals = mealsInDay.stream()
-                                .map(m -> new MongoMeal(m, dm))
+                                .map(m -> {
+                                    MongoMeal mongoMeal = new MongoMeal(m);
+                                    mongoMeal.setDate(dm.getDate());
+                                    return mongoMeal;
+                                })
                                 .collect(Collectors.toList());
 
                         mongoMeals.forEach(meal -> {

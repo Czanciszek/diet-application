@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-week-header',
@@ -17,9 +17,6 @@ export class WeekHeaderComponent implements OnInit {
   @Output()
   weekIndexChanged = new EventEmitter<number>();
 
-  @Output()
-  weekMealDeleted = new EventEmitter<number>();
-
   ngOnInit(): void {
   }
 
@@ -37,10 +34,4 @@ export class WeekHeaderComponent implements OnInit {
     this.weekIndexChanged.emit(newIndex);
   }
 
-  onDeleteWeekMealButtonClick() {
-    if (!confirm("Na pewno chcesz usunąć ten tydzień?")) {
-      return;
-    }
-    this.weekMealDeleted.emit(this.weekIndex);
-  }
 }

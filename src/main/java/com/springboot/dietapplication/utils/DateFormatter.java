@@ -2,6 +2,7 @@ package com.springboot.dietapplication.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 
 public final class DateFormatter {
@@ -26,5 +27,9 @@ public final class DateFormatter {
 
     public DateFormat getIso8601Formatter() {
         return iso8601Formatter;
+    }
+
+    public String getCurrentDate() {
+        return iso8601Formatter.format(new Date());
     }
 }

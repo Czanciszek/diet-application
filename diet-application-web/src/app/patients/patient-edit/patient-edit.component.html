@@ -3,7 +3,8 @@
     <span class="fill-remaining-space"></span>
     <span>{{patientServiceForm.controls['id'].value?"Edytuj pacjenta":"Nowy pacjent"}}</span>
     <span class="fill-remaining-space"></span>
-    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()"
+      tabindex="-1"><mat-icon>clear</mat-icon></button>
   </mat-toolbar>
 </div>
 
@@ -63,7 +64,8 @@
                 <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
               </mat-datepicker-toggle>
               <mat-datepicker #picker startView="multi-year" [startAt]="startDate"></mat-datepicker>
-              <mat-error *ngIf="patientServiceForm.controls['birthDate'].errors?.required">Wprowadź poprawną datę</mat-error>
+              <mat-error *ngIf="patientServiceForm.controls['birthDate'].errors?.required">Wprowadź poprawną
+                datę</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -94,8 +96,8 @@
         <div class="control-container">
           <mat-form-field>
             <div class="add-bottom-padding">
-                <textarea rows="5" formControlName="currentLifestyleNote" matInput  style="resize: none;"
-                          placeholder="Aktualny styl życia" autocomplete="off">
+              <textarea rows="5" formControlName="currentLifestyleNote" matInput style="resize: none;"
+                placeholder="Aktualny styl życia" autocomplete="off">
                 </textarea>
             </div>
           </mat-form-field>
@@ -105,8 +107,8 @@
         <div class="control-container">
           <mat-form-field>
             <div class="add-bottom-padding">
-                <textarea rows="5" formControlName="changedLifestyleNote" matInput  style="resize: none;"
-                          placeholder="Zmieniony styl życia" autocomplete="off">
+              <textarea rows="5" formControlName="changedLifestyleNote" matInput style="resize: none;"
+                placeholder="Zmieniony styl życia" autocomplete="off">
                 </textarea>
             </div>
           </mat-form-field>
@@ -116,8 +118,8 @@
         <div class="control-container">
           <mat-form-field>
             <div class="add-bottom-padding">
-                <textarea rows="5" formControlName="dietaryPurpose" matInput  style="resize: none;"
-                          placeholder="Cel dietetyczny" autocomplete="off">
+              <textarea rows="5" formControlName="dietaryPurpose" matInput style="resize: none;"
+                placeholder="Cel dietetyczny" autocomplete="off">
                 </textarea>
             </div>
           </mat-form-field>
@@ -133,10 +135,12 @@
             <mat-select formControlName="allergens" multiple>
               <div>
                 <mat-form-field class="search-input">
-                  <input #allergenInput matInput placeholder="Szukaj..." autocomplete="off"/>
+                  <input #allergenInput matInput placeholder="Szukaj..." autocomplete="off" />
                 </mat-form-field>
               </div>
-              <mat-option *ngFor="let allergen of allergens_list" [class.hide-option]="allergenInput.value !== '' && allergen.value.toLowerCase().indexOf(allergenInput.value.toLowerCase()) === -1" [value]="allergen.id">
+              <mat-option *ngFor="let allergen of allergens_list"
+                [class.hide-option]="allergenInput.value !== '' && allergen.value.toLowerCase().indexOf(allergenInput.value.toLowerCase()) === -1"
+                [value]="allergen.id">
                 {{allergen.value}}
               </mat-option>
             </mat-select>
@@ -150,10 +154,12 @@
             <mat-select formControlName="unlikelyCategories" multiple>
               <div>
                 <mat-form-field class="search-input">
-                  <input #categoryInput matInput placeholder="Szukaj..." autocomplete="off"/>
+                  <input #categoryInput matInput placeholder="Szukaj..." autocomplete="off" />
                 </mat-form-field>
               </div>
-              <mat-option *ngFor="let category of categories" [class.hide-option]="categoryInput.value !== '' && category.toLowerCase().indexOf(categoryInput.value.toLowerCase()) === -1" [value]="category">
+              <mat-option *ngFor="let category of categories"
+                [class.hide-option]="categoryInput.value !== '' && category.toLowerCase().indexOf(categoryInput.value.toLowerCase()) === -1"
+                [value]="category">
                 {{category}}
               </mat-option>
             </mat-select>
@@ -166,7 +172,8 @@
       <mat-grid-tile>
         <div class="control-container">
           <div class="button-row">
-            <button mat-raised-button color="primary" type="submit" [disabled]="patientServiceForm.invalid">Zapisz</button>
+            <button mat-raised-button color="primary" type="submit"
+              [disabled]="patientServiceForm.invalid">Zapisz</button>
             <button mat-raised-button color="warn" type="button" (click)="onClear()">Wyczyść</button>
           </div>
         </div>

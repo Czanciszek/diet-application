@@ -3,7 +3,8 @@
     <span class="fill-remaining-space"></span>
     <span>Generowanie PDF</span>
     <span class="fill-remaining-space"></span>
-    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()"
+      tabindex="-1"><mat-icon>clear</mat-icon></button>
   </mat-toolbar>
 </div>
 
@@ -16,7 +17,8 @@
           <div class="control-container">
             <mat-form-field>
               <div class="add-bottom-padding">
-                <textarea rows="5" formControlName="recommendations" matInput  style="resize: none;" placeholder="Zalecenia do jadłospisu" autocomplete="off">
+                <textarea rows="5" formControlName="recommendations" matInput style="resize: none;"
+                  placeholder="Zalecenia do jadłospisu" autocomplete="off">
 
                 </textarea>
               </div>
@@ -31,7 +33,8 @@
       <mat-grid-tile colspan="2">
         <div class="control-container">
           <div class="button-row">
-            <button mat-raised-button color="accent" type="button" (click)="onGeneratePDFButtonClick()">Generuj PDF</button>
+            <button mat-raised-button color="accent" type="button" (click)="onGeneratePDFButtonClick()">Generuj
+              PDF</button>
           </div>
         </div>
       </mat-grid-tile>

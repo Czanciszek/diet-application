@@ -23,7 +23,8 @@
                     <mat-option value="{{category}}">{{category}}</mat-option>
                   </ng-container>
                 </mat-select>
-                <mat-error *ngIf="productServiceForm.get('category').get('category').errors?.required">Pole wymagane</mat-error>
+                <mat-error *ngIf="productServiceForm.get('category').get('category').errors?.required">Pole
+                  wymagane</mat-error>
               </mat-form-field>
             </div>
           </div>
@@ -38,7 +39,8 @@
                     <mat-option value="{{subcategory}}">{{subcategory}}</mat-option>
                   </ng-container>
                 </mat-select>
-                <mat-error *ngIf="productServiceForm.get('category').get('subcategory').errors?.required">Pole wymagane</mat-error>
+                <mat-error *ngIf="productServiceForm.get('category').get('subcategory').errors?.required">Pole
+                  wymagane</mat-error>
               </mat-form-field>
             </div>
           </div>
@@ -175,10 +177,12 @@
             <mat-select formControlName="allergenTypes" multiple>
               <div>
                 <mat-form-field class="search-input">
-                  <input #allergenInput matInput placeholder="Szukaj..." autocomplete="off"/>
+                  <input #allergenInput matInput placeholder="Szukaj..." autocomplete="off" />
                 </mat-form-field>
               </div>
-              <mat-option *ngFor="let allergen of allergens" [class.hide-option]="allergenInput.value !== '' && allergen.value.toLowerCase().indexOf(allergenInput.value.toLowerCase()) === -1" [value]="allergen.id">
+              <mat-option *ngFor="let allergen of allergens"
+                [class.hide-option]="allergenInput.value !== '' && allergen.value.toLowerCase().indexOf(allergenInput.value.toLowerCase()) === -1"
+                [value]="allergen.id">
                 {{allergen.value}}
               </mat-option>
             </mat-select>

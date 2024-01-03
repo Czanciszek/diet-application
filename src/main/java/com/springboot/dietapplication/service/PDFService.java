@@ -351,7 +351,7 @@ public class PDFService {
         List<MealType> mealList = mealService
                 .getMealsByMenuId(Long.valueOf(menu.getId()))
                 .stream()
-                .filter(meal -> (!meal.getIsProduct()) && meal.getOriginMealId() != null && meal.getOriginMealId().equals(meal.getId()))
+                .filter(meal -> (!meal.getIsProduct()) && meal.isAttachToRecipes())
                 .collect(Collectors.toList());
 
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));

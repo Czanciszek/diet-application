@@ -1,11 +1,11 @@
-import {DayMeal} from "./day-meal";
+import { DayMeal } from "./day-meal";
 
 export interface Menu {
   id: string,
   patientId: number,
   weekMealList: string[],
   dayMealTypeList: DayMeal[],
-  foodTypes: string [],
+  foodTypes: string[],
   startDate: string,
   endDate: string,
   recommendations: string,
