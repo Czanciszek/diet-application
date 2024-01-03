@@ -5,7 +5,7 @@ import com.springboot.dietapplication.model.psql.menu.PsqlAmountType;
 import com.springboot.dietapplication.model.psql.menu.PsqlFoodType;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 import com.springboot.dietapplication.model.psql.product.PsqlProductsAmountTypes;
-import com.springboot.dietapplication.model.psql.user.UserEntity;
+import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.model.psql.dish.PsqlDish;
 import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;

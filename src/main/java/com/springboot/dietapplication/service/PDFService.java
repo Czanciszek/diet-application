@@ -4,7 +4,7 @@ import com.springboot.dietapplication.utils.RomanianNumber;
 import com.springboot.dietapplication.model.psql.menu.PsqlFoodType;
 import com.springboot.dietapplication.model.psql.menu.PsqlMenuProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlShoppingProduct;
-import com.springboot.dietapplication.model.psql.user.UserEntity;
+import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;

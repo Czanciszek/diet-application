@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.model.psql.user;
+package com.springboot.dietapplication.model.mongo.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,5 +25,15 @@ public class UserEntity implements Serializable {
     private String pdfFooter;
 
     public UserEntity() { }
+
+    public UserEntity(MongoUserEntity mongoUserEntity) {
+        this.id = mongoUserEntity.getId();
+        this.userType = mongoUserEntity.getUserType();
+        this.name = mongoUserEntity.getName();
+        this.password = mongoUserEntity.getPassword();
+        this.email = mongoUserEntity.getEmail();
+        this.imageId = mongoUserEntity.getImageId();
+        this.pdfFooter = mongoUserEntity.getPdfFooter();
+    }
 
 }

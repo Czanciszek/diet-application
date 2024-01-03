@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
-import com.springboot.dietapplication.model.psql.user.UserEntity;
+import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.mongo.MongoPatientRepository;
 import com.springboot.dietapplication.utils.DateFormatter;

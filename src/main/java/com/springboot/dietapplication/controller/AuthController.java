@@ -3,16 +3,17 @@ package com.springboot.dietapplication.controller;
 import com.springboot.dietapplication.config.JwtTokenUtil;
 import com.springboot.dietapplication.config.KeyUtility;
 import com.springboot.dietapplication.config.SpringSecurityConfig;
-import com.springboot.dietapplication.model.psql.user.PsqlUser;
-import com.springboot.dietapplication.model.psql.user.PsqlUserType;
-import com.springboot.dietapplication.model.psql.user.UserEntity;
+import com.springboot.dietapplication.model.mongo.user.MongoUserEntity;
+import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.LoginResult;
 import com.springboot.dietapplication.repository.UserTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ import java.util.Base64;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("api/v2/auth")
 public class AuthController {
 
     @Autowired
@@ -51,16 +52,12 @@ public class AuthController {
     }
 
     @PostMapping(path = "/register", produces = "application/json")
-    public ResponseEntity<PsqlUser> registerUser(@RequestBody UserEntity userEntity) {
+    public ResponseEntity<UserEntity> registerUser(@RequestBody UserEntity userEntity) {
+        MongoUserEntity mongoUserEntity = new MongoUserEntity(userEntity);
 
-        PsqlUser user = new PsqlUser(userEntity);
+        springSecurityConfig.jwtUserDetailsService().registerNewUser(mongoUserEntity);
 
-        PsqlUserType userType = userTypeRepository.findByName(userEntity.getUserType().toUpperCase());
-        user.setUserTypeId(userType.getId());
-
-        springSecurityConfig.jwtUserDetailsService().registerNewUser(user);
-
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userEntity);
     }
 
     private String[] decodeAuthorization(List<String> auth) throws Exception {

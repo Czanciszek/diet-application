@@ -5,7 +5,7 @@ import com.springboot.dietapplication.model.psql.menu.PsqlAllergenType;
 import com.springboot.dietapplication.model.psql.menu.PsqlAmountType;
 import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 import com.springboot.dietapplication.model.psql.product.*;
-import com.springboot.dietapplication.model.psql.user.UserEntity;
+import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;

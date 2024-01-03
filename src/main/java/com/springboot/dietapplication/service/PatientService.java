@@ -2,11 +2,10 @@ package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.psql.menu.PsqlAllergenType;
 import com.springboot.dietapplication.model.psql.menu.PsqlPatientsUnlikelyCategories;
-import com.springboot.dietapplication.model.psql.patient.PsqlMeasurement;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatientsAllergenTypes;
 import com.springboot.dietapplication.model.psql.product.PsqlCategory;
-import com.springboot.dietapplication.model.psql.user.UserEntity;
+import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
 import com.springboot.dietapplication.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;

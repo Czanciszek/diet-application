@@ -1,5 +1,6 @@
 package com.springboot.dietapplication.model.psql.user;
 
+import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import jakarta.persistence.*;
 
 import java.io.Serial;

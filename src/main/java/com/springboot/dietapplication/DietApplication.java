@@ -31,6 +31,9 @@ public class DietApplication {
     @Autowired
     MongoWeekMenuRunner mongoWeekMenuRunner;
 
+    @Autowired
+    MongoUserRunner mongoUserRunner;
+
     @Bean
     CommandLineRunner runner() {
         return args -> {
@@ -45,7 +48,9 @@ public class DietApplication {
 //                mongoMenuRunner.reloadMenusPSQLtoMongo();
 //
 //                mongoWeekMenuRunner.reloadMenusPSQLtoMongo();
-
+//
+//                mongoUserRunner.reloadUsersPSQLToMongo();
+//
             } catch (Exception e) {
                 e.printStackTrace();
             }

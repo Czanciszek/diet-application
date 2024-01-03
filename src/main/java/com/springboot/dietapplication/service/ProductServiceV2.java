@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
-import com.springboot.dietapplication.model.psql.user.UserEntity;
+import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.CategoryType;
 import com.springboot.dietapplication.model.type.ProductType;
 import com.springboot.dietapplication.repository.mongo.MongoProductRepository;
@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;

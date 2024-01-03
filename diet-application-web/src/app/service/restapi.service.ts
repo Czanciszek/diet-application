@@ -37,13 +37,13 @@ export class RestapiService {
 
   public login(encryptedAuth: string) {
     return this.http.get(
-      this.getPath("auth/login", "v1"),
+      this.getPath("auth/login", "v2"),
       this.loginHeaders(encryptedAuth));
   }
 
   public register(registerForm: any) {
     return this.http.post(
-      this.getPath("auth/register", "v1"),
+      this.getPath("auth/register", "v2"),
       registerForm,
       this.httpHeaders());
   }
