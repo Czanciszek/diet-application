@@ -22,8 +22,6 @@ public class MongoMeal {
     private Boolean attachToRecipes;
     private Boolean isProduct;
 
-    private String date;
-
     private String name;
     private String recipe;
     private Float portions;
@@ -56,7 +54,6 @@ public class MongoMeal {
                 .stream()
                 .map(MongoDishProduct::new)
                 .collect(Collectors.toList());
-        this.date = mongoMeal.getDate();
         this.deletionDate = mongoMeal.getDeletionDate();
     }
 

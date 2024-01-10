@@ -31,10 +31,6 @@ public class MenuService {
     ShoppingProductRepository shoppingProductRepository;
     @Autowired
     PatientRepository patientRepository;
-    @Autowired
-    ProductMealRepository productMealRepository;
-    @Autowired
-    MealRepository mealRepository;
 
     @Autowired
     WeekMealService weekMealService;
@@ -153,7 +149,7 @@ public class MenuService {
     }
 
     public void updateMenuRecommendations(GenerateMenuType generateMenuType) {
-        Optional<PsqlMenu> menu = this.menuRepository.findById(generateMenuType.getMenuId());
+        Optional<PsqlMenu> menu = this.menuRepository.findById(Long.valueOf(generateMenuType.getMenuId()));
         if (menu.isEmpty()) return;
         menu.get().setRecommendations(generateMenuType.getRecommendations());
         this.menuRepository.save(menu.get());

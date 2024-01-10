@@ -2,9 +2,7 @@ package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
 import com.springboot.dietapplication.model.type.GenerateMenuType;
-import com.springboot.dietapplication.service.DataService;
-import com.springboot.dietapplication.service.MenuService;
-import com.springboot.dietapplication.service.PDFService;
+import com.springboot.dietapplication.service.*;
 import io.github.biezhi.excel.plus.Reader;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +20,12 @@ public class FileController {
 
     @Autowired
     DataService dataService;
+
     @Autowired
-    PDFService pdfService;
+    PDFServiceV2 pdfService;
+
     @Autowired
-    MenuService menuService;
+    MenuServiceV2 menuService;
 
     @PostMapping("/uploadProducts")
     public void handleFileUploadToPsql(

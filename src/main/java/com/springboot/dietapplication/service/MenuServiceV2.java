@@ -316,7 +316,12 @@ public class MenuServiceV2 {
     }
 
     public void updateMenuRecommendations(GenerateMenuType generateMenuType) {
-        // TODO: Implement using Mongo repo
+        Optional<MongoMenu> mongoMenu = mongoMenuRepository.findById(generateMenuType.getMenuId());
+        if (mongoMenu.isEmpty()) return;
+
+        mongoMenu.get().setRecommendations(generateMenuType.getRecommendations());
+
+        mongoMenuRepository.save(mongoMenu.get());
     }
 
 

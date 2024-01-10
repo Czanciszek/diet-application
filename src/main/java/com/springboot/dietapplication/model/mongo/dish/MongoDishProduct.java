@@ -1,10 +1,7 @@
 package com.springboot.dietapplication.model.mongo.dish;
 
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
-import com.springboot.dietapplication.model.type.AmountType;
-import com.springboot.dietapplication.model.type.FoodPropertiesType;
-import com.springboot.dietapplication.model.type.ProductAmountType;
-import com.springboot.dietapplication.model.type.ProductDishType;
+import com.springboot.dietapplication.model.type.*;
 import lombok.Getter;
 import lombok.Setter;
 

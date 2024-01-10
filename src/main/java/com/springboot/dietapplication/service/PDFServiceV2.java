@@ -1,11 +1,12 @@
 package com.springboot.dietapplication.service;
 
-import com.springboot.dietapplication.utils.RomanianNumber;
-import com.springboot.dietapplication.model.psql.menu.PsqlFoodType;
-import com.springboot.dietapplication.model.psql.menu.PsqlMenuProduct;
-import com.springboot.dietapplication.model.psql.product.PsqlShoppingProduct;
+import com.springboot.dietapplication.model.mongo.dish.MongoDishProduct;
+import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
+import com.springboot.dietapplication.model.mongo.menu.MongoWeekMenu;
+import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
+import com.springboot.dietapplication.utils.RomanianNumber;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -18,7 +19,6 @@ import org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageDestination;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageFitWidthDestination;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,25 +27,26 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class PDFService {
+public class PDFServiceV2 {
 
     @Autowired
-    MenuService menuService;
+    ProductServiceV2 productService;
     @Autowired
-    MealService mealService;
+    MenuServiceV2 menuService;
     @Autowired
-    PatientService patientService;
+    MealServiceV2 mealService;
     @Autowired
     JwtUserDetailsService userDetailsService;
 
     int pageOffset = 680;
     MenuType menu;
-    PatientType patient;
 
     GenerateMenuType generateMenuType;
 
@@ -55,29 +56,29 @@ public class PDFService {
 
         try {
             this.generateMenuType = generateMenuType;
-            long menuId = Long.parseLong(generateMenuType.getMenuId());
+            String menuId = generateMenuType.getMenuId();
 
             File file = File.createTempFile("resources/PDF/menu_" + generateMenuType.getMenuId(), ".pdf");
 
             PDDocument document = new PDDocument();
 
             menu = menuService.getMenuById(menuId);
-            patient = patientService.getPatientByMenuId(menuId);
+
+            List<MongoMeal> menuMeals = mealService.findMealsInMenu(menu.getId());
 
             if (generateMenuType.isGenerateRecipes()) {
                 fileLocations.put("Recipe-start", 0);
-                makeMenuDishRecipes(document);
+                makeMenuDishRecipes(document, menuMeals);
                 fileLocations.put("Recipe-end", document.getNumberOfPages() - 1);
             }
 
-            List<PsqlMenuProduct> menuProductList = menuService.menuProducts(menuId);
-            makeMenuDetails(document, menuProductList);
+            makeMenuDetails(document);
 
             if (generateMenuType.isGenerateRecipes())
                 moveRecipesToTheEnd(document);
 
             if (generateMenuType.isGenerateShoppingList())
-                makeShoppingList(document);
+                makeShoppingList(document, menuMeals);
 
             document.save(file);
             document.close();
@@ -128,12 +129,12 @@ public class PDFService {
     private void makeHeader(PDDocument document, PDPageContentStream contentStream) throws IOException {
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
         String header = "Dieta dla ";
-        switch (patient.getSex()) {
+        switch (menu.getPatient().getSex()) {
             case FEMALE -> header += "Pani ";
             case MALE -> header += "Pana ";
             case OTHER -> {}
         }
-        header += patient.getName() + " " + patient.getSurname();
+        header += menu.getPatient().getName() + " " + menu.getPatient().getSurname();
         writeText(contentStream, new Point(40, 740), timesBold, 24, header);
         setNewLine(document, contentStream, new Point(0, -20), false, true);
     }
@@ -145,23 +146,21 @@ public class PDFService {
     }
 
     private void makeDateRange(PDPageContentStream contentStream, MenuType menu) throws IOException {
-        String dateRange = getDateRange(menu);
+        String dateRange = menu.getStartDate().replaceAll("-", "/") + " - " + menu.getEndDate().replaceAll("-", "/");
         writeText(contentStream, new Point(40, 710), PDType1Font.TIMES_BOLD, 14, dateRange);
     }
 
-    private void makeMenuDetails(PDDocument document, List<PsqlMenuProduct> menuProductList) throws IOException {
+    private void makeMenuDetails(PDDocument document) throws IOException {
+        List<MongoWeekMenu> weekMenus = mealService.weekMealsInMenu(menu.getId());
 
         Locale.setDefault(new Locale("pl", "PL"));
         ResourceBundle bundle = ResourceBundle.getBundle("strings/configuration");
-
-        Map<DateTime, List<PsqlMenuProduct>> menuProductsMap = mapMenuMeals(menuProductList);
 
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
 
         pageOffset = 0;
         PDPageContentStream contentStream = setNewPage(document, true);
-        long currentWeekMealId = -1;
         int weekMealCount = 0;
 
         makeHeader(document, contentStream);
@@ -170,94 +169,79 @@ public class PDFService {
             showRecommendations(document, contentStream);
         }
 
-        Set<Long> dayMealIds = new HashSet<>();
-        for (Map.Entry<DateTime, List<PsqlMenuProduct>> dayEntry : menuProductsMap.entrySet()) {
-
-            if (dayEntry.getValue().size() == 0) continue;
-            dayMealIds.clear();
-
-            long weekMealId = dayEntry.getValue().get(0).getWeekMealId();
-            if (currentWeekMealId != weekMealId) {
-                weekMealCount++;
-                currentWeekMealId = weekMealId;
-
-                if (pageOffset < 380) {
-                    closeContentStream(contentStream);
-                    contentStream = setNewPage(document, true);
-                } else {
-                    contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
-                }
-
-                writeText(contentStream, new Point(40, pageOffset), timesBold, 14, RomanianNumber.getRomanianValue(weekMealCount));
+        for (MongoWeekMenu weekMenu: weekMenus) {
+            if (pageOffset < 380) {
+                closeContentStream(contentStream);
+                contentStream = setNewPage(document, true);
+            } else {
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
             }
 
-            contentStream = setNewLine(document, contentStream, new Point(0, -20), true, true);
+            weekMealCount += 1;
+            writeText(contentStream, new Point(40, pageOffset), timesBold, 14, RomanianNumber.getRomanianValue(weekMealCount));
+            contentStream = setNewLine(document, contentStream, new Point(0, -40), true, true);
 
-            String dayType = dayEntry.getValue().get(0).getDayType();
-            String dateLine = bundle.getString(dayType);
-            if (generateMenuType.isShowDates()) {
-                String date = parseDateToString(dayEntry.getKey());
-                dateLine += " - " + date;
-            }
+            for (Map.Entry<String, List<MongoMeal>> dayEntry: weekMenu.getMeals().entrySet()) {
 
-            writeText(contentStream, new Point(40, pageOffset), timesBold, 14, dateLine);
-            contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
+                DayOfWeek dayOfWeek = LocalDate.parse(dayEntry.getKey()).getDayOfWeek();
+                String dayName = bundle.getString(dayOfWeek.toString());
+                String dateLine = dayName + " - " + dayEntry.getKey();
 
-            Comparator<PsqlMenuProduct> comp = (p1, p2) -> {
-                if (getAssignedValue(p1.getFoodType()) == getAssignedValue(p2.getFoodType())) {
-                    return Boolean.compare(p1.isProduct(), p2.isProduct());
-                }
-                return getAssignedValue(p1.getFoodType()) > getAssignedValue(p2.getFoodType()) ? 1: -1;
-            };
-            dayEntry.getValue().sort(comp);
+                writeText(contentStream, new Point(40, pageOffset), timesBold, 14, dateLine);
+                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
 
-            long foodType = 0;
+                Comparator<MongoMeal> comp = (p1, p2) -> {
+                    if (getAssignedValue(p1.getFoodType()) == getAssignedValue(p2.getFoodType())) {
+                        return Boolean.compare(p1.getIsProduct(), p2.getIsProduct());
+                    }
+                    return getAssignedValue(p1.getFoodType()) > getAssignedValue(p2.getFoodType()) ? 1 : -1;
+                };
+                dayEntry.getValue().sort(comp);
 
-            for (PsqlMenuProduct product : dayEntry.getValue()) {
+                FoodType foodType = null;
 
-                if (dayMealIds.contains(product.getMealId())) continue;
+                for (MongoMeal meal : dayEntry.getValue()) {
 
-                if (foodType != product.getFoodType().getId()) {
-                    foodType = product.getFoodType().getId();
-                    String text = bundle.getString(product.getFoodTypeName()) + ": ";
-                    writeText(contentStream, new Point(40, pageOffset), timesBold, 12, text);
-                }
-
-                String text;
-                if (product.isProduct()) {
-                    text = product.getProductName() + " " + Math.round(product.getGrams()) + "g";
-                } else {
-                    if (product.getMealGrams() > 0) {
-                        text = product.getMealName() + " - " + Math.round(product.getMealGrams()) + "g";
-                    } else {
-                        text = product.getMealName() + " - " + setPortionLabel(Math.round(product.getMealPortions()));
+                    if (foodType != meal.getFoodType()) {
+                        foodType = meal.getFoodType();
+                        String text = bundle.getString(meal.getFoodType().name()) + ": ";
+                        writeText(contentStream, new Point(40, pageOffset), timesBold, 12, text);
                     }
 
-                    if (generateMenuType.isGenerateRecipes() && fileLocations.containsKey(product.getMealName())) {
+                    String text;
+                    Float mealGrams = meal.getProducts()
+                            .stream()
+                            .reduce(0.0f, (partialGramsResult, product) -> partialGramsResult + product.getGrams(), Float::sum);
+
+                    if (mealGrams > 0) {
+                        text = meal.getName() + " - " + Math.round(mealGrams) + "g";
+                    } else {
+                        text = meal.getName() + " - " + setPortionLabel(Math.round(meal.getPortions()));
+                    }
+
+                    if (!meal.getIsProduct() && generateMenuType.isGenerateRecipes() && fileLocations.containsKey(meal.getName())) {
                         float textWidth = timesNormal.getStringWidth(text) / 1000 * 12;
                         PDRectangle rectangle = new PDRectangle(150, pageOffset, textWidth, 20);
-                        int pageLocation = fileLocations.get(product.getMealName());
+                        int pageLocation = fileLocations.get(meal.getName());
                         addHyperlink(document, rectangle, pageLocation);
                     }
-                }
-                writeText(contentStream, new Point(150, pageOffset), timesNormal, 12, text);
 
-                dayMealIds.add(product.getMealId());
-                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
+                    writeText(contentStream, new Point(150, pageOffset), timesNormal, 12, text);
+
+                    contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
+                    contentStream = checkPageOffset(document, contentStream, true);
+                }
+
+                //Check whenever pageOffset is too close margin
                 contentStream = checkPageOffset(document, contentStream, true);
             }
-
-            //Check whenever pageOffset is too close margin
-            contentStream = checkPageOffset(document, contentStream, true);
-
         }
 
         closeContentStream(contentStream);
     }
 
-    private int getAssignedValue(PsqlFoodType foodType) {
-        return switch (foodType.getName().toUpperCase()) {
+    private int getAssignedValue(FoodType foodType) {
+        return switch (foodType.name().toUpperCase()) {
             case "PRE_BREAKFAST" -> 0;
             case "BREAKFAST" -> 1;
             case "BRUNCH" -> 2;
@@ -347,11 +331,12 @@ public class PDFService {
         setNewLine(document, contentStream, new Point(0, -20), false, true);
     }
 
-    private void makeMenuDishRecipes(PDDocument document) throws IOException {
-        List<MealType> mealList = mealService
-                .getMealsByMenuId(Long.valueOf(menu.getId()))
+    private void makeMenuDishRecipes(PDDocument document, List<MongoMeal> menuMeals) throws IOException {
+
+        List<MealType> mealList = menuMeals
                 .stream()
-                .filter(meal -> (!meal.getIsProduct()) && meal.isAttachToRecipes())
+                .filter(meal -> (!meal.getIsProduct()) && meal.getAttachToRecipes())
+                .map(MealType::new)
                 .collect(Collectors.toList());
 
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
@@ -465,14 +450,12 @@ public class PDFService {
         closeContentStream(contentStream);
     }
 
-    private void makeShoppingList(PDDocument document) throws IOException {
-
-        List<PsqlShoppingProduct> shoppingProductList = menuService.getShoppingProductsForMenu(Long.parseLong(menu.getId()));
+    private void makeShoppingList(PDDocument document, List<MongoMeal> menuMeals) throws IOException {
 
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
 
-        if (shoppingProductList.size() == 0) {
+        if (menuMeals.size() == 0) {
             return;
         }
 
@@ -482,30 +465,58 @@ public class PDFService {
         writeText(contentStream, new Point(40, pageOffset), timesBold, 20,"Lista zakupów:");
         contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
 
-        String categoryName = "";
+        // Obtain all product ids included in menu
+        Set<String> productIds = menuMeals
+                .stream()
+                .flatMap(meal -> meal.getProducts().stream()
+                        .map(MongoDishProduct::getProductId))
+                .collect(Collectors.toSet());
 
-        for (PsqlShoppingProduct shoppingProduct : shoppingProductList) {
+        // Get all product properties by obtained productIds
+        List<MongoProduct> productTypes = productService
+                .findAll(productIds.stream().toList());
 
-            if (!shoppingProduct.getCategoryName().equals(categoryName)) {
-                if (pageOffset < 160) {
-                    closeContentStream(contentStream);
-                    contentStream = setNewPage(document, false);
-                }
+        // Group all found product by its categoryType
+        Map<CategoryType, List<MongoProduct>> categoryProducts = new TreeMap<>();
+        productTypes.forEach(product -> {
+            List<MongoProduct> currentProducts = categoryProducts.getOrDefault(product.getCategory(), new ArrayList<>());
+            currentProducts.add(product);
+            categoryProducts.put(product.getCategory(), currentProducts);
+        });
 
-                categoryName = shoppingProduct.getCategoryName();
+        // Find grams summary used for each product
+        Map<String, Float> productGramsSummary = new HashMap<>();
+        menuMeals
+                .stream()
+                .flatMap(meal -> meal.getProducts().stream())
+                .forEach(dishProduct -> {
+                    float currentGrams = productGramsSummary.getOrDefault(dishProduct.getProductId(), 0f);
+                    productGramsSummary.put(dishProduct.getProductId(), dishProduct.getGrams() + currentGrams);
+                });
 
-                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
-                writeText(contentStream, new Point(40, pageOffset), timesBold, 16,shoppingProduct.getCategoryName());
-                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
-            } else if (pageOffset < 80) {
+        for (Map.Entry<CategoryType, List<MongoProduct>> categoryTypeListEntry: categoryProducts.entrySet()) {
+
+            if (pageOffset < 160) {
                 closeContentStream(contentStream);
                 contentStream = setNewPage(document, false);
             }
 
-            String productSummary = "\u2022 " + shoppingProduct.getProductName() + " " + Math.round(shoppingProduct.getGrams()) + "g";
-            writeText(contentStream, new Point(60, pageOffset), timesNormal, 14, productSummary);
+            contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+            writeText(contentStream, new Point(40, pageOffset), timesBold, 16,categoryTypeListEntry.getKey().getCategory());
             contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
 
+            List<MongoProduct> sortedProducts = categoryTypeListEntry.getValue().stream().sorted().collect(Collectors.toList());
+            for (MongoProduct product: sortedProducts) {
+                if (pageOffset < 80) {
+                    closeContentStream(contentStream);
+                    contentStream = setNewPage(document, false);
+                }
+
+                float grams = productGramsSummary.getOrDefault(product.getId(), 0f);
+                String productSummary = "\u2022 " + product.getName() + " " + Math.round(grams) + "g";
+                writeText(contentStream, new Point(60, pageOffset), timesNormal, 14, productSummary);
+                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+            }
         }
 
         closeContentStream(contentStream);
@@ -518,23 +529,6 @@ public class PDFService {
             return portions + " porcje";
         }
         return portions + " porcji";
-    }
-
-    private Map<DateTime, List<PsqlMenuProduct>> mapMenuMeals(List<PsqlMenuProduct> menuProductList) {
-        Map<DateTime, List<PsqlMenuProduct>> menuProductsMap = new TreeMap<>();
-        for (PsqlMenuProduct menuProduct : menuProductList) {
-            DateTime date = new DateTime(menuProduct.getDate());
-
-            if (menuProductsMap.containsKey(date)) {
-                List<PsqlMenuProduct> psqlMenuProductList = menuProductsMap.get(date);
-                psqlMenuProductList.add(menuProduct);
-                menuProductsMap.put(date, psqlMenuProductList);
-            } else {
-                menuProductsMap.put(date, new ArrayList<>(Collections.singletonList(menuProduct)));
-            }
-        }
-
-        return menuProductsMap;
     }
 
     private PDPageContentStream checkPageOffset(PDDocument document, PDPageContentStream contentStream, boolean withDateRange) throws IOException {
@@ -576,7 +570,7 @@ public class PDFService {
     private File getFont(String fontName) {
 
         try {
-            URL resource = PDFService.class.getResource("/fonts/" + fontName);
+            URL resource = PDFServiceV2.class.getResource("/fonts/" + fontName);
 
             if (resource == null )
                 return null;
@@ -594,18 +588,6 @@ public class PDFService {
         contentStream.setFont(font, fontSize);
         contentStream.showText(text);
         contentStream.endText();
-    }
-
-    private String parseDateToString(DateTime date) {
-        return date.toString("dd/MM/yyyy");
-    }
-
-    private String getDateRange(MenuType menuType) {
-
-        String oldestDate = parseDateToString(new DateTime(menuType.getStartDate()));
-        String newestDate = parseDateToString(new DateTime(menuType.getEndDate()));
-
-        return oldestDate + " - " + newestDate;
     }
 
     private void closeContentStream(PDPageContentStream contentStream) throws IOException {

@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Document("products")
-public class MongoProduct {
+public class MongoProduct implements Comparable<MongoProduct> {
 
     @Id
     private String id;
@@ -43,4 +43,8 @@ public class MongoProduct {
         this.allergenTypes = ListUtils.emptyIfNull(productType.getAllergenTypes());
     }
 
+    @Override
+    public int compareTo(MongoProduct o) {
+        return this.getName().trim().compareToIgnoreCase(o.getName().trim());
+    }
 }

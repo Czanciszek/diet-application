@@ -26,9 +26,6 @@ public class MongoWeekMenuRunner {
     MealService mealService;
 
     @Autowired
-    MongoWeekMenuRepository mongoWeekMenuRepository;
-
-    @Autowired
     DayMealRepository dayMealRepository;
 
     @Autowired
@@ -36,6 +33,9 @@ public class MongoWeekMenuRunner {
 
     @Autowired
     MongoMenuRepository mongoMenuRepository;
+
+    @Autowired
+    MongoWeekMenuRepository mongoWeekMenuRepository;
 
     public void reloadMenusPSQLtoMongo() {
 
@@ -77,11 +77,7 @@ public class MongoWeekMenuRunner {
                                 .toLocalDate();
 
                         List<MongoMeal> mongoMeals = mealsInDay.stream()
-                                .map(m -> {
-                                    MongoMeal mongoMeal = new MongoMeal(m);
-                                    mongoMeal.setDate(dm.getDate());
-                                    return mongoMeal;
-                                })
+                                .map(MongoMeal::new)
                                 .collect(Collectors.toList());
 
                         mongoMeals.forEach(meal -> {

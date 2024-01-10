@@ -19,6 +19,21 @@ public class MealServiceV2 {
     @Autowired
     MongoWeekMenuRepository mongoWeekMenuRepository;
 
+    public List<MongoMeal> findMealsInMenu(String menuId) {
+
+        List<MongoWeekMenu> weekMenus = mongoWeekMenuRepository.findByMenuId(menuId);
+
+        return weekMenus.stream()
+                .flatMap(weekMenu -> weekMenu.getMeals().entrySet().stream()
+                        .flatMap(m -> m.getValue().stream()))
+                .filter(mongoMeal -> mongoMeal.getOriginDishId() != null)
+                .collect(Collectors.toList());
+    }
+
+    public List<MongoWeekMenu> weekMealsInMenu(String menuId) {
+       return mongoWeekMenuRepository.findByMenuId(menuId);
+    }
+
     public MealType insert(NewMealType newMealType) {
         MongoWeekMenu weekMenu = findWeekMenu(newMealType.getWeekMenuId());
 

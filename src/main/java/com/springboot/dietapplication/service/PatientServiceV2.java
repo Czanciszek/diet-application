@@ -54,11 +54,6 @@ public class PatientServiceV2 {
         return new PatientType(patient.get());
     }
 
-    public PatientType getPatientByMenuId(Long menuId) throws ResponseStatusException {
-        // TODO: Put such patient data in MongoMenu
-        throw new ResponseStatusException(HttpStatus.NO_CONTENT, "In Progress");
-    }
-
     public PatientType insert(PatientType patientType) {
 
         // TODO: Validate all required fields

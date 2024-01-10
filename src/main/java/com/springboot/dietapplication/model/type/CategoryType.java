@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-public class CategoryType implements Serializable {
+public class CategoryType implements Serializable, Comparable<CategoryType> {
 
     @Serial
     private static final long serialVersionUID = 6325466471465045212L;
@@ -43,4 +43,8 @@ public class CategoryType implements Serializable {
         return Objects.hash(id);
     }
 
+    @Override
+    public int compareTo(CategoryType o) {
+        return this.getCategory().compareToIgnoreCase(o.getCategory());
+    }
 }
