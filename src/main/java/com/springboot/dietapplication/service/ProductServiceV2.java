@@ -40,6 +40,10 @@ public class ProductServiceV2 {
                 .collect(Collectors.toList());
     }
 
+    public List<MongoProduct> findAll(List<String> productIds) {
+        return mongoProductRepository.findAllById(productIds);
+    }
+
     public Set<CategoryType> getProductCategories() {
         List<MongoProduct> mongoProductList = mongoProductRepository.findAll();
 
