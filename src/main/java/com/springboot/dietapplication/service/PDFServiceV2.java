@@ -146,7 +146,9 @@ public class PDFServiceV2 {
     }
 
     private void makeDateRange(PDPageContentStream contentStream, MenuType menu) throws IOException {
-        String dateRange = menu.getStartDate().replaceAll("-", "/") + " - " + menu.getEndDate().replaceAll("-", "/");
+        String startDate = changeDateFormat(menu.getStartDate());
+        String endDate = changeDateFormat(menu.getEndDate());
+        String dateRange = startDate + " - " + endDate;
         writeText(contentStream, new Point(40, 710), PDType1Font.TIMES_BOLD, 14, dateRange);
     }
 
@@ -161,7 +163,6 @@ public class PDFServiceV2 {
 
         pageOffset = 0;
         PDPageContentStream contentStream = setNewPage(document, true);
-        int weekMealCount = 0;
 
         makeHeader(document, contentStream);
 
@@ -169,7 +170,7 @@ public class PDFServiceV2 {
             showRecommendations(document, contentStream);
         }
 
-        for (MongoWeekMenu weekMenu: weekMenus) {
+        for (int i = 0; i < weekMenus.size(); i++) {
             if (pageOffset < 380) {
                 closeContentStream(contentStream);
                 contentStream = setNewPage(document, true);
@@ -177,15 +178,18 @@ public class PDFServiceV2 {
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
             }
 
-            weekMealCount += 1;
-            writeText(contentStream, new Point(40, pageOffset), timesBold, 14, RomanianNumber.getRomanianValue(weekMealCount));
-            contentStream = setNewLine(document, contentStream, new Point(0, -40), true, true);
+            writeText(contentStream, new Point(40, pageOffset), timesBold, 14, RomanianNumber.getRomanianValue(i+1));
+            contentStream = setNewLine(document, contentStream, new Point(0, -20), true, true);
 
-            for (Map.Entry<String, List<MongoMeal>> dayEntry: weekMenu.getMeals().entrySet()) {
+            Map<String, List<MongoMeal>> weekList = new TreeMap<>(weekMenus.get(i).getMeals());
+            for (Map.Entry<String, List<MongoMeal>> dayEntry: weekList.entrySet()) {
+
+                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
+                contentStream = checkPageOffset(document, contentStream, true);
 
                 DayOfWeek dayOfWeek = LocalDate.parse(dayEntry.getKey()).getDayOfWeek();
                 String dayName = bundle.getString(dayOfWeek.toString());
-                String dateLine = dayName + " - " + dayEntry.getKey();
+                String dateLine = dayName + " - " + changeDateFormat(dayEntry.getKey());
 
                 writeText(contentStream, new Point(40, pageOffset), timesBold, 14, dateLine);
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
@@ -213,10 +217,14 @@ public class PDFServiceV2 {
                             .stream()
                             .reduce(0.0f, (partialGramsResult, product) -> partialGramsResult + product.getGrams(), Float::sum);
 
-                    if (mealGrams > 0) {
-                        text = meal.getName() + " - " + Math.round(mealGrams) + "g";
+                    if (meal.getIsProduct()) {
+                        text = meal.getName() + " " + Math.round(mealGrams) + "g";
                     } else {
-                        text = meal.getName() + " - " + setPortionLabel(Math.round(meal.getPortions()));
+                        if (meal.getGrams() > 0) {
+                            text = meal.getName() + " - " + Math.round(meal.getGrams()) + "g";
+                        } else {
+                            text = meal.getName() + " - " + setPortionLabel(Math.round(meal.getPortions()));
+                        }
                     }
 
                     if (!meal.getIsProduct() && generateMenuType.isGenerateRecipes() && fileLocations.containsKey(meal.getName())) {
@@ -262,35 +270,16 @@ public class PDFServiceV2 {
         int fontSize = 24;
 
         switch (foodType) {
-            case PRE_BREAKFAST:
-                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Przedśniadania");
-                break;
-            case BREAKFAST:
-                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Śniadania");
-                break;
-            case BRUNCH:
-                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "II Śniadania");
-                break;
-            case SNACK:
-                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Przekąska");
-                break;
-            case DINNER:
-                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Obiady");
-                break;
-            case TEA:
-                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Podwieczorki");
-                break;
-            case SUPPER:
-                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Kolacje");
-                break;
-            case PRE_WORKOUT:
-                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Przedtreningówki");
-                break;
-            case POST_WORKOUT:
-                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Potreningówki");
-            case OVERNIGHT:
-                writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Posiłki nocne");
-                break;
+            case PRE_BREAKFAST -> writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Przedśniadania");
+            case BREAKFAST -> writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Śniadania");
+            case BRUNCH -> writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "II Śniadania");
+            case SNACK -> writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Przekąska");
+            case DINNER -> writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Obiady");
+            case TEA -> writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Podwieczorki");
+            case SUPPER -> writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Kolacje");
+            case PRE_WORKOUT -> writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Przedtreningówki");
+            case POST_WORKOUT -> writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Potreningówki");
+            case OVERNIGHT -> writeText(contentStream, new Point(40, pageOffset), timesBold, fontSize, "Posiłki nocne");
         }
     }
 
@@ -339,110 +328,113 @@ public class PDFServiceV2 {
                 .map(MealType::new)
                 .collect(Collectors.toList());
 
+        if (mealList.size() == 0) return;
+
         PDType0Font timesNormal = PDType0Font.load(document, getFont("times.ttf"));
         PDType0Font timesBold = PDType0Font.load(document, getFont("timesbd.ttf"));
 
         PDPageContentStream contentStream = null;
         pageOffset = 0;
 
-        if (mealList.size() == 0) return;
-        mealList.sort(new FoodTypeComparator());
+        Map<FoodType, List<MealType>> recipeMealsMap = new TreeMap<>();
+        mealList.forEach(meal -> {
+            List<MealType> currentMeals = recipeMealsMap.getOrDefault(meal.getFoodType(), new ArrayList<>());
+            currentMeals.add(meal);
+            recipeMealsMap.put(meal.getFoodType(), currentMeals);
+        });
 
-        FoodType foodType = null;
+        for (Map.Entry<FoodType, List<MealType>> foodTypeListEntry: recipeMealsMap.entrySet()) {
 
-        for (MealType meal : mealList) {
+            closeContentStream(contentStream);
+            contentStream = setNewPage(document, false);
 
-            if (!meal.getFoodType().equals(foodType)) {
-                // If new food type, make new page and display name type
-                closeContentStream(contentStream);
-                contentStream = setNewPage(document, false);
+            writeFoodType(document, contentStream, foodTypeListEntry.getKey());
+            contentStream = setNewLine(document, contentStream, new Point(0, -40), false, false);
 
-                foodType = meal.getFoodType();
-                writeFoodType(document, contentStream, foodType);
-                contentStream = setNewLine(document, contentStream, new Point(0, -40), false, false);
-            } else {
-                // If same as previous, check if should add new page or just set new line
+            List<MealType> sortedMeal = foodTypeListEntry.getValue().stream().sorted().collect(Collectors.toList());
+            for (MealType meal: sortedMeal) {
+
                 if (pageOffset < 380) {
                     closeContentStream(contentStream);
                     contentStream = setNewPage(document, false);
                 } else {
                     contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
                 }
-            }
 
-            // Display dish name
-            writeText(contentStream, new Point(40, pageOffset), timesBold, 18, meal.getName());
-            contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
-            fileLocations.put(meal.getName(), document.getNumberOfPages() -1);
-
-            // Display dish portions
-            String portions = setPortionLabel(Math.round(meal.getDishPortions()));
-            writeText(contentStream, new Point(40, pageOffset), timesBold, 14, "(" + portions + ")");
-            contentStream = setNewLine(document, contentStream, new Point(0, -30), false, false);
-
-            // Display ingredient word
-            if (meal.getProductList().size() > 0) {
-                writeText(contentStream, new Point(40, pageOffset), timesBold, 14,"Składniki:");
+                // Display dish name
+                writeText(contentStream, new Point(40, pageOffset), timesBold, 18, meal.getName());
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
-            }
+                fileLocations.put(meal.getName(), document.getNumberOfPages() - 1);
 
-            // Display dish ingredients
-            for (ProductDishType product : meal.getProductList()) {
-                String productPart = "\u2022 ";
+                // Display dish portions
+                String portions = setPortionLabel(Math.round(meal.getDishPortions()));
+                writeText(contentStream, new Point(40, pageOffset), timesBold, 14, "(" + portions + ")");
+                contentStream = setNewLine(document, contentStream, new Point(0, -30), false, false);
 
-                int grams = ((int) meal.getDishPortions() / (int) meal.getPortions()) * (int) product.getGrams();
-                if (grams > 0) {
-                    productPart += grams + "g ";
-                }
-
-                if (product.getAmount() > 0 && product.getAmountType() != null && !product.getAmountType().equals(AmountType.NONE)) {
-                    productPart += "(x" + product.getAmount() + " " + AmountType.toLocalizedString(product.getAmountType()) + ") ";
-                }
-
-                String name = (product.getProductName() == null || product.getProductName().isEmpty()) ?
-                        (product.getProductId() + "!!!!") : product.getProductName();
-                productPart += name;
-                writeText(contentStream, new Point(60, pageOffset), timesNormal, 14, productPart);
-                contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
-
-                //Check whenever pageOffset is too close margin
-                contentStream = checkPageOffset(document, contentStream, false);
-            }
-            contentStream = setNewLine(document, contentStream, new Point(0, -10), false, false);
-
-            // Display recipe word
-            writeText(contentStream, new Point(40, pageOffset), timesBold, 14, "Sposób przygotowania:");
-            contentStream = setNewLine(document, contentStream, new Point(0, -30), false, false);
-
-            // Display recipe
-            if (meal.getRecipe() == null) {
-                continue;
-            }
-
-            String[] recipeLines = meal.getRecipe().replaceAll("\t", "    ").split("\n");
-            for (String line : recipeLines) {
-                if (line.length() == 0) {
+                // Display ingredient word
+                if (meal.getProductList().size() > 0) {
+                    writeText(contentStream, new Point(40, pageOffset), timesBold, 14, "Składniki:");
                     contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+                }
+
+                // Display dish ingredients
+                for (ProductDishType product : meal.getProductList()) {
+                    String productPart = "\u2022 ";
+
+                    int grams = ((int) meal.getDishPortions() / (int) meal.getPortions()) * (int) product.getGrams();
+                    if (grams > 0) {
+                        productPart += grams + "g ";
+                    }
+
+                    if (product.getAmount() > 0 && product.getAmountType() != null && !product.getAmountType().equals(AmountType.NONE)) {
+                        productPart += "(x" + product.getAmount() + " " + AmountType.toLocalizedString(product.getAmountType()) + ") ";
+                    }
+
+                    String name = (product.getProductName() == null || product.getProductName().isEmpty()) ?
+                            (product.getProductId() + "!!!!") : product.getProductName();
+                    productPart += name;
+                    writeText(contentStream, new Point(60, pageOffset), timesNormal, 14, productPart);
+                    contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+
+                    //Check whenever pageOffset is too close margin
+                    contentStream = checkPageOffset(document, contentStream, false);
+                }
+                contentStream = setNewLine(document, contentStream, new Point(0, -10), false, false);
+
+                // Display recipe word
+                writeText(contentStream, new Point(40, pageOffset), timesBold, 14, "Sposób przygotowania:");
+                contentStream = setNewLine(document, contentStream, new Point(0, -30), false, false);
+
+                // Display recipe
+                if (meal.getRecipe() == null) {
                     continue;
                 }
 
-                int index = 0;
-                int margin = 100;
-                do {
-                    //Check whenever pageOffset is too close margin
-                    contentStream = checkPageOffset(document, contentStream, false);
+                String[] recipeLines = meal.getRecipe().replaceAll("\t", "    ").split("\n");
+                for (String line : recipeLines) {
+                    if (line.length() == 0) {
+                        contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+                        continue;
+                    }
 
-                    String subLine = (line.length() > index + margin) ? line.substring(index, index + margin) : line.substring(index);
+                    int index = 0;
+                    int margin = 100;
+                    do {
+                        //Check whenever pageOffset is too close margin
+                        contentStream = checkPageOffset(document, contentStream, false);
 
-                    int newIndex = subLine.lastIndexOf(" ");
-                    if (newIndex > 0 && (index + margin) < line.length())
-                        subLine = subLine.substring(0, newIndex);
+                        String subLine = (line.length() > index + margin) ? line.substring(index, index + margin) : line.substring(index);
 
-                    writeText(contentStream, new Point(60, pageOffset), timesNormal, 12, subLine);
-                    contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
-                    index += (newIndex > 0 && (index + margin) < line.length()) ? newIndex : margin;
+                        int newIndex = subLine.lastIndexOf(" ");
+                        if (newIndex > 0 && (index + margin) < line.length())
+                            subLine = subLine.substring(0, newIndex);
 
-                } while (index < line.length());
+                        writeText(contentStream, new Point(60, pageOffset), timesNormal, 12, subLine);
+                        contentStream = setNewLine(document, contentStream, new Point(0, -20), false, false);
+                        index += (newIndex > 0 && (index + margin) < line.length()) ? newIndex : margin;
+
+                    } while (index < line.length());
+                }
             }
 
         }
@@ -529,6 +521,12 @@ public class PDFServiceV2 {
             return portions + " porcje";
         }
         return portions + " porcji";
+    }
+
+    private String changeDateFormat(String date) {
+        String[] dateParts = date.split("-");
+        if (dateParts.length != 3) return "";
+        return dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0];
     }
 
     private PDPageContentStream checkPageOffset(PDDocument document, PDPageContentStream contentStream, boolean withDateRange) throws IOException {

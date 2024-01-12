@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class MealType implements Serializable {
+public class MealType implements Serializable, Comparable<MealType> {
 
     @Serial
     private static final long serialVersionUID = -3419782569024875357L;
@@ -63,7 +63,7 @@ public class MealType implements Serializable {
     public MealType(PsqlMeal meal) {
         this.id = String.valueOf(meal.getId());
         this.dayMealId = String.valueOf(meal.getDayMealId());
-        this.attachToRecipes = meal.getOriginMealId() != null;
+        this.attachToRecipes = meal.getOriginMealId() != null && meal.getOriginMealId().equals(meal.getId());
         this.originDishId = meal.getBaseDishId() != null ? String.valueOf(meal.getBaseDishId()) : null;
         this.name = meal.getName();
         this.isProduct = meal.isProduct();
@@ -91,4 +91,8 @@ public class MealType implements Serializable {
                 .collect(Collectors.toList());;
     }
 
+    @Override
+    public int compareTo(MealType o) {
+        return this.getName().trim().compareToIgnoreCase(o.getName().trim());
+    }
 }
