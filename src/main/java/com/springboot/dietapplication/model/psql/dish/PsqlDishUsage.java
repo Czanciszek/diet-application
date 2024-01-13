@@ -7,6 +7,7 @@ import jakarta.persistence.IdClass;
 import java.io.Serial;
 import java.io.Serializable;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @Entity
 @IdClass(PsqlDishUsageKey.class)
 public class PsqlDishUsage implements Serializable {
@@ -36,15 +37,6 @@ public class PsqlDishUsage implements Serializable {
 
 
     public PsqlDishUsage() {
-    }
-
-    public PsqlDishUsage(Long menuId, String startDate, String endDate, Long dishId, String dishName, Integer dishUsage) {
-        this.menuId = menuId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.dishId = dishId;
-        this.dishName = dishName;
-        this.dishUsage = dishUsage;
     }
 
     public Long getMenuId() {

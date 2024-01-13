@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @Service
 public class DayMealService {
 

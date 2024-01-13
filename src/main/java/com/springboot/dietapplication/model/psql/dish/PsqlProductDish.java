@@ -4,6 +4,7 @@ import com.springboot.dietapplication.model.type.ProductDishType;
 
 import jakarta.persistence.*;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @Entity
 @Table(name = "products_dishes")
 public class PsqlProductDish {

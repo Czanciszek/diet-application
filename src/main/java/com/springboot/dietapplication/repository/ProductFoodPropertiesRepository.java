@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+@Deprecated(since = "0.1.0", forRemoval = true)
 @Repository
 public interface ProductFoodPropertiesRepository extends JpaRepository<PsqlProductFoodProperties, Long> {
 

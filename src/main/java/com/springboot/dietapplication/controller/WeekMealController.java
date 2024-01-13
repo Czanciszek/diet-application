@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @RestController
 @RequestMapping("api/v1/weekmeals")
 public class WeekMealController {

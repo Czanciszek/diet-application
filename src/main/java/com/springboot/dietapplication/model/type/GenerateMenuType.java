@@ -23,12 +23,4 @@ public class GenerateMenuType implements Serializable {
 
     public GenerateMenuType() {}
 
-    public GenerateMenuType(String menuId, boolean showDates, boolean generateRecipes, boolean generateShoppingList, String recommendations) {
-        this.menuId = menuId;
-        this.showDates = showDates;
-        this.generateRecipes = generateRecipes;
-        this.generateShoppingList = generateShoppingList;
-        this.recommendations = recommendations;
-    }
-
 }

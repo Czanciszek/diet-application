@@ -6,6 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Comparator;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @Entity
 @IdClass(PsqlMenuProductKey.class)
 public class PsqlMenuProduct implements Serializable, Comparator<Long> {

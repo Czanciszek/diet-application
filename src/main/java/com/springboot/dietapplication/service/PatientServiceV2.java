@@ -29,11 +29,11 @@ public class PatientServiceV2 {
     public List<PatientType> getAll() {
 
         UserEntity user = userDetailsService.getCurrentUser();
-        List<MongoPatient> mongoProductList = mongoPatientRepository.findAll();
+        List<MongoPatient> patientList = mongoPatientRepository.findAll();
 
         // TODO: Consider filtering userID in Mongo
 
-        return mongoProductList
+        return patientList
                 .stream()
                 .filter(p -> StringUtils.isEmpty(p.getDeletionDate()) &&
                         p.getUserId().equals(String.valueOf(user.getId())))
@@ -42,16 +42,15 @@ public class PatientServiceV2 {
     }
 
     public PatientType getPatientById(String patientId) throws ResponseStatusException {
-        Optional<MongoPatient> patient = mongoPatientRepository.findById(patientId);
-
-        if (patient.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found");
+        MongoPatient patient = mongoPatientRepository
+                .findById(patientId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found"));
 
         UserEntity user = userDetailsService.getCurrentUser();
-        if (!user.getUserType().equals(UserType.ADMIN.name) && !patient.get().getUserId().equals(String.valueOf(user.getId())))
+        if (!user.getUserType().equals(UserType.ADMIN.name) && !patient.getUserId().equals(String.valueOf(user.getId())))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for patient get");
 
-        return new PatientType(patient.get());
+        return new PatientType(patient);
     }
 
     public PatientType insert(PatientType patientType) {

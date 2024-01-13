@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController {

@@ -6,6 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 public class WeekMealType implements Serializable {
 
     @Serial
@@ -21,11 +22,6 @@ public class WeekMealType implements Serializable {
 
     public WeekMealType() {
 
-    }
-
-    public WeekMealType(Long menuId, List<Long> dayMealList) {
-        this.menuId = menuId;
-        this.dayMealList = dayMealList;
     }
 
     public WeekMealType(PsqlWeekMeal weekMeal) {

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @Entity
 @Table(name = "products_amount_types")
 public class PsqlProductsAmountTypes implements Serializable {

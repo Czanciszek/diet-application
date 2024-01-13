@@ -29,28 +29,18 @@ public enum AmountType {
 
     public static String toLocalizedString(AmountType amountType) {
 
-        switch(amountType) {
-            case NONE:
-                return "";
-            case GLASS:
-                return "Szklanka";
-            case SPOON:
-                return "Łyżka";
-            case TEASPOON:
-                return "Łyżeczka";
-            case PIECE:
-                return "Sztuka";
-            case SLICE:
-                return "Plaster";
-            case LEAF:
-                return "Liść";
-            case HANDFUL:
-                return "Garść";
-            case SCOOP:
-                return "Miarka";
-        }
+        return switch (amountType) {
+            case NONE -> "";
+            case GLASS -> "Szklanka";
+            case SPOON -> "Łyżka";
+            case TEASPOON -> "Łyżeczka";
+            case PIECE -> "Sztuka";
+            case SLICE -> "Plaster";
+            case LEAF -> "Liść";
+            case HANDFUL -> "Garść";
+            case SCOOP -> "Miarka";
+        };
 
-        return "";
     }
 
 }

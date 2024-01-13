@@ -1,5 +1,10 @@
 package com.springboot.dietapplication.model.type;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ProductAmountType {
 
     private AmountType amountType;
@@ -13,22 +18,5 @@ public class ProductAmountType {
         this.amountType = amountType;
         this.grams = grams;
     }
-
-    public AmountType getAmountType() {
-        return amountType;
-    }
-
-    public void setAmountType(AmountType amountType) {
-        this.amountType = amountType;
-    }
-
-    public float getGrams() {
-        return grams;
-    }
-
-    public void setGrams(float grams) {
-        this.grams = grams;
-    }
-
 
 }

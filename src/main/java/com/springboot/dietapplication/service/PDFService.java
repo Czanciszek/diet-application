@@ -31,6 +31,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @Service
 public class PDFService {
 

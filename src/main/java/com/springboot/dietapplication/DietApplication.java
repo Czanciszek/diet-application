@@ -50,7 +50,7 @@ public class DietApplication {
 //                mongoWeekMenuRunner.reloadMenusPSQLtoMongo();
 //
 //                mongoUserRunner.reloadUsersPSQLToMongo();
-//
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

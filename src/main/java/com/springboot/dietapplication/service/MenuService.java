@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @Service
 public class MenuService {
 
@@ -82,21 +83,6 @@ public class MenuService {
     }
 
     public ResponseEntity<Void> replaceProductInMenu(Long menuId, ProductReplaceType productReplaceType) {
-
-        String newProductId = productReplaceType.getNewProductId();
-
-//        List<PsqlProductMeal> productMealList = productMealRepository.findPsqlProductMealByMenuIdAndByProductId(menuId, Long.valueOf(productReplaceType.getOldProductId()));
-//        productMealList.forEach( product -> {
-//            product.setProductId(Long.valueOf(newProductId));
-//        });
-//        productMealRepository.saveAll(productMealList);
-//
-//        List<PsqlMeal> mealList = mealRepository.findByName(productReplaceType.getOldProduct().getName());
-//        mealList.forEach( meal -> {
-//            meal.setName(newProduct.getName());
-//        });
-//        mealRepository.saveAll(mealList);
-
         return ResponseEntity.ok().build();
     }
 
@@ -146,13 +132,6 @@ public class MenuService {
         this.menuRepository.deleteById(id);
 
         return ResponseEntity.ok().build();
-    }
-
-    public void updateMenuRecommendations(GenerateMenuType generateMenuType) {
-        Optional<PsqlMenu> menu = this.menuRepository.findById(Long.valueOf(generateMenuType.getMenuId()));
-        if (menu.isEmpty()) return;
-        menu.get().setRecommendations(generateMenuType.getRecommendations());
-        this.menuRepository.save(menu.get());
     }
 
     private PsqlMenu getCurrentMenuData(long menuId) {

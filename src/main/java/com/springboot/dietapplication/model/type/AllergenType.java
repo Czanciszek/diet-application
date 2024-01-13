@@ -15,7 +15,7 @@ public enum AllergenType {
     SOY(8), // Soja
     CELERY(9), // Seler
     MUSTARD(10), //Gorczyca
-    SESAM(11), // Sezam
+    SESAME(11), // Sezam
     SULPHUR_DIOXIDE(12), // Dwutlenek siarki
     LUPINE(13), // Łupin
     MOLLUSCS(14); // Mięczaki

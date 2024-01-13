@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @Repository
 public interface FoodTypeMenuRepository extends JpaRepository<PsqlFoodTypeMenu, Long> {
 

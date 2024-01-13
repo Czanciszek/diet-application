@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.Optional;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 public enum DayType {
     MONDAY(1),
     TUESDAY(2),

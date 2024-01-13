@@ -2,6 +2,7 @@ package com.springboot.dietapplication.model.psql.user;
 
 import jakarta.persistence.*;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @Entity
 @Table(name = "user_types")
 public class PsqlUserType {
