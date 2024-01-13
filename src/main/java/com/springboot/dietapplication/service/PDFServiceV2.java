@@ -324,7 +324,7 @@ public class PDFServiceV2 {
 
         List<MealType> mealList = menuMeals
                 .stream()
-                .filter(meal -> (!meal.getIsProduct()) && meal.getAttachToRecipes())
+                .filter(meal -> (!meal.getIsProduct()) && meal.getAttachToRecipes() && meal.getOriginDishId() != null)
                 .map(MealType::new)
                 .collect(Collectors.toList());
 

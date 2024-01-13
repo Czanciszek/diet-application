@@ -26,7 +26,6 @@ public class MealServiceV2 {
         return weekMenus.stream()
                 .flatMap(weekMenu -> weekMenu.getMeals().entrySet().stream()
                         .flatMap(m -> m.getValue().stream()))
-                .filter(mongoMeal -> mongoMeal.getOriginDishId() != null)
                 .collect(Collectors.toList());
     }
 
