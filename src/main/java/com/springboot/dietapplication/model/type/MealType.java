@@ -88,7 +88,7 @@ public class MealType implements Serializable, Comparable<MealType> {
         this.productList = mongoMeal.getProducts()
                 .stream()
                 .map(ProductDishType::new)
-                .collect(Collectors.toList());;
+                .collect(Collectors.toList());
     }
 
     @Override

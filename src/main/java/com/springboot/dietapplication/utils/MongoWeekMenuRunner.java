@@ -18,9 +18,9 @@ import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Deprecated(since = "0.1.0", forRemoval = true)
 @Service
 public class MongoWeekMenuRunner {
-
 
     @Autowired
     MealService mealService;

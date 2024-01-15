@@ -3,6 +3,7 @@ package com.springboot.dietapplication.model.mongo.user;
 import com.springboot.dietapplication.model.psql.user.PsqlUser;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Document("users")
 public class MongoUserEntity implements Serializable {
 
@@ -25,8 +27,6 @@ public class MongoUserEntity implements Serializable {
     private String email;
     private String imageId;
     private String pdfFooter;
-
-    public MongoUserEntity() { }
 
     public MongoUserEntity(UserEntity userEntity) {
         this.id = userEntity.getId();

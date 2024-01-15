@@ -1,9 +1,12 @@
 package com.springboot.dietapplication.model.type;
 
+import lombok.Getter;
+
+@Getter
 public enum UserType {
 
     ADMIN("ADMIN"),
-    DIETICIAN("DIETICIAN"),
+    DIETITIAN("DIETITIAN"),
     PATIENT("PATIENT");
 
     public final String name;
@@ -12,7 +15,4 @@ public enum UserType {
         this.name = name;
     }
 
-    public String getUserType() {
-        return this.name;
-    }
 }

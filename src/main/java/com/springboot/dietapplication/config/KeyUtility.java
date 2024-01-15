@@ -23,7 +23,10 @@ public class KeyUtility {
         File filePrivateKey = new File( path);
         FileInputStream fis = new FileInputStream( path);
         byte[] encodedPrivateKey = new byte[(int) filePrivateKey.length()];
-        fis.read(encodedPrivateKey);
+        final int readBytes = fis.read(encodedPrivateKey);
+        if (readBytes < 0 ) {
+            throw new IOException("Failed to read data");
+        }
         fis.close();
 
         // Generate KeyPair.

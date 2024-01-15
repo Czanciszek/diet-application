@@ -11,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-@Deprecated(since = "0.1.0", forRemoval = true)
 @RestController
 @RequestMapping("api/v2/patients")
 public class PatientControllerV2 {

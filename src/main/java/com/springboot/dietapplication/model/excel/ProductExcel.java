@@ -1,7 +1,9 @@
 package com.springboot.dietapplication.model.excel;
 
 import io.github.biezhi.excel.plus.annotation.ExcelColumn;
+import lombok.Getter;
 
+@Getter
 public class ProductExcel {
 
     @ExcelColumn(title = "category", index = 0)
@@ -82,107 +84,6 @@ public class ProductExcel {
     @ExcelColumn(title = "gluten", index = 25)
     private String gluten;
 
-    public String getCategory() {
-        return category;
-    }
-
-    public String getSubcategory() {
-        return subcategory;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getEnergyValue() {
-        return energyValue;
-    }
-
-    public float getProteins() {
-        return proteins;
-    }
-
-    public float getFats() {
-        return fats;
-    }
-
-    public float getSaturatedFattyAcids() {
-        return saturatedFattyAcids;
-    }
-
-    public float getMonoUnsaturatedFattyAcids() {
-        return monoUnsaturatedFattyAcids;
-    }
-
-    public float getPolyUnsaturatedFattyAcids() {
-        return polyUnsaturatedFattyAcids;
-    }
-
-    public float getCholesterol() {
-        return cholesterol;
-    }
-
-    public float getCarbohydrates() {
-        return carbohydrates;
-    }
-
-    public float getSucrose() {
-        return sucrose;
-    }
-
-    public float getDietaryFibres() {
-        return dietaryFibres;
-    }
-
-    public float getSodium() {
-        return sodium;
-    }
-
-    public float getPotassium() {
-        return potassium;
-    }
-
-    public float getCalcium() {
-        return calcium;
-    }
-
-    public float getPhosphorus() {
-        return phosphorus;
-    }
-
-    public float getMagnesium() {
-        return magnesium;
-    }
-
-    public float getIron() {
-        return iron;
-    }
-
-    public float getSelenium() {
-        return selenium;
-    }
-
-    public float getBetaCarotene() {
-        return betaCarotene;
-    }
-
-    public float getVitaminD() {
-        return vitaminD;
-    }
-
-    public float getVitaminC() {
-        return vitaminC;
-    }
-
-    public String getLactose() {
-        return lactose;
-    }
-
-    public String getStarch() {
-        return starch;
-    }
-
-    public String getGluten() {
-        return gluten;
+    public ProductExcel() {
     }
 }

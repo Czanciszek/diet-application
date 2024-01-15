@@ -3,6 +3,7 @@ package com.springboot.dietapplication.model.mongo.dish;
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.type.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class MongoDishProduct {
 
     private String productId;
@@ -21,8 +23,6 @@ public class MongoDishProduct {
     private String name;
     private FoodPropertiesType foodProperties;
     private List<ProductAmountType> availableAmountTypes;
-
-    public MongoDishProduct() {}
 
     public MongoDishProduct(MongoDishProduct mongoDishProduct) {
         this.productId = mongoDishProduct.getProductId();

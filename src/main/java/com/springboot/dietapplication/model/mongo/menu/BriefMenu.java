@@ -2,12 +2,14 @@ package com.springboot.dietapplication.model.mongo.menu;
 
 import com.springboot.dietapplication.model.type.FoodType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class BriefMenu {
 
     private String id;
@@ -19,8 +21,6 @@ public class BriefMenu {
     private Float fatsLimit;
     private Float proteinsLimit;
     private Float carbohydratesLimit;
-
-    public BriefMenu() {}
 
     public BriefMenu(MongoMenu mongoMenu) {
         this.id = mongoMenu.getId();

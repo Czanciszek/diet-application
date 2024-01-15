@@ -25,10 +25,6 @@ public final class DateFormatter {
         return instance;
     }
 
-    public DateFormat getIso8601Formatter() {
-        return iso8601Formatter;
-    }
-
     public String getCurrentDate() {
         return iso8601Formatter.format(new Date());
     }

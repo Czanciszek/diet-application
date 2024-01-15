@@ -6,7 +6,6 @@ import com.springboot.dietapplication.config.SpringSecurityConfig;
 import com.springboot.dietapplication.model.mongo.user.MongoUserEntity;
 import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.LoginResult;
-import com.springboot.dietapplication.repository.UserTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,9 +26,6 @@ public class AuthController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private UserTypeRepository userTypeRepository;
 
     @Autowired
     SpringSecurityConfig springSecurityConfig;

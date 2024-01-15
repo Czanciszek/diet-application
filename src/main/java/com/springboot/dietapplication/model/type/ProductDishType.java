@@ -5,6 +5,7 @@ import com.springboot.dietapplication.model.mongo.dish.MongoDishProduct;
 import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
 import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serial;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ProductDishType implements Serializable {
 
     @Serial
@@ -27,8 +29,6 @@ public class ProductDishType implements Serializable {
 
     @JsonIgnore
     private FoodPropertiesType foodPropertiesType;
-
-    public ProductDishType() {}
 
     public ProductDishType(PsqlProductDish psqlProductDish) {
         this.productId = String.valueOf(psqlProductDish.getProductId());

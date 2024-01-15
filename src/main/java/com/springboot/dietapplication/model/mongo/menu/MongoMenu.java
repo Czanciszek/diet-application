@@ -6,6 +6,7 @@ import com.springboot.dietapplication.model.type.MenuType;
 import com.springboot.dietapplication.model.type.NewMenuType;
 import com.springboot.dietapplication.model.type.WeekMenuType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Document("menus")
 public class MongoMenu {
 
@@ -40,8 +42,6 @@ public class MongoMenu {
     private String deletionDate;
 
     private List<String> weekMenus;
-
-    public MongoMenu() {}
 
     public MongoMenu(MenuType menuType) {
         this.id = menuType.getId();

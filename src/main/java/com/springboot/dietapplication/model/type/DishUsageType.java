@@ -2,6 +2,7 @@ package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.psql.dish.PsqlDishUsage;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serial;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class DishUsageType implements Serializable {
 
     @Serial
@@ -20,8 +22,6 @@ public class DishUsageType implements Serializable {
     private String endDate;
     private String dishName;
     private int dishUsage;
-
-    public DishUsageType() {}
 
     public DishUsageType(PsqlDishUsage psqlDishUsage) {
         this.menuId = String.valueOf(psqlDishUsage.getMenuId());

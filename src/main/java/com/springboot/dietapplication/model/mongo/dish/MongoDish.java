@@ -3,6 +3,7 @@ package com.springboot.dietapplication.model.mongo.dish;
 import com.springboot.dietapplication.model.type.DishType;
 import com.springboot.dietapplication.model.type.FoodType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Document("dishes")
 public class MongoDish {
 
@@ -29,8 +31,6 @@ public class MongoDish {
     private String creationDate;
     private String updateDate;
     private String deletionDate;
-
-    public MongoDish() {}
 
     public MongoDish(DishType dishType) {
         this.id = dishType.getId();

@@ -1,11 +1,14 @@
 package com.springboot.dietapplication.model.type;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Getter
+@NoArgsConstructor
+@SuppressWarnings({"UnusedDeclaration"})
 public class GenerateMenuType implements Serializable {
 
     @Serial
@@ -20,7 +23,5 @@ public class GenerateMenuType implements Serializable {
     private boolean generateShoppingList;
 
     private String recommendations;
-
-    public GenerateMenuType() {}
 
 }

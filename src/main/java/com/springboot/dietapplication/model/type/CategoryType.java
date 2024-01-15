@@ -2,6 +2,7 @@ package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serial;
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class CategoryType implements Serializable, Comparable<CategoryType> {
 
     @Serial
@@ -18,8 +20,6 @@ public class CategoryType implements Serializable, Comparable<CategoryType> {
     private String id;
     private String category;
     private String subcategory;
-
-    public CategoryType() {}
 
     public CategoryType(PsqlProductFoodProperties productFoodProperties) {
         this.id = String.valueOf(productFoodProperties.getCategoryId());

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
 import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serial;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class PatientType implements Serializable {
 
     @Serial
@@ -44,8 +46,6 @@ public class PatientType implements Serializable {
 
     @JsonIgnore
     private List<String> menus;
-
-    public PatientType() {}
 
     public PatientType(PsqlPatient psqlPatient) {
         this.id = String.valueOf(psqlPatient.getId());

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections4.ListUtils;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ProductType implements Serializable {
 
     @Serial
@@ -28,8 +30,6 @@ public class ProductType implements Serializable {
     private FoodPropertiesType foodProperties;
     private List<ProductAmountType> amountTypes;
     private List<AllergenType> allergenTypes;
-
-    public ProductType() {}
 
     public ProductType(PsqlProductFoodProperties psqlProduct) {
         this.id = String.valueOf(psqlProduct.getId());

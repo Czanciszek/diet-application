@@ -1,8 +1,15 @@
 package com.springboot.dietapplication.model.type;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serial;
 import java.io.Serializable;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class LoginResult implements Serializable {
 
     @Serial
@@ -10,18 +17,7 @@ public class LoginResult implements Serializable {
 
     private String token;
 
-    public LoginResult() {
-    }
-
     public LoginResult(String token) {
-        this.token = token;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
         this.token = token;
     }
 }

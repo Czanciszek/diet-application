@@ -2,6 +2,7 @@ package com.springboot.dietapplication.model.mongo.patient;
 
 import com.springboot.dietapplication.model.type.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Document("patients")
 public class MongoPatient {
 
@@ -40,8 +42,6 @@ public class MongoPatient {
     private String creationDate;
     private String updateDate;
     private String deletionDate;
-
-    public MongoPatient() {}
 
     public MongoPatient(PatientType patientType) {
         this.id = patientType.getId();

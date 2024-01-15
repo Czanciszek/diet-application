@@ -7,6 +7,7 @@ import com.springboot.dietapplication.model.psql.properties.PsqlFoodProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serial;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class FoodPropertiesType implements Serializable {
 
     @Serial
@@ -42,10 +44,6 @@ public class FoodPropertiesType implements Serializable {
     private float betaCarotene;
     private float vitaminD;
     private float vitaminC;
-
-    public FoodPropertiesType() {
-
-    }
 
     public FoodPropertiesType(PsqlFoodProperties foodProperties) {
         this.id = foodProperties.getId();

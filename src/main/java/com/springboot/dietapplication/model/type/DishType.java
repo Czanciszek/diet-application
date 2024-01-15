@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.dish.MongoDish;
 import com.springboot.dietapplication.model.psql.dish.PsqlDish;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serial;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class DishType implements Serializable {
 
     @Serial
@@ -28,8 +30,6 @@ public class DishType implements Serializable {
     private FoodType foodType;
     private float portions;
     private String recipe;
-
-    public DishType() {}
 
     public DishType(PsqlDish dish) {
         this.id = String.valueOf(dish.getId());

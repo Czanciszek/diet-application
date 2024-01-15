@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.model.type;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serial;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class NewMenuType implements Serializable {
 
     @Serial
@@ -33,7 +35,5 @@ public class NewMenuType implements Serializable {
     private float fatsLimit;
 
     private float carbohydratesLimit;
-
-    public NewMenuType() {}
 
 }

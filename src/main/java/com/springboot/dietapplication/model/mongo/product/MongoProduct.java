@@ -2,16 +2,17 @@ package com.springboot.dietapplication.model.mongo.product;
 
 import com.springboot.dietapplication.model.type.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Document("products")
 public class MongoProduct implements Comparable<MongoProduct> {
 
@@ -28,9 +29,7 @@ public class MongoProduct implements Comparable<MongoProduct> {
 
     private FoodPropertiesType foodProperties;
     private List<ProductAmountType> amountTypes;
-    private List<AllergenType> allergenTypes = new ArrayList<>();
-
-    public MongoProduct() { }
+    private List<AllergenType> allergenTypes;
 
     public MongoProduct(ProductType productType) {
         this.id = productType.getId();
