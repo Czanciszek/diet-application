@@ -189,7 +189,9 @@ public class PDFServiceV2 {
 
                 DayOfWeek dayOfWeek = LocalDate.parse(dayEntry.getKey()).getDayOfWeek();
                 String dayName = bundle.getString(dayOfWeek.toString());
-                String dateLine = dayName + " - " + changeDateFormat(dayEntry.getKey());
+                String dateLine = generateMenuType.isShowDates() ?
+                        dayName + " - " + changeDateFormat(dayEntry.getKey()) :
+                        dayName;
 
                 writeText(contentStream, new Point(40, pageOffset), timesBold, 14, dateLine);
                 contentStream = setNewLine(document, contentStream, new Point(0, -20), false, true);
