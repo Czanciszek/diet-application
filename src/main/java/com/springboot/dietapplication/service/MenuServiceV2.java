@@ -79,12 +79,7 @@ public class MenuServiceV2 {
                 .stream()
                 .filter(p -> StringUtils.isEmpty(p.getDeletionDate()) &&
                         p.getPatient().getId().equals(patientId))
-                .sorted( (p1, p2) -> {
-                    if (p1.getCreationDate().equals(p2.getCreationDate())) {
-                        return 0;
-                    }
-                    return p1.getCreationDate().equals(p2.getCreationDate()) ? 1 : -1;
-                })
+                .sorted(Comparator.comparing(MongoMenu::getStartDate))
                 .map(MenuType::new)
                 .collect(Collectors.toList());
     }
