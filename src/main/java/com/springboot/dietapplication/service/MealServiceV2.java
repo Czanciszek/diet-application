@@ -1,8 +1,10 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
+import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import com.springboot.dietapplication.model.mongo.menu.MongoWeekMenu;
 import com.springboot.dietapplication.model.type.*;
+import com.springboot.dietapplication.repository.mongo.MongoMenuRepository;
 import com.springboot.dietapplication.repository.mongo.MongoWeekMenuRepository;
 import com.springboot.dietapplication.utils.DateFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 public class MealServiceV2 {
 
     @Autowired
+    MongoMenuRepository mongoMenuRepository;
+    @Autowired
     MongoWeekMenuRepository mongoWeekMenuRepository;
 
     public List<MongoMeal> findMealsInMenu(String menuId) {
@@ -30,7 +34,7 @@ public class MealServiceV2 {
     }
 
     public List<MongoWeekMenu> weekMealsInMenu(String menuId) {
-       return mongoWeekMenuRepository.findByMenuId(menuId);
+        return mongoWeekMenuRepository.findByMenuId(menuId);
     }
 
     public MealType insert(NewMealType newMealType) {
@@ -43,7 +47,7 @@ public class MealServiceV2 {
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Day meal does not exist"));
 
-        String currentDate =  DateFormatter.getInstance().getCurrentDate();
+        String currentDate = DateFormatter.getInstance().getCurrentDate();
 
         MongoMeal newMeal = new MongoMeal(newMealType.getMeal());
         newMeal.setId(UUID.randomUUID().toString());
@@ -80,62 +84,79 @@ public class MealServiceV2 {
     }
 
     public MealType copyMeal(CopyMealType copyMealType) {
-        MongoWeekMenu weekMenu = findWeekMenu(copyMealType.getWeekMenuId());
+        MongoMenu mongoMenu = findMenu(copyMealType.getMenuId());
 
-        MongoMeal originMeal = weekMenu.getMeals().values().stream()
-                .flatMap(Collection::stream)
+        List<MongoWeekMenu> weekMenus = this.mongoWeekMenuRepository.findAllById(mongoMenu.getWeekMenus());
+
+        MongoWeekMenu updatedWeekMenu = weekMenus
+                .stream()
+                .filter(weekMenu -> weekMenu.getMeals().containsKey(copyMealType.getNewDate()))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Target Day Meal does not exist"));
+
+        MongoMeal originMeal = weekMenus
+                .stream()
+                .flatMap(w -> w.getMeals().entrySet().stream())
+                .flatMap(d -> d.getValue().stream())
                 .filter(meal -> meal.getId().equals(copyMealType.getOriginMealId()))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Meal does not exist"));
 
-        String currentDate =  DateFormatter.getInstance().getCurrentDate();
+        String currentDate = DateFormatter.getInstance().getCurrentDate();
 
         MongoMeal copyMeal = makeMealCopy(originMeal, currentDate, copyMealType.getFactor());
 
-        weekMenu.getMeals().forEach((date, dayMeals) -> {
-            if (date.equals(copyMealType.getNewDate())) {
-                dayMeals.add(copyMeal);
-                weekMenu.setUpdateDate(currentDate);
-            }
-        });
+        updatedWeekMenu.getMeals().get(copyMealType.getNewDate()).add(copyMeal);
+        updatedWeekMenu.setUpdateDate(currentDate);
 
-        this.mongoWeekMenuRepository.save(weekMenu);
+        this.mongoWeekMenuRepository.saveAll(weekMenus);
 
         return new MealType(copyMeal);
     }
 
     public void copyDay(CopyDayMealsType copyDayMealsType) {
-        MongoWeekMenu weekMenu = findWeekMenu(copyDayMealsType.getWeekMenuId());
+        MongoMenu mongoMenu = findMenu(copyDayMealsType.getMenuId());
 
-        Map.Entry<String, List<MongoMeal>> day = weekMenu.getMeals()
-                .entrySet()
+        List<MongoWeekMenu> weekMenus = this.mongoWeekMenuRepository.findAllById(mongoMenu.getWeekMenus());
+
+        Map.Entry<String, List<MongoMeal>> originDay = weekMenus
                 .stream()
+                .flatMap(w -> w.getMeals().entrySet().stream())
                 .filter(dayMeal -> dayMeal.getKey().equals(copyDayMealsType.getOriginDate()))
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Day meal does not exist"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Origin Day meal does not exist"));
 
-        String currentDate =  DateFormatter.getInstance().getCurrentDate();
-
-        List<MongoMeal> copyMeals = day.getValue()
+        Map.Entry<String, List<MongoMeal>> newDay = weekMenus
                 .stream()
-                .map(originMeal -> makeMealCopy(originMeal, currentDate, null))
-                .collect(Collectors.toList());
+                .flatMap(w -> w.getMeals().entrySet().stream())
+                .filter(dayMeal -> dayMeal.getKey().equals(copyDayMealsType.getNewDate()))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Target day meal does not exist"));
 
-        weekMenu.getMeals().forEach((date, dayMeals) -> {
-            if (date.equals(copyDayMealsType.getNewDate())) {
-                dayMeals.addAll(copyMeals);
-            }
-        });
+        String currentDate = DateFormatter.getInstance().getCurrentDate();
 
-        weekMenu.setUpdateDate(currentDate);
+        // Append all meals from origin day
+        newDay.getValue().addAll(
+                originDay
+                        .getValue()
+                        .stream()
+                        .map(meals -> makeMealCopy(meals, currentDate, null))
+                        .collect(Collectors.toList())
+        );
 
-        this.mongoWeekMenuRepository.save(weekMenu);
+        Optional<MongoWeekMenu> updatedWeekMenu = weekMenus
+                .stream()
+                .filter(weekMenu -> weekMenu.getMeals().containsKey(newDay.getKey()))
+                .findFirst();
+        updatedWeekMenu.ifPresent(mongoWeekMenu -> mongoWeekMenu.setUpdateDate(currentDate));
+
+        this.mongoWeekMenuRepository.saveAll(weekMenus);
     }
 
     public void removeMeal(MealIdentifier mealIdentifier) {
         MongoWeekMenu weekMenu = findWeekMenu(mealIdentifier.getWeekMenuId());
 
-        String currentDate =  DateFormatter.getInstance().getCurrentDate();
+        String currentDate = DateFormatter.getInstance().getCurrentDate();
 
         for (Map.Entry<String, List<MongoMeal>> dayMeal : weekMenu.getMeals().entrySet()) {
 
@@ -157,7 +178,7 @@ public class MealServiceV2 {
     public void clearDay(DayMealIdentifier dayMealIdentifier) {
         MongoWeekMenu weekMenu = findWeekMenu(dayMealIdentifier.getWeekMenuId());
 
-        String currentDate =  DateFormatter.getInstance().getCurrentDate();
+        String currentDate = DateFormatter.getInstance().getCurrentDate();
 
         weekMenu.getMeals().entrySet().forEach(dayMeal -> {
             if (dayMeal.getKey().equals(dayMealIdentifier.getDate())) {
@@ -173,6 +194,12 @@ public class MealServiceV2 {
         return this.mongoWeekMenuRepository
                 .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Week does not exist"));
+    }
+
+    private MongoMenu findMenu(String menuId) {
+        return this.mongoMenuRepository
+                .findById(menuId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu does not exist"));
     }
 
     private MongoMeal makeMealCopy(MongoMeal originMeal, String currentDate, Float factor) {

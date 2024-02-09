@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class CopyDayMealsType {
 
-    String weekMenuId;
+    String menuId;
 
     String newDate;
 

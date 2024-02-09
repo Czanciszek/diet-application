@@ -95,12 +95,12 @@ export class MealService {
     return this.restApiService.post({ "weekMenuId": weekMenuId, "date": date, "meal": this.form.value }, "meals", "v2");
   }
 
-  copyDay(weekMenuId: string, newDate: string, originDate: string) {
-    return this.restApiService.post({ "weekMenuId": weekMenuId, "newDate": newDate, "originDate": originDate }, "meals/copyDay", "v2");
+  copyDay(menuId: string, newDate: string, originDate: string) {
+    return this.restApiService.post({ "menuId": menuId, "newDate": newDate, "originDate": originDate }, "meals/copyDay", "v2");
   }
 
-  copyMeal(weekMenuId: string, newDate: string, mealId: string) {
-    return this.restApiService.post({ "weekMenuId": weekMenuId, "newDate": newDate, "originMealId": mealId }, "meals/copyMeal", "v2");
+  copyMeal(menuId: string, newDate: string, mealId: string) {
+    return this.restApiService.post({ "menuId": menuId, "newDate": newDate, "originMealId": mealId }, "meals/copyMeal", "v2");
   }
 
   updateMeal(weekMenuId: string) {

@@ -170,7 +170,7 @@ export class WeekViewComponent implements OnInit {
       return selectedDay && searchedWeekMenu != null;
     });
 
-    this.mealService.copyDay(weekMeal.id, selectedDay, originDay).subscribe(() => {
+    this.mealService.copyDay(this.menuItemData.id, selectedDay, originDay).subscribe(() => {
       this.getMenuDetails();
     });
 

@@ -133,7 +133,7 @@ export class DishSummaryComponent implements OnInit {
       return selectedDay && searchedWeekMenu != null;
     });
 
-    this.mealService.copyMeal(weekMeal.id, selectedDay, this.mealItem.id).subscribe(() => {
+    this.mealService.copyMeal(this.menuItemData.id, selectedDay, this.mealItem.id).subscribe(() => {
       this.refreshItems.emit();
     });
   }
