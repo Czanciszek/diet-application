@@ -10,6 +10,10 @@ form.normal-form {
   margin: 10px;
 }
 
+mat-form-field {
+  width: 100%;
+}
+
 .control-container {
   width: 100%;
   padding: 5%;

@@ -53,13 +53,13 @@
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-    <mat-grid-list cols="3" rowHeight="70px">
+    <mat-grid-list cols="4" rowHeight="100px">
       <mat-grid-tile>
         <div class="control-container">
           <div class="add-bottom-padding">
-            <mat-form-field class="example-full-width">
+            <mat-form-field>
               <mat-label>Data urodzenia</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="birthDate" autocomplete="off" readonly>
+              <input matInput [matDatepicker]="picker" (click)="picker.open()" formControlName="birthDate" autocomplete="off" readonly>
               <mat-datepicker-toggle matSuffix [for]="picker">
                 <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
               </mat-datepicker-toggle>
@@ -70,6 +70,7 @@
           </div>
         </div>
       </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
       <mat-grid-tile>
         <div class="control-container">
           <div class="add-bottom-padding">

@@ -68,7 +68,7 @@
                   <ng-template #measurementBlock>
                     <mat-form-field class="example-full-width">
                       <mat-label>Data pomiaru</mat-label>
-                      <input matInput [matDatepicker]="picker" formControlName="measurementDate" autocomplete="off">
+                      <input matInput [matDatepicker]="picker" (click)="picker.open()" formControlName="measurementDate" autocomplete="off">
                       <mat-datepicker-toggle matSuffix [for]="picker">
                         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                       </mat-datepicker-toggle>

@@ -29,7 +29,7 @@
           <div class="add-bottom-padding">
             <mat-form-field>
               <mat-label>Początek diety</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="startDate" autocomplete="off" readonly>
+              <input matInput [matDatepicker]="picker" (click)="picker.open()" formControlName="startDate" autocomplete="off" readonly>
               <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="!allowEdit">
                 <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
               </mat-datepicker-toggle>

@@ -27,6 +27,10 @@ mat-radio-group mat-radio-button {
   margin-left: 5px;
 }
 
+mat-form-field {
+  width: 100%;
+}
+
 .button-row button {
   margin: 5px;
 }
