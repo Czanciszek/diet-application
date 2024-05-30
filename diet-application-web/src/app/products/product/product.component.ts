@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from "../../service/product.service";
-import { FormArray } from "@angular/forms";
+import { UntypedFormArray } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { NotificationService } from "../../service/notification.service";
 import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
@@ -111,11 +111,11 @@ export class ProductComponent implements OnInit {
   }
 
   addAmountTypeButtonClick() {
-    (<FormArray>this.productServiceForm.get('amountTypes')).push(this.productService.addAmountTypeFormGroup());
+    (<UntypedFormArray>this.productServiceForm.get('amountTypes')).push(this.productService.addAmountTypeFormGroup());
   }
 
   onAmountTypeDeleteButtonClick(amountTypeIndex) {
-    (<FormArray>this.productServiceForm.get('amountTypes')).removeAt(amountTypeIndex);
+    (<UntypedFormArray>this.productServiceForm.get('amountTypes')).removeAt(amountTypeIndex);
   }
 
   trimProductName() {

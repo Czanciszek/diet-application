@@ -121,7 +121,6 @@
       }
     }
   },
-  "defaultProject": "diet-application-web",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app"

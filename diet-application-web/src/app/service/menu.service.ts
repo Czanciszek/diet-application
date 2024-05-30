@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Observable } from "rxjs";
 import { Menu } from '../model/menu';
 import { RestapiService } from "./restapi.service";
@@ -14,17 +14,17 @@ export class MenuService {
     private restApiService: RestapiService
   ) { }
 
-  form: FormGroup = new FormGroup({
-    id: new FormControl(null),
-    weekMenusCount: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(8)]),
-    foodTypes: new FormControl(null, [Validators.required]),
-    patientId: new FormControl(null),
-    startDate: new FormControl(null, [Validators.required, CalendarDateValidator]),
-    recommendations: new FormControl(null),
-    energyLimit: new FormControl(null, [Validators.required]),
-    proteinsLimit: new FormControl(null, [Validators.required]),
-    fatsLimit: new FormControl(null, [Validators.required]),
-    carbohydratesLimit: new FormControl(null, [Validators.required])
+  form: UntypedFormGroup = new UntypedFormGroup({
+    id: new UntypedFormControl(null),
+    weekMenusCount: new UntypedFormControl(null, [Validators.required, Validators.min(1), Validators.max(8)]),
+    foodTypes: new UntypedFormControl(null, [Validators.required]),
+    patientId: new UntypedFormControl(null),
+    startDate: new UntypedFormControl(null, [Validators.required, CalendarDateValidator]),
+    recommendations: new UntypedFormControl(null),
+    energyLimit: new UntypedFormControl(null, [Validators.required]),
+    proteinsLimit: new UntypedFormControl(null, [Validators.required]),
+    fatsLimit: new UntypedFormControl(null, [Validators.required]),
+    carbohydratesLimit: new UntypedFormControl(null, [Validators.required])
   });
 
   initializeFormGroup() {

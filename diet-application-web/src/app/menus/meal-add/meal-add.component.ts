@@ -4,7 +4,7 @@ import { MealService } from "../../service/meal.service";
 import { NotificationService } from "../../service/notification.service";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ProductSelectComponent } from "../../products/product-select/product-select.component";
-import { FormArray } from "@angular/forms";
+import { UntypedFormArray } from "@angular/forms";
 import { DishSelectComponent } from "../../dishes/dish-select/dish-select.component";
 import { ProductService } from "../../service/product.service";
 import { FOOD_TYPES } from "../../model/helpers/foodTypes";
@@ -57,7 +57,7 @@ export class MealAddComponent implements OnInit {
       });
 
     if (this.mealServiceForm.get('id').value == null) {
-      let formProducts = <FormArray>this.mealServiceForm.get('productList');
+      let formProducts = <UntypedFormArray>this.mealServiceForm.get('productList');
       let productForm = this.mealService.addProductFormGroup();
       formProducts.push(productForm);
       return;
@@ -106,13 +106,13 @@ export class MealAddComponent implements OnInit {
   }
 
   addProductButtonClick() {
-    let formProducts = <FormArray>this.mealServiceForm.get('productList');
+    let formProducts = <UntypedFormArray>this.mealServiceForm.get('productList');
     this.selectProductForDish(formProducts.length);
     formProducts.push(this.mealService.addProductFormGroup());
   }
 
   onProductDeleteButtonClick(productIndex) {
-    (<FormArray>this.mealService.form.get('productList')).removeAt(productIndex);
+    (<UntypedFormArray>this.mealService.form.get('productList')).removeAt(productIndex);
   }
 
   selectProductForDish(productIndex) {
@@ -129,7 +129,7 @@ export class MealAddComponent implements OnInit {
       this.mealService.setupProductAmountTypes(selectedProduct.amountTypes, productIndex);
 
       // Update value in Form Group
-      let products = (<FormArray>this.mealServiceForm.get('productList'));
+      let products = (<UntypedFormArray>this.mealServiceForm.get('productList'));
       products.at(productIndex).get('productId').patchValue(selectedProduct.id);
       products.at(productIndex).get('productName').patchValue(selectedProduct.name);
       products.at(productIndex).get('amountTypes').patchValue(selectedProduct.amountTypes);
@@ -162,7 +162,7 @@ export class MealAddComponent implements OnInit {
         let amountTypeForm = this.mealService.addAmountTypeFormGroup();
         amountTypeForm.get('grams').patchValue(amountType.grams);
         amountTypeForm.get('amountType').patchValue(amountType.amountType);
-        (<FormArray>productForm.get('amountTypes')).push(amountTypeForm);
+        (<UntypedFormArray>productForm.get('amountTypes')).push(amountTypeForm);
       }
 
       let initialAmountType = (selectedProduct.amountTypes?.length > 0) ? selectedProduct.amountTypes[0].amountType : null;
@@ -195,7 +195,7 @@ export class MealAddComponent implements OnInit {
     dialogRef.afterClosed().subscribe(selectedDish => {
       if (selectedDish == null) { return; }
 
-      (<FormArray>this.mealService.form.get('productList')).clear();
+      (<UntypedFormArray>this.mealService.form.get('productList')).clear();
 
       // Update value in Form Group
       this.mealService.form.get('originDishId').patchValue(selectedDish.id);
@@ -223,10 +223,10 @@ export class MealAddComponent implements OnInit {
           let amountTypeForm = this.mealService.addAmountTypeFormGroup();
           amountTypeForm.get('grams').patchValue(amountType.grams);
           amountTypeForm.get('amountType').patchValue(amountType.amountType);
-          (<FormArray>productForm.get('amountTypes')).push(amountTypeForm);
+          (<UntypedFormArray>productForm.get('amountTypes')).push(amountTypeForm);
         }
 
-        (<FormArray>this.mealService.form.get('productList')).push(productForm);
+        (<UntypedFormArray>this.mealService.form.get('productList')).push(productForm);
       }
     });
   }

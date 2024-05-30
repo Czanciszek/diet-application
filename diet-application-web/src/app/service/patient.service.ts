@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { RestapiService } from "./restapi.service";
 import { CalendarDateValidator } from "../utils/calendarDateValidator"
 
@@ -14,21 +14,21 @@ export class PatientService {
 
   patientList: any;
 
-  form: FormGroup = new FormGroup({
-    id: new FormControl(null),
-    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    surname: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    birthDate: new FormControl(null, [Validators.required, CalendarDateValidator]),
-    numberPhone: new FormControl(''),
-    email: new FormControl('', [Validators.email]),
-    sex: new FormControl(null),
-    bodyHeight: new FormControl(null, [Validators.required]),
-    currentLifestyleNote: new FormControl(''),
-    changedLifestyleNote: new FormControl(''),
-    dietaryPurpose: new FormControl(''),
-    allergens: new FormControl(null),
-    unlikelyCategories: new FormControl(null),
-    measurements: new FormControl(null)
+  form: UntypedFormGroup = new UntypedFormGroup({
+    id: new UntypedFormControl(null),
+    name: new UntypedFormControl('', [Validators.required, Validators.minLength(2)]),
+    surname: new UntypedFormControl('', [Validators.required, Validators.minLength(2)]),
+    birthDate: new UntypedFormControl(null, [Validators.required, CalendarDateValidator]),
+    numberPhone: new UntypedFormControl(''),
+    email: new UntypedFormControl('', [Validators.email]),
+    sex: new UntypedFormControl(null),
+    bodyHeight: new UntypedFormControl(null, [Validators.required]),
+    currentLifestyleNote: new UntypedFormControl(''),
+    changedLifestyleNote: new UntypedFormControl(''),
+    dietaryPurpose: new UntypedFormControl(''),
+    allergens: new UntypedFormControl(null),
+    unlikelyCategories: new UntypedFormControl(null),
+    measurements: new UntypedFormControl(null)
   });
 
   initializeFormGroup() {

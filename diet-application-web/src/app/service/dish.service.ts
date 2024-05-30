@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators, ValidatorFn } from "@angular/forms";
+import { UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators, ValidatorFn } from "@angular/forms";
 import { RestapiService } from "./restapi.service";
 
 import { Dish } from '../model/dish';
@@ -15,30 +15,30 @@ export class DishService {
 
   dishList: Dish[];
 
-  form: FormGroup = new FormGroup({
-    id: new FormControl(null),
-    name: new FormControl('', [Validators.required, Validators.minLength(3), this.dishAlreadyExist()]),
-    products: new FormArray([]),
-    foodType: new FormControl(null, [Validators.required]),
-    portions: new FormControl(null),
-    recipe: new FormControl('')
+  form: UntypedFormGroup = new UntypedFormGroup({
+    id: new UntypedFormControl(null),
+    name: new UntypedFormControl('', [Validators.required, Validators.minLength(3), this.dishAlreadyExist()]),
+    products: new UntypedFormArray([]),
+    foodType: new UntypedFormControl(null, [Validators.required]),
+    portions: new UntypedFormControl(null),
+    recipe: new UntypedFormControl('')
   });
 
-  addProductFormGroup(): FormGroup {
-    return new FormGroup({
-      grams: new FormControl(null, [Validators.required]),
-      amount: new FormControl(null),
-      amountType: new FormControl(null),
-      amountTypes: new FormArray([]),
-      productId: new FormControl(null, [Validators.required]),
-      productName: new FormControl(null)
+  addProductFormGroup(): UntypedFormGroup {
+    return new UntypedFormGroup({
+      grams: new UntypedFormControl(null, [Validators.required]),
+      amount: new UntypedFormControl(null),
+      amountType: new UntypedFormControl(null),
+      amountTypes: new UntypedFormArray([]),
+      productId: new UntypedFormControl(null, [Validators.required]),
+      productName: new UntypedFormControl(null)
     });
   }
 
-  addAmountTypeFormGroup(): FormGroup {
-    return new FormGroup({
-      amountType: new FormControl(null),
-      grams: new FormControl(null),
+  addAmountTypeFormGroup(): UntypedFormGroup {
+    return new UntypedFormGroup({
+      amountType: new UntypedFormControl(null),
+      grams: new UntypedFormControl(null),
     })
   }
 
@@ -60,7 +60,7 @@ export class DishService {
     if (dish.products == null) dish.products = [];
     let productIndex = 0;
     for (const product of dish.products) {
-      let products = <FormArray>this.form.get('products');
+      let products = <UntypedFormArray>this.form.get('products');
       products.push(this.addProductFormGroup());
 
       this.setupProductAmountTypes(product.amountTypes, productIndex);
@@ -72,21 +72,21 @@ export class DishService {
 
   setupProductAmountTypes(amountTypes, productIndex: number) {
     let formProduct = this.form.get('products').get([productIndex]);
-    (<FormArray>formProduct.get('amountTypes')).clear();
+    (<UntypedFormArray>formProduct.get('amountTypes')).clear();
     if (amountTypes == null) return;
     for (const amountType of amountTypes) {
-      let formAmountTypes = <FormArray>formProduct.get('amountTypes');
+      let formAmountTypes = <UntypedFormArray>formProduct.get('amountTypes');
       formAmountTypes.push(this.addAmountTypeFormGroup());
     }
   }
 
   clearForm() {
-    (<FormArray>this.form.get('products')).clear();
+    (<UntypedFormArray>this.form.get('products')).clear();
     this.form.reset();
   }
 
   dishAlreadyExist(): ValidatorFn {
-    return (controlArray: FormArray) => {
+    return (controlArray: UntypedFormArray) => {
       if (this.dishList == null) return null;
 
       let dishId = this.form.get('id').value;

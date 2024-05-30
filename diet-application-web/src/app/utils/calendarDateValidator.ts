@@ -1,6 +1,6 @@
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 
-export var CalendarDateValidator = (control: FormControl) => {
+export var CalendarDateValidator = (control: UntypedFormControl) => {
   if (control.value instanceof Date) {
     const date = control.value;
     const year = date.getFullYear() + "";

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { RestapiService } from "../service/restapi.service";
 
 @Injectable({
@@ -11,12 +11,12 @@ export class FileService {
     private apiService: RestapiService
   ) { }
 
-  form: FormGroup = new FormGroup({
-    menuId: new FormControl(null),
-    showDates: new FormControl(null),
-    generateRecipes: new FormControl(null),
-    generateShoppingList: new FormControl(null),
-    recommendations: new FormControl(null)
+  form: UntypedFormGroup = new UntypedFormGroup({
+    menuId: new UntypedFormControl(null),
+    showDates: new UntypedFormControl(null),
+    generateRecipes: new UntypedFormControl(null),
+    generateShoppingList: new UntypedFormControl(null),
+    recommendations: new UntypedFormControl(null)
   });
 
   initializeFormGroup() {
