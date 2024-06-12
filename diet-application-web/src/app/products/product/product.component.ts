@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from "../../service/product.service";
 import { UntypedFormArray } from "@angular/forms";
-import { MatDialogRef } from "@angular/material/dialog";
+import { MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
 import { NotificationService } from "../../service/notification.service";
 import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
 import { ALLERGEN_TYPES } from "../../model/helpers/allergenTypes";

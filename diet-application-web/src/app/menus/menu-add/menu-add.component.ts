@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NotificationService } from "../../service/notification.service";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
 import { MenuService } from "../../service/menu.service";
 import { Measurement } from "../../model/measurement";
 import { PatientService } from "../../service/patient.service";
