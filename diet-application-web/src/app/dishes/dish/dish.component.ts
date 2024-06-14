@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from "../../service/notification.service";
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { DishService } from "../../service/dish.service";
 import { UntypedFormArray } from "@angular/forms";
 import { ProductSelectComponent } from "../../products/product-select/product-select.component";

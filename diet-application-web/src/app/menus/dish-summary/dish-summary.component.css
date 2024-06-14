@@ -1,8 +1,11 @@
+
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 mat-card {
   border: 0 !important;
   border-radius: 0 !important;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 .mat-card-dish {
   margin-top: 5px;
   background-color: white;
@@ -12,15 +15,17 @@ button {
   margin-right: 15px;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 .mat-card-dish-as-recipe {
   margin-top: 5px;
   background-color: #E14DD7;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
 ::ng-deep .langSelect div.mat-select-arrow-wrapper {
   display: none;
 }
 
-::ng-deep .langSelect.mat-select {
+::ng-deep .langSelect.mat-mdc-select {
   display: inline;
 }

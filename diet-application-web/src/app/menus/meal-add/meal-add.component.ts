@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DishService } from "../../service/dish.service";
 import { MealService } from "../../service/meal.service";
 import { NotificationService } from "../../service/notification.service";
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ProductSelectComponent } from "../../products/product-select/product-select.component";
 import { UntypedFormArray } from "@angular/forms";
 import { DishSelectComponent } from "../../dishes/dish-select/dish-select.component";

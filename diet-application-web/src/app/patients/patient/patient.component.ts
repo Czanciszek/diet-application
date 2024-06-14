@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PatientService } from "../../service/patient.service";
 import { NotificationService } from "../../service/notification.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { MeasurementListComponent } from "../../measurements/measurement-list/measurement-list.component";
 import { MeasurementService } from "../../service/measurement.service";
 

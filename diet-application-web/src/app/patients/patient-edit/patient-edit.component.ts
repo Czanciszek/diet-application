@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from "../../service/notification.service";
-import { MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
+import { MatDialogRef } from "@angular/material/dialog";
 import { PatientService } from "../../service/patient.service";
 import { ProductService } from "../../service/product.service";
 import { ALLERGEN_TYPES } from "../../model/helpers/allergenTypes";

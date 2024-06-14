@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef }
 import { MealService } from "../../service/meal.service";
 import { Meal } from "../../model/meal";
 import { MealAddComponent } from "../meal-add/meal-add.component";
-import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { ProductService } from "../../service/product.service";
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductReplacement } from "../../model/product-replacement";
-import { MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
+import { MatDialogRef } from "@angular/material/dialog";
 
 @Component({
   selector: 'app-replace-product-panel',

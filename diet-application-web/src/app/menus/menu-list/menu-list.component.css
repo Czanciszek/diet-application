@@ -26,18 +26,22 @@ mat-footer-row mat-footer-cell {
   border-radius: 5px;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .search-form-field div.mat-form-field-underline {
   display: none;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .search-form-field div.mat-form-field-infix {
   border-top: 0;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .search-form-field div.mat-form-field-wrapper {
   padding-bottom: 0;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .search-form-field div.mat-form-field-suffix button {
   height: 32px;
   width: 32px;

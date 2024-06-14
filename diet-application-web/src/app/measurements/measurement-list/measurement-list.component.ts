@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef } from "@angular/material/legacy-dialog";
+import { MatDialogRef } from "@angular/material/dialog";
 import { MeasurementService } from "../../service/measurement.service";
-import { MatLegacyTableDataSource as MatTableDataSource } from "@angular/material/legacy-table";
+import { MatTableDataSource } from "@angular/material/table";
 import { PatientService } from "../../service/patient.service";
 import { Measurement } from "../../model/measurement";
 

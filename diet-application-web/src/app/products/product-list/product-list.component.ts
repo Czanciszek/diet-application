@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from "../../service/product.service";
-import { MatLegacyTableDataSource as MatTableDataSource } from "@angular/material/legacy-table";
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from "@angular/material/legacy-dialog";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ProductComponent } from "../product/product.component";
 import { NotificationService } from "../../service/notification.service";
 import { MatSort } from "@angular/material/sort";
-import { MatLegacyPaginator as MatPaginator } from "@angular/material/legacy-paginator";
+import { MatPaginator } from "@angular/material/paginator";
 import { FileService } from "../../service/file.service";
 import { Product } from "../../model/product";
 

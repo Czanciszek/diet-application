@@ -38,7 +38,7 @@
           </mat-grid-tile>
           <mat-grid-tile>
             <div class="control-container add-slider-padding">
-              <mat-slider min="1" max="20" thumbLabel formControlName="dishPortions">
+              <mat-slider min="1" max="20" thumbLabel formControlName="dishPortions"><input matSliderThumb />
               </mat-slider>
             </div>
           </mat-grid-tile>
@@ -69,8 +69,7 @@
           <div *ngIf="withPortions">
             <mat-grid-tile colspan="2">
               <div class="control-container add-slider-padding">
-                <mat-slider min="1" max="20" thumbLabel formControlName="portions"
-                  (change)="portionCountChanged($event)">
+                <mat-slider min="1" max="20" thumbLabel formControlName="portions" #ngSlider><input matSliderThumb (change)="portionCountChanged({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" />
                 </mat-slider>
               </div>
             </mat-grid-tile>
