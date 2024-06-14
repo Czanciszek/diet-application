@@ -49,18 +49,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "diet-application-web:build"
+            "buildTarget": "diet-application-web:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "diet-application-web:build:production"
+              "buildTarget": "diet-application-web:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "diet-application-web:build"
+            "buildTarget": "diet-application-web:build"
           }
         },
         "lint": {
