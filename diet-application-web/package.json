@@ -27,13 +27,13 @@
     "core-js": "^3.21.1",
     "jsencrypt": "3.2.1",
     "rxjs": "^7.4.0",
-    "zone.js": "^0.14.7"
+    "zone.js": "^0.14.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.14",
     "@angular/compiler-cli": "^16.2.12",
     "@angular/language-service": "^16.2.12",
     "ts-node": "^10.7.0",
-    "typescript": "^4.9.3"
+    "typescript": "^5.2.2"
   }
 }
