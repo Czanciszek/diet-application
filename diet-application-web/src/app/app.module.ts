@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { RestapiService } from "./service/restapi.service";
-import { HttpClientModule } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule, Routes } from "@angular/router";
@@ -57,8 +57,7 @@ const routes: Routes = [
   { path: "patients/:patient_id/menus", component: MenusComponent },
 ];
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         LoginComponent,
         HomeComponent,
@@ -90,24 +89,19 @@ const routes: Routes = [
         ReplaceProductPanelComponent,
         MenuProductsComponent,
     ],
-    imports: [
-        BrowserModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         FormsModule,
-        HttpClientModule,
         AppRoutingModule,
         RouterModule.forRoot(routes),
         ReactiveFormsModule,
         BrowserAnimationsModule,
         MaterialModule,
-        FlexLayoutModule
-    ],
-    providers: [
+        FlexLayoutModule], providers: [
         RestapiService,
         ProductService,
         DishService,
         PatientService,
         NotificationService,
-    ],
-    bootstrap: [AppComponent]
-})
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule { }
