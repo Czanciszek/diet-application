@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from "../../service/product.service";
-import { UntypedFormArray } from "@angular/forms";
+import { FormArray } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
+
+import { ProductService } from "../../service/product.service";
 import { NotificationService } from "../../service/notification.service";
 import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
 import { ALLERGEN_TYPES } from "../../model/helpers/allergenTypes";
@@ -111,11 +112,11 @@ export class ProductComponent implements OnInit {
   }
 
   addAmountTypeButtonClick() {
-    (<UntypedFormArray>this.productServiceForm.get('amountTypes')).push(this.productService.addAmountTypeFormGroup());
+    (<FormArray>this.productServiceForm.get('amountTypes')).push(this.productService.addAmountTypeFormGroup());
   }
 
   onAmountTypeDeleteButtonClick(amountTypeIndex) {
-    (<UntypedFormArray>this.productServiceForm.get('amountTypes')).removeAt(amountTypeIndex);
+    (<FormArray>this.productServiceForm.get('amountTypes')).removeAt(amountTypeIndex);
   }
 
   trimProductName() {

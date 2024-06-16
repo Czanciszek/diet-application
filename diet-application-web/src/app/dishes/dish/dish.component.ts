@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NotificationService } from "../../service/notification.service";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { DishService } from "../../service/dish.service";
-import { UntypedFormArray } from "@angular/forms";
+import { FormArray } from "@angular/forms";
 import { ProductSelectComponent } from "../../products/product-select/product-select.component";
 import { ProductService } from "../../service/product.service";
 import { FOOD_TYPES } from "../../model/helpers/foodTypes";
@@ -33,7 +33,7 @@ export class DishComponent implements OnInit {
   }
 
   onClear() {
-    (<UntypedFormArray>this.dishForm.get('products')).clear();
+    (<FormArray>this.dishForm.get('products')).clear();
     this.dishService.form.reset();
   }
 
@@ -58,13 +58,13 @@ export class DishComponent implements OnInit {
   }
 
   addProductButtonClick() {
-    let formProducts = <UntypedFormArray>this.dishForm.get('products');
+    let formProducts = <FormArray>this.dishForm.get('products');
     this.selectProduct(formProducts.length);
     formProducts.push(this.dishService.addProductFormGroup());
   }
 
   onProductDeleteButtonClick(productIndex) {
-    (<UntypedFormArray>this.dishForm.get('products')).removeAt(productIndex);
+    (<FormArray>this.dishForm.get('products')).removeAt(productIndex);
   }
 
   selectProduct(productIndex) {
@@ -80,7 +80,7 @@ export class DishComponent implements OnInit {
       // Update value in Form Group
       this.dishService.setupProductAmountTypes(selectedProduct.amountTypes, productIndex);
 
-      let products = (<UntypedFormArray>this.dishService.form.get('products'));
+      let products = (<FormArray>this.dishService.form.get('products'));
       products.at(productIndex).get('productId').patchValue(selectedProduct.id);
       products.at(productIndex).get('productName').patchValue(selectedProduct.name);
       products.at(productIndex).get('amountTypes').patchValue(selectedProduct.amountTypes);

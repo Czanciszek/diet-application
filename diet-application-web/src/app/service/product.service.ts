@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, UntypedFormArray, Validators } from "@angular/forms";
+import { Validators, FormControl, FormGroup, FormArray } from "@angular/forms";
 
 import { RestapiService } from "./restapi.service";
-
 import { Product } from '../model/product';
 
 @Injectable({
@@ -16,43 +15,43 @@ export class ProductService {
 
   productList: Product[];
 
-  form: UntypedFormGroup = new UntypedFormGroup({
-    id: new UntypedFormControl(null),
-    category: new UntypedFormGroup({
-      category: new UntypedFormControl('', Validators.required),
-      subcategory: new UntypedFormControl('', Validators.required),
+  form: FormGroup = new FormGroup({
+    id: new FormControl(null),
+    category: new FormGroup({
+      category: new FormControl(null),
+      subcategory: new FormControl(null),
     }),
-    name: new UntypedFormControl('', [Validators.required, Validators.minLength(3)]),
-    foodProperties: new UntypedFormGroup({
-      id: new UntypedFormControl(null),
-      energyValue: new UntypedFormControl(null, Validators.required),
-      proteins: new UntypedFormControl(null, Validators.required),
-      fats: new UntypedFormControl(null, Validators.required),
-      saturatedFattyAcids: new UntypedFormControl(null),
-      monoUnsaturatedFattyAcids: new UntypedFormControl(null),
-      polyUnsaturatedFattyAcids: new UntypedFormControl(null),
-      cholesterol: new UntypedFormControl(null),
-      carbohydrates: new UntypedFormControl(null, Validators.required),
-      sucrose: new UntypedFormControl(null),
-      dietaryFibres: new UntypedFormControl(null),
-      sodium: new UntypedFormControl(null),
-      potassium: new UntypedFormControl(null),
-      calcium: new UntypedFormControl(null),
-      phosphorus: new UntypedFormControl(null),
-      magnesium: new UntypedFormControl(null),
-      iron: new UntypedFormControl(null),
-      selenium: new UntypedFormControl(null),
-      betaCarotene: new UntypedFormControl(null),
-      vitaminD: new UntypedFormControl(null),
-      vitaminC: new UntypedFormControl(null),
+    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    foodProperties: new FormGroup({
+      id: new FormControl(null),
+      energyValue: new FormControl(null),
+      proteins: new FormControl(null),
+      fats: new FormControl(null),
+      saturatedFattyAcids: new FormControl(null),
+      monoUnsaturatedFattyAcids: new FormControl(null),
+      polyUnsaturatedFattyAcids: new FormControl(null),
+      cholesterol: new FormControl(null),
+      carbohydrates: new FormControl(null),
+      sucrose: new FormControl(null),
+      dietaryFibres: new FormControl(null),
+      sodium: new FormControl(null),
+      potassium: new FormControl(null),
+      calcium: new FormControl(null),
+      phosphorus: new FormControl(null),
+      magnesium: new FormControl(null),
+      iron: new FormControl(null),
+      selenium: new FormControl(null),
+      betaCarotene: new FormControl(null),
+      vitaminD: new FormControl(null),
+      vitaminC: new FormControl(null),
     }),
-    amountTypes: new UntypedFormArray([]),
-    allergenTypes: new UntypedFormControl(null)
+    amountTypes: new FormArray([]),
+    allergenTypes: new FormControl([])
   });
 
   initializeFormGroup() {
     this.clearForm();
-    (<UntypedFormArray>this.form.get('amountTypes')).push(this.addAmountTypeFormGroup());
+    (<FormArray>this.form.get('amountTypes')).push(this.addAmountTypeFormGroup());
 
     this.form.setValue({
       id: null,
@@ -90,14 +89,14 @@ export class ProductService {
           grams: null,
         }
       ],
-      allergenTypes: null
+      allergenTypes: [],
     })
   }
 
-  addAmountTypeFormGroup(): UntypedFormGroup {
-    return new UntypedFormGroup({
-      amountType: new UntypedFormControl(null, Validators.required),
-      grams: new UntypedFormControl(null, Validators.required),
+  addAmountTypeFormGroup(): FormGroup {
+    return new FormGroup({
+      amountType: new FormControl(null, Validators.required),
+      grams: new FormControl(null, Validators.required),
     });
   }
 
@@ -128,15 +127,15 @@ export class ProductService {
   populateForm(product) {
     this.clearForm();
     if (product.amountTypes == null) product.amountTypes = [];
-    for (const amountType of product.amountTypes) {
-      (<UntypedFormArray>this.form.get('amountTypes')).push(this.addAmountTypeFormGroup());
+    for (var i = 0; i < product.amountTypes.length; i++) {
+      (<FormArray>this.form.get('amountTypes')).push(this.addAmountTypeFormGroup());
     }
 
     this.form.setValue(product);
   }
 
   clearForm() {
-    (<UntypedFormArray>this.form.get('amountTypes')).clear();
+    (<FormArray>this.form.get('amountTypes')).clear();
     this.form.reset();
   }
 }

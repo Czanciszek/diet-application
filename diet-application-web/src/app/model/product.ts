@@ -27,7 +27,7 @@ export class Product {
     vitaminC: number;
   };
   amountTypes: any[];
-  allergenTypes: any[];
+  allergenTypes: string[];
 
   constructor(
     id: string,
@@ -35,7 +35,7 @@ export class Product {
     category: any,
     foodProperties: any,
     amountTypes: any[],
-    allergenTypes: any[]
+    allergenTypes: string[]
   ) {
     this.id = id;
     this.name = name;

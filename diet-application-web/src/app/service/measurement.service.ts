@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { CalendarDateValidator } from "../utils/calendarDateValidator"
 
 @Injectable({
@@ -23,22 +23,22 @@ export class MeasurementService {
     ['arm', 'Ramię']
   ]);
 
-  form: UntypedFormGroup = new UntypedFormGroup({
-    id: new UntypedFormControl(null),
-    patientId: new UntypedFormControl(null),
-    measurementDate: new UntypedFormControl(null, [Validators.required, CalendarDateValidator]),
-    bodyWeight: new UntypedFormControl(null, [Validators.required]),
-    breast: new UntypedFormControl(null),
-    underBreast: new UntypedFormControl(null),
-    waist: new UntypedFormControl(null),
-    abdominal: new UntypedFormControl(null),
-    hipBones: new UntypedFormControl(null),
-    hips: new UntypedFormControl(null),
-    thighWidest: new UntypedFormControl(null),
-    thighNarrowest: new UntypedFormControl(null),
-    calf: new UntypedFormControl(null),
-    chest: new UntypedFormControl(null),
-    arm: new UntypedFormControl(null),
+  form: FormGroup = new FormGroup({
+    id: new FormControl(null),
+    patientId: new FormControl(null),
+    measurementDate: new FormControl(null, [Validators.required, CalendarDateValidator]),
+    bodyWeight: new FormControl(null, [Validators.required]),
+    breast: new FormControl(null),
+    underBreast: new FormControl(null),
+    waist: new FormControl(null),
+    abdominal: new FormControl(null),
+    hipBones: new FormControl(null),
+    hips: new FormControl(null),
+    thighWidest: new FormControl(null),
+    thighNarrowest: new FormControl(null),
+    calf: new FormControl(null),
+    chest: new FormControl(null),
+    arm: new FormControl(null),
   });
 
   initializeFormGroup() {
