@@ -26,7 +26,8 @@
           <mat-grid-tile colspan="4">
             <div class="control-container">
               <mat-form-field>
-                <input matInput placeholder="Potrawa" formControlName="name" autocomplete="off">
+                <mat-label>Potrawa</mat-label>
+                <input matInput formControlName="name" autocomplete="off">
               </mat-form-field>
             </div>
           </mat-grid-tile>
@@ -38,7 +39,8 @@
           </mat-grid-tile>
           <mat-grid-tile>
             <div class="control-container add-slider-padding">
-              <mat-slider min="1" max="20" thumbLabel formControlName="dishPortions"><input matSliderThumb />
+              <mat-slider min="1" max="20" thumbLabel>
+                <input matSliderThumb formControlName="dishPortions"/>
               </mat-slider>
             </div>
           </mat-grid-tile>
@@ -46,8 +48,9 @@
           <mat-grid-tile colspan="2">
             <div class="control-container">
               <mat-form-field>
+                <mat-label>Typ</mat-label>
                 <div class="add-bottom-padding">
-                  <mat-select matInput placeholder="Typ" formControlName="foodType">
+                  <mat-select matInput formControlName="foodType">
                     <ng-container *ngFor="let foodType of foodTypes">
                       <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
                     </ng-container>
@@ -66,13 +69,15 @@
             </div>
           </mat-grid-tile>
 
-          <div *ngIf="withPortions">
-            <mat-grid-tile colspan="2">
-              <div class="control-container add-slider-padding">
-                <mat-slider min="1" max="20" thumbLabel formControlName="portions" #ngSlider><input matSliderThumb (change)="portionCountChanged({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" />
-                </mat-slider>
-              </div>
-            </mat-grid-tile>
+          <div *ngIf="withPortions"><mat-grid-tile colspan="2">
+            <div class="control-container add-slider-padding">
+              <mat-slider min="1" max="20" thumbLabel #ngSlider>
+                <input matSliderThumb formControlName="portions"
+                  (change)="portionCountChanged({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})"
+                  #ngSliderThumb="matSliderThumb" />
+              </mat-slider>
+            </div>
+          </mat-grid-tile>
 
             <mat-grid-tile>
               <div class="control-container add-slider-padding">
@@ -88,8 +93,9 @@
             <mat-grid-tile>
               <div class="control-container">
                 <mat-form-field>
+                  <mat-label>Gram</mat-label>
                   <div class="add-bottom-padding">
-                    <input type="number" matInput placeholder="Gram" formControlName="grams" autocomplete="off">
+                    <input type="number" matInput formControlName="grams" autocomplete="off">
                   </div>
                 </mat-form-field>
               </div>
@@ -123,9 +129,9 @@
           <mat-grid-tile>
             <div class="control-container">
               <mat-form-field>
+                <mat-label>Przepis</mat-label>
                 <div class="add-bottom-padding">
-                  <textarea rows="5" formControlName="recipe" matInput style="resize: none;" placeholder="Przepis"
-                    autocomplete="off">
+                  <textarea rows="5" formControlName="recipe" matInput style="resize: none;" autocomplete="off">
                   </textarea>
                 </div>
               </mat-form-field>
@@ -140,8 +146,9 @@
               <mat-grid-tile>
                 <div class="control-container">
                   <mat-form-field>
+                    <mat-label>Gram</mat-label>
                     <div class="add-bottom-padding">
-                      <input matInput placeholder="Gram" formControlName="grams" autocomplete="off"
+                      <input matInput formControlName="grams" autocomplete="off"
                         (keyup)="validateProperty($event.target.value, i, 'grams')">
                     </div>
                   </mat-form-field>
@@ -151,8 +158,9 @@
               <mat-grid-tile>
                 <div class="control-container">
                   <mat-form-field>
+                    <mat-label>Ilość</mat-label>
                     <div class="add-bottom-padding">
-                      <input matInput placeholder="Ilość" formControlName="amount" autocomplete="off"
+                      <input matInput formControlName="amount" autocomplete="off"
                         (keyup)="validateProperty($event.target.value, i, 'amount')">
                     </div>
                   </mat-form-field>
@@ -162,8 +170,9 @@
               <mat-grid-tile colspan="2">
                 <div class="control-container">
                   <mat-form-field>
+                    <mat-label>Typ</mat-label>
                     <div class="add-bottom-padding">
-                      <mat-select matInput placeholder="Typ" formControlName="amountType"
+                      <mat-select matInput formControlName="amountType"
                         (selectionChange)="amountTypeChanged(i)">
                         <ng-container
                           *ngFor="let type of mealServiceForm.get('productList')['controls'][i].value.amountTypes">
@@ -177,10 +186,12 @@
 
               <mat-grid-tile colspan="4">
                 <div class="control-container">
-                  <div class="add-bottom-padding">
-                    <input matInput (click)="selectProductForDish(i)" formControlName="productName"
-                      placeholder="Produkt" readonly>
-                  </div>
+                  <mat-form-field>
+                    <mat-label>Produkt</mat-label>
+                    <div class="add-bottom-padding">
+                      <input matInput (click)="selectProductForDish(i)" formControlName="productName" readonly>
+                    </div>
+                  </mat-form-field>
                 </div>
               </mat-grid-tile>
 
@@ -255,8 +266,9 @@
                 <mat-grid-tile>
                   <div class="control-container">
                     <mat-form-field>
+                      <mat-label>Gram</mat-label>
                       <div class="add-bottom-padding">
-                        <input matInput placeholder="Gram" formControlName="grams" autocomplete="off"
+                        <input matInput formControlName="grams" autocomplete="off"
                           (input)="validateProperty($event.target.value, 0, 'grams')">
                       </div>
                     </mat-form-field>
@@ -266,8 +278,9 @@
                 <mat-grid-tile>
                   <div class="control-container">
                     <mat-form-field>
+                      <mat-label>Ilość</mat-label>
                       <div class="add-bottom-padding">
-                        <input matInput placeholder="Ilość" formControlName="amount" autocomplete="off"
+                        <input matInput formControlName="amount" autocomplete="off"
                           (input)="validateProperty($event.target.value, 0, 'amount')">
                       </div>
                     </mat-form-field>
@@ -277,9 +290,9 @@
                 <mat-grid-tile>
                   <div class="control-container">
                     <mat-form-field>
+                      <mat-label>Typ</mat-label>
                       <div class="add-bottom-padding">
-                        <mat-select matInput formControlName="amountType" placeholder="Typ"
-                          (selectionChange)="amountTypeChanged(0)">
+                        <mat-select matInput formControlName="amountType" (selectionChange)="amountTypeChanged(0)">
                           <div *ngIf="mealServiceForm.get('productList').value.length > 0">
                             <ng-container
                               *ngFor="let type of mealServiceForm.get('productList')['controls'][0].value.amountTypes">
@@ -295,8 +308,10 @@
 
                 <mat-grid-tile colspan="2">
                   <div class="control-container">
-                    <input matInput placeholder="Produkt" formControlName="productName" (click)="selectProduct()"
-                      readonly>
+                    <mat-form-field>
+                      <mat-label>Produkt</mat-label>
+                      <input matInput formControlName="productName" (click)="selectProduct()" readonly>
+                    </mat-form-field>
                   </div>
                 </mat-grid-tile>
 
@@ -319,8 +334,9 @@
             <mat-grid-tile colspan="2">
               <div class="control-container">
                 <mat-form-field>
+                  <mat-label>Typ</mat-label>
                   <div class="add-bottom-padding">
-                    <mat-select matInput placeholder="Typ" formControlName="foodType">
+                    <mat-select matInput formControlName="foodType">
                       <ng-container *ngFor="let foodType of foodTypes">
                         <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
                       </ng-container>

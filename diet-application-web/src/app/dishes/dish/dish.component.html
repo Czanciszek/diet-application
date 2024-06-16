@@ -16,8 +16,9 @@
         <div class="control-container">
           <input type="hidden" formControlName="id">
           <mat-form-field>
+            <mat-label>Nazwa potrawy</mat-label>
             <div class="add-bottom-padding">
-              <input formControlName="name" matInput placeholder="Nazwa potrawy" autocomplete="off">
+              <input formControlName="name" matInput autocomplete="off">
             </div>
             <mat-error *ngIf="dishForm.controls['name'].errors?.required">Uzupełnij nazwę</mat-error>
             <mat-error *ngIf="dishForm.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
@@ -29,8 +30,9 @@
       <mat-grid-tile>
         <div class="control-container">
           <mat-form-field>
+            <mat-label>Nazwa potrawy</mat-label>
             <div class="add-bottom-padding">
-              <mat-select matInput placeholder="Typ" formControlName="foodType">
+              <mat-select matInput formControlName="foodType">
                 <ng-container *ngFor="let foodType of foodTypes">
                   <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
                 </ng-container>
@@ -46,7 +48,8 @@
       </mat-grid-tile>
       <mat-grid-tile colspan="2">
         <div class="control-container add-slider-padding">
-          <mat-slider min="1" max="20" thumbLabel formControlName="portions"><input matSliderThumb />
+          <mat-slider min="1" max="20" thumbLabel>
+            <input matSliderThumb formControlName="portions" />
           </mat-slider>
         </div>
       </mat-grid-tile>
@@ -56,9 +59,9 @@
         <mat-grid-tile>
           <div class="control-container">
             <mat-form-field>
+              <mat-label>Przepis</mat-label>
               <div class="add-bottom-padding">
-                <textarea rows="5" formControlName="recipe" matInput style="resize: none;" placeholder="Przepis"
-                  autocomplete="off">
+                <textarea rows="5" formControlName="recipe" matInput style="resize: none;" autocomplete="off">
 
                 </textarea>
               </div>
@@ -74,8 +77,9 @@
           <mat-grid-tile>
             <div class="control-container">
               <mat-form-field>
+                <mat-label>Gram</mat-label>
                 <div class="add-bottom-padding">
-                  <input matInput placeholder="Gram" formControlName="grams" autocomplete="off"
+                  <input matInput formControlName="grams" autocomplete="off"
                     (keyup)="validateProperty($event.target.value, i, 'grams')">
                 </div>
               </mat-form-field>
@@ -85,8 +89,9 @@
           <mat-grid-tile>
             <div class="control-container">
               <mat-form-field>
+                <mat-label>Ilość</mat-label>
                 <div class="add-bottom-padding">
-                  <input matInput placeholder="Ilość" formControlName="amount" autocomplete="off"
+                  <input matInput formControlName="amount" autocomplete="off"
                     (keyup)="validateProperty($event.target.value, i, 'amount')">
                 </div>
               </mat-form-field>
@@ -96,8 +101,9 @@
           <mat-grid-tile>
             <div class="control-container">
               <mat-form-field>
+                <mat-label>Typ</mat-label>
                 <div class="add-bottom-padding">
-                  <mat-select matInput placeholder="Typ" formControlName="amountType"
+                  <mat-select matInput formControlName="amountType"
                     (selectionChange)="amountTypeChanged(i)">
                     <ng-container *ngFor="let type of dishForm.get('products')['controls'][i].value.amountTypes">
                       <mat-option value="{{type.amountType}}">{{displayAmountType(type.amountType)}}</mat-option>
@@ -110,10 +116,12 @@
 
           <mat-grid-tile colspan="5">
             <div class="control-container">
+              <mat-form-field>
+              <mat-label>Produkt</mat-label>
               <div class="add-bottom-padding">
-                <input matInput id="{{'name'+i}}" (click)="selectProduct(i)" placeholder="Produkt"
-                  formControlName="productName" readonly>
+                <input matInput id="{{'name'+i}}" (click)="selectProduct(i)" formControlName="productName" readonly>
               </div>
+              </mat-form-field>
             </div>
           </mat-grid-tile>
 

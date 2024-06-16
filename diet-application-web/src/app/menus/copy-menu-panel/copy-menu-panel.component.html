@@ -17,7 +17,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field class="long-form-field">
-              <mat-select placeholder="Pacjent" formControlName="patientId">
+              <mat-label>Pacjent</mat-label>
+              <mat-select formControlName="patientId">
                 <ng-container *ngFor="let patient of patientList">
                   <mat-option value="{{patient.id}}">{{patient.name}} {{patient.surname}}</mat-option>
                 </ng-container>
@@ -83,7 +84,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input type="number" matInput placeholder="kcal" autocomplete="off" formControlName="energyLimit"
+              <mat-label>kcal</mat-label>
+              <input type="number" matInput autocomplete="off" formControlName="energyLimit"
                 (input)="limitsChanged()" min="0">
             </mat-form-field>
           </div>

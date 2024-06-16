@@ -80,8 +80,8 @@
                   </ng-template>
                   <ng-template #otherBlock>
                     <mat-form-field>
-                      <input matInput type="number" formControlName="{{column}}"
-                        placeholder="{{measurementKeywords.get(column)}}" autocomplete="off">
+                      <mat-label>{{measurementKeywords.get(column)}}</mat-label>
+                      <input matInput type="number" formControlName="{{column}}" autocomplete="off">
                     </mat-form-field>
                   </ng-template>
 

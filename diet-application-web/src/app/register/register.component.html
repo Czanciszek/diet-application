@@ -12,7 +12,8 @@
       <mat-grid-list cols="1" rowHeight="100px">
         <mat-grid-tile>
           <mat-form-field>
-            <input formControlName="name" matInput placeholder="Login" autocomplete="off">
+            <mat-label>Login</mat-label>
+            <input formControlName="name" matInput autocomplete="off">
             <mat-error *ngIf="userForm.controls['name'].errors?.required">Uzupełnij nazwę użytkownika</mat-error>
             <mat-error *ngIf="userForm.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
           </mat-form-field>
@@ -21,7 +22,8 @@
       <mat-grid-list cols="1" rowHeight="100px">
         <mat-grid-tile>
           <mat-form-field>
-            <input formControlName="email" matInput placeholder="Adres e-mail" autocomplete="off">
+            <mat-label>Adres e-mail</mat-label>
+            <input formControlName="email" matInput autocomplete="off">
             <mat-error *ngIf="userForm.controls['email'].errors?.required">Uzupełnij adres e-mail</mat-error>
             <mat-error *ngIf="userForm.controls['email'].errors?.email">Niepoprawny adres e-mail</mat-error>
           </mat-form-field>
@@ -30,7 +32,8 @@
       <mat-grid-list cols="1" rowHeight="100px">
         <mat-grid-tile>
           <mat-form-field>
-            <input formControlName="password" matInput placeholder="Hasło" [type]="'password'" autocomplete="off">
+            <mat-label>Hasło</mat-label>
+            <input formControlName="password" matInput [type]="'password'" autocomplete="off">
             <mat-error *ngIf="userForm.controls['password'].errors?.required">Uzupełnij hasło</mat-error>
             <mat-error *ngIf="userForm.controls['password'].errors?.minlength">Minimum 3 znaki</mat-error>
           </mat-form-field>
@@ -39,7 +42,8 @@
       <mat-grid-list cols="1" rowHeight="100px">
         <mat-grid-tile>
           <mat-form-field>
-            <input formControlName="repeatPassword" matInput placeholder="Powtórz hasło" [type]="'password'"
+            <mat-label>Powtórz hasło</mat-label>
+            <input formControlName="repeatPassword" matInput [type]="'password'"
               autocomplete="off">
             <mat-error *ngIf="userForm.controls['repeatPassword'].errors?.passwordMismatch">Wprowadzone hasła się
               różnią</mat-error>
@@ -49,7 +53,8 @@
       <mat-grid-list cols="1" rowHeight="100px">
         <mat-grid-tile>
           <mat-form-field class="long-form-field">
-            <mat-select formControlName="userType" placeholder="Typ użytkownika">
+            <mat-label>Typ użytkownika</mat-label>
+            <mat-select formControlName="userType">
               <ng-container *ngFor="let userType of ['ADMIN', 'DIETITIAN', 'PATIENT']">
                 <mat-option value="{{userType}}">{{userType}}</mat-option>
               </ng-container>

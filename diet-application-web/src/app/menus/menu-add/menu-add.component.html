@@ -15,7 +15,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <mat-select matInput placeholder="Typy posiłków" formControlName="foodTypes" multiple>
+              <mat-label>Typy posiłków</mat-label>
+              <mat-select matInput formControlName="foodTypes" multiple>
                 <ng-container *ngFor="let foodType of foodTypes">
                   <mat-option value="{{foodType.id}}">{{foodType.value}}</mat-option>
                 </ng-container>
@@ -29,7 +30,8 @@
           <div class="add-bottom-padding">
             <mat-form-field>
               <mat-label>Początek diety</mat-label>
-              <input matInput [matDatepicker]="picker" (click)="picker.open()" formControlName="startDate" autocomplete="off" readonly>
+              <input matInput [matDatepicker]="picker" (click)="picker.open()" formControlName="startDate"
+                autocomplete="off" readonly>
               <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="!allowEdit">
                 <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
               </mat-datepicker-toggle>
@@ -44,8 +46,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input type="number" min="1" max="8" step="1" formControlName="weekMenusCount" matInput
-                placeholder="Ilość tygodni" autocomplete="off" [readonly]="!allowEdit">
+              <mat-label>Ilość tygodni</mat-label>
+              <input matInput type="number"  min="1" max="8" step="1" formControlName="weekMenusCount" matInputautocomplete="off" [readonly]="!allowEdit">
               <mat-error *ngIf="menuServiceForm.controls['weekMenusCount'].errors?.required">Uzupełnij ilość</mat-error>
               <mat-error *ngIf="menuServiceForm.controls['weekMenusCount'].errors?.min">Wartość zbyt mała</mat-error>
               <mat-error *ngIf="menuServiceForm.controls['weekMenusCount'].errors?.max">Wartość zbyt duża</mat-error>
@@ -68,9 +70,9 @@
           <div class="control-container">
             <div class="add-bottom-padding">
               <mat-form-field>
-                <input #activityLevel type="number" min="0.9" max="2" step="0.01" matInput
-                  placeholder="Poziom aktywności" autocomplete="off" value="1.1"
-                  (input)="limitPropertyChanged(measurement.value, activityLevel.value)">
+                <mat-label>Poziom aktywności</mat-label>
+                <input #activityLevel type="number" min="0.9" max="2" step="0.01" matInput autocomplete="off"
+                  value="1.1" (input)="limitPropertyChanged(measurement.value, activityLevel.value)">
               </mat-form-field>
             </div>
           </div>
@@ -79,7 +81,8 @@
           <div class="control-container">
             <div class="add-bottom-padding">
               <mat-form-field>
-                <mat-select #measurement matInput placeholder="Data pomiaru"
+                <mat-label>Data pomiaru</mat-label>
+                <mat-select #measurement matInput
                   (valueChange)="limitPropertyChanged(measurement.value, activityLevel.value)">
                   <ng-container *ngFor="let date of getMeasurementDates()">
                     <mat-option value="{{date.date}}&{{date.weight}}">{{date.date}} - {{date.weight}}kg</mat-option>
@@ -107,8 +110,9 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="energyLimit" type="number" matInput placeholder="kcal" autocomplete="off"
-                (input)="limitsChanged()" [readonly]="!customLimits">
+              <mat-label>Kcal</mat-label>
+              <input matInput formControlName="energyLimit" type="number" autocomplete="off" (input)="limitsChanged()"
+                [readonly]="!customLimits">
             </mat-form-field>
           </div>
         </div>
@@ -127,8 +131,9 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #proteinsPercentage type="number" min="0" max="100" step="1" matInput placeholder="%"
-                autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'proteins')">
+              <mat-label>%</mat-label>
+              <input #proteinsPercentage type="number" min="0" max="100" step="1" matInput autocomplete="off"
+                (input)="percentageChanged($event.target.value, true, true, 'proteins')">
             </mat-form-field>
           </div>
         </div>
@@ -137,7 +142,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="proteinsLimit" type="number" matInput placeholder="gram" autocomplete="off"
+              <mat-label>gram</mat-label>
+              <input formControlName="proteinsLimit" type="number" matInput autocomplete="off"
                 (input)="valueChanged($event.target.value, true, 'proteins')">
             </mat-form-field>
           </div>
@@ -157,8 +163,9 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #fatsPercentage type="number" min="0" max="100" step="1" matInput placeholder="%"
-                autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'fats')">
+              <mat-label>%</mat-label>
+              <input #fatsPercentage type="number" min="0" max="100" step="1" matInput autocomplete="off"
+                (input)="percentageChanged($event.target.value, true, true, 'fats')">
             </mat-form-field>
           </div>
         </div>
@@ -167,7 +174,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="fatsLimit" type="number" matInput placeholder="gram" autocomplete="off"
+              <mat-label>gram</mat-label>
+              <input formControlName="fatsLimit" type="number" matInput autocomplete="off"
                 (input)="valueChanged($event.target.value, true, 'fats')">
             </mat-form-field>
           </div>
@@ -187,8 +195,9 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input #carbohydratesPercentage type="number" min="0" max="100" step="1" matInput placeholder="%"
-                autocomplete="off" (input)="percentageChanged($event.target.value, true, true, 'carbohydrates')">
+              <mat-label>%</mat-label>
+              <input #carbohydratesPercentage type="number" min="0" max="100" step="1" matInput autocomplete="off"
+                (input)="percentageChanged($event.target.value, true, true, 'carbohydrates')">
             </mat-form-field>
           </div>
         </div>
@@ -197,7 +206,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="carbohydratesLimit" type="number" matInput placeholder="gram" autocomplete="off"
+              <mat-label>gram</mat-label>
+              <input formControlName="carbohydratesLimit" type="number" matInput autocomplete="off"
                 (input)="valueChanged($event.target.value, true, 'carbohydrates')">
             </mat-form-field>
           </div>
@@ -210,9 +220,9 @@
         <mat-grid-tile>
           <div class="control-container">
             <mat-form-field>
+              <mat-label>Zalecenia do jadłospisu</mat-label>
               <div class="add-bottom-padding">
-                <textarea rows="5" formControlName="recommendations" matInput style="resize: none;"
-                  placeholder="Zalecenia do jadłospisu" autocomplete="off">
+                <textarea rows="5" formControlName="recommendations" matInput style="resize: none;" autocomplete="off">
                   </textarea>
               </div>
             </mat-form-field>

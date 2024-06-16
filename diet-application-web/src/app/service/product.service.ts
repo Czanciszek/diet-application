@@ -18,8 +18,8 @@ export class ProductService {
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     category: new FormGroup({
-      category: new FormControl(null),
-      subcategory: new FormControl(null),
+      category: new FormControl(null, Validators.required),
+      subcategory: new FormControl(null, Validators.required),
     }),
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     foodProperties: new FormGroup({

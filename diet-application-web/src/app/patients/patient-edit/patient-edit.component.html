@@ -15,7 +15,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="name" matInput placeholder="Imię" autocomplete="off">
+              <mat-label>Imię</mat-label>
+              <input formControlName="name" matInput autocomplete="off">
               <mat-error *ngIf="patientServiceForm.controls['name'].errors?.required">Uzupełnij imię</mat-error>
               <mat-error *ngIf="patientServiceForm.controls['name'].errors?.minlength">Minimum 3 znaki</mat-error>
             </mat-form-field>
@@ -26,7 +27,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="surname" matInput placeholder="Nazwisko" autocomplete="off">
+              <mat-label>Nazwisko</mat-label>
+              <input formControlName="surname" matInput autocomplete="off">
               <mat-error *ngIf="patientServiceForm.controls['surname'].errors?.required">Uzupełnij nazwisko</mat-error>
               <mat-error *ngIf="patientServiceForm.controls['surname'].errors?.minlength">Minimum 3 znaki</mat-error>
             </mat-form-field>
@@ -37,7 +39,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="email" matInput placeholder="Adres e-mail" autocomplete="off">
+              <mat-label>Adres e-mail</mat-label>
+              <input formControlName="email" matInput autocomplete="off">
               <mat-error *ngIf="patientServiceForm.controls['email'].errors?.email">Niepoprawny adres e-mail</mat-error>
             </mat-form-field>
           </div>
@@ -47,7 +50,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input formControlName="numberPhone" matInput placeholder="Numer telefonu" autocomplete="off">
+              <mat-label>Numer telefonu</mat-label>
+              <input formControlName="numberPhone" matInput autocomplete="off">
             </mat-form-field>
           </div>
         </div>
@@ -75,7 +79,8 @@
         <div class="control-container">
           <div class="add-bottom-padding">
             <mat-form-field>
-              <input type="number" formControlName="bodyHeight" matInput placeholder="Wzrost (cm)" autocomplete="off">
+              <mat-label>Wzrost (cm)</mat-label>
+              <input type="number" formControlName="bodyHeight" matInput autocomplete="off">
             </mat-form-field>
           </div>
         </div>
@@ -96,9 +101,9 @@
       <mat-grid-tile>
         <div class="control-container">
           <mat-form-field>
+            <mat-label>Aktualny styl życia</mat-label>
             <div class="add-bottom-padding">
-              <textarea rows="5" formControlName="currentLifestyleNote" matInput style="resize: none;"
-                placeholder="Aktualny styl życia" autocomplete="off">
+              <textarea rows="5" formControlName="currentLifestyleNote" matInput style="resize: none;" autocomplete="off">
                 </textarea>
             </div>
           </mat-form-field>
@@ -107,9 +112,9 @@
       <mat-grid-tile>
         <div class="control-container">
           <mat-form-field>
+            <mat-label>Zmieniony styl życia</mat-label>
             <div class="add-bottom-padding">
-              <textarea rows="5" formControlName="changedLifestyleNote" matInput style="resize: none;"
-                placeholder="Zmieniony styl życia" autocomplete="off">
+              <textarea rows="5" formControlName="changedLifestyleNote" matInput style="resize: none;" autocomplete="off">
                 </textarea>
             </div>
           </mat-form-field>
@@ -118,9 +123,9 @@
       <mat-grid-tile>
         <div class="control-container">
           <mat-form-field>
+            <mat-label>Cel dietetyczny</mat-label>
             <div class="add-bottom-padding">
-              <textarea rows="5" formControlName="dietaryPurpose" matInput style="resize: none;"
-                placeholder="Cel dietetyczny" autocomplete="off">
+              <textarea rows="5" formControlName="dietaryPurpose" matInput style="resize: none;" autocomplete="off">
                 </textarea>
             </div>
           </mat-form-field>
@@ -136,7 +141,8 @@
             <mat-select formControlName="allergens" multiple>
               <div>
                 <mat-form-field class="search-input">
-                  <input #allergenInput matInput placeholder="Szukaj..." autocomplete="off" />
+                  <mat-label>Szukaj...</mat-label>
+                  <input #allergenInput matInput autocomplete="off" />
                 </mat-form-field>
               </div>
               <mat-option *ngFor="let allergen of allergens_list"
@@ -155,7 +161,8 @@
             <mat-select formControlName="unlikelyCategories" multiple>
               <div>
                 <mat-form-field class="search-input">
-                  <input #categoryInput matInput placeholder="Szukaj..." autocomplete="off" />
+                  <mat-label>Szukaj...</mat-label>
+                  <input #categoryInput matInput autocomplete="off" />
                 </mat-form-field>
               </div>
               <mat-option *ngFor="let category of categories"
