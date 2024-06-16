@@ -43,13 +43,11 @@ div mat-checkbox {
   padding-right: 10px;
 }
 
-.btn-dialog-close {
-  width: 35px;
-  min-width: 0px !important;
-  height: 35px;
-  padding: 0px !important;
-}
-
 .text-align-right {
   text-align: right;
+}
+
+.close-icon {
+  display: flex;
+  align-items: center;
 }

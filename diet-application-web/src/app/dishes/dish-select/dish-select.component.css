@@ -52,3 +52,8 @@ mat-footer-row mat-footer-cell {
 ::ng-deep .dish-usage-tooltip {
   white-space: pre-line;
 }
+
+.close-icon {
+  display: flex;
+  align-items: center;
+}

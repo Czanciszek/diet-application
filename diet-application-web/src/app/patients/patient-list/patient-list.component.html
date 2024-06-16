@@ -6,7 +6,9 @@
     <mat-label>Szukaj</mat-label>
     <input matInput [(ngModel)]="searchKey" autocomplete="off" (keyup)="applyFilter()">
     <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
-      <mat-icon>close</mat-icon>
+      <div class="close-icon">
+        <mat-icon>clear</mat-icon>
+      </div>
     </button>
   </mat-form-field>
 </div>

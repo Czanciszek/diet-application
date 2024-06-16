@@ -49,9 +49,7 @@ div mat-checkbox {
   padding-right: 10px;
 }
 
-.btn-dialog-close {
-  width: 35px;
-  min-width: 0 !important;
-  height: 35px;
-  padding: 0 !important;
+.close-icon {
+  display: flex;
+  align-items: center;
 }

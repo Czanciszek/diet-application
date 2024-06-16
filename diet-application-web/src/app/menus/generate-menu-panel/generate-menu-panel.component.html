@@ -3,8 +3,11 @@
     <span class="fill-remaining-space"></span>
     <span>Generowanie PDF</span>
     <span class="fill-remaining-space"></span>
-    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()"
-      tabindex="-1"><mat-icon>clear</mat-icon></button>
+    <button mat-stroked-button (click)="onClose()" tabindex="-1">
+      <div class="close-icon">
+        <mat-icon>clear</mat-icon>
+      </div>
+    </button>
   </mat-toolbar>
 </div>
 

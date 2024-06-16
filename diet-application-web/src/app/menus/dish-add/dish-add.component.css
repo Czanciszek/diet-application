@@ -20,3 +20,8 @@ mat-card-actions {
   background: transparent;
   border-bottom-style: none;
 }
+
+.add-circle-icon {
+  display: flex;
+  align-items: center;
+}

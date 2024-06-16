@@ -49,13 +49,11 @@ div mat-checkbox {
   padding-right: 10px;
 }
 
-.btn-dialog-close {
-  width: 35px;
-  min-width: 0px !important;
-  height: 35px;
-  padding: 0px !important;
-}
-
 .long-form-field {
   display: inline;
+}
+
+.close-icon {
+  display: flex;
+  align-items: center;
 }

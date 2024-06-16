@@ -3,8 +3,10 @@
     <span class="fill-remaining-space"></span>
     <span>{{mealServiceForm.controls['id'].value?"Edytuj danie":"Nowe danie"}}</span>
     <span class="fill-remaining-space"></span>
-    <button class="btn-dialog-close" mat-stroked-button tabindex="-1" (click)="onClose()">
-      <mat-icon>clear</mat-icon>
+    <button mat-stroked-button tabindex="-1" (click)="onClose()">
+      <div class="close-icon">
+        <mat-icon>clear</mat-icon>
+      </div>
     </button>
   </mat-toolbar>
 </div>
@@ -257,7 +259,7 @@
       </mat-tab>
       <mat-tab label="Produkt" [disabled]="blockProduct">
         <mat-grid-list rowHeight="10px"></mat-grid-list>
-        
+
         <div *ngIf="mealServiceForm.get('productList').value.length > 0">
 
           <mat-grid-list cols="12" rowHeight="70px">
