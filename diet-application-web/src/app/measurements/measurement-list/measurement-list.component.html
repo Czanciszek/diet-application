@@ -43,7 +43,7 @@
             *ngIf="(patientService.form.value.sex == 'OTHER') ||
                       (patientService.form.value.sex == 'FEMALE' && column != 'chest' && column != 'arm') ||
                       (patientService.form.value.sex == 'MALE' && column != 'breast' && column != 'underBreast' && column != 'hipBones' && column != 'thighNarrowest')">
-            <mat-grid-list cols="{{listData.data.length+3}}" rowHeight="65px">
+            <mat-grid-list cols="{{listData.data.length+3}}" rowHeight="70px">
               <div> <!-- Check whenever sex and measurement type pass together this.patientService.form.value.sex -->
                 <mat-grid-tile colspan="2">
                   <div class="control-container">

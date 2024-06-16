@@ -14,6 +14,7 @@
 
     <mat-tab-group mat-stretch-tabs class="container" [(selectedIndex)]="tabIndex">
       <mat-tab label="Potrawa" [disabled]="blockDish">
+        <mat-grid-list rowHeight="10px"></mat-grid-list>
 
         <mat-grid-list cols="9" rowHeight="70px">
 
@@ -125,7 +126,7 @@
 
         </mat-grid-list>
 
-        <mat-grid-list cols="1" rowHeight="130px">
+        <mat-grid-list cols="1" rowHeight="210px">
           <mat-grid-tile>
             <div class="control-container">
               <mat-form-field>
@@ -142,7 +143,7 @@
         <div formArrayName="productList"
           *ngFor="let product of mealServiceForm.get('productList')['controls']; let i = index">
           <div [formGroupName]="i">
-            <mat-grid-list cols="12" rowHeight="60px">
+            <mat-grid-list cols="12" rowHeight="70px">
               <mat-grid-tile>
                 <div class="control-container">
                   <mat-form-field>
@@ -219,7 +220,7 @@
           </div>
         </div>
 
-        <mat-grid-list cols="12" rowHeight="80px">
+        <mat-grid-list cols="12" rowHeight="70px">
           <mat-grid-tile colspan="7"></mat-grid-tile>
           <mat-grid-tile>
             <div class="control-container">
@@ -242,7 +243,7 @@
           <mat-grid-tile></mat-grid-tile>
         </mat-grid-list>
 
-        <mat-grid-list cols="1" rowHeight="30px">
+        <mat-grid-list cols="1" rowHeight="50px">
           <mat-grid-tile>
             <div class="control-container">
               <div class="button-row">
@@ -255,7 +256,8 @@
 
       </mat-tab>
       <mat-tab label="Produkt" [disabled]="blockProduct">
-
+        <mat-grid-list rowHeight="10px"></mat-grid-list>
+        
         <div *ngIf="mealServiceForm.get('productList').value.length > 0">
 
           <mat-grid-list cols="12" rowHeight="70px">

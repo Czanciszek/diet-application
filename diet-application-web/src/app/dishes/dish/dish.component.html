@@ -54,7 +54,7 @@
         </div>
       </mat-grid-tile>
     </mat-grid-list>
-    <mat-grid-list cols="1" class="recipe-grid-list-height" rowHeight="fit">
+    <mat-grid-list cols="1" class="recipe-grid-list-height" rowHeight="210px">
       <mat-dialog-content>
         <mat-grid-tile>
           <div class="control-container">
@@ -73,7 +73,7 @@
 
     <div formArrayName="products" *ngFor="let product of dishForm.get('products')['controls']; let i = index">
       <div [formGroupName]="i">
-        <mat-grid-list cols="12" rowHeight="60px">
+        <mat-grid-list cols="12" rowHeight="70px">
           <mat-grid-tile>
             <div class="control-container">
               <mat-form-field>
