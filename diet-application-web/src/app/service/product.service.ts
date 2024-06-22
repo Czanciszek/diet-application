@@ -18,6 +18,7 @@ export class ProductService {
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     category: new FormGroup({
+      id: new FormControl(null, Validators.required),
       category: new FormControl(null, Validators.required),
       subcategory: new FormControl(null, Validators.required),
     }),
@@ -56,6 +57,7 @@ export class ProductService {
     this.form.setValue({
       id: null,
       category: {
+        id: '',
         category: '',
         subcategory: '',
       },

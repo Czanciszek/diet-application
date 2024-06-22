@@ -35,11 +35,12 @@ export class Product {
     category: any,
     foodProperties: any,
     amountTypes: any[],
+    
     allergenTypes: string[]
   ) {
     this.id = id;
     this.name = name;
-    this.category = new ProductCategory(category.category, category.subcategory);
+    this.category = new ProductCategory(category.id, category.category, category.subcategory);
     this.foodProperties = foodProperties;
     this.amountTypes = amountTypes;
     this.allergenTypes = allergenTypes;

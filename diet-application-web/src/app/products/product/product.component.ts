@@ -38,7 +38,7 @@ export class ProductComponent implements OnInit {
 
   getCategories() {
 
-    const productCategories = this.productService.productList.map(p => new ProductCategory(p.category.category, p.category.subcategory));
+    const productCategories = this.productService.productList.map(p => new ProductCategory(p.category.id, p.category.category, p.category.subcategory));
     const productCategorySet = new ProductCategorySet(productCategories);
     this.categoryList = productCategorySet.values();
 
@@ -59,6 +59,7 @@ export class ProductComponent implements OnInit {
     this.subcategories.clear();
     const filteredCategories = this.categoryList.filter(x => !!x.category && x.category.includes(category));
     this.fillSubcategories(filteredCategories);
+    this.productServiceForm.get('category').get('id').patchValue(null);
     this.productServiceForm.get('category').get('subcategory').patchValue(null);
   }
 
@@ -67,6 +68,7 @@ export class ProductComponent implements OnInit {
     const filteredCategory = this.categoryList.find(x => !!x.subcategory && x.subcategory.includes(subcategory));
 
     this.onCategoryChange(filteredCategory.category);
+    this.productServiceForm.get('category').get('id').patchValue(filteredCategory.id);
     this.productServiceForm.get('category').get('category').patchValue(filteredCategory.category);
     this.productServiceForm.get('category').get('subcategory').patchValue(subcategory);
   }

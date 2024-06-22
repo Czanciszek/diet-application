@@ -1,9 +1,11 @@
 export class ProductCategory {
 
   constructor(
+    readonly id: string,
     readonly category: string,
     readonly subcategory: string
   ) {
+    this.id = id;
     this.category = category;
     this.subcategory = subcategory;
   }

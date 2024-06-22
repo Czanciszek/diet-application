@@ -28,14 +28,17 @@ public class CategoryType implements Serializable, Comparable<CategoryType> {
     }
 
     @Override
-    public boolean equals(Object categoryType) {
-        if (this == categoryType) {
+    public boolean equals(Object o) {
+        if (this == o)
             return true;
-        }
-        if (categoryType == null || getClass() != categoryType.getClass()) {
+
+        if (!(o instanceof CategoryType categoryType))
             return false;
-        }
-        return id.equals(((CategoryType) categoryType).id);
+
+        if (id == null || categoryType.id == null)
+            return false;
+
+        return id.equals((categoryType).id);
     }
 
     @Override
