@@ -20,6 +20,7 @@ import { ProductListComponent } from './products/product-list/product-list.compo
 import { NotificationService } from "./service/notification.service";
 import { DishListComponent } from './dishes/dish-list/dish-list.component';
 import { DishComponent } from './dishes/dish/dish.component';
+import { DishSelectorService } from './service/dish-selector.service';
 import { DishService } from "./service/dish.service";
 import { ProductSelectComponent } from './products/product-select/product-select.component';
 import { PatientsComponent } from './patients/patients.component';
@@ -99,6 +100,7 @@ const routes: Routes = [
         FlexLayoutModule], providers: [
         RestapiService,
         ProductService,
+        DishSelectorService,
         DishService,
         PatientService,
         NotificationService,

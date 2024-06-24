@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import { DishService } from "../../service/dish.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { Sort, SortDirection, MatSort } from "@angular/material/sort";
+import { PageEvent, MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-import { MatSort } from "@angular/material/sort";
-import { MatPaginator } from "@angular/material/paginator";
+
+import { DishService } from "../../service/dish.service";
+import { DishSelectorService } from '../../service/dish-selector.service';
+
 import { Dish } from "../../model/dish";
 import { DishUsage } from "../../model/dishUsage";
 import { FOOD_TYPES } from "../../model/helpers/foodTypes";
@@ -22,17 +25,20 @@ export class DishSelectComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: DishSelectDialogData,
     private dishService: DishService,
+    private dishSelectorService: DishSelectorService,
     public dialogRef: MatDialogRef<DishSelectComponent>,
   ) { }
 
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'portions', 'foodType', 'dishUsages', 'actions'];
+  searchKey: string = "";
+  pageIndex = 0;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  searchKey: string;
 
   ngOnInit(): void {
+    this.updateRecentSearch();
     this.fetchData();
   }
 
@@ -42,7 +48,12 @@ export class DishSelectComponent implements OnInit {
   }
 
   applyFilter() {
+    if (this.searchKey == null) {
+      return;
+    }
+
     this.listData.filter = this.searchKey.trim().toLowerCase();
+    this.dishSelectorService.lastInputString = this.searchKey;
   }
 
   fetchData() {
@@ -52,11 +63,13 @@ export class DishSelectComponent implements OnInit {
   getDishList() {
     this.dishService.getDishes().subscribe(
       (data: Dish[]) => {
-        this.fetchResults(data);
+        this.setFetchedResults(data);
+        this.updateSortSelection();
+        this.applyFilter();
       });
   }
 
-  fetchResults(data: Dish[]) {
+  setFetchedResults(data: Dish[]) {
     this.listData = new MatTableDataSource([...data]);
     this.mapDishUsages();
     this.mapDishUsageInfo();
@@ -111,5 +124,25 @@ export class DishSelectComponent implements OnInit {
     if (foodTypeId == null) return;
     let foodType = FOOD_TYPES.filter(x => x.id == foodTypeId);
     return foodType[0].value;
+  }
+
+  handlePageEvent(e: PageEvent) {
+    this.dishSelectorService.selectedPageIndex = e.pageIndex;
+  }
+
+  handleSelectedSort(sort: Sort) {
+    this.dishSelectorService.selectedSort = sort;
+  }
+
+  private updateRecentSearch() {
+    this.searchKey = this.dishSelectorService.lastInputString;
+    this.pageIndex = this.dishSelectorService.selectedPageIndex;
+  }
+
+  private updateSortSelection() {
+    if (this.dishSelectorService.selectedSort != null) {
+      this.sort.active = this.dishSelectorService.selectedSort.active;
+      this.sort.direction = this.dishSelectorService.selectedSort.direction;
+    }
   }
 }
