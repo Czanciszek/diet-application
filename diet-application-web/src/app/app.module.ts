@@ -99,14 +99,15 @@ const routes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FlexLayoutModule], providers: [
-      RestapiService,
-      ProductService,
-      DishSelectorService,
-      DishService,
-      PatientService,
-      NotificationService,
-      provideHttpClient(withInterceptorsFromDi()),
-    ]
+    FlexLayoutModule],
+  providers: [
+    RestapiService,
+    ProductService,
+    DishSelectorService,
+    DishService,
+    PatientService,
+    NotificationService,
+    provideHttpClient(withInterceptorsFromDi()),
+  ]
 })
 export class AppModule { }
