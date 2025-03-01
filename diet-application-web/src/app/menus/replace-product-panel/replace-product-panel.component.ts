@@ -3,9 +3,10 @@ import { ProductReplacement } from "../../model/product-replacement";
 import { MatDialogRef } from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-replace-product-panel',
-  templateUrl: './replace-product-panel.component.html',
-  styleUrls: ['./replace-product-panel.component.css']
+    selector: 'app-replace-product-panel',
+    templateUrl: './replace-product-panel.component.html',
+    styleUrls: ['./replace-product-panel.component.css'],
+    standalone: false
 })
 export class ReplaceProductPanelComponent {
 

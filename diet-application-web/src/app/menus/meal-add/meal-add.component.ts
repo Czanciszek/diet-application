@@ -12,9 +12,10 @@ import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
 import { DishUsage } from "../../model/dishUsage";
 
 @Component({
-  selector: 'app-meal-add',
-  templateUrl: './meal-add.component.html',
-  styleUrls: ['./meal-add.component.css']
+    selector: 'app-meal-add',
+    templateUrl: './meal-add.component.html',
+    styleUrls: ['./meal-add.component.css'],
+    standalone: false
 })
 export class MealAddComponent implements OnInit {
 

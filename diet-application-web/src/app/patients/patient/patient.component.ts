@@ -7,9 +7,10 @@ import { MeasurementListComponent } from "../../measurements/measurement-list/me
 import { MeasurementService } from "../../service/measurement.service";
 
 @Component({
-  selector: 'app-patient',
-  templateUrl: './patient.component.html',
-  styleUrls: ['./patient.component.css']
+    selector: 'app-patient',
+    templateUrl: './patient.component.html',
+    styleUrls: ['./patient.component.css'],
+    standalone: false
 })
 export class PatientComponent implements OnInit {
 

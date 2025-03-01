@@ -7,9 +7,10 @@ import { MatPaginator } from "@angular/material/paginator";
 import { Product } from "../../model/product";
 
 @Component({
-  selector: 'app-product-select',
-  templateUrl: './product-select.component.html',
-  styleUrls: ['./product-select.component.css']
+    selector: 'app-product-select',
+    templateUrl: './product-select.component.html',
+    styleUrls: ['./product-select.component.css'],
+    standalone: false
 })
 export class ProductSelectComponent implements OnInit {
 

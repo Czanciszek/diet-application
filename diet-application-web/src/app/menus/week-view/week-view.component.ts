@@ -9,9 +9,10 @@ import { ProductService } from "../../service/product.service";
 import { MealService } from '../../service/meal.service';
 
 @Component({
-  selector: 'week-view.component',
-  styleUrls: ['week-view.component.css'],
-  templateUrl: 'week-view.component.html',
+    selector: 'week-view.component',
+    styleUrls: ['week-view.component.css'],
+    templateUrl: 'week-view.component.html',
+    standalone: false
 })
 export class WeekViewComponent implements OnInit {
 

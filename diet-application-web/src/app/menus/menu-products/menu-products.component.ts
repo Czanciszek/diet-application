@@ -5,9 +5,10 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatSort } from "@angular/material/sort";
 
 @Component({
-  selector: 'app-menu-products',
-  templateUrl: './menu-products.component.html',
-  styleUrls: ['./menu-products.component.css']
+    selector: 'app-menu-products',
+    templateUrl: './menu-products.component.html',
+    styleUrls: ['./menu-products.component.css'],
+    standalone: false
 })
 export class MenuProductsComponent implements OnInit {
 

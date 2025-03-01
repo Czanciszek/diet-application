@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-week-header',
-  templateUrl: './week-header.component.html',
-  styleUrls: ['./week-header.component.css']
+    selector: 'app-week-header',
+    templateUrl: './week-header.component.html',
+    styleUrls: ['./week-header.component.css'],
+    standalone: false
 })
 export class WeekHeaderComponent implements OnInit {
 

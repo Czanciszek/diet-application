@@ -11,9 +11,10 @@ import { FileService } from "../../service/file.service";
 import { Product } from "../../model/product";
 
 @Component({
-  selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+    selector: 'app-product-list',
+    templateUrl: './product-list.component.html',
+    styleUrls: ['./product-list.component.css'],
+    standalone: false
 })
 export class ProductListComponent implements OnInit {
 

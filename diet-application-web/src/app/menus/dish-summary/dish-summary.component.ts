@@ -6,9 +6,10 @@ import { MatDialog } from "@angular/material/dialog";
 import { ProductService } from "../../service/product.service";
 
 @Component({
-  selector: 'app-dish-summary',
-  templateUrl: './dish-summary.component.html',
-  styleUrls: ['./dish-summary.component.css']
+    selector: 'app-dish-summary',
+    templateUrl: './dish-summary.component.html',
+    styleUrls: ['./dish-summary.component.css'],
+    standalone: false
 })
 export class DishSummaryComponent implements OnInit {
 

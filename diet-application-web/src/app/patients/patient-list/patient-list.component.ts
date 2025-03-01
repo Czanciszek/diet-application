@@ -10,9 +10,10 @@ import { PatientEditComponent } from "../patient-edit/patient-edit.component";
 import { Patient } from "../../model/patient";
 
 @Component({
-  selector: 'app-patient-list',
-  templateUrl: './patient-list.component.html',
-  styleUrls: ['./patient-list.component.css']
+    selector: 'app-patient-list',
+    templateUrl: './patient-list.component.html',
+    styleUrls: ['./patient-list.component.css'],
+    standalone: false
 })
 export class PatientListComponent implements OnInit {
 
