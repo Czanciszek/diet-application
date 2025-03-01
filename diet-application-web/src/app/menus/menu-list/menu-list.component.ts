@@ -13,9 +13,10 @@ import { GenerateMenuPanelComponent } from "../generate-menu-panel/generate-menu
 import { CopyMenuPanelComponent } from "../copy-menu-panel/copy-menu-panel.component";
 
 @Component({
-  selector: 'app-menu-list',
-  templateUrl: './menu-list.component.html',
-  styleUrls: ['./menu-list.component.css']
+    selector: 'app-menu-list',
+    templateUrl: './menu-list.component.html',
+    styleUrls: ['./menu-list.component.css'],
+    standalone: false
 })
 export class MenuListComponent implements OnInit {
 

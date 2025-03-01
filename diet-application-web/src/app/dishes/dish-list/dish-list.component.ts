@@ -12,9 +12,10 @@ import { Dish } from "../../model/dish";
 import { Product } from "../../model/product";
 
 @Component({
-  selector: 'app-dish-list',
-  templateUrl: './dish-list.component.html',
-  styleUrls: ['./dish-list.component.css']
+    selector: 'app-dish-list',
+    templateUrl: './dish-list.component.html',
+    styleUrls: ['./dish-list.component.css'],
+    standalone: false
 })
 export class DishListComponent implements OnInit {
 

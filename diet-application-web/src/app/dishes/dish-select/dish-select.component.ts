@@ -16,9 +16,10 @@ export interface DishSelectDialogData {
 }
 
 @Component({
-  selector: 'app-dish-select',
-  templateUrl: './dish-select.component.html',
-  styleUrls: ['./dish-select.component.css']
+    selector: 'app-dish-select',
+    templateUrl: './dish-select.component.html',
+    styleUrls: ['./dish-select.component.css'],
+    standalone: false
 })
 export class DishSelectComponent implements OnInit {
 

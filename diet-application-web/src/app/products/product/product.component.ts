@@ -9,9 +9,10 @@ import { ALLERGEN_TYPES } from "../../model/helpers/allergenTypes";
 import { ProductCategory, ProductCategorySet } from "../../model/product-category";
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css']
+    selector: 'app-product',
+    templateUrl: './product.component.html',
+    styleUrls: ['./product.component.css'],
+    standalone: false
 })
 export class ProductComponent implements OnInit {
 

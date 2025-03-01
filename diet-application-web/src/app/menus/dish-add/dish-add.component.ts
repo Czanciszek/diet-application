@@ -4,9 +4,10 @@ import { MealAddComponent } from "../meal-add/meal-add.component";
 import { MealService } from "../../service/meal.service";
 
 @Component({
-  selector: 'app-dish-add',
-  templateUrl: './dish-add.component.html',
-  styleUrls: ['./dish-add.component.css']
+    selector: 'app-dish-add',
+    templateUrl: './dish-add.component.html',
+    styleUrls: ['./dish-add.component.css'],
+    standalone: false
 })
 export class DishAddComponent implements OnInit {
 

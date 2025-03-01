@@ -8,9 +8,10 @@ import { ReplaceProductPanelComponent } from "../replace-product-panel/replace-p
 import { FOOD_TYPES } from "../../model/helpers/foodTypes";
 
 @Component({
-  selector: 'app-menu-add',
-  templateUrl: './menu-add.component.html',
-  styleUrls: ['./menu-add.component.css']
+    selector: 'app-menu-add',
+    templateUrl: './menu-add.component.html',
+    styleUrls: ['./menu-add.component.css'],
+    standalone: false
 })
 export class MenuAddComponent implements OnInit {
 

@@ -9,9 +9,10 @@ import { Menu } from "../../model/menu";
 import { Patient } from "../../model/patient";
 
 @Component({
-  selector: 'app-copy-menu-panel',
-  templateUrl: './copy-menu-panel.component.html',
-  styleUrls: ['./copy-menu-panel.component.css']
+    selector: 'app-copy-menu-panel',
+    templateUrl: './copy-menu-panel.component.html',
+    styleUrls: ['./copy-menu-panel.component.css'],
+    standalone: false
 })
 export class CopyMenuPanelComponent implements OnInit {
 

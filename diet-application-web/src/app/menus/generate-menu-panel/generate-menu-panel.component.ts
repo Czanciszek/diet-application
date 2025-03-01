@@ -5,9 +5,10 @@ import { FileService } from "../../service/file.service";
 import { MenuService } from "../../service/menu.service";
 
 @Component({
-  selector: 'app-generate-menu-panel',
-  templateUrl: './generate-menu-panel.component.html',
-  styleUrls: ['./generate-menu-panel.component.css']
+    selector: 'app-generate-menu-panel',
+    templateUrl: './generate-menu-panel.component.html',
+    styleUrls: ['./generate-menu-panel.component.css'],
+    standalone: false
 })
 export class GenerateMenuPanelComponent implements OnInit {
 

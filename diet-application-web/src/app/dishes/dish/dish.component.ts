@@ -9,9 +9,10 @@ import { FOOD_TYPES } from "../../model/helpers/foodTypes";
 import { AMOUNT_TYPES } from "../../model/helpers/amountTypes";
 
 @Component({
-  selector: 'app-dish',
-  templateUrl: './dish.component.html',
-  styleUrls: ['./dish.component.css']
+    selector: 'app-dish',
+    templateUrl: './dish.component.html',
+    styleUrls: ['./dish.component.css'],
+    standalone: false
 })
 export class DishComponent implements OnInit {
 

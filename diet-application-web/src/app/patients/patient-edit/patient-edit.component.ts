@@ -6,10 +6,10 @@ import { ProductService } from "../../service/product.service";
 import { ALLERGEN_TYPES } from "../../model/helpers/allergenTypes";
 
 @Component({
-  selector: 'app-patient-edit',
-  templateUrl: './patient-edit.component.html',
-  styleUrls: ['./patient-edit.component.css'],
-
+    selector: 'app-patient-edit',
+    templateUrl: './patient-edit.component.html',
+    styleUrls: ['./patient-edit.component.css'],
+    standalone: false
 })
 export class PatientEditComponent implements OnInit {
 
