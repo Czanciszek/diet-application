@@ -30,6 +30,7 @@ public class MongoProduct implements Comparable<MongoProduct> {
     private FoodPropertiesType foodProperties;
     private List<ProductAmountType> amountTypes;
     private List<AllergenType> allergenTypes;
+    private ProductReplacements replacements;
 
     public MongoProduct(ProductType productType) {
         this.id = productType.getId();
@@ -40,6 +41,7 @@ public class MongoProduct implements Comparable<MongoProduct> {
         this.foodProperties = productType.getFoodProperties();
         this.amountTypes = ListUtils.emptyIfNull(productType.getAmountTypes());
         this.allergenTypes = ListUtils.emptyIfNull(productType.getAllergenTypes());
+        this.replacements = productType.getReplacements();
     }
 
     @Override

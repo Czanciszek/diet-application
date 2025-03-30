@@ -1,12 +1,15 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
+import com.springboot.dietapplication.model.excel.ProductReplacementsExcel;
 import com.springboot.dietapplication.model.psql.product.PsqlCategory;
 import com.springboot.dietapplication.model.psql.product.PsqlProduct;
 import com.springboot.dietapplication.model.psql.properties.PsqlFoodProperties;
+import com.springboot.dietapplication.model.type.ProductReplacements;
 import com.springboot.dietapplication.repository.CategoryRepository;
 import com.springboot.dietapplication.repository.FoodPropertiesRepository;
 import com.springboot.dietapplication.repository.ProductRepository;
+import com.springboot.dietapplication.repository.mongo.MongoProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,9 @@ public class DataService {
     CategoryRepository categoryRepository;
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    MongoProductRepository mongoProductRepository;
 
     public void saveProducts(List<ProductExcel> importedProducts) {
         List<PsqlProduct> products = new ArrayList<>();
@@ -54,6 +60,37 @@ public class DataService {
         }
 
         productRepository.saveAll(products);
+    }
+
+    public void updateProductReplacements(List<ProductReplacementsExcel> importedProducts) {
+
+        var allProducts = mongoProductRepository.findAll();
+
+        for (var originProduct: allProducts) {
+            var optionalProduct = importedProducts
+                    .stream()
+                    .filter(p -> p.getId().equals(originProduct.getId()))
+                    .findFirst();
+
+            if (optionalProduct.isEmpty())
+                continue;
+
+            var product = optionalProduct.get();
+
+            var replacements = new ProductReplacements(
+                    product.isProteinsReplacement(),
+                    product.isFatsReplacement(),
+                    product.isCarbohydratesReplacement(),
+                    product.isFibersReplacement()
+            );
+
+            originProduct.setReplacements(replacements);
+
+//            String currentDate = DateFormatter.getInstance().getCurrentDate();
+//            originProduct.setUpdateDate(currentDate);
+
+            mongoProductRepository.save(originProduct);
+        }
     }
 
     public void clearDatabase() {

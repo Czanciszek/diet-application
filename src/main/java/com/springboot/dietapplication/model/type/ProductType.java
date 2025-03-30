@@ -30,6 +30,7 @@ public class ProductType implements Serializable {
     private FoodPropertiesType foodProperties;
     private List<ProductAmountType> amountTypes;
     private List<AllergenType> allergenTypes;
+    private ProductReplacements replacements;
 
     public ProductType(PsqlProductFoodProperties psqlProduct) {
         this.id = String.valueOf(psqlProduct.getId());
@@ -48,6 +49,7 @@ public class ProductType implements Serializable {
         this.foodProperties = mongoProduct.getFoodProperties();
         this.amountTypes = ListUtils.emptyIfNull(mongoProduct.getAmountTypes());
         this.allergenTypes = ListUtils.emptyIfNull(mongoProduct.getAllergenTypes());
+        this.replacements = mongoProduct.getReplacements();
     }
 
 }

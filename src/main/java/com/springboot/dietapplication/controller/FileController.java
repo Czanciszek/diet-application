@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
+import com.springboot.dietapplication.model.excel.ProductReplacementsExcel;
 import com.springboot.dietapplication.model.type.GenerateMenuType;
 import com.springboot.dietapplication.service.*;
 import io.github.biezhi.excel.plus.Reader;
@@ -32,6 +33,13 @@ public class FileController {
             @RequestParam("upload") MultipartFile multipartFile,
             RedirectAttributes redirectAttributes) {
         processFile(multipartFile);
+    }
+
+    @PostMapping("/uploadProductReplacements")
+    public void handleFileUploadReplacements(
+            @RequestParam("upload") MultipartFile multipartFile,
+            RedirectAttributes redirectAttributes) {
+        processFileReplacements(multipartFile);
     }
 
     @PostMapping(value = "/menu", produces = MediaType.APPLICATION_PDF_VALUE)
@@ -68,6 +76,31 @@ public class FileController {
         }
 
         dataService.saveProducts(productExcelList);
+    }
+
+    private void processFileReplacements(MultipartFile multipartFile) {
+
+        File file = new File("src/main/resources/ProductData/tmpData.xlsx");
+
+        try (OutputStream os = new FileOutputStream(file)) {
+            os.write(multipartFile.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Reader<ProductReplacementsExcel> reader = Reader.create(ProductReplacementsExcel.class);
+        List<ProductReplacementsExcel> productExcelList = reader
+                .from(file)
+                .start(1)
+                .asList();
+
+        try {
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        dataService.updateProductReplacements(productExcelList);
     }
 
 }

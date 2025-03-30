@@ -34,7 +34,8 @@ export class FileService {
     let formData = new FormData();
     formData.append('upload', file);
 
-    return this.apiService.post(formData, "files/uploadProducts");
+    // return this.apiService.post(formData, "files/uploadProducts");
+    return this.apiService.post(formData, "files/uploadProductReplacements");
   }
 
   downloadFile(data: any, type: string) {
