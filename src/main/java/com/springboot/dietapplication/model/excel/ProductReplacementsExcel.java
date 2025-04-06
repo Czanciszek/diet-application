@@ -6,34 +6,34 @@ import lombok.Getter;
 @Getter
 public class ProductReplacementsExcel {
 
-    @ExcelColumn(title = "_id", index = 0)
+    @ExcelColumn(title = "_id", index = 1)
     private String id;
 
-    @ExcelColumn(title = "energyValue", index = 1)
+    @ExcelColumn(title = "energyValue", index = 2)
     private int energyValue;
 
-    @ExcelColumn(title = "proteins", index = 2)
+    @ExcelColumn(title = "proteins", index = 3)
     private float proteins;
 
-    @ExcelColumn(title = "fats", index = 3)
+    @ExcelColumn(title = "fats", index = 4)
     private float fats;
 
-    @ExcelColumn(title = "carbohydrates", index = 4)
+    @ExcelColumn(title = "carbohydrates", index =5)
     private float carbohydrates;
 
-    @ExcelColumn(title = "name", index = 5)
+    @ExcelColumn(title = "name", index = 6)
     private String name;
 
-    @ExcelColumn(title = "proteinsReplacement", index = 6)
+    @ExcelColumn(title = "proteinsReplacement", index = 7)
     private boolean proteinsReplacement;
 
-    @ExcelColumn(title = "fatsReplacement", index = 7)
+    @ExcelColumn(title = "fatsReplacement", index = 8)
     private boolean fatsReplacement;
 
-    @ExcelColumn(title = "carbohydratesReplacement", index = 8)
+    @ExcelColumn(title = "carbohydratesReplacement", index = 9)
     private boolean carbohydratesReplacement;
 
-    @ExcelColumn(title = "fibersReplacement", index = 8)
+    @ExcelColumn(title = "fibersReplacement", index = 10)
     private boolean fibersReplacement;
 
     public ProductReplacementsExcel() {
