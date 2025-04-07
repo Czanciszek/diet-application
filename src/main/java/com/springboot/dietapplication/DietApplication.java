@@ -34,6 +34,9 @@ public class DietApplication {
     @Autowired
     MongoUserRunner mongoUserRunner;
 
+    @Autowired
+    MongoClinicRunner mongoClinicRunner;
+
     @Bean
     CommandLineRunner runner() {
         return args -> {
@@ -50,7 +53,8 @@ public class DietApplication {
 //                mongoWeekMenuRunner.reloadMenusPSQLtoMongo();
 //
 //                mongoUserRunner.reloadUsersPSQLToMongo();
-
+//
+//                mongoClinicRunner.setClinicForUsers();
             } catch (Exception e) {
                 e.printStackTrace();
             }

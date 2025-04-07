@@ -17,6 +17,7 @@ public class UserEntity implements Serializable {
 
     @Id
     private String id;
+    private String clinicId;
     private String userType;
     private String name;
     private String password;
@@ -28,6 +29,7 @@ public class UserEntity implements Serializable {
 
     public UserEntity(MongoUserEntity mongoUserEntity) {
         this.id = mongoUserEntity.getId();
+        this.clinicId = mongoUserEntity.getClinicId();
         this.userType = mongoUserEntity.getUserType();
         this.name = mongoUserEntity.getName();
         this.password = mongoUserEntity.getPassword();
