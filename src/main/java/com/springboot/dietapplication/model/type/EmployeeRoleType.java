@@ -3,14 +3,15 @@ package com.springboot.dietapplication.model.type;
 import lombok.Getter;
 
 @Getter
-public enum UserType {
+public enum EmployeeRoleType {
 
-    ADMIN("ADMIN"),
-    USER("USER");
+    OWNER("OWNER"),
+    DIETITIAN("DIETITIAN"),
+    HR("HR");
 
     public final String name;
 
-    UserType(String name) {
+    EmployeeRoleType(String name) {
         this.name = name;
     }
 

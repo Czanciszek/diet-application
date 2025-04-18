@@ -1,7 +1,8 @@
 package com.springboot.dietapplication.utils;
 
 import com.springboot.dietapplication.model.type.ClinicType;
-import com.springboot.dietapplication.repository.mongo.MongoUserEntityRepository;
+import com.springboot.dietapplication.model.type.PatientRoleType;
+import com.springboot.dietapplication.repository.mongo.MongoPatientRepository;
 import com.springboot.dietapplication.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class MongoClinicRunner {
     ClinicService clinicService;
 
     @Autowired
-    MongoUserEntityRepository userEntityRepository;
+    MongoPatientRepository patientRepository;
 
     public void addCustomClinic() {
 
@@ -29,7 +30,7 @@ public class MongoClinicRunner {
         clinicService.insert(clinic);
     }
 
-    public void setClinicForUsers() {
+    public void updatePatients() {
 
         var clinicId = clinicService
                 .getAll()
@@ -38,13 +39,14 @@ public class MongoClinicRunner {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No clinics"))
                 .getId();
 
-        var users = userEntityRepository.findAll();
+        var patients = patientRepository.findAll();
 
-        var updatedUsers = users
+        var updatedPatients = patients
                 .stream()
                 .peek(p -> p.setClinicId(clinicId))
+                .peek(p -> p.setRoleType(PatientRoleType.ADULT))
                 .collect(Collectors.toList());
 
-        userEntityRepository.saveAll(updatedUsers);
+        patientRepository.saveAll(updatedPatients);
     }
 }

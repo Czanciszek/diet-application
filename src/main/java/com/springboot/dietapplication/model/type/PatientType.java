@@ -25,6 +25,9 @@ public class PatientType implements Serializable {
     @JsonIgnore
     private String userId;
 
+    private String clinicId;
+    private PatientRoleType roleType;
+
     private String name;
     private String surname;
     private String birthDate;
@@ -64,6 +67,8 @@ public class PatientType implements Serializable {
 
     public PatientType(MongoPatient mongoPatient) {
         this.id = mongoPatient.getId();
+        this.clinicId = mongoPatient.getClinicId();
+        this.roleType = mongoPatient.getRoleType();
         this.userId = mongoPatient.getUserId();
         this.name = mongoPatient.getName();
         this.surname = mongoPatient.getSurname();
