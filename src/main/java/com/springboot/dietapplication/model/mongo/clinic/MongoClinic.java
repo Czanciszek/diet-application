@@ -16,7 +16,6 @@ public class MongoClinic implements Comparable<MongoClinic> {
     @Id
     private String id;
 
-    private String maintainerUserId;
     private String name;
     private String address;
 
@@ -27,7 +26,6 @@ public class MongoClinic implements Comparable<MongoClinic> {
     public MongoClinic(ClinicType clinicType) {
         this.id = clinicType.getId();
 
-        this.maintainerUserId = clinicType.getMaintainerUserId();
         this.name = clinicType.getName();
         this.address = clinicType.getAddress();
     }

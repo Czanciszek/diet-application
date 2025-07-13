@@ -46,7 +46,7 @@ public class PatientService {
 //        List<PsqlPatient> patients = this.patientRepository.findAllByUserId(user.getId());
 
         for (PsqlPatient psqlPatient : patients) {
-            PatientType patientType = new PatientType(psqlPatient);
+            PatientType patientType = new PatientType();
             patientType.setUnlikelyCategories(getPatientsUnlikelyCategories(psqlPatient.getId()));
             patientType.setAllergens(convertAllergenTypes(psqlPatient.getId()));
             patientType.setMeasurements(measurementService.getMeasurementsByPatientId(psqlPatient.getId()));
@@ -70,7 +70,7 @@ public class PatientService {
         if (!user.getUserType().equals(UserType.ADMIN.name) && !patient.get().getUserId().equals(user.getId()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for getting patient");
 
-        return new PatientType(patient.get());
+        return new PatientType();
     }
 
     public PatientType getPatientByMenuId(Long menuId) throws ResponseStatusException {
@@ -84,7 +84,7 @@ public class PatientService {
         if (!user.getUserType().equals(UserType.ADMIN.name) && !patient.get().getUserId().equals(user.getId()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for getting patient");
 
-        return new PatientType(patient.get());
+        return new PatientType();
     }
 
     public PatientType insert(PatientType patientType) {

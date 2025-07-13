@@ -44,7 +44,7 @@ public class MongoClinicRunner {
         var updatedPatients = patients
                 .stream()
                 .peek(p -> p.setClinicId(clinicId))
-                .peek(p -> p.setRoleType(PatientRoleType.ADULT))
+                .peek(p -> p.setRoleType(PatientRoleType.PERSONAL))
                 .collect(Collectors.toList());
 
         patientRepository.saveAll(updatedPatients);

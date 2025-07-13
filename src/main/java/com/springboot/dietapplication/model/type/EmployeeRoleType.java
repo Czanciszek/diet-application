@@ -6,8 +6,8 @@ import lombok.Getter;
 public enum EmployeeRoleType {
 
     OWNER("OWNER"),
-    DIETITIAN("DIETITIAN"),
-    HR("HR");
+    CLINICIAN("CLINICIAN"),
+    HUMAN_RESOURCES("HUMAN_RESOURCES");
 
     public final String name;
 

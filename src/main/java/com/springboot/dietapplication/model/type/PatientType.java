@@ -22,10 +22,8 @@ public class PatientType implements Serializable {
 
     private String id;
 
-    @JsonIgnore
-    private String userId;
-
     private String clinicId;
+    private String employeeId;
     private PatientRoleType roleType;
 
     private String name;
@@ -50,26 +48,11 @@ public class PatientType implements Serializable {
     @JsonIgnore
     private List<String> menus;
 
-    public PatientType(PsqlPatient psqlPatient) {
-        this.id = String.valueOf(psqlPatient.getId());
-        this.userId = String.valueOf(psqlPatient.getUserId());
-        this.name = psqlPatient.getName();
-        this.surname = psqlPatient.getSurname();
-        this.email = psqlPatient.getEmail();
-        this.numberPhone = psqlPatient.getNumberPhone();
-        this.birthDate = psqlPatient.getBirthDate();
-        this.sex = psqlPatient.isSex() ? SexType.FEMALE : SexType.MALE;
-        this.bodyHeight = psqlPatient.getBodyHeight();
-        this.changedLifestyleNote = psqlPatient.getChangedLifestyleNote();
-        this.currentLifestyleNote = psqlPatient.getCurrentLifestyleNote();
-        this.dietaryPurpose = psqlPatient.getDietaryPurpose();
-    }
-
     public PatientType(MongoPatient mongoPatient) {
         this.id = mongoPatient.getId();
         this.clinicId = mongoPatient.getClinicId();
+        this.employeeId = mongoPatient.getEmployeeId();
         this.roleType = mongoPatient.getRoleType();
-        this.userId = mongoPatient.getUserId();
         this.name = mongoPatient.getName();
         this.surname = mongoPatient.getSurname();
         this.email = mongoPatient.getEmail();

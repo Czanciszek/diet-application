@@ -21,6 +21,7 @@ public class MongoPatient {
 
     private String userId;
     private String clinicId;
+    private String employeeId;
     private PatientRoleType roleType;
 
     private String name;
@@ -47,8 +48,8 @@ public class MongoPatient {
 
     public MongoPatient(PatientType patientType) {
         this.id = patientType.getId();
-        this.userId = patientType.getUserId();
         this.clinicId = patientType.getClinicId();
+        this.employeeId = patientType.getEmployeeId();
         this.roleType = patientType.getRoleType();
 
         this.name = patientType.getName();

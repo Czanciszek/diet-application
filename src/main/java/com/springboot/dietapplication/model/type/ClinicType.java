@@ -17,14 +17,12 @@ public class ClinicType implements Serializable {
     private static final long serialVersionUID = 6918603749943343516L;
 
     private String id;
-    private String maintainerUserId;
     private String name;
     private String address;
 
     public ClinicType(MongoClinic mongoClinic) {
         this.id = mongoClinic.getId();
 
-        this.maintainerUserId = mongoClinic.getMaintainerUserId();
         this.name = mongoClinic.getName();
         this.address = mongoClinic.getAddress();
     }
