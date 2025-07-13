@@ -1,12 +1,9 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.psql.menu.PsqlDayMeal;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
-@Deprecated(since = "0.1.0", forRemoval = true)
 public class DayMealType implements Serializable {
 
     @Serial
@@ -24,12 +21,6 @@ public class DayMealType implements Serializable {
 
     public DayMealType() {
 
-    }
-
-    public DayMealType(PsqlDayMeal dayMeal) {
-        this.id = dayMeal.getId();
-        this.weekMealId = dayMeal.getWeekMealId();
-        this.date = dayMeal.getDate();
     }
 
     public Long getId() {

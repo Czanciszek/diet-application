@@ -1,8 +1,6 @@
 package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
-import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
-import com.springboot.dietapplication.model.psql.properties.PsqlFoodProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -44,53 +42,6 @@ public class FoodPropertiesType implements Serializable {
     private float betaCarotene;
     private float vitaminD;
     private float vitaminC;
-
-    public FoodPropertiesType(PsqlFoodProperties foodProperties) {
-        this.id = foodProperties.getId();
-        this.energyValue = foodProperties.getEnergyValue();
-        this.proteins = foodProperties.getProteins();
-        this.fats = foodProperties.getFats();
-        this.saturatedFattyAcids = foodProperties.getSaturatedFattyAcids();
-        this.monoUnsaturatedFattyAcids = foodProperties.getMonoUnsaturatedFattyAcids();
-        this.polyUnsaturatedFattyAcids = foodProperties.getPolyUnsaturatedFattyAcids();
-        this.cholesterol = foodProperties.getCholesterol();
-        this.carbohydrates = foodProperties.getCarbohydrates();
-        this.sucrose = foodProperties.getSucrose();
-        this.dietaryFibres = foodProperties.getDietaryFibres();
-        this.sodium = foodProperties.getSodium();
-        this.potassium = foodProperties.getPotassium();
-        this.calcium = foodProperties.getCalcium();
-        this.phosphorus = foodProperties.getPhosphorus();
-        this.magnesium = foodProperties.getMagnesium();
-        this.iron = foodProperties.getIron();
-        this.selenium = foodProperties.getSelenium();
-        this.betaCarotene = foodProperties.getBetaCarotene();
-        this.vitaminD = foodProperties.getVitaminD();
-        this.vitaminC = foodProperties.getVitaminC();
-    }
-
-    public FoodPropertiesType(PsqlProductFoodProperties foodProperties) {
-        this.energyValue = foodProperties.getEnergyValue();
-        this.proteins = foodProperties.getProteins();
-        this.fats = foodProperties.getFats();
-        this.saturatedFattyAcids = foodProperties.getSaturatedFattyAcids();
-        this.monoUnsaturatedFattyAcids = foodProperties.getMonoUnsaturatedFattyAcids();
-        this.polyUnsaturatedFattyAcids = foodProperties.getPolyUnsaturatedFattyAcids();
-        this.cholesterol = foodProperties.getCholesterol();
-        this.carbohydrates = foodProperties.getCarbohydrates();
-        this.sucrose = foodProperties.getSucrose();
-        this.dietaryFibres = foodProperties.getDietaryFibres();
-        this.sodium = foodProperties.getSodium();
-        this.potassium = foodProperties.getPotassium();
-        this.calcium = foodProperties.getCalcium();
-        this.phosphorus = foodProperties.getPhosphorus();
-        this.magnesium = foodProperties.getMagnesium();
-        this.iron = foodProperties.getIron();
-        this.selenium = foodProperties.getSelenium();
-        this.betaCarotene = foodProperties.getBetaCarotene();
-        this.vitaminD = foodProperties.getVitaminD();
-        this.vitaminC = foodProperties.getVitaminC();
-    }
 
     public FoodPropertiesType(ProductExcel productExcel) {
         this.energyValue = productExcel.getEnergyValue();

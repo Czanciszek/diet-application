@@ -2,8 +2,6 @@ package com.springboot.dietapplication.model.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.dish.MongoDishProduct;
-import com.springboot.dietapplication.model.psql.dish.PsqlProductDish;
-import com.springboot.dietapplication.model.psql.menu.PsqlProductMeal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,20 +27,6 @@ public class ProductDishType implements Serializable {
 
     @JsonIgnore
     private FoodPropertiesType foodPropertiesType;
-
-    public ProductDishType(PsqlProductDish psqlProductDish) {
-        this.productId = String.valueOf(psqlProductDish.getProductId());
-        this.productName = psqlProductDish.getProductName();
-        this.grams = psqlProductDish.getGrams();
-        this.amount = psqlProductDish.getAmount();
-    }
-
-    public ProductDishType(PsqlProductMeal psqlProductMeal) {
-        this.productId = String.valueOf(psqlProductMeal.getProductId());
-        this.productName = psqlProductMeal.getProductName();
-        this.grams = psqlProductMeal.getGrams();
-        this.amount = psqlProductMeal.getAmount();
-    }
 
     public ProductDishType(MongoDishProduct mongoDishProduct) {
         this.productId = mongoDishProduct.getProductId();

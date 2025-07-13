@@ -2,7 +2,6 @@ package com.springboot.dietapplication.model.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
-import com.springboot.dietapplication.model.psql.product.PsqlProductFoodProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,14 +30,6 @@ public class ProductType implements Serializable {
     private List<ProductAmountType> amountTypes;
     private List<AllergenType> allergenTypes;
     private ProductReplacements replacements;
-
-    public ProductType(PsqlProductFoodProperties psqlProduct) {
-        this.id = String.valueOf(psqlProduct.getId());
-        this.userId = String.valueOf(psqlProduct.getUserId());
-
-        this.name = psqlProduct.getName();
-        this.category = new CategoryType(psqlProduct);
-    }
 
     public ProductType(MongoProduct mongoProduct) {
         this.id = mongoProduct.getId();

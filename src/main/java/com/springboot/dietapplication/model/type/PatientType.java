@@ -2,7 +2,6 @@ package com.springboot.dietapplication.model.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
-import com.springboot.dietapplication.model.psql.patient.PsqlPatient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,8 +21,11 @@ public class PatientType implements Serializable {
 
     private String id;
 
+    @JsonIgnore
     private String clinicId;
+    @JsonIgnore
     private String employeeId;
+    @JsonIgnore
     private PatientRoleType roleType;
 
     private String name;

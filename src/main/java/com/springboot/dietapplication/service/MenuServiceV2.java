@@ -326,4 +326,3 @@ public class MenuServiceV2 {
         mongoMenuRepository.saveAll(menus);
     }
 }
-

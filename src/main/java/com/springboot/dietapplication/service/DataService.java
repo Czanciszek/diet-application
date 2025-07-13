@@ -2,18 +2,11 @@ package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.excel.ProductExcel;
 import com.springboot.dietapplication.model.excel.ProductReplacementsExcel;
-import com.springboot.dietapplication.model.psql.product.PsqlCategory;
-import com.springboot.dietapplication.model.psql.product.PsqlProduct;
-import com.springboot.dietapplication.model.psql.properties.PsqlFoodProperties;
 import com.springboot.dietapplication.model.type.ProductReplacements;
-import com.springboot.dietapplication.repository.CategoryRepository;
-import com.springboot.dietapplication.repository.FoodPropertiesRepository;
-import com.springboot.dietapplication.repository.ProductRepository;
 import com.springboot.dietapplication.repository.mongo.MongoProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,46 +14,7 @@ import java.util.List;
 public class DataService {
 
     @Autowired
-    FoodPropertiesRepository foodPropertiesRepository;
-    @Autowired
-    CategoryRepository categoryRepository;
-    @Autowired
-    ProductRepository productRepository;
-
-    @Autowired
     MongoProductRepository mongoProductRepository;
-
-    public void saveProducts(List<ProductExcel> importedProducts) {
-        List<PsqlProduct> products = new ArrayList<>();
-        for (ProductExcel productExcel : importedProducts) {
-            PsqlProduct psqlProduct = new PsqlProduct(productExcel);
-
-            PsqlFoodProperties foodProperties = new PsqlFoodProperties(productExcel);
-            foodPropertiesRepository.save(foodProperties);
-
-            PsqlCategory category = new PsqlCategory(
-                    productExcel.getCategory(),
-                    productExcel.getSubcategory()
-            );
-
-            PsqlCategory actualCategory =
-                    this.categoryRepository.getCategoryByCategoryAndSubcategory(
-                            category.getCategory(),
-                            category.getSubcategory());
-            if (actualCategory != null && actualCategory.getCategory() != null) {
-                category.setId(actualCategory.getId());
-            } else {
-                this.categoryRepository.save(category);
-            }
-
-            psqlProduct.setCategoryId(category.getId());
-            psqlProduct.setFoodPropertiesId(foodProperties.getId());
-
-            products.add(psqlProduct);
-        }
-
-        productRepository.saveAll(products);
-    }
 
     public void updateProductReplacements(List<ProductReplacementsExcel> importedProducts) {
 
@@ -94,9 +48,6 @@ public class DataService {
     }
 
     public void clearDatabase() {
-        this.productRepository.truncate();
-        this.foodPropertiesRepository.truncate();
-        this.categoryRepository.truncate();
     }
 
     public void createBackup() {

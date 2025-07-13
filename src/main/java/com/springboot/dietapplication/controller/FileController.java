@@ -55,27 +55,7 @@ public class FileController {
 
     private void processFile(MultipartFile multipartFile) {
 
-        File file = new File("src/main/resources/ProductData/tmpData.xlsx");
 
-        try (OutputStream os = new FileOutputStream(file)) {
-            os.write(multipartFile.getBytes());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Reader<ProductExcel> reader = Reader.create(ProductExcel.class);
-        List<ProductExcel> productExcelList = reader
-                .from(file)
-                .start(1)
-                .asList();
-
-        try {
-            file.delete();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        dataService.saveProducts(productExcelList);
     }
 
     private void processFileReplacements(MultipartFile multipartFile) {
@@ -95,7 +75,7 @@ public class FileController {
                 .asList();
 
         try {
-            file.delete();
+            boolean delete = file.delete();
         } catch (Exception e) {
             e.printStackTrace();
         }

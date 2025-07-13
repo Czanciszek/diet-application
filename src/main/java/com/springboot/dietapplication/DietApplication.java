@@ -17,24 +17,6 @@ public class DietApplication {
     }
 
     @Autowired
-    MongoProductRunner mongoProductRunner;
-
-    @Autowired
-    MongoDishRunner mongoDishRunner;
-
-    @Autowired
-    MongoPatientRunner mongoPatientRunner;
-
-    @Autowired
-    MongoMenuRunner mongoMenuRunner;
-
-    @Autowired
-    MongoWeekMenuRunner mongoWeekMenuRunner;
-
-    @Autowired
-    MongoUserRunner mongoUserRunner;
-
-    @Autowired
     MongoClinicRunner mongoClinicRunner;
 
     @Autowired
@@ -43,26 +25,14 @@ public class DietApplication {
     @Bean
     CommandLineRunner runner() {
         return args -> {
-            try {
+//            try {
 
-//                mongoProductRunner.reloadProductsPSQLtoMongo();
-//
-//                mongoDishRunner.reloadDishesPSQLtoMongo();
-//
-//                mongoPatientRunner.reloadPatientsPSQLtoMongo();
-//
-//                mongoMenuRunner.reloadMenusPSQLtoMongo();
-//
-//                mongoWeekMenuRunner.reloadMenusPSQLtoMongo();
-//
-//                mongoUserRunner.reloadUsersPSQLToMongo();
-//
 //                mongoClinicRunner.updatePatients();
 //
 //                mongoEmployeeRunner.createEmployees();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
         };
     }

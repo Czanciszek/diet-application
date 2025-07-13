@@ -19,7 +19,6 @@ public class MongoPatient {
     @Id
     private String id;
 
-    private String userId;
     private String clinicId;
     private String employeeId;
     private PatientRoleType roleType;

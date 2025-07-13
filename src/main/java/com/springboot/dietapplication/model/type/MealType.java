@@ -2,7 +2,6 @@ package com.springboot.dietapplication.model.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.menu.MongoMeal;
-import com.springboot.dietapplication.model.psql.menu.PsqlMeal;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -58,19 +57,6 @@ public class MealType implements Serializable, Comparable<MealType> {
         this.dishPortions = meal.getDishPortions();
         this.recipe = meal.getRecipe();
         this.foodType = meal.getFoodType();
-    }
-
-    public MealType(PsqlMeal meal) {
-        this.id = String.valueOf(meal.getId());
-        this.dayMealId = String.valueOf(meal.getDayMealId());
-        this.attachToRecipes = meal.getOriginMealId() != null && meal.getOriginMealId().equals(meal.getId());
-        this.originDishId = meal.getBaseDishId() != null ? String.valueOf(meal.getBaseDishId()) : null;
-        this.name = meal.getName();
-        this.isProduct = meal.isProduct();
-        this.portions = meal.getPortions();
-        this.grams = meal.getGrams();
-        this.dishPortions = meal.getDishPortions();
-        this.recipe = meal.getRecipe();
     }
 
     public MealType(MongoMeal mongoMeal) {

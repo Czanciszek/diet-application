@@ -62,7 +62,7 @@ public class DbSeeder implements CommandLineRunner {
     }
 
     private void insertData(List<ProductExcel> productExcelList) {
-        dataService.saveProducts(productExcelList);
+
     }
 
     private File importFile(String filePath) {

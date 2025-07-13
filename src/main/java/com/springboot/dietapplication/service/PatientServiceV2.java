@@ -35,8 +35,8 @@ public class PatientServiceV2 {
 
         return patientList
                 .stream()
-                .filter(p -> StringUtils.isEmpty(p.getDeletionDate()) &&
-                        p.getUserId().equals(String.valueOf(user.getId())))
+//                .filter(p -> StringUtils.isEmpty(p.getDeletionDate()) &&
+//                        p.getEmployeeId().equals(String.valueOf(user.getId())))
                 .map(PatientType::new)
                 .collect(Collectors.toList());
     }
@@ -46,9 +46,9 @@ public class PatientServiceV2 {
                 .findById(patientId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found"));
 
-        UserEntity user = userDetailsService.getCurrentUser();
-        if (!user.getUserType().equals(UserType.ADMIN.name) && !patient.getUserId().equals(String.valueOf(user.getId())))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for patient get");
+//        UserEntity user = userDetailsService.getCurrentUser();
+//        if (!user.getUserType().equals(UserType.ADMIN.name) && !patient.getUserId().equals(String.valueOf(user.getId())))
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for patient get");
 
         return new PatientType(patient);
     }
@@ -59,7 +59,7 @@ public class PatientServiceV2 {
         MongoPatient mongoPatient = new MongoPatient(patientType);
 
         UserEntity user = userDetailsService.getCurrentUser();
-        mongoPatient.setUserId(user.getId());
+//        mongoPatient.setUserId(user.getId());
 
         String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoPatient.setCreationDate(currentDate);
@@ -85,7 +85,7 @@ public class PatientServiceV2 {
 //            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for updating product");
 
         MongoPatient updatedPatient = new MongoPatient(patientType);
-        updatedPatient.setUserId(mongoPatient.get().getUserId());
+//        updatedPatient.setUserId(mongoPatient.get().getUserId());
         updatedPatient.setCreationDate(mongoPatient.get().getCreationDate());
 
         String currentDate =  DateFormatter.getInstance().getCurrentDate();

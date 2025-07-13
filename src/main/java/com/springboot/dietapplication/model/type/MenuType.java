@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.springboot.dietapplication.model.mongo.menu.MongoMenu;
 import com.springboot.dietapplication.model.mongo.patient.BriefPatient;
-import com.springboot.dietapplication.model.psql.menu.PsqlMenu;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -55,17 +54,6 @@ public class MenuType implements Serializable {
     private float carbohydratesLimit;
 
     public MenuType() {}
-
-    public MenuType(PsqlMenu menu) {
-        this.id = String.valueOf(menu.getId());
-        this.startDate = menu.getStartDate();
-        this.endDate = menu.getEndDate();
-        this.recommendations = menu.getRecommendations();
-        this.energyLimit = menu.getEnergyLimit();
-        this.proteinsLimit = menu.getProteinsLimit();
-        this.fatsLimit = menu.getFatsLimit();
-        this.carbohydratesLimit = menu.getCarbohydratesLimit();
-    }
 
     public MenuType(MongoMenu mongoMenu) {
         this.id = mongoMenu.getId();

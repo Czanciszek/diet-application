@@ -2,7 +2,6 @@ package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.mongo.user.MongoUserEntity;
 import com.springboot.dietapplication.model.mongo.user.UserEntity;
-import com.springboot.dietapplication.repository.UserRepository;
 import com.springboot.dietapplication.repository.mongo.MongoUserEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

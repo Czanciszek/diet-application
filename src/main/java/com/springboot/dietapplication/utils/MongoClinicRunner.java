@@ -24,8 +24,7 @@ public class MongoClinicRunner {
 
         var clinic = new ClinicType();
         clinic.setName("Cure Diet");
-        clinic.setAddress("None");
-        clinic.setMaintainerUserId("8");
+        clinic.setAddress("");
 
         clinicService.insert(clinic);
     }
