@@ -2,7 +2,7 @@ package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.excel.ProductReplacementsExcel;
 import com.springboot.dietapplication.model.type.ProductReplacements;
-import com.springboot.dietapplication.repository.mongo.MongoProductRepository;
+import com.springboot.dietapplication.repository.MongoProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

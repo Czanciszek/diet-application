@@ -2,7 +2,7 @@ package com.springboot.dietapplication.utils;
 
 import com.springboot.dietapplication.model.type.ClinicType;
 import com.springboot.dietapplication.model.type.PatientRoleType;
-import com.springboot.dietapplication.repository.mongo.MongoPatientRepository;
+import com.springboot.dietapplication.repository.MongoPatientRepository;
 import com.springboot.dietapplication.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

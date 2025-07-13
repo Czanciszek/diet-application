@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.repository.mongo;
+package com.springboot.dietapplication.repository;
 
 import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
 import org.springframework.data.mongodb.repository.MongoRepository;

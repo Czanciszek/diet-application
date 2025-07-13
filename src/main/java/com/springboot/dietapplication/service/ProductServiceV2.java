@@ -4,7 +4,7 @@ import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.CategoryType;
 import com.springboot.dietapplication.model.type.ProductType;
-import com.springboot.dietapplication.repository.mongo.MongoProductRepository;
+import com.springboot.dietapplication.repository.MongoProductRepository;
 import com.springboot.dietapplication.utils.DateFormatter;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

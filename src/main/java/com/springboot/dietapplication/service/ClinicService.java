@@ -1,14 +1,8 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.mongo.clinic.MongoClinic;
-import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
-import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.ClinicType;
-import com.springboot.dietapplication.model.type.MeasurementType;
-import com.springboot.dietapplication.model.type.PatientType;
-import com.springboot.dietapplication.model.type.UserType;
-import com.springboot.dietapplication.repository.mongo.MongoClinicRepository;
-import com.springboot.dietapplication.repository.mongo.MongoPatientRepository;
+import com.springboot.dietapplication.repository.MongoClinicRepository;
 import com.springboot.dietapplication.utils.DateFormatter;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
