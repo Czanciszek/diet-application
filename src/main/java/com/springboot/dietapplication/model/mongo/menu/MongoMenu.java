@@ -2,18 +2,14 @@ package com.springboot.dietapplication.model.mongo.menu;
 
 import com.springboot.dietapplication.model.mongo.patient.BriefPatient;
 import com.springboot.dietapplication.model.type.FoodType;
-import com.springboot.dietapplication.model.type.MenuType;
 import com.springboot.dietapplication.model.type.NewMenuType;
-import com.springboot.dietapplication.model.type.WeekMenuType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -42,36 +38,6 @@ public class MongoMenu {
     private String deletionDate;
 
     private List<String> weekMenus;
-
-    public MongoMenu(MenuType menuType) {
-        this.id = menuType.getId();
-        this.patient = menuType.getPatient();
-
-        this.startDate = menuType.getStartDate();
-        this.endDate = menuType.getEndDate();
-
-        this.energyLimit = menuType.getEnergyLimit();
-        this.fatsLimit = menuType.getFatsLimit();
-        this.proteinsLimit = menuType.getProteinsLimit();
-        this.carbohydratesLimit = menuType.getCarbohydratesLimit();
-
-        this.recommendations = menuType.getRecommendations();
-        this.foodTypes = menuType.getFoodTypes();
-
-        if (menuType.getWeekMenuList() != null) {
-            this.weekMenus = menuType.getWeekMenuList()
-                    .stream()
-                    .map(WeekMenuType::getId)
-                    .collect(Collectors.toList());
-        } else if (menuType.getWeekMealList() != null) {
-            this.weekMenus = menuType.getWeekMealList()
-                    .stream()
-                    .map(String::valueOf)
-                    .collect(Collectors.toList());
-        } else {
-            this.weekMenus = new ArrayList<>();
-        }
-    }
 
     // Insert new menu
     public MongoMenu(NewMenuType newMenuType) {

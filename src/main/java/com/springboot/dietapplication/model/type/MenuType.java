@@ -31,12 +31,6 @@ public class MenuType implements Serializable {
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private List<WeekMenuType> weekMenuList; // Lista tygodniowych jadłospisów
 
-    @JsonIgnore
-    private List<Long> weekMealList; // Lista odnośników do tygodniowych jadłospisów
-
-    @JsonIgnore
-    private List<DayMealType> dayMealTypeList; //Lista odnośników do dni w jadłospisie
-
     private List<FoodType> foodTypes; // Rodzaje posiłków do menu
 
     private String startDate; // Najwcześniejsza data z listy DayMeals
