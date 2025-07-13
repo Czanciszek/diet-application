@@ -23,11 +23,11 @@ public class MongoClinic implements Comparable<MongoClinic> {
     private String updateDate;
     private String deletionDate;
 
-    public MongoClinic(ClinicType clinicType) {
-        this.id = clinicType.getId();
+    public MongoClinic(Clinic clinic) {
+        this.id = clinic.getId();
 
-        this.name = clinicType.getName();
-        this.address = clinicType.getAddress();
+        this.name = clinic.getName();
+        this.address = clinic.getAddress();
     }
 
     @Override

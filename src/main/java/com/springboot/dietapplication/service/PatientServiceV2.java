@@ -25,7 +25,7 @@ public class PatientServiceV2 {
     @Autowired
     MongoPatientRepository mongoPatientRepository;
 
-    public List<PatientType> getAll() {
+    public List<Patient> getAll() {
 
         UserEntity user = userDetailsService.getCurrentUser();
         List<MongoPatient> patientList = mongoPatientRepository.findAll();
@@ -36,11 +36,11 @@ public class PatientServiceV2 {
                 .stream()
 //                .filter(p -> StringUtils.isEmpty(p.getDeletionDate()) &&
 //                        p.getEmployeeId().equals(String.valueOf(user.getId())))
-                .map(PatientType::new)
+                .map(Patient::new)
                 .collect(Collectors.toList());
     }
 
-    public PatientType getPatientById(String patientId) throws ResponseStatusException {
+    public Patient getPatientById(String patientId) throws ResponseStatusException {
         MongoPatient patient = mongoPatientRepository
                 .findById(patientId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found"));
@@ -49,13 +49,13 @@ public class PatientServiceV2 {
 //        if (!user.getUserType().equals(UserType.ADMIN.name) && !patient.getUserId().equals(String.valueOf(user.getId())))
 //            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for patient get");
 
-        return new PatientType(patient);
+        return new Patient(patient);
     }
 
-    public PatientType insert(PatientType patientType) {
+    public Patient insert(Patient patient) {
 
         // TODO: Validate all required fields
-        MongoPatient mongoPatient = new MongoPatient(patientType);
+        MongoPatient mongoPatient = new MongoPatient(patient);
 
         UserEntity user = userDetailsService.getCurrentUser();
 //        mongoPatient.setUserId(user.getId());
@@ -66,16 +66,16 @@ public class PatientServiceV2 {
 
         mongoPatientRepository.save(mongoPatient);
 
-        return new PatientType(mongoPatient);
+        return new Patient(mongoPatient);
     }
 
-    public PatientType update(PatientType patientType) {
+    public Patient update(Patient patient) {
 
-        if (patientType.getId() == null)
+        if (patient.getId() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Patient id cannot be null");
 
         // TODO: Validate all required fields
-        Optional<MongoPatient> mongoPatient = mongoPatientRepository.findById(patientType.getId());
+        Optional<MongoPatient> mongoPatient = mongoPatientRepository.findById(patient.getId());
         if (mongoPatient.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product does not exist");
 
@@ -83,7 +83,7 @@ public class PatientServiceV2 {
 //        if (!user.getUserType().equals(UserType.ADMIN.name) && !psqlProduct.get().getUserId().equals(user.getId()))
 //            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not authorized attempt for updating product");
 
-        MongoPatient updatedPatient = new MongoPatient(patientType);
+        MongoPatient updatedPatient = new MongoPatient(patient);
 //        updatedPatient.setUserId(mongoPatient.get().getUserId());
         updatedPatient.setCreationDate(mongoPatient.get().getCreationDate());
 
@@ -95,7 +95,7 @@ public class PatientServiceV2 {
         // Update patient reference in Menu objects
         menuService.updateMenuPatients(updatedPatient);
 
-        return new PatientType(updatedPatient);
+        return new Patient(updatedPatient);
     }
 
     public MeasurementType insertMeasurement(MeasurementType measurementType) {

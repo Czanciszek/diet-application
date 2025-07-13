@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.model.mongo.patient;
 
 import com.springboot.dietapplication.model.type.*;
+import com.springboot.dietapplication.model.type.enums.EmployeeRoleType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,13 +25,13 @@ public class MongoEmployee {
     private String surname;
     private String pdfFooter;
 
-    public MongoEmployee(EmployeeType employeeType) {
-        this.id = employeeType.getId();
-        this.clinicId = employeeType.getClinicId();
-        this.roleType = employeeType.getRoleType();
-        this.email = employeeType.getEmail();
-        this.name = employeeType.getName();
-        this.surname = employeeType.getSurname();
-        this.pdfFooter = employeeType.getPdfFooter();
+    public MongoEmployee(Employee employee) {
+        this.id = employee.getId();
+        this.clinicId = employee.getClinicId();
+        this.roleType = employee.getRoleType();
+        this.email = employee.getEmail();
+        this.name = employee.getName();
+        this.surname = employee.getSurname();
+        this.pdfFooter = employee.getPdfFooter();
     }
 }

@@ -2,7 +2,7 @@ package com.springboot.dietapplication.utils;
 
 import com.springboot.dietapplication.model.mongo.patient.MongoEmployee;
 import com.springboot.dietapplication.model.mongo.user.MongoUserEntity;
-import com.springboot.dietapplication.model.type.EmployeeRoleType;
+import com.springboot.dietapplication.model.type.enums.EmployeeRoleType;
 import com.springboot.dietapplication.repository.MongoEmployeeRepository;
 import com.springboot.dietapplication.repository.MongoUserEntityRepository;
 import com.springboot.dietapplication.service.ClinicService;

@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.model.mongo.product;
 
 import com.springboot.dietapplication.model.type.*;
+import com.springboot.dietapplication.model.type.enums.AllergenType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

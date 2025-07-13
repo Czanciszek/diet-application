@@ -2,6 +2,8 @@ package com.springboot.dietapplication.model.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.patient.MongoPatient;
+import com.springboot.dietapplication.model.type.enums.AllergenType;
+import com.springboot.dietapplication.model.type.enums.PatientRoleType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PatientType implements Serializable {
+public class Patient implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -8415223607958394612L;
@@ -50,7 +52,7 @@ public class PatientType implements Serializable {
     @JsonIgnore
     private List<String> menus;
 
-    public PatientType(MongoPatient mongoPatient) {
+    public Patient(MongoPatient mongoPatient) {
         this.id = mongoPatient.getId();
         this.clinicId = mongoPatient.getClinicId();
         this.employeeId = mongoPatient.getEmployeeId();

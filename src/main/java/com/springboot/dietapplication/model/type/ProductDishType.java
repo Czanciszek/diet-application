@@ -2,6 +2,7 @@ package com.springboot.dietapplication.model.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springboot.dietapplication.model.mongo.dish.MongoDishProduct;
+import com.springboot.dietapplication.model.type.enums.AmountType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

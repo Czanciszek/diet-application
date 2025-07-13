@@ -6,6 +6,7 @@ import com.springboot.dietapplication.model.mongo.menu.MongoWeekMenu;
 import com.springboot.dietapplication.model.mongo.product.MongoProduct;
 import com.springboot.dietapplication.model.mongo.user.UserEntity;
 import com.springboot.dietapplication.model.type.*;
+import com.springboot.dietapplication.model.type.enums.AmountType;
 import com.springboot.dietapplication.utils.RomanianNumber;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;

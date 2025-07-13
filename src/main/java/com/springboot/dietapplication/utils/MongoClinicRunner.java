@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.utils;
 
-import com.springboot.dietapplication.model.type.ClinicType;
-import com.springboot.dietapplication.model.type.PatientRoleType;
+import com.springboot.dietapplication.model.type.Clinic;
+import com.springboot.dietapplication.model.type.enums.PatientRoleType;
 import com.springboot.dietapplication.repository.MongoPatientRepository;
 import com.springboot.dietapplication.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class MongoClinicRunner {
 
     public void addCustomClinic() {
 
-        var clinic = new ClinicType();
+        var clinic = new Clinic();
         clinic.setName("Cure Diet");
         clinic.setAddress("");
 

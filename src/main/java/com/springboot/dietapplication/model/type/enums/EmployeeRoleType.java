@@ -1,4 +1,4 @@
-package com.springboot.dietapplication.model.type;
+package com.springboot.dietapplication.model.type.enums;
 
 import lombok.Getter;
 

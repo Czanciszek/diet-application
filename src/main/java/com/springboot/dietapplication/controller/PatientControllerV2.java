@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.controller;
 
 import com.springboot.dietapplication.model.type.MeasurementType;
-import com.springboot.dietapplication.model.type.PatientType;
+import com.springboot.dietapplication.model.type.Patient;
 import com.springboot.dietapplication.service.PatientServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class PatientControllerV2 {
     @GetMapping
     ResponseEntity<?> getAll() {
         try {
-            List<PatientType> patientList = this.patientService.getAll();
+            List<Patient> patientList = this.patientService.getAll();
             return ResponseEntity.ok(patientList);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -31,7 +31,7 @@ public class PatientControllerV2 {
     @GetMapping(path = "/{patientId}")
     ResponseEntity<?> getPatientById(@PathVariable("patientId") String patientId) {
         try {
-            PatientType patient = this.patientService.getPatientById(patientId);
+            Patient patient = this.patientService.getPatientById(patientId);
             return ResponseEntity.ok(patient);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<HttpStatus>(e.getStatusCode());
@@ -41,9 +41,9 @@ public class PatientControllerV2 {
     }
 
     @PostMapping(produces = "application/json")
-    ResponseEntity<?> insert(@RequestBody PatientType patient) {
+    ResponseEntity<?> insert(@RequestBody Patient patient) {
         try {
-            PatientType patientType = this.patientService.insert(patient);
+            Patient patientType = this.patientService.insert(patient);
             return ResponseEntity.ok().body(patientType);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<HttpStatus>(e.getStatusCode());
@@ -65,9 +65,9 @@ public class PatientControllerV2 {
     }
 
     @PutMapping(produces = "application/json")
-    ResponseEntity<?> update(@RequestBody PatientType patient) {
+    ResponseEntity<?> update(@RequestBody Patient patient) {
         try {
-            PatientType patientType = this.patientService.update(patient);
+            Patient patientType = this.patientService.update(patient);
             return ResponseEntity.ok().body(patientType);
         } catch (ResponseStatusException e) {
             return new ResponseEntity<HttpStatus>(e.getStatusCode());

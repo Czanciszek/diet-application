@@ -1,6 +1,7 @@
 package com.springboot.dietapplication.model.type;
 
 import com.springboot.dietapplication.model.mongo.patient.MongoEmployee;
+import com.springboot.dietapplication.model.type.enums.EmployeeRoleType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-public class EmployeeType implements Serializable {
+public class Employee implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -4858370743727517L;
@@ -26,7 +27,7 @@ public class EmployeeType implements Serializable {
     private String surname;
     private String pdfFooter;
 
-    public EmployeeType(MongoEmployee mongoEmployee) {
+    public Employee(MongoEmployee mongoEmployee) {
         this.id = mongoEmployee.getId();
         this.clinicId = mongoEmployee.getClinicId();
         this.email = mongoEmployee.getEmail();

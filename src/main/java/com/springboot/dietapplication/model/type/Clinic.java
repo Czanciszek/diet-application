@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ClinicType implements Serializable {
+public class Clinic implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 6918603749943343516L;
@@ -20,7 +20,7 @@ public class ClinicType implements Serializable {
     private String name;
     private String address;
 
-    public ClinicType(MongoClinic mongoClinic) {
+    public Clinic(MongoClinic mongoClinic) {
         this.id = mongoClinic.getId();
 
         this.name = mongoClinic.getName();

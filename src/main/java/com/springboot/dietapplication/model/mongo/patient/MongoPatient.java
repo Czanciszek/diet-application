@@ -1,6 +1,8 @@
 package com.springboot.dietapplication.model.mongo.patient;
 
 import com.springboot.dietapplication.model.type.*;
+import com.springboot.dietapplication.model.type.enums.AllergenType;
+import com.springboot.dietapplication.model.type.enums.PatientRoleType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,28 +47,28 @@ public class MongoPatient {
     private String updateDate;
     private String deletionDate;
 
-    public MongoPatient(PatientType patientType) {
-        this.id = patientType.getId();
-        this.clinicId = patientType.getClinicId();
-        this.employeeId = patientType.getEmployeeId();
-        this.roleType = patientType.getRoleType();
+    public MongoPatient(Patient patient) {
+        this.id = patient.getId();
+        this.clinicId = patient.getClinicId();
+        this.employeeId = patient.getEmployeeId();
+        this.roleType = patient.getRoleType();
 
-        this.name = patientType.getName();
-        this.surname = patientType.getSurname();
-        this.birthDate = patientType.getBirthDate();
-        this.phoneNumber = patientType.getNumberPhone();
-        this.email = patientType.getEmail();
-        this.sex = patientType.getSex();
-        this.bodyHeight = patientType.getBodyHeight();
+        this.name = patient.getName();
+        this.surname = patient.getSurname();
+        this.birthDate = patient.getBirthDate();
+        this.phoneNumber = patient.getNumberPhone();
+        this.email = patient.getEmail();
+        this.sex = patient.getSex();
+        this.bodyHeight = patient.getBodyHeight();
 
-        this.currentLifestyleNote = patientType.getCurrentLifestyleNote();
-        this.changedLifestyleNote = patientType.getChangedLifestyleNote();
-        this.dietaryPurpose = patientType.getDietaryPurpose();
+        this.currentLifestyleNote = patient.getCurrentLifestyleNote();
+        this.changedLifestyleNote = patient.getChangedLifestyleNote();
+        this.dietaryPurpose = patient.getDietaryPurpose();
 
-        this.allergens = patientType.getAllergens();
-        this.unlikelyCategories = patientType.getUnlikelyCategories();
-        this.measurements = patientType.getMeasurements();
-        this.menus = patientType.getMenus();
+        this.allergens = patient.getAllergens();
+        this.unlikelyCategories = patient.getUnlikelyCategories();
+        this.measurements = patient.getMeasurements();
+        this.menus = patient.getMenus();
     }
 
 

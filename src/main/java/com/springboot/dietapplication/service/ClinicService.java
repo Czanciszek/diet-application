@@ -1,7 +1,7 @@
 package com.springboot.dietapplication.service;
 
 import com.springboot.dietapplication.model.mongo.clinic.MongoClinic;
-import com.springboot.dietapplication.model.type.ClinicType;
+import com.springboot.dietapplication.model.type.Clinic;
 import com.springboot.dietapplication.repository.MongoClinicRepository;
 import com.springboot.dietapplication.utils.DateFormatter;
 import io.micrometer.common.util.StringUtils;
@@ -20,28 +20,28 @@ public class ClinicService {
     @Autowired
     MongoClinicRepository clinicRepository;
 
-    public List<ClinicType> getAll() {
+    public List<Clinic> getAll() {
 
         List<MongoClinic> clinicList = clinicRepository.findAll();
 
         return clinicList
                 .stream()
                 .filter(c -> StringUtils.isEmpty(c.getDeletionDate()))
-                .map(ClinicType::new)
+                .map(Clinic::new)
                 .collect(Collectors.toList());
     }
 
-    public ClinicType getClinicById(String clinicId) throws ResponseStatusException {
+    public Clinic getClinicById(String clinicId) throws ResponseStatusException {
         MongoClinic clinic = clinicRepository
                 .findById(clinicId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Clinic not found"));
 
-        return new ClinicType(clinic);
+        return new Clinic(clinic);
     }
 
-    public ClinicType insert(ClinicType clinicType) {
+    public Clinic insert(Clinic clinic) {
 
-        MongoClinic mongoClinic = new MongoClinic(clinicType);
+        MongoClinic mongoClinic = new MongoClinic(clinic);
 
         String currentDate =  DateFormatter.getInstance().getCurrentDate();
         mongoClinic.setCreationDate(currentDate);
@@ -49,19 +49,19 @@ public class ClinicService {
 
         clinicRepository.save(mongoClinic);
 
-        return new ClinicType(mongoClinic);
+        return new Clinic(mongoClinic);
     }
 
-    public ClinicType update(ClinicType clinicType) {
+    public Clinic update(Clinic clinic) {
 
-        if (clinicType.getId() == null)
+        if (clinic.getId() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Clinic id cannot be null");
 
-        Optional<MongoClinic> mongoClinic = clinicRepository.findById(clinicType.getId());
+        Optional<MongoClinic> mongoClinic = clinicRepository.findById(clinic.getId());
         if (mongoClinic.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Clinic does not exist");
 
-        MongoClinic updatedClinic = new MongoClinic(clinicType);
+        MongoClinic updatedClinic = new MongoClinic(clinic);
         updatedClinic.setCreationDate(mongoClinic.get().getCreationDate());
 
         String currentDate =  DateFormatter.getInstance().getCurrentDate();
@@ -69,7 +69,7 @@ public class ClinicService {
 
         clinicRepository.save(updatedClinic);
 
-        return new ClinicType(updatedClinic);
+        return new Clinic(updatedClinic);
     }
 
     public void delete(String id) throws ResponseStatusException {
