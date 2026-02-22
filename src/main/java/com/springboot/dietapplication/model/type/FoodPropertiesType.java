@@ -1,7 +1,5 @@
 package com.springboot.dietapplication.model.type;
 
-import com.springboot.dietapplication.model.excel.ProductExcel;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
@@ -42,28 +40,5 @@ public class FoodPropertiesType implements Serializable {
     private float betaCarotene;
     private float vitaminD;
     private float vitaminC;
-
-    public FoodPropertiesType(ProductExcel productExcel) {
-        this.energyValue = productExcel.getEnergyValue();
-        this.proteins = productExcel.getProteins();
-        this.fats = productExcel.getFats();
-        this.saturatedFattyAcids = productExcel.getSaturatedFattyAcids();
-        this.monoUnsaturatedFattyAcids = productExcel.getMonoUnsaturatedFattyAcids();
-        this.polyUnsaturatedFattyAcids = productExcel.getPolyUnsaturatedFattyAcids();
-        this.cholesterol = productExcel.getCholesterol();
-        this.carbohydrates = productExcel.getCarbohydrates();
-        this.sucrose = productExcel.getSucrose();
-        this.dietaryFibres = productExcel.getDietaryFibres();
-        this.sodium = productExcel.getSodium();
-        this.potassium = productExcel.getPotassium();
-        this.calcium = productExcel.getCalcium();
-        this.phosphorus = productExcel.getPhosphorus();
-        this.magnesium = productExcel.getMagnesium();
-        this.iron = productExcel.getIron();
-        this.selenium = productExcel.getSelenium();
-        this.betaCarotene = productExcel.getBetaCarotene();
-        this.vitaminD = productExcel.getVitaminD();
-        this.vitaminC = productExcel.getVitaminC();
-    }
 
 }
